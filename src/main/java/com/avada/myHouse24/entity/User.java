@@ -18,10 +18,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "first-name")
+    @Column(name = "first_name")
     private String firstName;
     private String name;
-    @Column(name = "second-name")
+    @Column(name = "second_name")
     private String secondName;
     private Date birthday;
     private String phone;

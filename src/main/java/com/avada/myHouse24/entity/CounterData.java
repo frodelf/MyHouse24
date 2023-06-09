@@ -19,7 +19,7 @@ public class CounterData {
     private Long id;
     private String status;
     private double data;
-    @Column(name = "from-date")
+    @Column(name = "from_date")
     private Date fromDate;
     @ManyToOne
     private Flat flat;

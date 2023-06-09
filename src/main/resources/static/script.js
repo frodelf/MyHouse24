@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     const logoImage = $('.logo-image');
     const miniLogoImage = $('.mini-logo-image');
 
@@ -10,7 +10,7 @@ $(document).ready(function() {
         miniLogoImage.css('display', 'block');
     }
 
-    $('[data-widget="pushmenu"]').click(function() {
+    $('[data-widget="pushmenu"]').click(function () {
         if ($('body').hasClass('sidebar-collapse')) {
             logoImage.css('display', 'block');
             miniLogoImage.css('display', 'none');
@@ -21,9 +21,9 @@ $(document).ready(function() {
     });
 
     var table = $('#myTable');
-    var rowsPerPage = 1;
+    var rowsPerPage = 10;
     var currentPage = 0;
-    var maxButtons = 10;
+    var maxButtons = 5;
 
     function showPage(page) {
         table.find('tbody tr').hide();
@@ -46,7 +46,7 @@ $(document).ready(function() {
         if (currentPage === 0) {
             prevButton.addClass('disabled');
         }
-        prevButton.on('click', function(e) {
+        prevButton.on('click', function (e) {
             e.preventDefault();
             if (currentPage - 1 >= 0) {
                 currentPage--;
@@ -62,7 +62,7 @@ $(document).ready(function() {
             if (i === currentPage) {
                 pageButton.addClass('active');
             }
-            pageButton.on('click', function(e) {
+            pageButton.on('click', function (e) {
                 e.preventDefault();
                 var pageNumber = parseInt($(this).text()) - 1;
                 currentPage = pageNumber;
@@ -77,7 +77,7 @@ $(document).ready(function() {
         if ((currentPage + 1) === totalPages) {
             nextButton.addClass('disabled');
         }
-        nextButton.on('click', function(e) {
+        nextButton.on('click', function (e) {
             e.preventDefault();
             if (currentPage + 1 < totalPages) {
                 currentPage++;
@@ -90,4 +90,26 @@ $(document).ready(function() {
 
     showPage(currentPage);
     updatePagination();
+});
+$(document).ready(function () {
+    $('.mySelect').select2();
+});
+$(document).ready(function() {
+    $('.nav-link2').click(function(e) {
+        e.preventDefault();
+        $(this).next('.nav-treeview').slideToggle();
+        $(this).find('.right').toggleClass('fa-angle-down fa-angle-left');
+    });
+});
+document.addEventListener('DOMContentLoaded', function() {
+    var rows = document.getElementsByClassName('clickable-row');
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].addEventListener('click', function() {
+            var action = this.getAttribute('data-action'); // Отримати атрибут data-action
+
+            if (action) {
+                window.location.href = action; // Перенаправити на нову сторінку
+            }
+        });
+    }
 });

@@ -15,7 +15,7 @@ public class Admin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-    @Column(name = "first-name")
+    @Column(name = "first_name")
     private String firstName;
     private String name;
     private String email;

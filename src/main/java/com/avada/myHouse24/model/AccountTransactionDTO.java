@@ -1,20 +1,20 @@
 package com.avada.myHouse24.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-@AllArgsConstructor
-@NoArgsConstructor
+
 @Data
 public class AccountTransactionDTO {
-    private long id;
+    private String id;
     private Date date;
-    private String status;
+    private String userName;//
+    private String scoreId;//
     private String transactionPurposeName;
-    private String userName;
-    private long scoreId;
+    private String adminName;
     private boolean isIncome;
-    private double sum;
+    private boolean addToStats;
+    private String sum;
+    private String comment;
+
 }
