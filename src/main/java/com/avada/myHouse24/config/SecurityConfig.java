@@ -11,6 +11,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
@@ -47,7 +48,8 @@ public class SecurityConfig {
                     auth.anyRequest().permitAll();
                 })
                 .formLogin(formLogin -> formLogin.loginPage("/cabinet/login"))
-                .logout(logout -> logout.logoutSuccessUrl("/cabinet/login")
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID", "remember-me")
                 )
