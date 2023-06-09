@@ -6,138 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
     <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
-    <div class="content-wrapper text-for-breadcrumb">
+    <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">Новая приходная ведомость</h4>
-            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
-                </li>
-                <li class="breadcrumb-item"><a href="/admin/account-transaction/index" class="text-for-breadcrumb">Платежи</a>
-                </li>
-                <li class="breadcrumb-item active" aria-current="page">Приходная ведомость №
-                    [[${accountTransaction.getId()}]]
-                </li>
+            <h4 style="margin-left: 20px; margin-right: auto;">Касса</h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Касса</li>
             </ol>
         </div>
-        <section class="content">
-            <div class="row">
-                <div class="col">
-                    <div class="input-group mb-3">
-                        <span class="input-group-text">№</span>
-                        <input type="number" class="form-control" name="id" th:value="${accountTransaction.getId()}"
-                               readonly>
-                        <p style="margin-left: 10px; margin-right: 10px;">от</p>
-                        <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                        <input type="date" name="date" class="form-control"
-                               th:value="${accountTransaction.getDate()}">
-                    </div>
-                </div>
-                <div class="col">
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col">
-                                Приходная ведомость
-                            </div>
-                            <div class="col">
-                                <div class="float-right">
-                                    <a class="btn btn-outline-secondary"
-                                       th:href="${accountTransaction.isIncome() ? '/admin/account-transaction/copy/in/' + accountTransaction.getId() : '/admin/account-transaction/copy/out/' + accountTransaction.getId()}">Копировать</a>
-                                    <a class="btn btn-outline-secondary"
-                                       th:href="@{/admin/account-transaction/delete/{id}(id=${accountTransaction.getId()})}">Удалить</a>
-                                    <a class="btn btn-primary"
-                                       th:href="${accountTransaction.isIncome() ? '/admin/account-transaction/update/in/' + accountTransaction.getId() : '/admin/account-transaction/update/out/' + accountTransaction.getId()}"
-                                       title="Редактировать" data-toggle="tooltip">Редактировать</a>
-                                    <a class="btn btn-outline-secondary " href="">Вигрузить в Exel</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <table class="table" style="font-weight: bold;">
+
+        <div class="card" style="width: 96%;margin-left: 2%;">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="myTable" class="table table-bordered table-hover table-striped table-sm">
+                        <thead>
                         <tr>
-                            <td style="width: 50%">
-                                Владелец квартиры
-                            </td>
-                            <td style="width: 50%">
-                                [[${accountTransaction.getUserName()}]]
-                            </td>
+                            <th>№</th>
+                            <th>Дата</th>
+                            <th>Статус</th>
+                            <th>Тип платежа</th>
+                            <th>Владелец</th>
+                            <th>Лицевой счет</th>
+                            <th>Приход/расход</th>
+                            <th>Сумма (грн)</th>
                         </tr>
                         <tr>
-                            <td>
-                                Лицевой счет
-                            </td>
-                            <td>
-                                [[${accountTransaction.getScoreId()}]]
-                            </td>
-                        </tr><tr>
-                        <td>
-                            Статья
-                        </td>
-                        <td>
-                            [[${accountTransaction.getTransactionPurposeName()}]]
-                        </td>
-                        <tr>
-                            <td>
-                                Менеджер
-                            </td>
-                            <td>
-                                [[${accountTransaction.getAdminName()}]]
-                            </td>
+                            <th><input type="number" class="form-control"></th>
+                            <th><input type="date" class="form-control"></th>
+                            <th><input type="text" class="form-control"></th>
+                            <th><input type="text" class="form-control"></th>
+                            <th><input type="text" class="form-control"></th>
+                            <th><input type="number" class="form-control"></th>
+                            <th><input type="text" class="form-control"></th>
+                            <th><input type="number" class="form-control"></th>
                         </tr>
-                        <tr>
-                            <td>
-                                Сумма
-                            </td>
-                            <td>
-                                [[${accountTransaction.getSum()}]]
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Комментарий
-                            </td>
-                            <td>
-                                [[${accountTransaction.getComment()}]]
-                            </td>
-                        </tr>
-                    </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
                     </table>
                 </div>
-                <div class="row" style="font-weight: bold;">
-                    <div class="col">
-                    </div>
-                    <div class="col">
-                    </div>
-                </div>
             </div>
-        </section>
+            <div class="card-footer">
+                <ul id="pagination" class="pagination pagination-sm m-0 float-right">
+                    <li class="page-item"><a id="prevPage" class="page-link" href="#">«</a></li>
+                    <li class="page-item"><a id="nextPage" class="page-link" href="#">»</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-    <footer class="main-footer">
-        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
-            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
-        Документация API доступна <a href="/doc">по ссылке</a>.
-    </footer>
-</div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+    <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+    <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+    <script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="/script.js"></script>
+
+</div>
 </body>
 
 </html>
