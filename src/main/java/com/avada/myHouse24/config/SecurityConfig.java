@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationConverter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
@@ -20,23 +21,23 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig {
-    //    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new UserDetailsServiceImpl();
-//    }
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserDetailsServiceImpl();
+    }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    //
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProviderOwner(){
-//        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-//        authenticationProvider.setPasswordEncoder(passwordEncoder());
-//        authenticationProvider.setUserDetailsService(userDetailsService());
-//        return authenticationProvider;
-//    }
+
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setUserDetailsService(userDetailsService());
+        return authenticationProvider;
+    }
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
@@ -48,14 +49,11 @@ public class SecurityConfig {
                     auth.anyRequest().permitAll();
                 })
                 .formLogin(formLogin -> formLogin.loginPage("/cabinet/login"))
+                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/cabinet/login"))
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .invalidateHttpSession(true)
-                        .deleteCookies("JSESSIONID", "remember-me")
-                )
-                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/cabinet/login")
-//                        .redirectionEndpoint(redirection -> redirection
-//                                .baseUri("/secured"))
+                        .deleteCookies("JSESSIONID")
                 )
                 .build();
     }
