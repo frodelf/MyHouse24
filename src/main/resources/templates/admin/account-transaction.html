@@ -53,11 +53,11 @@
                             <div class="col">
                                 <div class="float-right">
                                     <a class="btn btn-outline-secondary"
-                                       th:href="${accountTransaction.isIncome() ? '/admin/account-transaction/copy/in/' + accountTransaction.getId() : '/admin/account-transaction/copy/out/' + accountTransaction.getId()}">Копировать</a>
+                                       th:href="${accountTransaction.getIsIncome() ? '/admin/account-transaction/copy/in/' + accountTransaction.getId() : '/admin/account-transaction/copy/out/' + accountTransaction.getId()}">Копировать</a>
                                     <a class="btn btn-outline-secondary"
                                        th:href="@{/admin/account-transaction/delete/{id}(id=${accountTransaction.getId()})}">Удалить</a>
                                     <a class="btn btn-primary"
-                                       th:href="${accountTransaction.isIncome() ? '/admin/account-transaction/update/in/' + accountTransaction.getId() : '/admin/account-transaction/update/out/' + accountTransaction.getId()}"
+                                       th:href="${accountTransaction.getIsIncome() ? '/admin/account-transaction/update/in/' + accountTransaction.getId() : '/admin/account-transaction/update/out/' + accountTransaction.getId()}"
                                        title="Редактировать" data-toggle="tooltip">Редактировать</a>
                                     <a class="btn btn-outline-secondary " href="">Вигрузить в Exel</a>
                                 </div>

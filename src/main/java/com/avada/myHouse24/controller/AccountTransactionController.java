@@ -2,6 +2,7 @@ package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.AccountTransaction;
 import com.avada.myHouse24.mapper.AccountTransactionMapper;
+import com.avada.myHouse24.model.AccountTransactionDTO;
 import com.avada.myHouse24.model.AccountTransactionInDTO;
 import com.avada.myHouse24.model.AccountTransactionOutDTO;
 import com.avada.myHouse24.service.impl.*;
@@ -12,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Controller
@@ -31,7 +34,9 @@ public class AccountTransactionController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        model.addAttribute("accountTransactionList", accountTransactionService.getAll());
+        model.addAttribute("accountTransaction", new AccountTransactionDTO());
+        model.addAttribute("accountTransactionList", accountTransactionMapper.toDtoList(accountTransactionService.getAll()));
+        model.addAttribute("transactionPurposeList", transactionPurposeService.getAll());
         model.addAttribute("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
         model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
         return "admin/account-transaction-all";
@@ -170,18 +175,31 @@ public class AccountTransactionController {
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
         return "admin/account-transaction-update-out";
     }
-    @PostMapping("/ajax")
-    public String filter(Model model, @RequestParam("id")long id, @RequestParam("date")Date date, @RequestParam("status")String status, @RequestParam("transactionPurpose")String transactionPurpose, @RequestParam("admin")String admin, @RequestParam("score")Long score, @RequestParam("isIncome")Boolean isIncome, @RequestParam("sum")Double sum){
-        model.addAttribute("accountTransactionList", accountTransactionService.getAll());
-        model.addAttribute("sumWhereIsIncomeIsTrue", 5000000);
-        model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
-        return "redirect:admin/account-transaction/ajax";
-    }
-    @GetMapping("/admin/account-transaction/ajax")
-    public String filter(Model model){
-        model.addAttribute("accountTransactionList", accountTransactionService.getAll());
-        model.addAttribute("sumWhereIsIncomeIsTrue", 5000000);
-        model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
-        return "admin/account-transaction-all";
+    @PostMapping("/filter")
+    public ModelAndView filter(@ModelAttribute AccountTransactionDTO accountTransactionDTO){
+        ModelAndView model = new ModelAndView("admin/account-transaction-all");
+        model.addObject("accountTransaction", accountTransactionDTO);
+        List<AccountTransactionDTO> accountTransactionDTOS = accountTransactionMapper.toDtoList(accountTransactionService.getAll());
+
+        if(!accountTransactionDTO.getId().equals("")) accountTransactionDTOS = accountTransactionDTOS.stream()
+                .filter(dto -> dto.getId().equals(accountTransactionDTO.getId()))
+                .collect(Collectors.toList());
+
+        if(!accountTransactionDTO.getDate().equals("")) System.out.println("qwerty");
+
+        if(!accountTransactionDTO.getScoreId().equals("")) accountTransactionDTOS = accountTransactionDTOS.stream()
+                .filter(dto -> dto.getScoreId().contains(accountTransactionDTO.getScoreId()))
+                .collect(Collectors.toList());
+
+        if(!accountTransactionDTO.getTransactionPurposeName().equals("")) System.out.println("qwerty");
+        if(!accountTransactionDTO.getUserName().equals("")) System.out.println("qwerty");
+        if(accountTransactionDTO.getAddToStats() != null) System.out.println("qwerty");
+        if(accountTransactionDTO.getIsIncome() != null) System.out.println("qwerty");
+
+        model.addObject("accountTransactionList", accountTransactionDTOS);
+        model.addObject("transactionPurposeList", transactionPurposeService.getAll());
+        model.addObject("sumWhereIsIncomeIsTrue", 5000000);
+        model.addObject("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
+        return model;
     }
 }

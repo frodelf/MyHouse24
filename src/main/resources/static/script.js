@@ -105,11 +105,37 @@ document.addEventListener('DOMContentLoaded', function() {
     var rows = document.getElementsByClassName('clickable-row');
     for (var i = 0; i < rows.length; i++) {
         rows[i].addEventListener('click', function() {
-            var action = this.getAttribute('data-action'); // Отримати атрибут data-action
+            var action = this.getAttribute('data-action');
 
             if (action) {
-                window.location.href = action; // Перенаправити на нову сторінку
+                window.location.href = action;
             }
         });
     }
 });
+document.addEventListener("DOMContentLoaded", function() {
+    flatpickr("#daterange", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+        onClose: function(selectedDates, dateStr, instance){}
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    var myForm = document.getElementById("myFormForAccountTransaction");
+
+    myForm.addEventListener("submit", function(event) {
+        event.preventDefault(); // Попереджаємо стандартну поведінку форми
+
+        $.ajax({
+            url: "/admin/account-transaction/filter",
+            method: "POST",
+            data: $("#myFormForAccountTransaction").serialize(),
+            success: function(response) {
+                $('#myTable tbody').html(response);
+            },
+            error: function(xhr, status, error) {
+            }
+        });
+    });
+});
+

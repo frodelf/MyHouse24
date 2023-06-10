@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,21 +47,21 @@ public class AccountTransactionMapper {
     public AccountTransaction toEntity(AccountTransactionDTO accountTransactionDTO){
         AccountTransaction accountTransaction = new AccountTransaction();
         accountTransaction.setId(Long.valueOf(accountTransactionDTO.getId()));
-        accountTransaction.setFromDate(accountTransactionDTO.getDate());
+        accountTransaction.setFromDate(Date.valueOf(accountTransactionDTO.getDate()));
         if(!accountTransactionDTO.getUserName().isBlank())accountTransaction.setUser(userService.getByName(accountTransactionDTO.getUserName()));
         if(!accountTransactionDTO.getScoreId().isBlank())accountTransaction.setScore(scoreService.getById(Long.parseLong(accountTransactionDTO.getScoreId())));
         accountTransaction.setTransactionPurpose(transactionPurposeService.getByName(accountTransactionDTO.getTransactionPurposeName()));
         accountTransaction.setAdmin(adminService.getByName(accountTransactionDTO.getAdminName()));
-        accountTransaction.setIncome(accountTransactionDTO.isIncome());
+        accountTransaction.setIncome(accountTransactionDTO.getIsIncome());
         accountTransaction.setSum(Double.parseDouble(accountTransactionDTO.getSum()));
         accountTransaction.setComment(accountTransactionDTO.getComment());
-        accountTransaction.setAddToStats(accountTransactionDTO.isAddToStats());
+        accountTransaction.setAddToStats(accountTransactionDTO.getIsIncome());
         return accountTransaction;
     }
     public AccountTransactionDTO toDto(AccountTransaction accountTransaction){
         AccountTransactionDTO accountTransactionDTO = new AccountTransactionDTO();
         accountTransactionDTO.setId(String.valueOf(accountTransaction.getId()));
-        accountTransactionDTO.setDate(accountTransaction.getFromDate());
+        accountTransactionDTO.setDate(String.valueOf(accountTransaction.getFromDate()));
         try {
             accountTransactionDTO.setUserName(accountTransaction.getUser().getName());
         }catch (Exception e){
@@ -77,7 +78,7 @@ public class AccountTransactionMapper {
         }
         accountTransactionDTO.setTransactionPurposeName(accountTransaction.getTransactionPurpose().getName());
         accountTransactionDTO.setAdminName(accountTransaction.getAdmin().getName());
-        accountTransactionDTO.setIncome(accountTransaction.isIncome());
+        accountTransactionDTO.setIsIncome(accountTransaction.isIncome());
         accountTransactionDTO.setSum(String.valueOf(accountTransaction.getSum()));
         accountTransactionDTO.setComment(accountTransaction.getComment());
         accountTransactionDTO.setAddToStats(accountTransaction.isAddToStats());

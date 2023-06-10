@@ -7,13 +7,13 @@ import java.sql.Date;
 @Data
 public class AccountTransactionDTO {
     private String id;
-    private Date date;
+    private String date;
     private String userName;//
     private String scoreId;//
     private String transactionPurposeName;
     private String adminName;
-    private boolean isIncome;
-    private boolean addToStats;
+    private Boolean isIncome;
+    private Boolean addToStats;
     private String sum;
     private String comment;
 
