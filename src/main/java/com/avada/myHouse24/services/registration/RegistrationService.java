@@ -1,8 +1,9 @@
-package com.avada.myHouse24.service.registration;
+package com.avada.myHouse24.services.registration;
 
 import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.entity.VerificationToken;
 import com.avada.myHouse24.repo.UserRepository;
+import com.avada.myHouse24.services.registration.*;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

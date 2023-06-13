@@ -1,15 +1,11 @@
 package com.avada.myHouse24.controller;
 
-import com.avada.myHouse24.entity.User;
-import com.avada.myHouse24.service.registration.EmailService;
-import com.avada.myHouse24.service.registration.RegistrationService;
-import com.avada.myHouse24.service.registration.RegistrationRequest;
-import com.avada.myHouse24.service.UserService;
-import jakarta.servlet.http.HttpSession;
+import com.avada.myHouse24.services.impl.UserServiceImpl;
+import com.avada.myHouse24.services.registration.RegistrationRequest;
+import com.avada.myHouse24.services.registration.RegistrationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Slf4j
 @AllArgsConstructor
 public class LoginController {
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
     private RegistrationService registrationService;
 
     @GetMapping("/cabinet/registration")
@@ -28,9 +24,8 @@ public class LoginController {
     }
 
     @PostMapping("/registration")
-    public String registerUser(@ModelAttribute RegistrationRequest registrationRequest
-                               ) {
-        if (userService.findUserByEmail(registrationRequest.getEmail())==null) {
+    public String registerUser(@ModelAttribute RegistrationRequest registrationRequest) {
+        if (userServiceImpl.findUserByEmail(registrationRequest.getEmail())==null) {
             log.info("IN registerUser: user {} was added", registrationRequest.getEmail());
             registrationService.register(registrationRequest);
         }

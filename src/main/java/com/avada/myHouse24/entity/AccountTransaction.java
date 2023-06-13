@@ -24,7 +24,6 @@ public class AccountTransaction {
     private boolean isIncome;
     @Column(name = "add_to_stats")
     private boolean addToStats;
-    private String status;
     @Column(length = 2000)
     private String comment;
     @ManyToOne
@@ -35,4 +34,15 @@ public class AccountTransaction {
     private Admin admin;
     @ManyToOne
     private TransactionPurpose transactionPurpose;
+
+    public AccountTransaction(Long id, Date fromDate, double sum, boolean isIncome, boolean addToStats, String comment, Admin admin, TransactionPurpose transactionPurpose) {
+        this.id = id;
+        this.fromDate = fromDate;
+        this.sum = sum;
+        this.isIncome = isIncome;
+        this.addToStats = addToStats;
+        this.comment = comment;
+        this.admin = admin;
+        this.transactionPurpose = transactionPurpose;
+    }
 }

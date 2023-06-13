@@ -1,7 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Score;
-import com.avada.myHouse24.repository.ScoreRepository;
+import com.avada.myHouse24.repo.ScoreRepository;
 import com.avada.myHouse24.services.ScoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

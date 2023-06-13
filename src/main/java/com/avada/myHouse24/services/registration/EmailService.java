@@ -1,4 +1,4 @@
-package com.avada.myHouse24.service.registration;
+package com.avada.myHouse24.services.registration;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

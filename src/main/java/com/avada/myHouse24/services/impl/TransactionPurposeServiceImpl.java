@@ -1,7 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.TransactionPurpose;
-import com.avada.myHouse24.repository.TransactionPurposeRepository;
+import com.avada.myHouse24.repo.TransactionPurposeRepository;
 import com.avada.myHouse24.services.TransactionPurposeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

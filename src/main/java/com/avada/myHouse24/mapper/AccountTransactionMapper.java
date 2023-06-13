@@ -4,7 +4,7 @@ import com.avada.myHouse24.entity.AccountTransaction;
 import com.avada.myHouse24.model.AccountTransactionDTO;
 import com.avada.myHouse24.model.AccountTransactionInDTO;
 import com.avada.myHouse24.model.AccountTransactionOutDTO;
-import com.avada.myHouse24.repository.AccountTransactionRepository;
+import com.avada.myHouse24.repo.AccountTransactionRepository;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
 import com.avada.myHouse24.services.impl.ScoreServiceImpl;
 import com.avada.myHouse24.services.impl.TransactionPurposeServiceImpl;
@@ -30,13 +30,13 @@ public class AccountTransactionMapper {
     public AccountTransactionInDTO toDtoForIn(AccountTransaction accountTransaction){
         return new AccountTransactionInDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(),
                 accountTransaction.getTransactionPurpose().getName(),
-                accountTransaction.getUser().getName(), accountTransaction.getScore().getId().toString(),
+                accountTransaction.getUser().getFirstName(), accountTransaction.getScore().getId().toString(),
                 accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
     }
 
     public AccountTransaction toEntityForIn(AccountTransactionInDTO accountTransactionDTOIn){
         return new AccountTransaction(Long.parseLong(accountTransactionDTOIn.getId()), accountTransactionDTOIn.getDate(), Double.valueOf(accountTransactionDTOIn.getSum()), accountTransactionDTOIn.isIncome(), accountTransactionDTOIn.isAddToStats(), accountTransactionDTOIn.getComment(),
-                userService.getByName(accountTransactionDTOIn.getUserName()), scoreService.getById(Long.parseLong(accountTransactionDTOIn.getScoreId())), adminService.getByName(accountTransactionDTOIn.getAdminName()), transactionPurposeService.getByName(accountTransactionDTOIn.getTransactionPurposeName()));
+                userService.getByFirstName(accountTransactionDTOIn.getUserName()), scoreService.getById(Long.parseLong(accountTransactionDTOIn.getScoreId())), adminService.getByName(accountTransactionDTOIn.getAdminName()), transactionPurposeService.getByName(accountTransactionDTOIn.getTransactionPurposeName()));
     }
     public AccountTransactionOutDTO toDtoForOut(AccountTransaction accountTransaction){
         return new AccountTransactionOutDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(), accountTransaction.getTransactionPurpose().getName(), accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
@@ -48,7 +48,7 @@ public class AccountTransactionMapper {
         AccountTransaction accountTransaction = new AccountTransaction();
         accountTransaction.setId(Long.valueOf(accountTransactionDTO.getId()));
         accountTransaction.setFromDate(Date.valueOf(accountTransactionDTO.getDate()));
-        if(!accountTransactionDTO.getUserName().isBlank())accountTransaction.setUser(userService.getByName(accountTransactionDTO.getUserName()));
+        if(!accountTransactionDTO.getUserName().isBlank())accountTransaction.setUser(userService.getByFirstName(accountTransactionDTO.getUserName()));
         if(!accountTransactionDTO.getScoreId().isBlank())accountTransaction.setScore(scoreService.getById(Long.parseLong(accountTransactionDTO.getScoreId())));
         accountTransaction.setTransactionPurpose(transactionPurposeService.getByName(accountTransactionDTO.getTransactionPurposeName()));
         accountTransaction.setAdmin(adminService.getByName(accountTransactionDTO.getAdminName()));
@@ -63,7 +63,7 @@ public class AccountTransactionMapper {
         accountTransactionDTO.setId(String.valueOf(accountTransaction.getId()));
         accountTransactionDTO.setDate(String.valueOf(accountTransaction.getFromDate()));
         try {
-            accountTransactionDTO.setUserName(accountTransaction.getUser().getName());
+            accountTransactionDTO.setUserName(accountTransaction.getUser().getFirstName());
         }catch (Exception e){
             log.warn(e);
             log.warn("AccountTransaction hasn't user.");
