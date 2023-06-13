@@ -1,6 +1,7 @@
 .sidebar-dark-primary .nav-sidebar .nav-link {
     color: #fff;
 }
+
 .sidebar-dark-primary .nav-sidebar .nav-treeview>.nav-item>.nav-link {
     color: #fff;
 }
@@ -8,11 +9,4 @@
 .sidebar-dark-primary .brand-link {
     background-color: #fff;
     color: #000;
-}
-.select2-selection{
-    min-height: 38px;
-}
-.text-for-breadcrumb{
-    text-decoration: none;
-    color: #212529BF;
 }
