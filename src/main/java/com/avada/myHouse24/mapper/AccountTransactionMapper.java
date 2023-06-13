@@ -5,10 +5,10 @@ import com.avada.myHouse24.model.AccountTransactionDTO;
 import com.avada.myHouse24.model.AccountTransactionInDTO;
 import com.avada.myHouse24.model.AccountTransactionOutDTO;
 import com.avada.myHouse24.repository.AccountTransactionRepository;
-import com.avada.myHouse24.service.impl.AdminServiceImpl;
-import com.avada.myHouse24.service.impl.ScoreServiceImpl;
-import com.avada.myHouse24.service.impl.TransactionPurposeServiceImpl;
-import com.avada.myHouse24.service.impl.UserServiceImpl;
+import com.avada.myHouse24.services.impl.AdminServiceImpl;
+import com.avada.myHouse24.services.impl.ScoreServiceImpl;
+import com.avada.myHouse24.services.impl.TransactionPurposeServiceImpl;
+import com.avada.myHouse24.services.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -65,15 +65,15 @@ public class AccountTransactionMapper {
         try {
             accountTransactionDTO.setUserName(accountTransaction.getUser().getName());
         }catch (Exception e){
-            log.error(e);
-            log.error("AccountTransaction hasn't user.");
+            log.warn(e);
+            log.warn("AccountTransaction hasn't user.");
             accountTransactionDTO.setUserName("Не указан");
         }
         try {
             accountTransactionDTO.setScoreId(String.valueOf(accountTransaction.getScore().getId()));
         }catch (Exception e){
-            log.error(e);
-            log.error("AccountTransaction hasn't  score.");
+            log.warn(e);
+            log.warn("AccountTransaction hasn't  score.");
             accountTransactionDTO.setScoreId("Не указан");
         }
         accountTransactionDTO.setTransactionPurposeName(accountTransaction.getTransactionPurpose().getName());

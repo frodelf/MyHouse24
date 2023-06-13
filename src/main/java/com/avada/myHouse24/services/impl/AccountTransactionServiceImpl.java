@@ -1,8 +1,8 @@
-package com.avada.myHouse24.service.impl;
+package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.AccountTransaction;
 import com.avada.myHouse24.repository.AccountTransactionRepository;
-import com.avada.myHouse24.service.AccountTransactionService;
+import com.avada.myHouse24.services.AccountTransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

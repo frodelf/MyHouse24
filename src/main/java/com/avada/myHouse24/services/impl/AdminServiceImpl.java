@@ -1,8 +1,8 @@
-package com.avada.myHouse24.service.impl;
+package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Admin;
 import com.avada.myHouse24.repository.AdminRepository;
-import com.avada.myHouse24.service.AdminService;
+import com.avada.myHouse24.services.AdminService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

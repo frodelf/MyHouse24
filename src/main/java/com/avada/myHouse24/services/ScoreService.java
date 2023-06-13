@@ -1,7 +1,6 @@
-package com.avada.myHouse24.service;
+package com.avada.myHouse24.services;
 
 import com.avada.myHouse24.entity.Score;
-import com.avada.myHouse24.entity.User;
 
 import java.util.List;
 
