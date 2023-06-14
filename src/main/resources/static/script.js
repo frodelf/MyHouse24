@@ -124,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var myForm = document.getElementById("myFormForAccountTransaction");
 
     myForm.addEventListener("submit", function(event) {
-        event.preventDefault(); // Попереджаємо стандартну поведінку форми
+        event.preventDefault();
 
         $.ajax({
             url: "/admin/account-transaction/filter",
@@ -138,4 +138,43 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
+document.querySelector('#fileInput').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = () => {
+        document.querySelector('#selectedImage').setAttribute('src', reader.result);
+    };
+    reader.readAsDataURL(file);
+});
+function generatePassword() {
+    var passwordLength = 8;
+    var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var password = "";
 
+    for (var i = 0; i < passwordLength; i++) {
+        var randomIndex = Math.floor(Math.random() * characters.length);
+        password += characters.charAt(randomIndex);
+    }
+
+    document.getElementById("password-input").value = password;
+    document.getElementById("confirm-password-input").value = password;
+}
+
+function togglePasswordVisibility() {
+    var passwordInput = document.getElementById("password-input");
+    var confirmPasswordInput = document.getElementById("confirm-password-input");
+    var toggleButton = document.getElementById("toggle-button");
+    var toggleIcon = document.getElementById("toggle-icon");
+
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        confirmPasswordInput.type = "text";
+        toggleIcon.classList.remove("fa-eye-slash");
+        toggleIcon.classList.add("fa-eye");
+    } else {
+        passwordInput.type = "password";
+        confirmPasswordInput.type = "password";
+        toggleIcon.classList.remove("fa-eye");
+        toggleIcon.classList.add("fa-eye-slash");
+    }
+}

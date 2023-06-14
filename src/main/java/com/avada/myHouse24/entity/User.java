@@ -30,6 +30,7 @@ public class User implements UserDetails {
     @Column(name = "fathers_Name")
     private String fathersName;
     private Date birthday;
+    private Date fromDate;
     @Column(name = "oauth_provider")
     private String oauthProvider;
     @Column(name = "oauth_id")
@@ -46,6 +47,8 @@ public class User implements UserDetails {
     private boolean enabled = false;
     @OneToMany
     List<Flat> flats;
+    @ManyToMany
+    private List<Role> roles;
     public User(RegistrationRequest request) {
         this.firstName = request.getFirstName();
         this.lastName = request.getLastName();

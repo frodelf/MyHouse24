@@ -39,7 +39,7 @@ public class AccountTransactionController {
         model.addAttribute("transactionPurposeList", transactionPurposeService.getAll());
         model.addAttribute("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
         model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
-        return "admin/account-transaction-all";
+        return "admin/account-transaction/get-all";
     }
 
     @GetMapping("/create/in")
@@ -51,7 +51,7 @@ public class AccountTransactionController {
         model.addAttribute("maxId", accountTransactionService.getMaxId());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
 
-        return "admin/account-transaction-add-in";
+        return "admin/account-transaction/add-in";
     }
 
     @PostMapping("create/in")
@@ -63,7 +63,7 @@ public class AccountTransactionController {
             model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
             model.addAttribute("maxId", accountTransactionService.getMaxId());
             model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-            return "admin/account-transaction-add-in";
+            return "admin/account-transaction/add-in";
         }
         accountTransactionInDTO.setIncome(true);
         accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
@@ -77,7 +77,7 @@ public class AccountTransactionController {
         model.addAttribute("admins", adminService.getAll());
         model.addAttribute("scores", scoreService.getAll());
         model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
-        return "admin/account-transaction-update-in";
+        return "admin/account-transaction/update-in";
     }
 
     @PostMapping("update/in/{id}")
@@ -88,7 +88,7 @@ public class AccountTransactionController {
             model.addAttribute("admins", adminService.getAll());
             model.addAttribute("scores", scoreService.getAll());
             model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
-            return "admin/account-transaction-update-in";
+            return "admin/account-transaction/update-in";
         }
         accountTransactionInDTO.setIncome(true);
         accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
@@ -103,7 +103,7 @@ public class AccountTransactionController {
         model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
         model.addAttribute("maxId", accountTransactionService.getMaxId());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-        return "admin/account-transaction-add-out";
+        return "admin/account-transaction/add-out";
     }
 
     @PostMapping("/create/out")
@@ -115,7 +115,7 @@ public class AccountTransactionController {
             model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
             model.addAttribute("maxId", accountTransactionService.getMaxId());
             model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-            return "admin/account-transaction-add-out";
+            return "admin/account-transaction/add-out";
         }
         accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
         return "redirect:/admin/account-transaction/index";
@@ -128,7 +128,7 @@ public class AccountTransactionController {
         model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
         model.addAttribute("maxId", accountTransactionService.getMaxId());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-        return "admin/account-transaction-update-out";
+        return "admin/account-transaction/update-out";
     }
 
     @PostMapping("/update/out/{id}")
@@ -137,7 +137,7 @@ public class AccountTransactionController {
             model.addAttribute("accountTransaction", accountTransactionOutDTO);
             model.addAttribute("admins", adminService.getAll());
             model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
-            return "admin/account-transaction-update-out";
+            return "admin/account-transaction/update-out";
         }
         accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
         return "redirect:/admin/account-transaction/index";
@@ -150,7 +150,7 @@ public class AccountTransactionController {
     @GetMapping("/{id}")
     public String getAccountTransaction(@PathVariable("id")long id, Model model){
         model.addAttribute("accountTransaction", accountTransactionMapper.toDto(accountTransactionService.getById(id)));
-        return "admin/account-transaction";
+        return "admin/account-transaction/index";
     }
 
     @GetMapping("copy/in/{id}")
@@ -162,7 +162,7 @@ public class AccountTransactionController {
         model.addAttribute("admins", adminService.getAll());
         model.addAttribute("scores", scoreService.getAll());
         model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
-        return "admin/account-transaction-update-in";
+        return "admin/account-transaction/update-in";
     }
     @GetMapping("/copy/out/{id}")
     public String copyOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") long id,  Model model){
@@ -173,11 +173,11 @@ public class AccountTransactionController {
         model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
         model.addAttribute("maxId", accountTransactionService.getMaxId());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-        return "admin/account-transaction-update-out";
+        return "admin/account-transaction/update-out";
     }
     @PostMapping("/filter")
     public ModelAndView filter(@ModelAttribute AccountTransactionDTO accountTransactionDTO){
-        ModelAndView model = new ModelAndView("admin/account-transaction-all");
+        ModelAndView model = new ModelAndView("admin/account-transaction/get-all");
         model.addObject("accountTransaction", accountTransactionDTO);
         List<AccountTransactionDTO> accountTransactionDTOS = accountTransactionMapper.toDtoList(accountTransactionService.getAll());
 
