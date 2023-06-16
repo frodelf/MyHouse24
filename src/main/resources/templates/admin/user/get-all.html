@@ -106,14 +106,7 @@
                                     <th><input name="email" type="text" class="form-control"
                                                th:value="${filter.getEmail()}"></th>
                                     <th>
-                                        <select class=" form-select" name="houses"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getHouses().get(0)}"
-                                                    th:text="${filter.getHouses()}">
-                                            </option>
-                                            <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
-                                            </option>
-                                        </select>
+                                        <input name="houses" type="text" class="form-control">
                                     </th>
                                     <th><input name="flats" type="number" class="form-control"
                                                th:value="${filter.getFlats()}"></th>

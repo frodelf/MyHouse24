@@ -172,7 +172,7 @@ public class UserController {
             userForViewDTO.setDate(date);
 
         List<UserForViewDTO> users = userMapper.toDtoListForView(userService.getAll());
-        if(date != null)userForViewDTO.setDate(date);
+        if(date != null && date.equals(new Date(2023, 01, 01)))userForViewDTO.setDate(date);
         if (!userForViewDTO.getId().equals("")) {
             users = users.stream()
                     .filter(dto -> dto.getId() != null && dto.getId().contains(userForViewDTO.getId()))
