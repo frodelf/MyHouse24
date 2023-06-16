@@ -18,7 +18,17 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
+    public Admin getById(Long id) {
+        return adminRepository.findById(id).get();
+    }
+
+    @Override
     public List<Admin> getAll() {
         return adminRepository.findAll();
+    }
+
+    @Override
+    public void save(Admin admin) {
+        adminRepository.save(admin);
     }
 }

@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface AdminService {
     Admin getByName(String name);
+    Admin getById(Long id);
     List<Admin> getAll();
+    void save(Admin admin);
+
 }

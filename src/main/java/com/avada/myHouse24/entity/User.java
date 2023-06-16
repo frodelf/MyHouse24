@@ -47,8 +47,8 @@ public class User implements UserDetails {
     private boolean enabled = false;
     @OneToMany
     List<Flat> flats;
-    @ManyToMany
-    private List<Role> roles;
+    @ManyToOne
+    private Role roles;
     public User(RegistrationRequest request) {
         this.firstName = request.getFirstName();
         this.lastName = request.getLastName();

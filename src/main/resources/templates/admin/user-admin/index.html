@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">Пользоваетель</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                </li>
+                <li class="breadcrumb-item"><a href="/admin/user/index" class="text-for-breadcrumb">Пользователи</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="float-right">
+                        <a class="btn btn-primary" th:href="@{/admin/user-admin/edit/{id}(id=${admin.getId()})}">
+                            Редактировать пользователя
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-striped table-view"
+                           style="font-size: 13px; font-weight: bold">
+                        <tbody>
+                        <tr>
+                            <td style="width: 50%">
+                                Пользователь
+                            </td>
+                            <td th:text="${admin.getFullName()}" style="width: 50%"></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Роль
+                            </td>
+                            <td th:text="${admin.getPhone()}">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Телефон
+                            </td>
+                            <td th:text="${admin.getPhone()}">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Email(логин)
+                            </td>
+                            <td th:text="${admin.getEmail()}">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                Статус
+                            </td>
+                            <td th:text="${admin.getStatus()}">
+
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+</body>
+</html>

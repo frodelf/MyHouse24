@@ -95,7 +95,7 @@ public class UserController {
         user.setPassword(encoder.encode(userDTO.getPassword()));
         user.setStatus(UserStatus.NEW);
         user.setFromDate(Date.valueOf(LocalDate.now()));
-        user.setRoles(Arrays.asList(roleService.getById(1)));
+        user.setRoles(roleService.getById(1));
         user.setImage(ImageUtil.imageForUser(user, image));
         userService.save(user);
         return "redirect:/admin/user/index";
