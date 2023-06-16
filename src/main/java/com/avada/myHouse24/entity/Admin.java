@@ -17,7 +17,7 @@ public class Admin {
     private Long id;
     @Column(name = "first_name")
     private String firstName;
-    private String name;
+    private String lastName;
     private String email;
     private String phone;
     private String password;
