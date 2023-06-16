@@ -22,4 +22,6 @@ public class Admin {
     private String phone;
     private String password;
     private String status;
+    @ManyToOne
+    private Role role;
 }
