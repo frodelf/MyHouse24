@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Service
@@ -63,9 +64,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User findUserByEmail(String email) {
-        User result = userRepository.findByEmail(email).get();
-        log.info("IN findUserByEmail - {} successfully found", result);
-        return result;
+        try {
+            return userRepository.findByEmail(email).get();
+        }catch (NoSuchElementException e){
+            return null;
+        }
     }
 
     @Override

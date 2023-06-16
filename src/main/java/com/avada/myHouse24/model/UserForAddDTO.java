@@ -53,7 +53,7 @@ public class UserForAddDTO {
     private String description;
     private String imageName;
 
-    public UserForAddDTO(String id, String firstName, String lastName, String fathersName, LocalDate birthday, String phone, String viber, String telegram, String email, String status, String description) {
+    public UserForAddDTO(String id, String firstName, String lastName, String fathersName, LocalDate birthday, String phone, String viber, String telegram, String email, String status, String description, String imageName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -65,5 +65,6 @@ public class UserForAddDTO {
         this.email = email;
         this.status = status;
         this.description = description;
+        this.imageName = imageName;
     }
 }

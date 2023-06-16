@@ -22,14 +22,16 @@ public class UserMapper {
     private final UserServiceImpl userService;
     public UserForViewDTO toDtoForView(User user){
         UserForViewDTO userForViewDTO = new UserForViewDTO();
-        userForViewDTO.setId(IdUtil.fromIdToString(user.getId()));
-        userForViewDTO.setFullName(user.getLastName()+" "+user.getFirstName()+" "+user.getFathersName());
+        if(user.getId() != null)userForViewDTO.setId(IdUtil.fromIdToString(user.getId()));
+        userForViewDTO.setFullName(user.getLastName() == null? "":user.getLastName() +" "+user.getFirstName()==null?"":user.getFirstName()+" "+user.getFathersName()==null?"":user.getFathersName());
         userForViewDTO.setPhone(user.getPhone());
         userForViewDTO.setEmail(user.getEmail());
-        userForViewDTO.setHouses(getHouseNamesFromFlat(user.getFlats()));
-        userForViewDTO.setFlats(getHouseNamesFromFlat(user.getFlats()));
+        if(user.getFlats() != null)
+            userForViewDTO.setHouses(getHouseNamesFromFlat(user.getFlats()));
+        if(user.getFlats() != null)
+            userForViewDTO.setFlats(getHouseNamesFromFlat(user.getFlats()));
         userForViewDTO.setDate(user.getFromDate());
-        userForViewDTO.setStatus(String.valueOf(user.getStatus()));
+        userForViewDTO.setStatus(user.getStatus()==null?"":String.valueOf(user.getStatus()));
         userForViewDTO.setIsDebt(userService.isDebt(user));
         return userForViewDTO;
     }
@@ -53,7 +55,21 @@ public class UserMapper {
         return user;
     }
     public UserForAddDTO toDtoForAdd(User user){
-        return new UserForAddDTO(IdUtil.fromIdToString(user.getId()), user.getFirstName(), user.getLastName(), user.getFathersName(), user.getBirthday().toLocalDate(), user.getPhone(), user.getViber(), user.getTelegram(), user.getEmail(), user.getStatus().toString(),  user.getDescription());
+        UserForAddDTO userForAddDTO = new UserForAddDTO();
+        userForAddDTO.setId(IdUtil.fromIdToString(user.getId()));
+        userForAddDTO.setFirstName(user.getFirstName());
+        userForAddDTO.setLastName(user.getLastName());
+        userForAddDTO.setFathersName(user.getFathersName());
+        if(user.getBirthday() != null)userForAddDTO.setBirthday(user.getBirthday().toLocalDate());
+        userForAddDTO.setPhone(user.getPhone());
+        userForAddDTO.setViber(user.getViber());
+        userForAddDTO.setTelegram(user.getTelegram());
+        userForAddDTO.setEmail(user.getEmail());
+        userForAddDTO.setStatus(user.getStatus().toString());
+        userForAddDTO.setDescription(user.getDescription());
+        userForAddDTO.setImageName(user.getImage());
+
+        return userForAddDTO;
     }
 
     public List<UserForViewDTO> toDtoListForView(List<User> users){

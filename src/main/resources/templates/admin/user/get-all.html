@@ -10,7 +10,27 @@
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            // Отримати посилання на форму
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
 
+            // Додати обробник події input для всіх полів вводу
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true; // Позначити форму як змінену
+                });
+            }
+
+            // Додати обробник події click для всіх елементів сторінки
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit(); // Відправити форму, якщо були внесені зміни
+                }
+            });
+        });
+    </script>
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
@@ -41,11 +61,12 @@
                         </button>
                         <ul class="dropdown-menu" style="width: 260px; font-size: 14px; margin-right: 15px">
                             <li><a class="text-secondary" href="/admin/user/add"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Добавить владельца кваартиры</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">Добавить
+                                владельца кваартиры</a></li>
                             <li><a class="text-secondary" href="/admin/account-transaction/create/out"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">Отправить
                                 сообщение должникам</a></li>
-                            <li><a class="text-secondary" href="/admin/account-transaction/create/out"
+                            <li><a class="text-secondary" href="/admin/user/invite"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">Отправить
                                 приглашение</a></li>
                         </ul>
@@ -59,93 +80,106 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="table table-bordered table-hover table-striped table-sm" style="font-size: 14px">
-                            <thead>
-                            <tr>
-                                <th style="min-width: 120px;">Id</th>
-                                <th style="min-width: 150px;">ФИО</th>
-                                <th style="min-width: 150px;">Телефон</th>
-                                <th style="min-width: 200px;">Email</th>
-                                <th style="min-width: 180px;">Дом</th>
-                                <th style="min-width: 180px;">Квартира</th>
-                                <th style="min-width: 130px;">Добавлен</th>
-                                <th style="min-width: 140px;">Статус</th>
-                                <th style="min-width: 140px;">Есть долг</th>
-                                <th style="min-width: 100px;"></th>
-                            </tr>
-                            <tr>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                    <input type="number" class="form-control">
-                                </th>
-                                <th>
-                                </th>
-                                <th></th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr class="clickable-row" th:each="user:${users}" th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
-                                <td th:text="${user.getId()}"></td>
-                                <td th:text="${user.getFullName()}"></td>
-                                <td th:text="${user.getPhone()}"></td>
-                                <td th:text="${user.getEmail()}"></td>
-                                <td>
-                                    <div th:each="house:${user.getHouses()}">
-                                        <h5 th:text="${house}"></h5>
-                                    </div>
-                                </td>
-                                <td>
-                                    <div th:each="flat:${user.getFlats()}">
-                                        <h5 th:text="${flat}"></h5>
-                                    </div>
-                                </td>
-                                <td th:text="${user.getDate()}"></td>
-                                <td th:text="${user.getStatus()}"></td>
-                                <td th:text="${user.getIsDebt()}"></td>
-                                <td>
-                                    <div class="btn-group pull-right">
-                                        <a class="btn btn-default btn-sm"
-                                           th:href="message"
-                                           title="Повідомлення" data-toggle="tooltip">
-                                            <i class="fa fa-envelope"></i>
-                                        </a>
-                                        <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
-                                           title="Редактировать" data-toggle="tooltip">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-                                        <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/user/delete/1}"
-                                           title="Удалить" data-toggle="tooltip"
-                                           data-pjax="0" data-method="post"
-                                           data-confirm="Вы уверены, что хотите удалить этот элемент?"><i
-                                                class="fa fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                        <form id="formSend" method="get" action="/admin/user/filter" onsubmit="event.preventDefault()">
+                            <table class="table table-bordered table-hover table-striped table-sm"
+                                   style="font-size: 14px">
+                                <thead>
+                                <tr>
+                                    <th style="min-width: 120px;">Id</th>
+                                    <th style="min-width: 150px;">ФИО</th>
+                                    <th style="min-width: 150px;">Телефон</th>
+                                    <th style="min-width: 200px;">Email</th>
+                                    <th style="min-width: 180px;">Дом</th>
+                                    <th style="min-width: 180px;">Квартира</th>
+                                    <th style="min-width: 130px;">Добавлен</th>
+                                    <th style="min-width: 140px;">Статус</th>
+                                    <th style="min-width: 140px;">Есть долг</th>
+                                    <th style="min-width: 100px;"></th>
+                                </tr>
+                                <tr>
+                                    <th><input name="id" type="number" class="form-control"
+                                               th:value="${filter.getId()}"></th>
+                                    <th><input name="fullName" type="text" class="form-control"
+                                               th:value="${filter.getFullName()}"></th>
+                                    <th><input name="phone" type="number" class="form-control"
+                                               th:value="${filter.getPhone()}"></th>
+                                    <th><input name="email" type="text" class="form-control"
+                                               th:value="${filter.getEmail()}"></th>
+                                    <th>
+                                        <select class=" form-select" name="houses"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getHouses().get(0)}"
+                                                    th:text="${filter.getHouses()}">
+                                            </option>
+                                            <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th><input name="flats" type="number" class="form-control"
+                                               th:value="${filter.getFlats()}"></th>
+                                    <th><input name="dateTest" type="date" class="form-control"
+                                               th:value="${filter.getDate()}"></th>
+                                    <th>
+                                        <select class=" form-select" name="status"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getStatus()}"
+                                                    th:text="${filter.getStatus()}">
+                                            </option>
+                                            <option th:each="status:${allStatus}" th:value="${status.toString()}" th:text="${status.toString()}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th><input name="isDebt" type="text" class="form-control"
+                                               th:value="${filter.getIsDebt()==false || filter.getIsDebt()==null?'':true}">
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="clickable-row" th:each="user:${users}"
+                                    th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
+                                    <td th:text="${user.getId()}"></td>
+                                    <td th:text="${user.getFullName()}"></td>
+                                    <td th:text="${user.getPhone()}"></td>
+                                    <td th:text="${user.getEmail()}"></td>
+                                    <td>
+                                        <div th:each="house:${user.getHouses()}">
+                                            <h5 th:text="${house}"></h5>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div th:each="flat:${user.getFlats()}">
+                                            <h5 th:text="${flat}"></h5>
+                                        </div>
+                                    </td>
+                                    <td th:text="${user.getDate()}"></td>
+                                    <td th:text="${user.getStatus()}"></td>
+                                    <td th:text="${user.getIsDebt()}"></td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="message"
+                                               title="Повідомлення" data-toggle="tooltip">
+                                                <i class="fa fa-envelope"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
+                                               title="Редактировать" data-toggle="tooltip">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/user/delete/{id}(id=${user.getId()})}"
+                                               title="Удалить" data-toggle="tooltip"
+                                               data-pjax="0" data-method="post"
+                                               onclick="return confirmDelete();"><i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+
                     </div>
                 </div>
                 <div class="card-footer">
@@ -182,7 +216,10 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous"></script>
+        crossorigin="anonymous">
+</script>
+
+
 </body>
 
 </html>

@@ -4,12 +4,18 @@ import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.UserMapper;
 import com.avada.myHouse24.model.UserForAddDTO;
+import com.avada.myHouse24.model.UserForViewDTO;
+import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
+import com.avada.myHouse24.services.registration.EmailService;
 import com.avada.myHouse24.util.IdUtil;
+import com.avada.myHouse24.util.ImageUtil;
 import jakarta.validation.Valid;
+import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,9 +23,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.stream.Collectors;
 
 @Log4j2
 @Controller
@@ -28,12 +38,23 @@ import java.util.Arrays;
 public class UserController {
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
+    private final HouseServiceImpl houseService;
     private final UserMapper userMapper;
+    @Autowired
+    private ThreadPoolExecutor executor;
+    @Autowired
+    private EmailService emailService;
+
 
     @GetMapping("/index")
     public String getAll(Model model) {
+        model.addAttribute("filter", userMapper.toDtoForView(new User()));
         model.addAttribute("users", userMapper.toDtoListForView(userService.getAll()));
         model.addAttribute("userCount", userService.getAll().size());
+
+        model.addAttribute("houses", houseService.getAllName());
+        model.addAttribute("allStatus", UserStatus.values());
+
         return "admin/user/get-all";
     }
 
@@ -46,7 +67,7 @@ public class UserController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute("userDTO") @Valid UserForAddDTO userDTO, BindingResult bindingResult, Model model,
-                      @RequestParam("image") MultipartFile image) {
+                      @RequestParam("image") MultipartFile image) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("status", UserStatus.values());
             if (userDTO.getPassword().equals("")) model.addAttribute("passwordError", "Пароль має бути вказаний");
@@ -75,6 +96,7 @@ public class UserController {
         user.setStatus(UserStatus.NEW);
         user.setFromDate(Date.valueOf(LocalDate.now()));
         user.setRoles(Arrays.asList(roleService.getById(1)));
+        user.setImage(ImageUtil.imageForUser(user, image));
         userService.save(user);
         return "redirect:/admin/user/index";
     }
@@ -87,7 +109,8 @@ public class UserController {
     }
 
     @PostMapping("/edit/{id}")
-    public String edit(@ModelAttribute("userDTO") @Valid UserForAddDTO userDTO, BindingResult bindingResult, @PathVariable("id") long id, Model model) {
+    public String edit(@ModelAttribute("userDTO") @Valid UserForAddDTO userDTO, BindingResult bindingResult, @PathVariable("id") long id, Model model,
+                       @RequestParam("image") MultipartFile image) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("status", UserStatus.values());
             model.addAttribute("user", userMapper.toDtoForAdd(userService.getById(id)));
@@ -110,6 +133,7 @@ public class UserController {
             return "admin/user/add";
         }
         userResult.setPassword(user.getPassword());
+        userResult.setImage(ImageUtil.imageForUser(user, image));
         userService.save(userResult);
         return "redirect:/admin/user/index";
     }
@@ -121,8 +145,92 @@ public class UserController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id")long id){
-        userService.deleteById(id);
+    public String delete(@PathVariable("id") long id) {
+        User user = userService.getById(id);
+        user.setStatus(UserStatus.DISABLED);
+        userService.save(user);
         return "redirect:/admin/user/index";
+    }
+
+    @GetMapping("/invite")
+    public String inviteMessage() {
+        return "admin/user/invite";
+    }
+
+    @PostMapping("/invite")
+    public String inviteMessage(@RequestParam("phone") String phone, @RequestParam("email") String email, Model model) {
+        if (email.isBlank()) {
+            model.addAttribute("error", "Електрона адреса повина бути вказана");
+            return "admin/user/invite";
+        }
+        return "redirect:/admin/user/index";
+    }
+
+    @GetMapping("/filter")
+    public String filter(@ModelAttribute UserForViewDTO userForViewDTO, @RequestParam(value = "dateTest", required = false, defaultValue = "2023-01-01") Date date, Model model) {
+        if (date.equals(new Date(2023, 01, 01)))
+            userForViewDTO.setDate(date);
+
+        List<UserForViewDTO> users = userMapper.toDtoListForView(userService.getAll());
+        if(date != null)userForViewDTO.setDate(date);
+        if (!userForViewDTO.getId().equals("")) {
+            users = users.stream()
+                    .filter(dto -> dto.getId() != null && dto.getId().contains(userForViewDTO.getId()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getFullName().equals("")) {
+            users = users.stream()
+                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(userForViewDTO.getFullName()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getPhone().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(userForViewDTO.getPhone()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getEmail().equals("")) {
+            users = users.stream()
+                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(userForViewDTO.getEmail()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getHouses().isEmpty()) {
+            users = users.stream()
+                    .filter(dto -> dto.getHouses().containsAll(userForViewDTO.getHouses()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getFlats().isEmpty()) {
+            users = users.stream()
+                    .filter(dto -> dto.getFlats().containsAll(userForViewDTO.getFlats()))
+                    .collect(Collectors.toList());
+        }
+        if (userForViewDTO.getDate() != null) {
+            users = users.stream()
+                    .filter(dto -> dto.getDate() != null && dto.getDate().equals(date))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getStatus().equals("")) {
+            users = users.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus().equals(userForViewDTO.getStatus()))
+                    .collect(Collectors.toList());
+        }
+
+        if (userForViewDTO.getIsDebt() != null) {
+            users = users.stream()
+                    .filter(dto -> dto.getIsDebt() != null && dto.getIsDebt().equals(userForViewDTO.getIsDebt()))
+                    .collect(Collectors.toList());
+        }
+        model.addAttribute("filter", userForViewDTO);
+        model.addAttribute("users", users);
+        model.addAttribute("userCount", userService.getAll().size());
+
+        model.addAttribute("houses", houseService.getAllName());
+        model.addAttribute("allStatus", UserStatus.values());
+        return "admin/user/get-all";
     }
 }

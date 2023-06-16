@@ -28,7 +28,8 @@
             </ol>
         </div>
         <section class="content">
-            <form method="post" th:action="@{/admin/user/edit/{id}(id=${user.getId()})}" th:object="${userDTO}" enctype="multipart/form-data">
+            <form method="post" th:action="@{/admin/user/edit/{id}(id=${user.getId()})}" th:object="${userDTO}"
+                  enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-body">
                         <div class="container">
@@ -36,9 +37,16 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col">
-                                            <img class="img-circle pull-left img-responsive" id="selectedImage"
-                                                 src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg&amp;w=160&amp;h=160&amp;fit=crop"
-                                                 style="width: 160px; height: 160px">
+                                            <div th:if="${user.getImageName()} == ''">
+                                                <img class="img-circle pull-left img-responsive" id="selectedImage1"
+                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg&amp;w=160&amp;h=160&amp;fit=crop"
+                                                     style="width: 160px; height: 160px">
+                                            </div>
+                                            <div th:if="${user.getImageName()} != ''">
+                                                <img class="img-circle pull-left img-responsive" id="selectedImage2"
+                                                     th:src="'/uploads/user/'+${user.getImageName()}"
+                                                     style="width: 160px; height: 160px">
+                                            </div>
                                         </div>
                                         <div class="col">
                                             <b>Сменить изображение</b>
@@ -49,55 +57,82 @@
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> Додати фото
                                             </label>
                                             <input id="fileInput" type="file" style="display:none;" name="image">
-                                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${error}"></div>
+                                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                                 th:text="${error}"></div>
                                         </div>
                                     </div>
                                     <b>
                                         Фамилия
-                                        <input type="text" class="form-control" name="lastName" th:value="${user.getLastName()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                                        <input type="text" class="form-control" name="lastName"
+                                               th:value="${user.getLastName()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
                                         Имя
-                                        <input type="text" class="form-control" name="firstName" th:value="${user.getFirstName()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                                        <input type="text" class="form-control" name="firstName"
+                                               th:value="${user.getFirstName()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
                                         Отчество
-                                        <input type="text" class="form-control" name="fathersName" th:value="${user.getFathersName()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('fathersName')}" th:errors="*{fathersName}"></div>
+                                        <input type="text" class="form-control" name="fathersName"
+                                               th:value="${user.getFathersName()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('fathersName')}"
+                                             th:errors="*{fathersName}"></div>
                                         Дата рождения
-                                        <input type="date" class="form-control" name="birthday" th:value="${user.getBirthday()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+                                        <input type="date" class="form-control" name="birthday"
+                                               th:value="${user.getBirthday()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
                                     </b>
                                     <h3 style="margin-top: 20px; font-weight: 5">
                                         Контактные данные
                                     </h3>
                                     <b>
                                         Телефон
-                                        <input type="number" class="form-control" name="phone" th:value="${user.getPhone()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                        <input type="number" class="form-control" name="phone"
+                                               th:value="${user.getPhone()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                                         Viber
-                                        <input type="text" class="form-control" name="viber" th:value="${user.getViber()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('viber')}" th:errors="*{viber}"></div>
+                                        <input type="text" class="form-control" name="viber"
+                                               th:value="${user.getViber()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('viber')}" th:errors="*{viber}"></div>
                                         Telegram
-                                        <input type="text" class="form-control" name="telegram" th:value="${user.getTelegram()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('telegram')}" th:errors="*{telegram}"></div>
+                                        <input type="text" class="form-control" name="telegram"
+                                               th:value="${user.getTelegram()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('telegram')}" th:errors="*{telegram}"></div>
                                         Email (логин)
-                                        <input type="text" class="form-control" name="email" th:value="${user.getEmail()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                        <input type="text" class="form-control" name="email"
+                                               th:value="${user.getEmail()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
                                     </b>
                                 </div>
                                 <div class="col">
                                     <b>
                                         Статус
                                         <select class="form-select" name="status" aria-label="Default select example">
-                                            <option th:text="${user.getStatus()}" th:value="${user.getStatus()}"></option>
-                                            <option th:each="status:${status}" th:text="${status}" th:value="${status}"></option>
+                                            <option th:text="${user.getStatus()}"
+                                                    th:value="${user.getStatus()}"></option>
+                                            <option th:each="status:${status}" th:text="${status}"
+                                                    th:value="${status}"></option>
                                         </select>
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
                                         ID
-                                        <input type="number" class="form-control" style="margin-bottom: 20px;" name="id" th:value="${user.getId()}">
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+                                        <input type="number" class="form-control" style="margin-bottom: 20px;" name="id"
+                                               th:value="${user.getId()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${idError}"></div>
                                         О владельце (заметки)
-                                        <textarea type="text" class="form-control" style="height: 240px" name="description">[[${user.description}]]</textarea>
-                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                                        <textarea type="text" class="form-control" style="height: 240px"
+                                                  name="description">[[${user.description}]]</textarea>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('description')}"
+                                             th:errors="*{description}"></div>
                                     </b>
                                     <h3 style="margin-top: 20px; font-weight: 5">
                                         Изменить пароль
@@ -105,15 +140,24 @@
                                     <b>
                                         Пароль
                                         <div style="display: flex; align-items: center; width: 100%;">
-                                            <input type="password" id="password-input" class="form-control" style="flex: 1" name="password">
-                                            <button type="button" id="generate-button" onclick="generatePassword()" class="btn btn-outline-secondary" style="width: 30%; height: 38px; font-size: 14px">Сгенерировать</button>
-                                            <button type="button" id="toggle-button" onclick="togglePasswordVisibility()" class="btn btn-primary" style="width: 10%; height: 38px">
+                                            <input type="password" id="password-input" class="form-control"
+                                                   style="flex: 1" name="password">
+                                            <button type="button" id="generate-button" onclick="generatePassword()"
+                                                    class="btn btn-outline-secondary"
+                                                    style="width: 30%; height: 38px; font-size: 14px">Сгенерировать
+                                            </button>
+                                            <button type="button" id="toggle-button"
+                                                    onclick="togglePasswordVisibility()" class="btn btn-primary"
+                                                    style="width: 10%; height: 38px">
                                                 <i id="toggle-icon" class="fas fa-eye-slash"></i>
                                             </button>
                                         </div>
                                         Підтвердити пароль
-                                        <input type="password" id="confirm-password-input" class="form-control" name="passwordAgain" style="margin-bottom: 20px;"  oninput="checkPasswords()">
-                                        <div id="password-match-message" style="color: red; font-size: small; font-weight: bold; font-style: italic; display: none;">
+                                        <input type="password" id="confirm-password-input" class="form-control"
+                                               name="passwordAgain" style="margin-bottom: 20px;"
+                                               oninput="checkPasswords()">
+                                        <div id="password-match-message"
+                                             style="color: red; font-size: small; font-weight: bold; font-style: italic; display: none;">
                                             Паролі не співпадають
                                         </div>
                                     </b>
@@ -123,7 +167,8 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success float-right">Сохранить</button>
-                        <a href="/admin/user/index" class="btn btn-outline-secondary float-right" style="margin-right: 3px">
+                        <a href="/admin/user/index" class="btn btn-outline-secondary float-right"
+                           style="margin-right: 3px">
                             Отменить
                         </a>
                     </div>
