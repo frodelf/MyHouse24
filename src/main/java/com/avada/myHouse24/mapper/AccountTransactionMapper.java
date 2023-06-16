@@ -31,7 +31,7 @@ public class AccountTransactionMapper {
         return new AccountTransactionInDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(),
                 accountTransaction.getTransactionPurpose().getName(),
                 accountTransaction.getUser().getFirstName(), accountTransaction.getScore().getId().toString(),
-                accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
+                accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getFirstName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
     }
 
     public AccountTransaction toEntityForIn(AccountTransactionInDTO accountTransactionDTOIn){
@@ -39,7 +39,7 @@ public class AccountTransactionMapper {
                 userService.getByFirstName(accountTransactionDTOIn.getUserName()), scoreService.getById(Long.parseLong(accountTransactionDTOIn.getScoreId())), adminService.getByName(accountTransactionDTOIn.getAdminName()), transactionPurposeService.getByName(accountTransactionDTOIn.getTransactionPurposeName()));
     }
     public AccountTransactionOutDTO toDtoForOut(AccountTransaction accountTransaction){
-        return new AccountTransactionOutDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(), accountTransaction.getTransactionPurpose().getName(), accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
+        return new AccountTransactionOutDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(), accountTransaction.getTransactionPurpose().getName(), accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getFirstName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
     }
     public AccountTransaction toEntityForOut(AccountTransactionOutDTO accountTransactionOutDTO){
         return new AccountTransaction(Long.parseLong(accountTransactionOutDTO.getId()), accountTransactionOutDTO.getDate(), Double.valueOf(accountTransactionOutDTO.getSum()), accountTransactionOutDTO.isIncome(), accountTransactionOutDTO.isAddToStats(), accountTransactionOutDTO.getComment(), adminService.getByName(accountTransactionOutDTO.getAdminName()), transactionPurposeService.getByName(accountTransactionOutDTO.getTransactionPurposeName()));
@@ -77,7 +77,7 @@ public class AccountTransactionMapper {
             accountTransactionDTO.setScoreId("Не указан");
         }
         accountTransactionDTO.setTransactionPurposeName(accountTransaction.getTransactionPurpose().getName());
-        accountTransactionDTO.setAdminName(accountTransaction.getAdmin().getName());
+        accountTransactionDTO.setAdminName(accountTransaction.getAdmin().getFirstName());
         accountTransactionDTO.setIsIncome(accountTransaction.isIncome());
         accountTransactionDTO.setSum(String.valueOf(accountTransaction.getSum()));
         accountTransactionDTO.setComment(accountTransaction.getComment());

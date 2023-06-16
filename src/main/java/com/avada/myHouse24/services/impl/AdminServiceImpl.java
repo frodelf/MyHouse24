@@ -14,7 +14,7 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     @Override
     public Admin getByName(String name) {
-        return adminRepository.findByName(name).get();
+        return adminRepository.findByFirstName(name).get();
     }
 
     @Override
