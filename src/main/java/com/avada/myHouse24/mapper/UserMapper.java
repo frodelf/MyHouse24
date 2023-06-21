@@ -8,8 +8,6 @@ import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
 import com.avada.myHouse24.util.IdUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
@@ -38,7 +36,6 @@ public class UserMapper {
 
     public User toEntityForAdd(UserForAddDTO userForAddDTO){
         User user = new User();
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         user.setId(IdUtil.fromStringToId(userForAddDTO.getId()));
         user.setFirstName(userForAddDTO.getFirstName());
         user.setLastName(userForAddDTO.getLastName());
@@ -48,7 +45,7 @@ public class UserMapper {
         user.setViber(userForAddDTO.getViber());
         user.setTelegram(userForAddDTO.getTelegram());
         user.setEmail(userForAddDTO.getEmail());
-        user.setPassword(encoder.encode(userForAddDTO.getPassword()));
+        user.setPassword(userForAddDTO.getPassword());
         user.setStatus(UserStatus.valueOf(userForAddDTO.getStatus()));
         user.setDescription(userForAddDTO.getDescription());
         user.setImage(userForAddDTO.getImageName());

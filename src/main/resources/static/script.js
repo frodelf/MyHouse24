@@ -163,22 +163,4 @@ function togglePasswordVisibility() {
 function confirmDelete() {
     return confirm("Вы уверены, что хотите удалить этот элемент?");
 }
-window.addEventListener('DOMContentLoaded', function () {
-    // Отримати посилання на форму
-    var form = document.getElementById('formSend');
-    var inputs = form.querySelectorAll('input');
 
-    // Додати обробник події input для всіх полів вводу
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('input', function () {
-            this.form.isFormDirty = true; // Позначити форму як змінену
-        });
-    }
-
-    // Додати обробник події click для всіх елементів сторінки
-    document.addEventListener('click', function (event) {
-        if (form.isFormDirty) {
-            form.submit(); // Відправити форму, якщо були внесені зміни
-        }
-    });
-});

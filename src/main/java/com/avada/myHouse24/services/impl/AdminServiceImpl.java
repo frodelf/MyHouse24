@@ -4,6 +4,7 @@ import com.avada.myHouse24.entity.Admin;
 import com.avada.myHouse24.repo.AdminRepository;
 import com.avada.myHouse24.services.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +30,8 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void save(Admin admin) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        admin.setPassword(encoder.encode(admin.getPassword()));
         adminRepository.save(admin);
     }
 }

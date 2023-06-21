@@ -8,15 +8,11 @@ import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
-import com.avada.myHouse24.services.registration.EmailService;
 import com.avada.myHouse24.util.IdUtil;
 import com.avada.myHouse24.util.ImageUtil;
 import jakarta.validation.Valid;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -40,10 +36,6 @@ public class UserController {
     private final RoleServiceImpl roleService;
     private final HouseServiceImpl houseService;
     private final UserMapper userMapper;
-    @Autowired
-    private ThreadPoolExecutor executor;
-    @Autowired
-    private EmailService emailService;
 
 
     @GetMapping("/index")
@@ -90,9 +82,8 @@ public class UserController {
             model.addAttribute("idError", "Користувач з таким id вже існує");
             return "admin/user/add";
         }
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         User user = userMapper.toEntityForAdd(userDTO);
-        user.setPassword(encoder.encode(userDTO.getPassword()));
+        user.setPassword(userDTO.getPassword());
         user.setStatus(UserStatus.NEW);
         user.setFromDate(Date.valueOf(LocalDate.now()));
         user.setRoles(roleService.getById(1));
@@ -118,14 +109,13 @@ public class UserController {
         }
         User user = userService.getById(id);
         User userResult = userMapper.toEntityForAdd(userDTO);
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         if (!userDTO.getPassword().equals("")) {
             if (!userDTO.getPassword().equals(userDTO.getPasswordAgain())) {
                 model.addAttribute("status", UserStatus.values());
                 model.addAttribute("passwordAgainError", "Паролі не співпадають");
                 return "admin/user/add";
             }
-            user.setPassword(encoder.encode(userDTO.getPassword()));
+            user.setPassword(userDTO.getPassword());
         }
         if (userService.existsById(IdUtil.fromStringToId(userDTO.getId())) && !userDTO.getId().equals(IdUtil.fromIdToString(id))) {
             model.addAttribute("status", UserStatus.values());
