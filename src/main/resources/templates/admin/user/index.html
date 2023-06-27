@@ -48,7 +48,13 @@
                             <td style="width: 50%">
                                 Статус
                             </td>
-                            <td th:text="${user.getStatus()}" style="width: 50%"></td>
+                            <td style="width: 50%">
+                                <span th:switch="${user.getStatus()}">
+                                    <span th:case="NEW" class="status status-new">Новий</span>
+                                    <span th:case="ACTIVE" class="status status-active">Активний</span>
+                                    <span th:case="DISABLED" class="status status-disabled">Відключений</span>
+                                </span>
+                            </td>
                         </tr>
                         <tr>
                             <td>

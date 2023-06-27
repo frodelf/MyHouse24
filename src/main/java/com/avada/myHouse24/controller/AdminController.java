@@ -1,9 +1,13 @@
 package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.AdminMapper;
 import com.avada.myHouse24.model.AdminForAddDto;
+import com.avada.myHouse24.model.AdminForViewDto;
+import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
+import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -12,16 +16,23 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Log4j2
 @Controller
 @RequestMapping("/admin/user-admin/")
 @RequiredArgsConstructor
 public class AdminController {
+    private final RoleServiceImpl roleService;
     private final AdminServiceImpl adminService;
     private final AdminMapper adminMapper;
-    @GetMapping("/index")
-    public String getAll(Model model){
-        model.addAttribute("admins", adminMapper.toDtoListForView(adminService.getAll()));
+    @GetMapping("/index/{id}")
+    public String getAll(Model model, @PathVariable("id")int id){
+        model.addAttribute("allStatus", UserStatus.values());
+        model.addAttribute("roles", roleService.getAll());
+        model.addAttribute("filter", adminMapper.toDtoForView(new Admin()));
+        model.addAttribute("admins", adminMapper.toDtoListForView(adminService.getPage(id, model).getContent()));
         return "admin/user-admin/get-all";
     }
     @GetMapping("/create")
@@ -42,7 +53,7 @@ public class AdminController {
         }
         Admin result = adminMapper.toEntityForAdd(admin);
         adminService.save(result);
-        return "redirect:/admin/user-admin/index";
+        return "redirect:/admin/user-admin/index/1";
     }
     @GetMapping("/{id}")
     public String index(@PathVariable("id")long id, Model model){
@@ -54,7 +65,7 @@ public class AdminController {
         Admin admin = adminService.getById(id);
         admin.setStatus("DISABLED");
         adminService.save(admin);
-        return "redirect:/admin/user-admin/index";
+        return "redirect:/admin/user-admin/index/1";
     }
     @GetMapping("/edit/{id}")
     public String edit(@ModelAttribute("adminModel") AdminForAddDto admin, @PathVariable("id")long id, Model model){
@@ -73,6 +84,40 @@ public class AdminController {
         admin.setId(id);
         result = adminMapper.toEntityForAdd(admin);
         adminService.save(result);
-        return "redirect:/admin/user-admin/index";
+        return "redirect:/admin/user-admin/index/1";
+    }
+    @GetMapping("/filter/{id}")
+    public String filter(@ModelAttribute AdminForViewDto adminForViewDto, @PathVariable("id")int id, Model model){
+        List<AdminForViewDto> admins = adminMapper.toDtoListForView(adminService.getAll());
+        if(!adminForViewDto.getFullName().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(adminForViewDto.getFullName()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getRole().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getRole() != null && dto.getRole().contains(adminForViewDto.getRole()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getPhone().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(adminForViewDto.getPhone()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getEmail().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(adminForViewDto.getEmail()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getStatus().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus().contains(adminForViewDto.getStatus()))
+                    .collect(Collectors.toList());
+        }
+        model.addAttribute("allStatus", UserStatus.values());
+        model.addAttribute("roles", roleService.getAll());
+        model.addAttribute("filter", adminForViewDto);
+        model.addAttribute("admins", adminService.getPage(id, model, admins).getContent());
+        return "admin/user-admin/get-all";
     }
 }

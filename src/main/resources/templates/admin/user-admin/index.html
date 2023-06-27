@@ -40,6 +40,18 @@
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                         <tr>
+                            <td>
+                                Статус
+                            </td>
+                            <td>
+                                <span th:switch="${admin.getStatus()}">
+                                    <span th:case="NEW" class="status status-new">Новий</span>
+                                    <span th:case="ACTIVE" class="status status-active">Активний</span>
+                                    <span th:case="DISABLED" class="status status-disabled">Відключений</span>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
                             <td style="width: 50%">
                                 Пользователь
                             </td>
@@ -66,14 +78,6 @@
                                 Email(логин)
                             </td>
                             <td th:text="${admin.getEmail()}">
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Статус
-                            </td>
-                            <td th:text="${admin.getStatus()}">
 
                             </td>
                         </tr>

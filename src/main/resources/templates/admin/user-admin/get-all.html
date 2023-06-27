@@ -11,6 +11,22 @@
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/v4-shims.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true;
+                });
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
@@ -35,8 +51,8 @@
                 <div class="col-xs-12 col-lg-3">
                     <div class="btn-group margin-bottom float-right">
                         <a href="/admin/user-admin/create" type="button" class="btn btn-success"
-                                style="width: 220px; margin-bottom: 20px"
-                                aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
+                           style="width: 220px; margin-bottom: 20px"
+                           aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
                             Создать пользователя
                         </a>
                     </div>
@@ -44,70 +60,129 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/user-admin/index"
+                    <a href="/admin/user-admin/index/1"
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form id="formSend" method="get" action="/admin/user/filter" onsubmit="event.preventDefault()">
+                        <form id="formSend" method="get" action="/admin/user-admin/filter/1" onsubmit="event.preventDefault()">
                             <table class="table table-bordered table-hover table-striped table-sm"
                                    style="font-size: 14px">
                                 <thead>
-                                    <tr>
-                                        <th>№</th>
-                                        <th>Пользователи</th>
-                                        <th>Роль</th>
-                                        <th>Телефон</th>
-                                        <th>Email (логін)</th>
-                                        <th>Статус</th>
-                                        <th></th>
-                                    </tr>
-                                    <tr>
-                                        <th></th>
-                                        <th><input name="houses" type="text" class="form-control"></th>
-                                        <th><input name="houses" type="text" class="form-control"></th>
-                                        <th><input name="houses" type="text" class="form-control"></th>
-                                        <th><input name="houses" type="text" class="form-control"></th>
-                                        <th><input name="houses" type="text" class="form-control"></th>
-                                        <th></th>
-                                    </tr>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Пользователи</th>
+                                    <th>Роль</th>
+                                    <th>Телефон</th>
+                                    <th>Email (логін)</th>
+                                    <th>Статус</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th><input name="fullName" type="text" class="form-control" th:value="${filter.getFullName()}"></th>
+                                    <th>
+                                        <select class="form-select" name="role" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option>
+                                            </option>
+                                            <option th:each="role: ${roles}" th:value="${role.getName()}" th:selected="${filter.getRole() == role.getName()}"
+                                                    th:text="${role.getName().replace('ROLE_', '')}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th><input name="phone" type="number" class="form-control" th:value="${filter.getPhone()}"></th>
+                                    <th><input name="email" type="text" class="form-control" th:value="${filter.getEmail()}"></th>
+                                    <th>
+                                        <select class="form-select" name="status" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option >
+                                            </option>
+                                            <option th:each="status: ${allStatus}" th:value="${status.toString()}"  th:selected="${filter.getStatus() == status.toString()}"
+                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="clickable-row" th:each="admin:${admins}" th:data-action="@{/admin/user-admin/{id}(id=${admin.getId()})}">
-                                        <td th:text="${admin.getId()}"></td>
-                                        <td th:text="${admin.getFullName()}"></td>
-                                        <td th:text="${admin.getRole()}"></td>
-                                        <td th:text="${admin.getPhone()}"></td>
-                                        <td th:text="${admin.getEmail()}"></td>
-                                        <td th:text="${admin.getStatus()}"></td>
-                                        <td>
-                                            <div class="btn-group pull-right">
-                                                <a class="btn btn-default btn-sm"
-                                                   th:href="message"
-                                                   title="Отправить приглашение" data-toggle="tooltip">
-                                                    <i class="fa fa-repeat"></i>
-                                                </a>
-                                                <a class="btn btn-default btn-sm"
-                                                   th:href="@{/admin/user-admin/edit/{id}(id=${admin.getId()})}"
-                                                   title="Редактировать" data-toggle="tooltip">
-                                                    <i class="fa fa-pencil-alt"></i>
-                                                </a>
-                                                <a class="btn btn-default btn-sm"
-                                                   th:href="@{/admin/user-admin/delete/{id}(id=${admin.getId()})}"
-                                                   title="Удалить" data-toggle="tooltip"
-                                                   data-pjax="0" data-method="post"
-                                                   onclick="return confirmDelete();"><i class="fa fa-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                <tr class="clickable-row" th:each="admin:${admins}"
+                                    th:data-action="@{/admin/user-admin/{id}(id=${admin.getId()})}">
+                                    <td th:text="${admin.getId()}"></td>
+                                    <td th:text="${admin.getFullName()}"></td>
+                                    <td th:text="${admin.getRole().replace('ROLE_', '')}"></td>
+                                    <td th:text="${admin.getPhone()}"></td>
+                                    <td th:text="${admin.getEmail()}"></td>
+                                    <td>
+                                        <span th:switch="${admin.getStatus()}">
+                                            <span th:case="NEW" class="status status-new">Новий</span>
+                                            <span th:case="ACTIVE" class="status status-active">Активний</span>
+                                            <span th:case="DISABLED" class="status status-disabled">Відключений</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="message"
+                                               title="Отправить приглашение" data-toggle="tooltip">
+                                                <i class="fa fa-repeat"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/user-admin/edit/{id}(id=${admin.getId()})}"
+                                               title="Редактировать" data-toggle="tooltip">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/user-admin/delete/{id}(id=${admin.getId()})}"
+                                               title="Удалить" data-toggle="tooltip"
+                                               data-pjax="0" data-method="post"
+                                               onclick="return confirmDelete();"><i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </form>
                     </div>
                 </div>
-                <div class="card-footer">
+                <div class="card-footer" th:if="${max} > 1">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <script>
+                            var pageNumber = [[${current}]] - 1;
+                            var afterQuestionMark = '';
+                            if (window.location.href.includes('filter')) {
+                                var parts = window.location.href.split('?');
+                                afterQuestionMark = '?' + parts[1];
+                                var baseUrl = '/admin/user-admin/filter/';
+                            } else {
+                                var baseUrl = '/admin/user-admin/index/';
+                            }
 
+                            if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled">«</button></li>');
+                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">«</a></li>');
+                        </script>
+                        <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
+                            <script src="/pagination.js" data-url="admin/user/index/"
+                                    th:current="${current}"
+                                    th:max="${max+1}"></script>
+                        </ul>
+                        <script>
+                            var pageNumber = [[${current}]] + 1;
+                            var afterQuestionMark = '';
+                            if (window.location.href.includes('filter')) {
+                                var parts = window.location.href.split('?');
+                                afterQuestionMark = '?' + parts[1];
+                                var baseUrl = '/admin/user-admin/filter/';
+                            } else {
+                                var baseUrl = '/admin/user-admin/index/';
+                            }
+                            console.log([[${current}]])
+                            if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">»</button></li>');
+                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">»</a></li>');
+                        </script>
+                    </ul>
                 </div>
             </div>
         </section>

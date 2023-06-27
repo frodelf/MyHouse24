@@ -163,4 +163,9 @@ function togglePasswordVisibility() {
 function confirmDelete() {
     return confirm("Вы уверены, что хотите удалить этот элемент?");
 }
-
+function submitForm() {
+    document.getElementById("formSend").submit();
+}
+$(document).ready(function() {
+    $('.select2-example').select2();
+});

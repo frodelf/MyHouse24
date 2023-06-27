@@ -32,8 +32,8 @@ public class AccountTransactionController {
     private final ScoreServiceImpl scoreService;
     private final TransactionPurposeServiceImpl transactionPurposeService;
 
-    @GetMapping("/index")
-    public String index(Model model) {
+    @GetMapping("/index/{id}")
+    public String index(@PathVariable("id")int id, Model model) {
         model.addAttribute("accountTransaction", new AccountTransactionDTO());
         model.addAttribute("accountTransactionList", accountTransactionMapper.toDtoList(accountTransactionService.getAll()));
         model.addAttribute("transactionPurposeList", transactionPurposeService.getAll());

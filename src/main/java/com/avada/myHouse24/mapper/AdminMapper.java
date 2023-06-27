@@ -43,8 +43,8 @@ public class AdminMapper {
     public AdminForViewDto toDtoForView(Admin admin){
         AdminForViewDto adminForViewDto = new AdminForViewDto();
         adminForViewDto.setId(String.valueOf(admin.getId()));
-        adminForViewDto.setFullName(admin.getFirstName()+" "+admin.getLastName());
-        adminForViewDto.setRole(admin.getRole().getName());
+        adminForViewDto.setFullName(admin.getFirstName() == null ? "" : admin.getFirstName() + " "+admin.getLastName() == null ? "" : admin.getLastName());
+        if(admin.getRole() != null)adminForViewDto.setRole(admin.getRole().getName());
         adminForViewDto.setPhone(admin.getPhone());
         adminForViewDto.setEmail(admin.getEmail());
         adminForViewDto.setStatus(admin.getStatus());

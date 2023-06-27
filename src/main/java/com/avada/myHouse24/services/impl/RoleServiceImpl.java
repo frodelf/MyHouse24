@@ -6,6 +6,8 @@ import com.avada.myHouse24.services.RoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
@@ -18,5 +20,10 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public Role getByName(String name) {
         return roleRepository.findByName(name).get();
+    }
+
+    @Override
+    public List<Role> getAll() {
+        return roleRepository.findAll();
     }
 }
