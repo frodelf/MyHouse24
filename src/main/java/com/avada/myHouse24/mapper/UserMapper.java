@@ -20,7 +20,7 @@ public class UserMapper {
     public UserForViewDTO toDtoForView(User user){
         UserForViewDTO userForViewDTO = new UserForViewDTO();
         if(user.getId() != null)userForViewDTO.setId(String.valueOf(user.getId()));
-        userForViewDTO.setFullName(user.getLastName() == null? "":user.getLastName() +" "+user.getFirstName()==null?"":user.getFirstName()+" "+user.getFathersName()==null?"":user.getFathersName());
+        userForViewDTO.setFullName((user.getLastName() == null? "":user.getLastName()) + " " +(user.getFirstName()==null?"":user.getFirstName()) + " " + (user.getFathersName()==null?"":user.getFathersName()));
         userForViewDTO.setPhone(user.getPhone());
         userForViewDTO.setEmail(user.getEmail());
         if(user.getFlats() != null)
