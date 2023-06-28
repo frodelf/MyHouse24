@@ -9,7 +9,6 @@ import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
 import com.avada.myHouse24.services.registration.EmailService;
-import com.avada.myHouse24.util.IdUtil;
 import com.avada.myHouse24.util.ImageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +51,7 @@ public class UserController {
 
     @GetMapping("/add")
     public String add(@ModelAttribute("userDTO") UserForAddDTO userDTO, Model model) {
-        model.addAttribute("maxId", IdUtil.fromIdToString(userService.getMaxId()));
+        model.addAttribute("maxId", userService.getMaxId());
         model.addAttribute("status", UserStatus.values());
         return "admin/user/add";
     }
@@ -66,8 +65,6 @@ public class UserController {
             if (image.isEmpty()) model.addAttribute("error", "Фото повино бути загружено");
             if (!userDTO.getPassword().equals(userDTO.getPasswordAgain()))
                 model.addAttribute("passwordAgainError", "Паролі не співпадають");
-            if (userService.existsById(IdUtil.fromStringToId(userDTO.getId())))
-                model.addAttribute("idError", "Користувач з таким id вже існує");
             return "admin/user/add";
         }
         if (!userDTO.getPassword().equals(userDTO.getPasswordAgain()) || userDTO.getPassword().equals("")) {
@@ -75,11 +72,6 @@ public class UserController {
             model.addAttribute("status", UserStatus.values());
             if (!userDTO.getPassword().equals(userDTO.getPasswordAgain()))
                 model.addAttribute("passwordAgainError", "Паролі не співпадають");
-            return "admin/user/add";
-        }
-        if (userService.existsById(IdUtil.fromStringToId(userDTO.getId()))) {
-            model.addAttribute("status", UserStatus.values());
-            model.addAttribute("idError", "Користувач з таким id вже існує");
             return "admin/user/add";
         }
         User user = userMapper.toEntityForAdd(userDTO);
@@ -116,11 +108,6 @@ public class UserController {
                 return "admin/user/add";
             }
             user.setPassword(userDTO.getPassword());
-        }
-        if (userService.existsById(IdUtil.fromStringToId(userDTO.getId())) && !userDTO.getId().equals(IdUtil.fromIdToString(id))) {
-            model.addAttribute("status", UserStatus.values());
-            model.addAttribute("idError", "Користувач з таким id вже існує");
-            return "admin/user/add";
         }
         userResult.setPassword(user.getPassword());
         userResult.setImage(ImageUtil.imageForUser(user, image));

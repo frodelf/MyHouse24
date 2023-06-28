@@ -3,7 +3,7 @@ package com.avada.myHouse24.model;
 import lombok.Data;
 
 @Data
-public class AdminForViewDto {
+public class AdminForViewDTO {
     private String id;
     private String fullName;
     private String role;

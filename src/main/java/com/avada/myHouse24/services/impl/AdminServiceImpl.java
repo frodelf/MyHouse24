@@ -1,7 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Admin;
-import com.avada.myHouse24.model.AdminForViewDto;
+import com.avada.myHouse24.model.AdminForViewDTO;
 import com.avada.myHouse24.repo.AdminRepository;
 import com.avada.myHouse24.services.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -53,16 +54,26 @@ public class AdminServiceImpl implements AdminService {
         return adminRepository.findAll(pageRequest);
     }
 
-    public Page<AdminForViewDto> getPage(int pageNumber, Model model, List<AdminForViewDto> adminList) {
+    @Override
+    public List<String> getOnlyName() {
+        List<Admin> admins = adminRepository.findAll();
+        List<String> names = new ArrayList<>();
+        for (Admin admin : admins) {
+            names.add(admin.getFirstName());
+        }
+        return names;
+    }
+
+    public Page<AdminForViewDTO> getPage(int pageNumber, Model model, List<AdminForViewDTO> adminList) {
         double size = 1.0;
         int max = (int) Math.ceil(adminList.size() / size-1 ) > 0 ? (int) Math.ceil(adminList.size() / size-1 ) : 0;
         if (pageNumber < 0) pageNumber = 0;
         if (pageNumber > max) pageNumber = max;
         int startIndex = pageNumber * (int) size;
         int endIndex = Math.min(startIndex + (int) size, adminList.size());
-        List<AdminForViewDto> pageList = adminList.subList(startIndex, endIndex);
+        List<AdminForViewDTO> pageList = adminList.subList(startIndex, endIndex);
         Pageable pageable = PageRequest.of(pageNumber, (int) size);
-        Page<AdminForViewDto> userPage = new PageImpl<>(pageList, pageable, adminList.size());
+        Page<AdminForViewDTO> userPage = new PageImpl<>(pageList, pageable, adminList.size());
         model.addAttribute("max", max);
         model.addAttribute("current", pageNumber+1);
         return userPage;

@@ -6,6 +6,7 @@ import com.avada.myHouse24.services.ScoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,5 +21,15 @@ public class ScoreServiceImpl implements ScoreService {
     @Override
     public List<Score> getAll() {
         return scoreRepository.findAll();
+    }
+
+    @Override
+    public List<String> getOnlyNumber() {
+        List<Score> scores = scoreRepository.findAll();
+        List<String> numbers = new ArrayList<>();
+        for (Score score : scores) {
+            numbers.add(score.getNumber());
+        }
+        return numbers;
     }
 }

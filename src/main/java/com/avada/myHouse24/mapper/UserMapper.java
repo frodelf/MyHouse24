@@ -6,7 +6,6 @@ import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.model.UserForAddDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
-import com.avada.myHouse24.util.IdUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +19,7 @@ public class UserMapper {
     private final UserServiceImpl userService;
     public UserForViewDTO toDtoForView(User user){
         UserForViewDTO userForViewDTO = new UserForViewDTO();
-        if(user.getId() != null)userForViewDTO.setId(IdUtil.fromIdToString(user.getId()));
+        if(user.getId() != null)userForViewDTO.setId(String.valueOf(user.getId()));
         userForViewDTO.setFullName(user.getLastName() == null? "":user.getLastName() +" "+user.getFirstName()==null?"":user.getFirstName()+" "+user.getFathersName()==null?"":user.getFathersName());
         userForViewDTO.setPhone(user.getPhone());
         userForViewDTO.setEmail(user.getEmail());
@@ -36,7 +35,7 @@ public class UserMapper {
 
     public User toEntityForAdd(UserForAddDTO userForAddDTO){
         User user = new User();
-        user.setId(IdUtil.fromStringToId(userForAddDTO.getId()));
+        user.setId(Long.valueOf(userForAddDTO.getId()));
         user.setFirstName(userForAddDTO.getFirstName());
         user.setLastName(userForAddDTO.getLastName());
         user.setFathersName(userForAddDTO.getFathersName());
@@ -53,7 +52,7 @@ public class UserMapper {
     }
     public UserForAddDTO toDtoForAdd(User user){
         UserForAddDTO userForAddDTO = new UserForAddDTO();
-        userForAddDTO.setId(IdUtil.fromIdToString(user.getId()));
+        userForAddDTO.setId(user.getId().toString());
         userForAddDTO.setFirstName(user.getFirstName());
         userForAddDTO.setLastName(user.getLastName());
         userForAddDTO.setFathersName(user.getFathersName());

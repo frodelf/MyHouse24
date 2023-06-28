@@ -13,6 +13,7 @@ import java.sql.Date;
 @Data
 public class AccountTransactionInDTO {
     @NotBlank(message = "Поле не повино бути пустим")
+    @Size(min = 10, max = 10, message = "Поле має бути розміру 10 символів")
     private String id;
     private Date date;
     @NotBlank(message = "Поле не повино бути пустим")

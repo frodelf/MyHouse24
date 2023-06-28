@@ -13,4 +13,5 @@ public interface AdminService {
     List<Admin> getAll();
     void save(Admin admin);
     Page<Admin> getPage(int pageNumber, Model model);
+    List<String> getOnlyName();
 }

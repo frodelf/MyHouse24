@@ -77,127 +77,129 @@
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <form id="formSend" method="get" action="/admin/user/filter/0"
-                              onsubmit="event.preventDefault()">
-                            <table class="table table-bordered table-hover table-striped table-sm"
-                                   style="font-size: 14px">
-                                <thead>
-                                <tr>
-                                    <th style="min-width: 120px;">Id</th>
-                                    <th style="min-width: 150px;">ФИО</th>
-                                    <th style="min-width: 150px;">Телефон</th>
-                                    <th style="min-width: 200px;">Email</th>
-                                    <th style="min-width: 180px;">Дом</th>
-                                    <th style="min-width: 180px;">Квартира</th>
-                                    <th style="min-width: 130px;">Добавлен</th>
-                                    <th style="min-width: 140px;">Статус</th>
-                                    <th style="min-width: 140px;">Есть долг</th>
-                                    <th style="min-width: 100px;"></th>
-                                </tr>
-                                <tr>
-                                    <th><input name="id" type="number" class="form-control"
-                                               th:value="${filter.getId()}"></th>
-                                    <th><input name="fullName" type="text" class="form-control"
-                                               th:value="${filter.getFullName()}"></th>
-                                    <th><input name="phone" type="number" class="form-control"
-                                               th:value="${filter.getPhone()}"></th>
-                                    <th><input name="email" type="text" class="form-control"
-                                               th:value="${filter.getEmail()}"></th>
-                                    <th>
-                                        <select class="form-select" name="house" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${house}" th:text="${house}">
-                                            </option>
-                                            <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <select class="form-select" name="house" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${flat}" th:text="${flat}">
-                                            </option>
-                                            <option th:each="flat:${flats}" th:value="${flat}" th:text="${flat}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th><input name="dateTest" type="date" class="form-control"
-                                               th:value="${filter.getDate()}"></th>
-                                    <th>
-                                        <select class="form-select" name="status" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getStatus()}"
-                                                    th:text="${#strings.toString(filter.getStatus()) == 'NEW' ? 'Новий' : #strings.toString(filter.getStatus()) == 'ACTIVE' ? 'Активний' : #strings.toString(filter.getStatus()) == 'DISABLED' ? 'Відключений' : ''}">
-                                            </option>
-                                            <option th:each="status: ${allStatus}" th:value="${status}"
-                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <select class="form-select" name="isDebt" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:selected="${filter.getIsDebt() == null}"></option>
-                                            <option th:selected="${filter.getIsDebt() == true}" value="true">Да</option>
-                                            <option th:selected="${filter.getIsDebt() == false}" value="false">Нет
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="clickable-row" th:each="user:${users}"
-                                    th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
-                                    <td th:text="${user.getId()}"></td>
-                                    <td th:text="${user.getFullName()}"></td>
-                                    <td th:text="${user.getPhone()}"></td>
-                                    <td th:text="${user.getEmail()}"></td>
-                                    <td>
-                                        <div th:each="house:${user.getHouses()}">
-                                            <h5 th:text="${house}"></h5>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div th:each="flat:${user.getFlats()}">
-                                            <h5 th:text="${flat}"></h5>
-                                        </div>
-                                    </td>
-                                    <td th:text="${user.getDate()}"></td>
-                                    <td>
+                    <form id="formSend" method="get" action="/admin/user/filter/0"
+                          onsubmit="event.preventDefault()">
+                        <div class="table-responsive">
+                        <table class="table table-bordered table-hover table-striped table-sm"
+                               style="font-size: 14px">
+                            <thead>
+                            <tr>
+                                <th style="min-width: 120px;">Id</th>
+                                <th style="min-width: 150px;">ФИО</th>
+                                <th style="min-width: 150px;">Телефон</th>
+                                <th style="min-width: 200px;">Email</th>
+                                <th style="min-width: 180px;">Дом</th>
+                                <th style="min-width: 180px;">Квартира</th>
+                                <th style="min-width: 130px;">Добавлен</th>
+                                <th style="min-width: 140px;">Статус</th>
+                                <th style="min-width: 140px;">Есть долг</th>
+                                <th style="min-width: 100px;"></th>
+                            </tr>
+                            <tr>
+                                <th><input name="id" type="number" class="form-control"
+                                           th:value="${filter.getId()}"></th>
+                                <th><input name="fullName" type="text" class="form-control"
+                                           th:value="${filter.getFullName()}"></th>
+                                <th><input name="phone" type="number" class="form-control"
+                                           th:value="${filter.getPhone()}"></th>
+                                <th><input name="email" type="text" class="form-control"
+                                           th:value="${filter.getEmail()}"></th>
+                                <th>
+                                    <select class="form-select" name="house" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${house}" th:text="${house}">
+                                        </option>
+                                        <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="house" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${flat}" th:text="${flat}">
+                                        </option>
+                                        <option th:each="flat:${flats}" th:value="${flat}" th:text="${flat}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th><input name="dateTest" type="date" class="form-control"
+                                           th:value="${filter.getDate()}"></th>
+                                <th>
+                                    <select class="form-select" name="status" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${filter.getStatus()}"
+                                                th:text="${#strings.toString(filter.getStatus()) == 'NEW' ? 'Новий' : #strings.toString(filter.getStatus()) == 'ACTIVE' ? 'Активний' : #strings.toString(filter.getStatus()) == 'DISABLED' ? 'Відключений' : ''}">
+                                        </option>
+                                        <option th:each="status: ${allStatus}" th:value="${status}"
+                                                th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="isDebt" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:selected="${filter.getIsDebt() == null}"></option>
+                                        <option th:selected="${filter.getIsDebt() == true}" value="true">Да</option>
+                                        <option th:selected="${filter.getIsDebt() == false}" value="false">Нет
+                                        </option>
+                                    </select>
+                                </th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="clickable-row" th:each="user:${users}"
+                                th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
+                                <td th:text="${user.getId()}"></td>
+                                <td th:text="${user.getFullName()}"></td>
+                                <td th:text="${user.getPhone()}"></td>
+                                <td th:text="${user.getEmail()}"></td>
+                                <td>
+                                    <div th:each="house:${user.getHouses()}">
+                                        <h5 th:text="${house}"></h5>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:each="flat:${user.getFlats()}">
+                                        <h5 th:text="${flat}"></h5>
+                                    </div>
+                                </td>
+                                <td th:text="${user.getDate()}"></td>
+                                <td>
                                         <span th:switch="${user.getStatus()}">
                                             <span th:case="NEW" class="status status-new">Новий</span>
                                             <span th:case="ACTIVE" class="status status-active">Активний</span>
                                             <span th:case="DISABLED" class="status status-disabled">Відключений</span>
                                         </span>
-                                    </td>
+                                </td>
 
-                                    <td th:text="${user.getIsDebt() == true ? 'Да' : 'Нет'}"></td>
-                                    <td>
-                                        <div class="btn-group pull-right">
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="message"
-                                               title="Повідомлення" data-toggle="tooltip">
-                                                <i class="fa fa-envelope"></i>
-                                            </a>
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
-                                               title="Редактировать" data-toggle="tooltip">
-                                                <i class="fa fa-pencil-alt"></i>
-                                            </a>
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="@{/admin/user/delete/{id}(id=${user.getId()})}"
-                                               title="Удалить" data-toggle="tooltip"
-                                               data-pjax="0" data-method="post"
-                                               onclick="return confirmDelete();"><i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
+                                <td th:text="${user.getIsDebt() == true ? 'Да' : 'Нет'}"></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="message"
+                                           title="Повідомлення" data-toggle="tooltip">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
+                                           title="Редактировать" data-toggle="tooltip">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/user/delete/{id}(id=${user.getId()})}"
+                                           title="Удалить" data-toggle="tooltip"
+                                           data-pjax="0" data-method="post"
+                                           onclick="return confirmDelete();"><i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </form>
+                    <div class="table-responsive">
 
                     </div>
                 </div>

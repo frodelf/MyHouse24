@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class AdminForAddDto {
+public class AdminForAddDTO {
     private Long id;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")

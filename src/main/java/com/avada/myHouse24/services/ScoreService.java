@@ -7,5 +7,5 @@ import java.util.List;
 public interface ScoreService {
     Score getById(long id);
     List<Score> getAll();
-
+    List<String> getOnlyNumber();
 }

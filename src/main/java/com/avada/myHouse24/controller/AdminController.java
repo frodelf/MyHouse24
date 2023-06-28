@@ -3,9 +3,8 @@ package com.avada.myHouse24.controller;
 import com.avada.myHouse24.entity.Admin;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.AdminMapper;
-import com.avada.myHouse24.model.AdminForAddDto;
-import com.avada.myHouse24.model.AdminForViewDto;
-import com.avada.myHouse24.model.UserForViewDTO;
+import com.avada.myHouse24.model.AdminForAddDTO;
+import com.avada.myHouse24.model.AdminForViewDTO;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import jakarta.validation.Valid;
@@ -36,11 +35,11 @@ public class AdminController {
         return "admin/user-admin/get-all";
     }
     @GetMapping("/create")
-    public String add(@ModelAttribute("admin") AdminForAddDto admin){
+    public String add(@ModelAttribute("admin") AdminForAddDTO admin){
         return "admin/user-admin/add";
     }
     @PostMapping("/create")
-    public String add(@ModelAttribute("admin") @Valid AdminForAddDto admin, BindingResult bindingResult, Model model){
+    public String add(@ModelAttribute("admin") @Valid AdminForAddDTO admin, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             if(admin.getPassword().isBlank())model.addAttribute("passwordError", "Поле не повинно бути пустим");
             if(!admin.getPassword().equals(admin.getPasswordAgain()))model.addAttribute("passwordAgainError", "Паролі не співпадають");
@@ -68,12 +67,12 @@ public class AdminController {
         return "redirect:/admin/user-admin/index/1";
     }
     @GetMapping("/edit/{id}")
-    public String edit(@ModelAttribute("adminModel") AdminForAddDto admin, @PathVariable("id")long id, Model model){
+    public String edit(@ModelAttribute("adminModel") AdminForAddDTO admin, @PathVariable("id")long id, Model model){
         model.addAttribute("admin", adminMapper.toDtoForAdd(adminService.getById(id)));
         return "admin/user-admin/edit";
     }
     @PostMapping("/edit/{id}")
-    public String edit(@ModelAttribute("adminModel") @Valid AdminForAddDto admin, BindingResult bindingResult, @PathVariable("id")long id, Model model){
+    public String edit(@ModelAttribute("adminModel") @Valid AdminForAddDTO admin, BindingResult bindingResult, @PathVariable("id")long id, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("admin", adminMapper.toDtoForAdd(adminService.getById(id)));
             if(!admin.getPassword().isBlank() && !admin.getPassword().equals(admin.getPasswordAgain()))model.addAttribute("passwordAgainError", "Паролі не співпадають");
@@ -87,8 +86,8 @@ public class AdminController {
         return "redirect:/admin/user-admin/index/1";
     }
     @GetMapping("/filter/{id}")
-    public String filter(@ModelAttribute AdminForViewDto adminForViewDto, @PathVariable("id")int id, Model model){
-        List<AdminForViewDto> admins = adminMapper.toDtoListForView(adminService.getAll());
+    public String filter(@ModelAttribute AdminForViewDTO adminForViewDto, @PathVariable("id")int id, Model model){
+        List<AdminForViewDTO> admins = adminMapper.toDtoListForView(adminService.getAll());
         if(!adminForViewDto.getFullName().isBlank()){
             admins = admins.stream()
                     .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(adminForViewDto.getFullName()))

@@ -10,7 +10,22 @@
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true;
+                });
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
@@ -84,26 +99,27 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/account-transaction/index"
+                    <a href="/admin/account-transaction/index/1"
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="myTable" class="table table-bordered table-hover table-striped table-sm">
-                            <thead>
-                            <tr>
-                                <th>№</th>
-                                <th>Дата</th>
-                                <th>Статус</th>
-                                <th>Тип платежа</th>
-                                <th>Владелец</th>
-                                <th>Лицевой счет</th>
-                                <th>Приход/расход</th>
-                                <th>Сумма (грн)</th>
-                                <th></th>
-                            </tr>
-                            <tr>
-                                <form method="post" action="/admin/account-transaction/filter">
+                        <form id="formSend" method="get" action="/admin/account-transaction/filter/1"
+                              onsubmit="event.preventDefault()">
+                            <table class="table table-bordered table-hover table-striped table-sm">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Дата</th>
+                                    <th>Статус</th>
+                                    <th>Тип платежа</th>
+                                    <th>Владелец</th>
+                                    <th>Лицевой счет</th>
+                                    <th>Приход/расход</th>
+                                    <th>Сумма (грн)</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
                                     <th><input name="id" type="number" class="form-control"
                                                th:value="${accountTransaction.getId() != null ? accountTransaction.getId() : ''}">
                                     </th>
@@ -114,71 +130,79 @@
                                     </th>
                                     <th>
                                         <select class=" form-select" name="addToStats"
-                                                aria-label="Default select example">
-                                            <option th:value="${accountTransaction.getAddToStats() != null ? (accountTransaction.getAddToStats() == true ? true : false) : ''}" th:text="${accountTransaction.getAddToStats() != null ? (accountTransaction.getAddToStats() == true ? 'Проведен': 'Не проведен') : ''}">
+                                                aria-label="Default select example" onchange="submitForm()">
+                                            <option>
                                             </option>
-                                            <option th:value="${accountTransaction.getAddToStats() != null ? (accountTransaction.getAddToStats() == true ? false : true) : true}" th:text="${accountTransaction.getAddToStats() != null ? (accountTransaction.getAddToStats() == true ? 'Не проведен': 'Проведен') : 'Проведен'}"></option>
-                                            <option th:value="${accountTransaction.getAddToStats() != null ? null : false}" th:text="${accountTransaction.getAddToStats() != null ? null : 'Не проведен'}"></option>
+                                            <option value="true" th:selected="${accountTransaction.getAddToStats() == true}">Проведен</option>
+                                            <option value="false" th:selected="${accountTransaction.getAddToStats() == false}">Не проведен</option>
                                         </select>
                                     </th>
                                     <th>
-                                        <select class=" form-select" name="transactionPurposeName"
+                                        <select class=" form-select" name="transactionPurposeName" onchange="submitForm()"
                                                 aria-label="Default select example">
-                                            <option th:value="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}" th:text="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"></option>
-                                            <option th:each="transaction:${transactionPurposeList}" th:value="${transaction.getName() != accountTransaction.getTransactionPurposeName() ? transaction.getName() : null}" th:text="${transaction.getName() != accountTransaction.getTransactionPurposeName() ? transaction.getName() : null}"></option>
+                                            <option th:value="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"
+                                                    th:text="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"></option>
+                                            <option th:each="transaction:${transactionPurposeList}"
+                                                    th:value="${transaction.getName() != accountTransaction.getTransactionPurposeName() ? transaction.getName() : null}"
+                                                    th:text="${transaction.getName() != accountTransaction.getTransactionPurposeName() ? transaction.getName() : null}"></option>
                                         </select>
                                     </th>
                                     <th><input name="userName" type="text" class="form-control"
                                                th:value="${accountTransaction.getUserName() != null ? accountTransaction.getUserName() : ''}">
                                     </th>
-                                    <th><input name="scoreId" type="number" class="form-control"
-                                               th:value="${accountTransaction.getScoreId() != null ? accountTransaction.getScoreId() : ''}">
+                                    <th><input name="scoreNumber" type="number" class="form-control"
+                                               th:value="${accountTransaction.getScoreNumber() != null ? accountTransaction.getScoreNumber() : ''}">
                                     </th>
-                                    <th><input name="isIncome" type="text" class="form-control"
-                                               th:value="${accountTransaction.getIsIncome() != null ? accountTransaction.getIsIncome() : ''}">
+                                    <th>
+                                        <select class=" form-select" name="isIncome"
+                                                aria-label="Default select example" onchange="submitForm()">
+                                            <option>
+                                            </option>
+                                            <option value="true" th:selected="${accountTransaction.getIsIncome() == true}">Приход</option>
+                                            <option value="false" th:selected="${accountTransaction.getIsIncome() == false}">Расход</option>
+                                        </select>
                                     </th>
                                     <th></th>
                                     <th>
-                                        <button type="submit">fillter</button>
                                     </th>
-                                </form>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr class="clickable-row" th:each="transaction:${accountTransactionList}"
-                                th:data-action="@{/admin/account-transaction/{id}(id=${transaction.getId()})}">
-                                <td th:text="${transaction.getId()}"></td>
-                                <td th:text="${transaction.getDate()}"></td>
-                                <td>
-                                    <span th:text="${transaction.getAddToStats() == true ? 'Проведен' : 'Не проведен'}"></span>
-                                </td>
-                                <td th:text="${transaction.getTransactionPurposeName()}"></td>
-                                <td th:text="${transaction.getUserName()}"></td>
-                                <td th:text="${transaction.getScoreId()}"></td>
-                                <td>
-                                    <span th:text="${transaction.getIsIncome() == true ? 'Приход' : 'Разход'}"></span>
-                                </td>
-                                <td th:text="${transaction.getSum()}"></td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="clickable-row" th:each="transaction:${accountTransactionList}"
+                                    th:data-action="@{/admin/account-transaction/{id}(id=${transaction.getId()})}">
+                                    <td th:text="${transaction.getId()}"></td>
+                                    <td th:text="${transaction.getDate()}"></td>
+                                    <td>
+                                        <span th:text="${transaction.getAddToStats() == true ? 'Проведен' : 'Не проведен'}"></span>
+                                    </td>
+                                    <td th:text="${transaction.getTransactionPurposeName()}"></td>
+                                    <td th:text="${transaction.getUserName()}"></td>
+                                    <td th:text="${transaction.getScoreNumber()}"></td>
+                                    <td>
+                                        <span th:text="${transaction.getIsIncome() == true ? 'Приход' : 'Разход'}"></span>
+                                    </td>
+                                    <td th:text="${transaction.getSum()}"></td>
 
-                                <td>
-                                    <div class="btn-group pull-right">
-                                        <a class="btn btn-default btn-sm"
-                                           th:href="${transaction.getIsIncome() ?
-             '/admin/account-transaction/update/in/' + transaction.getId() :
-             '/admin/account-transaction/update/out/' + transaction.getId()}"
-                                           title="Редактировать" data-toggle="tooltip">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-                                        <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/account-transaction/delete/{id}(id = ${accountTransaction.getId()})}"
-                                           title="Удалить" data-toggle="tooltip"
-                                           data-pjax="0" data-method="post"
-                                           data-confirm="Вы уверены, что хотите удалить этот элемент?"><i
-                                                class="fa fa-trash"></i></a></div>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="${transaction.getIsIncome() ?
+                                                '/admin/account-transaction/update/in/' + transaction.getId() :
+                                                '/admin/account-transaction/update/out/' + transaction.getId()}"
+                                               title="Редактировать" data-toggle="tooltip">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/account-transaction/delete/{id}(id = ${accountTransaction.getId()})}"
+                                               title="Удалить" data-toggle="tooltip"
+                                               data-pjax="0" data-method="post"
+                                               data-confirm="Вы уверены, что хотите удалить этот элемент?"><i
+                                                    class="fa fa-trash"></i></a></div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -190,11 +214,44 @@
                                 <b>Проведен расход: <span th:text="${sumWhereIsIncomeIsFalse}"></span></b>
                             </p>
                         </div>
-                        <div class="col">
-                            <ul id="pagination" class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a id="prevPage" class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a id="nextPage" class="page-link" href="#">»</a></li>
-                            </ul>
+                        <div th:if="${max}>1">
+                            <div class="col">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <script>
+                                        var pageNumber = [[${current}]] - 1;
+                                        var afterQuestionMark = '';
+                                        if (window.location.href.includes('filter')) {
+                                            var parts = window.location.href.split('?');
+                                            afterQuestionMark = '?' + parts[1];
+                                            var baseUrl = '/admin/account-transaction/filter/';
+                                        } else {
+                                            var baseUrl = '/admin/account-transaction/index/';
+                                        }
+
+                                        if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled">«</button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">«</a></li>');
+                                    </script>
+                                    <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
+                                        <script src="/pagination.js" data-url="admin/account-transaction/index/"
+                                                th:current="${current}"
+                                                th:max="${max+1}"></script>
+                                    </ul>
+                                    <script>
+                                        var pageNumber = [[${current}]] + 1;
+                                        var afterQuestionMark = '';
+                                        if (window.location.href.includes('filter')) {
+                                            var parts = window.location.href.split('?');
+                                            afterQuestionMark = '?' + parts[1];
+                                            var baseUrl = '/admin/account-transaction/filter/';
+                                        } else {
+                                            var baseUrl = '/admin/account-transaction/index/';
+                                        }
+                                        console.log([[${current}]])
+                                        if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">»</button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">»</a></li>');
+                                    </script>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>

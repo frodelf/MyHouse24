@@ -54,6 +54,16 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    @Override
+    public List<String> getOnlyName() {
+        List<User> users = userRepository.findAll();
+        List<String> names = new ArrayList<>();
+        for (User user : users) {
+            names.add(user.getFirstName());
+        }
+        return names;
+    }
+
     public Page<User> getPage(int pageNumber, Model model) {
         double size = 1.0;
         int max = (int)Math.ceil(userRepository.findAll().size()/size-1);

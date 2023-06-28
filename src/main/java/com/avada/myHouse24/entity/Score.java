@@ -17,6 +17,8 @@ public class Score {
     private Long id;
     private double balance;
     private String status;
+    @Column(unique = true)
+    private String number;
     @OneToOne
     private Flat flat;
 }

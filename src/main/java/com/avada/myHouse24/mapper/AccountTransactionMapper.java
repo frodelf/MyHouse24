@@ -1,14 +1,11 @@
 package com.avada.myHouse24.mapper;
 
 import com.avada.myHouse24.entity.AccountTransaction;
-import com.avada.myHouse24.model.AccountTransactionDTO;
+import com.avada.myHouse24.model.AccountTransactionForViewDTO;
 import com.avada.myHouse24.model.AccountTransactionInDTO;
 import com.avada.myHouse24.model.AccountTransactionOutDTO;
 import com.avada.myHouse24.repo.AccountTransactionRepository;
-import com.avada.myHouse24.services.impl.AdminServiceImpl;
-import com.avada.myHouse24.services.impl.ScoreServiceImpl;
-import com.avada.myHouse24.services.impl.TransactionPurposeServiceImpl;
-import com.avada.myHouse24.services.impl.UserServiceImpl;
+import com.avada.myHouse24.services.impl.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
@@ -23,72 +20,95 @@ import java.util.List;
 public class AccountTransactionMapper {
     private final AccountTransactionRepository accountTransactionRepository;
     private final UserServiceImpl userService;
+    private final AccountTransactionServiceImpl accountTransactionService;
     private final ScoreServiceImpl scoreService;
     private final AdminServiceImpl adminService;
     private final TransactionPurposeServiceImpl transactionPurposeService;
 
     public AccountTransactionInDTO toDtoForIn(AccountTransaction accountTransaction){
-        return new AccountTransactionInDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(),
+        return new AccountTransactionInDTO(accountTransaction.getNumber(), accountTransaction.getFromDate(),
                 accountTransaction.getTransactionPurpose().getName(),
                 accountTransaction.getUser().getFirstName(), accountTransaction.getScore().getId().toString(),
                 accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getFirstName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
     }
 
     public AccountTransaction toEntityForIn(AccountTransactionInDTO accountTransactionDTOIn){
-        return new AccountTransaction(Long.parseLong(accountTransactionDTOIn.getId()), accountTransactionDTOIn.getDate(), Double.valueOf(accountTransactionDTOIn.getSum()), accountTransactionDTOIn.isIncome(), accountTransactionDTOIn.isAddToStats(), accountTransactionDTOIn.getComment(),
-                userService.getByFirstName(accountTransactionDTOIn.getUserName()), scoreService.getById(Long.parseLong(accountTransactionDTOIn.getScoreId())), adminService.getByName(accountTransactionDTOIn.getAdminName()), transactionPurposeService.getByName(accountTransactionDTOIn.getTransactionPurposeName()));
+        AccountTransaction accountTransaction = accountTransactionService.getById(1);
+        accountTransaction.setNumber(accountTransactionDTOIn.getId());
+        accountTransaction.setFromDate(accountTransactionDTOIn.getDate());
+        accountTransaction.setSum(Double.valueOf(accountTransactionDTOIn.getSum()));
+        accountTransaction.setIncome(accountTransactionDTOIn.isIncome());
+        accountTransaction.setAddToStats(accountTransactionDTOIn.isAddToStats());
+        accountTransaction.setComment(accountTransactionDTOIn.getComment());
+        accountTransaction.setUser(userService.getByFirstName(accountTransactionDTOIn.getUserName()));
+        accountTransaction.setScore(scoreService.getById(Long.parseLong(accountTransactionDTOIn.getScoreId())));
+        accountTransaction.setAdmin(adminService.getByName(accountTransactionDTOIn.getAdminName()));
+        accountTransaction.setTransactionPurpose(transactionPurposeService.getByName(accountTransactionDTOIn.getTransactionPurposeName()));
+
+        return accountTransaction;
+
     }
     public AccountTransactionOutDTO toDtoForOut(AccountTransaction accountTransaction){
-        return new AccountTransactionOutDTO(accountTransaction.getId().toString(), accountTransaction.getFromDate(), accountTransaction.getTransactionPurpose().getName(), accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getFirstName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
+        return new AccountTransactionOutDTO(accountTransaction.getNumber(), accountTransaction.getFromDate(), accountTransaction.getTransactionPurpose().getName(), accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getFirstName(), accountTransaction.getComment(), accountTransaction.isAddToStats());
     }
-    public AccountTransaction toEntityForOut(AccountTransactionOutDTO accountTransactionOutDTO){
-        return new AccountTransaction(Long.parseLong(accountTransactionOutDTO.getId()), accountTransactionOutDTO.getDate(), Double.valueOf(accountTransactionOutDTO.getSum()), accountTransactionOutDTO.isIncome(), accountTransactionOutDTO.isAddToStats(), accountTransactionOutDTO.getComment(), adminService.getByName(accountTransactionOutDTO.getAdminName()), transactionPurposeService.getByName(accountTransactionOutDTO.getTransactionPurposeName()));
-    }
-    public AccountTransaction toEntity(AccountTransactionDTO accountTransactionDTO){
+    public AccountTransaction toEntityForOut(AccountTransactionOutDTO accountTransactionOutDTO) {
         AccountTransaction accountTransaction = new AccountTransaction();
-        accountTransaction.setId(Long.valueOf(accountTransactionDTO.getId()));
-        accountTransaction.setFromDate(Date.valueOf(accountTransactionDTO.getDate()));
-        if(!accountTransactionDTO.getUserName().isBlank())accountTransaction.setUser(userService.getByFirstName(accountTransactionDTO.getUserName()));
-        if(!accountTransactionDTO.getScoreId().isBlank())accountTransaction.setScore(scoreService.getById(Long.parseLong(accountTransactionDTO.getScoreId())));
-        accountTransaction.setTransactionPurpose(transactionPurposeService.getByName(accountTransactionDTO.getTransactionPurposeName()));
-        accountTransaction.setAdmin(adminService.getByName(accountTransactionDTO.getAdminName()));
-        accountTransaction.setIncome(accountTransactionDTO.getIsIncome());
-        accountTransaction.setSum(Double.parseDouble(accountTransactionDTO.getSum()));
-        accountTransaction.setComment(accountTransactionDTO.getComment());
-        accountTransaction.setAddToStats(accountTransactionDTO.getIsIncome());
+        accountTransaction.setNumber(accountTransactionOutDTO.getId());
+        accountTransaction.setFromDate(accountTransactionOutDTO.getDate());
+        accountTransaction.setSum(Double.valueOf(accountTransactionOutDTO.getSum()));
+        accountTransaction.setIncome(accountTransactionOutDTO.isIncome());
+        accountTransaction.setAddToStats(accountTransactionOutDTO.isAddToStats());
+        accountTransaction.setComment(accountTransactionOutDTO.getComment());
+        accountTransaction.setAdmin(adminService.getByName(accountTransactionOutDTO.getAdminName()));
+        accountTransaction.setTransactionPurpose(transactionPurposeService.getByName(accountTransactionOutDTO.getTransactionPurposeName()));
         return accountTransaction;
     }
-    public AccountTransactionDTO toDto(AccountTransaction accountTransaction){
-        AccountTransactionDTO accountTransactionDTO = new AccountTransactionDTO();
-        accountTransactionDTO.setId(String.valueOf(accountTransaction.getId()));
-        accountTransactionDTO.setDate(String.valueOf(accountTransaction.getFromDate()));
+
+    public AccountTransaction toEntityForView(AccountTransactionForViewDTO accountTransactionForViewDTO){
+        AccountTransaction accountTransaction = new AccountTransaction();
+        accountTransaction.setNumber(accountTransactionForViewDTO.getId());
+        accountTransaction.setFromDate(Date.valueOf(accountTransactionForViewDTO.getDate()));
+        if(!accountTransactionForViewDTO.getUserName().isBlank())accountTransaction.setUser(userService.getByFirstName(accountTransactionForViewDTO.getUserName()));
+        if(!accountTransactionForViewDTO.getScoreNumber().isBlank())accountTransaction.setScore(scoreService.getById(Long.parseLong(accountTransactionForViewDTO.getScoreNumber())));
+        accountTransaction.setTransactionPurpose(transactionPurposeService.getByName(accountTransactionForViewDTO.getTransactionPurposeName()));
+        accountTransaction.setAdmin(adminService.getByName(accountTransactionForViewDTO.getAdminName()));
+        accountTransaction.setIncome(accountTransactionForViewDTO.getIsIncome());
+        accountTransaction.setSum(Double.parseDouble(accountTransactionForViewDTO.getSum()));
+        accountTransaction.setComment(accountTransactionForViewDTO.getComment());
+        accountTransaction.setAddToStats(accountTransactionForViewDTO.getIsIncome());
+        return accountTransaction;
+    }
+    public AccountTransactionForViewDTO toDtoForView(AccountTransaction accountTransaction){
+        AccountTransactionForViewDTO accountTransactionForViewDTO = new AccountTransactionForViewDTO();
+        accountTransactionForViewDTO.setId(accountTransaction.getNumber());
+        accountTransactionForViewDTO.setDate(String.valueOf(accountTransaction.getFromDate()));
         try {
-            accountTransactionDTO.setUserName(accountTransaction.getUser().getFirstName());
+            accountTransactionForViewDTO.setUserName(accountTransaction.getUser().getFirstName());
         }catch (Exception e){
             log.warn(e);
             log.warn("AccountTransaction hasn't user.");
-            accountTransactionDTO.setUserName("Не указан");
+            accountTransactionForViewDTO.setUserName("Не указан");
         }
         try {
-            accountTransactionDTO.setScoreId(String.valueOf(accountTransaction.getScore().getId()));
+            accountTransactionForViewDTO.setScoreNumber(String.valueOf(accountTransaction.getScore().getId()));
         }catch (Exception e){
             log.warn(e);
             log.warn("AccountTransaction hasn't  score.");
-            accountTransactionDTO.setScoreId("Не указан");
+            accountTransactionForViewDTO.setScoreNumber("Не указан");
         }
-        accountTransactionDTO.setTransactionPurposeName(accountTransaction.getTransactionPurpose().getName());
-        accountTransactionDTO.setAdminName(accountTransaction.getAdmin().getFirstName());
-        accountTransactionDTO.setIsIncome(accountTransaction.isIncome());
-        accountTransactionDTO.setSum(String.valueOf(accountTransaction.getSum()));
-        accountTransactionDTO.setComment(accountTransaction.getComment());
-        accountTransactionDTO.setAddToStats(accountTransaction.isAddToStats());
-        return accountTransactionDTO;
+        accountTransactionForViewDTO.setTransactionPurposeName(accountTransaction.getTransactionPurpose().getName());
+        accountTransactionForViewDTO.setAdminName(accountTransaction.getAdmin().getFirstName());
+        accountTransactionForViewDTO.setIsIncome(accountTransaction.isIncome());
+        accountTransactionForViewDTO.setSum(String.valueOf(accountTransaction.getSum()));
+        accountTransactionForViewDTO.setComment(accountTransaction.getComment());
+        accountTransactionForViewDTO.setAddToStats(accountTransaction.isAddToStats());
+        return accountTransactionForViewDTO;
     }
-    public List<AccountTransactionDTO> toDtoList(List<AccountTransaction> accountTransactions){
-        ArrayList<AccountTransactionDTO> accountTransactionDTOS = new ArrayList<>();
+    public List<AccountTransactionForViewDTO> toDtoForViewList(List<AccountTransaction> accountTransactions){
+        ArrayList<AccountTransactionForViewDTO> accountTransactionForViewDTOS = new ArrayList<>();
         for (AccountTransaction accountTransaction : accountTransactions) {
-            accountTransactionDTOS.add(toDto(accountTransaction));
+            accountTransactionForViewDTOS.add(toDtoForView(accountTransaction));
         }
-        return accountTransactionDTOS;
+        return accountTransactionForViewDTOS;
     }
 }

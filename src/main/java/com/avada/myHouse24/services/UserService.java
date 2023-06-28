@@ -13,6 +13,7 @@ public interface UserService {
     User getByFirstName(String name);
     User getById(long id);
     List<User> getAll();
+    List<String> getOnlyName();
     boolean isDebt(User user);
     User findUserByEmail(String email);
     boolean verifyPassword(User user, String password);

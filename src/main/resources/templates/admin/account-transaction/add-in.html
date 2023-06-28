@@ -33,7 +33,7 @@
                     <div class="col">
                         <div class="input-group mb-3">
                             <span class="input-group-text">№</span>
-                            <input type="number" class="form-control" name="id" th:value="${maxId}" readonly>
+                            <input type="number" class="form-control" name="id" th:value="${maxId}">
                             <p style="margin-left: 10px; margin-right: 10px;">от</p>
                             <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                             <input type="date" name="date" class="form-control" th:value="${fromDate}">
@@ -65,8 +65,8 @@
                                         <select class="mySelect form-select" name="userName"
                                                 aria-label="Default select example">
                                             <option>Виберите...</option>
-                                            <option th:each="user:${users}" th:value="${user.name}" th:field="*{userName}"
-                                                    th:text="${user.name}"></option>
+                                            <option th:each="user:${users}" th:value="${user.firstName}" th:field="*{userName}"
+                                                    th:text="${user.firstName}"></option>
                                         </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
                                     <p style="margin-top: 20px;">Лицевой счет</p>
@@ -96,8 +96,8 @@
                                         <select class="mySelect form-select" name="adminName"
                                                 aria-label="Default select example">
                                             <option>Виберите...</option>
-                                            <option th:each="admin:${admins}" th:value="${admin.name}" th:field="*{adminName}"
-                                                    th:text="${admin.name}"></option>
+                                            <option th:each="admin:${admins}" th:value="${admin.firstName}" th:field="*{adminName}"
+                                                    th:text="${admin.firstName}"></option>
                                         </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('adminName')}" th:errors="*{adminName}"></div>
                                 </div>
