@@ -1,6 +1,8 @@
 package com.avada.myHouse24.util;
 
+import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.User;
+import com.avada.myHouse24.model.HouseForAddDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +26,33 @@ public class ImageUtil {
             nameImage = generateName() + format;
             Files.copy(image.getInputStream(), uploadPath.resolve(nameImage));
             deleteImage(String.valueOf(uploadPath.resolve(user.getImage())));
+        } catch (Exception e) {
+            log.warn(e);
+        }
+        return nameImage;
+    }
+    public static String imageForHouseForAdd(MultipartFile file) throws IOException {
+        String nameImage ="";
+        try {
+            Path uploadPath = Paths.get("uploads/house");
+            String originalFilename = file.getOriginalFilename();
+            String format = originalFilename.substring(originalFilename.lastIndexOf("."));
+            nameImage = generateName() + format;
+            Files.copy(file.getInputStream(), uploadPath.resolve(nameImage));
+        } catch (Exception e) {
+            log.warn(e);
+        }
+        return nameImage;
+    }
+    public static String imageForHouseForEdit(MultipartFile file, String previousImageName) throws IOException {
+        String nameImage ="";
+        try {
+            Path uploadPath = Paths.get("uploads/house");
+            String originalFilename = file.getOriginalFilename();
+            String format = originalFilename.substring(originalFilename.lastIndexOf("."));
+            nameImage = generateName() + format;
+            Files.copy(file.getInputStream(), uploadPath.resolve(nameImage));
+            deleteImage(String.valueOf(uploadPath.resolve(previousImageName)));
         } catch (Exception e) {
             log.warn(e);
         }

@@ -16,4 +16,8 @@ public class Floor {
     @Column(name = "id")
     private Long id;
     private String name;
+
+    public Floor(String name) {
+        this.name = name;
+    }
 }

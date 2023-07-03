@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -24,10 +25,12 @@ public class House {
     private String image2;
     private String image3;
     private String image4;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Flat> flats;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Section> sections;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Floor> floors;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Admin> admins;
 }

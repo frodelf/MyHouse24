@@ -26,4 +26,18 @@ public class RoleServiceImpl implements RoleService {
     public List<Role> getAll() {
         return roleRepository.findAll();
     }
+
+    @Override
+    public String getRoleName(String role) {
+        String result = "";
+        switch (role){
+            case ("ROLE_ADMIN"):
+                result = "Адмін";
+                break;
+            case ("ROLE_USER"):
+                result = "Користувач";
+                break;
+        }
+        return result;
+    }
 }

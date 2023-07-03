@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">
+                Статьи приходов/расходов
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Статьи приходов/расходов
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <div class="btn-group margin-bottom float-right">
+                        <a href="/admin/transaction-purpose/create" type="button" class="btn btn-success"
+                                style="width: 220px; margin-bottom: 20px">
+                            Добавить статью
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-hover"
+                           style="font-size: 14px">
+                        <thead>
+                        <tr>
+                            <th style="width: 60%">Название</th>
+                            <th style="width: 20%;">Приход/Расход</th>
+                            <th style="width: 20%;"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="purpose : ${purposes}" class="clickable-row"
+                                th:data-action="@{/admin/transaction-purpose/edit/{id}(id=${purpose.getId()})}">
+                                <td>
+                                    <span th:text="${purpose.getName()}"></span>
+                                </td>
+                                <td>
+                                    <span th:if="${purpose.getIsIncome() == true}" style="color: green">Приход</span>
+                                    <span th:if="${purpose.getIsIncome() == false}" style="color: red">Расход</span>
+                                </td>
+                                <td>
+                                    <div class="btn-group float-right">
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/transaction-purpose/edit/{id}(id=${purpose.getId()})}"
+                                           title="Редактировать" data-toggle="tooltip">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/transaction-purpose/delete/{id}(id=${purpose.getId()})}"
+                                           title="Удалить" data-toggle="tooltip"><i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                </form>
+                <div class="table-responsive">
+
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

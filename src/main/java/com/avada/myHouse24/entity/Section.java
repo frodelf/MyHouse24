@@ -16,4 +16,8 @@ public class Section {
     @Column(name = "id")
     private Long id;
     private String name;
+
+    public Section(String name) {
+        this.name = name;
+    }
 }
