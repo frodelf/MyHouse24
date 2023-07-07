@@ -24,9 +24,9 @@ public class AdditionalServiceMapper {
     }
     public AdditionalService toEntity(AdditionalServiceDTO additionalServiceDTO){
         AdditionalService additionalService = new AdditionalService();
-        additionalService.setId(Long.valueOf(additionalServiceDTO.getId()));
+        if(additionalServiceDTO.getId() != null && !additionalServiceDTO.getId().isBlank())additionalService.setId(Long.valueOf(additionalServiceDTO.getId()));
         additionalService.setName(additionalServiceDTO.getName());
-        additionalService.setShowInCounter(additionalServiceDTO.getShowInCounter());
+        additionalService.setShowInCounter(additionalServiceDTO.getShowInCounter() != null);
         additionalService.setUnitOfMeasurement(unitOfMeasurementService.getByName(additionalServiceDTO.getUnitOfMeasurementName()));
         return additionalService;
     }
@@ -36,5 +36,12 @@ public class AdditionalServiceMapper {
             additionalServiceDTOList.add(toDto(additionalService));
         }
         return additionalServiceDTOList;
+    }
+    public List<AdditionalService> toEntityList(List<AdditionalServiceDTO> additionalServiceDTOList){
+        List<AdditionalService> additionalServices = new ArrayList<>();
+        for (AdditionalServiceDTO additionalServiceDTO : additionalServiceDTOList) {
+            additionalServices.add(toEntity(additionalServiceDTO));
+        }
+        return additionalServices;
     }
 }

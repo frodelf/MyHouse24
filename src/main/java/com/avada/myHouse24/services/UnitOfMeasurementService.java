@@ -5,7 +5,9 @@ import com.avada.myHouse24.entity.UnitOfMeasurement;
 import java.util.List;
 
 public interface UnitOfMeasurementService {
-    public List<UnitOfMeasurement> getAll();
-    public void save(UnitOfMeasurement unitOfMeasurement);
-    public UnitOfMeasurement getByName(String name);
+    List<UnitOfMeasurement> getAll();
+    void save(UnitOfMeasurement unitOfMeasurement);
+    void deleteById(long id);
+    UnitOfMeasurement getByName(String name);
+    void saveList(List<UnitOfMeasurement> unitOfMeasurement);
 }

@@ -39,9 +39,10 @@
                                     <li id="service_unit_tab" style="padding: 15px;"><a href="#tab_serviceunit"
                                                                                         data-toggle="tab"
                                                                                         aria-expanded="false"
-                                                                                        class="text-for-breadcrumb">Единицы измерения</a></li>
+                                                                                        class="text-for-breadcrumb">Единицы
+                                        измерения</a></li>
                                 </ul>
-                                <form id="serviceForm" method="post" action="/admin/service/add" >
+                                <form id="serviceForm" method="post" action="/admin/service/add">
                                     <div class="tab-content">
                                         <div class="tab-pane clearfix active" id="tab_service">
                                             <b>
@@ -50,25 +51,39 @@
                                                         <div class="row">
                                                             <div class="col-4" style="margin-top: 30px">
                                                                 Услуга
-                                                                <input th:name="@{services[__${index.index}__].name}" type="text" class="form-control" style="width: 85%;"
+                                                                <input th:name="@{services[__${index.index}__].name}"
+                                                                       type="text" class="form-control"
+                                                                       style="width: 85%;"
                                                                        th:value="${service.getName()}">
-                                                                <input th:name="@{services[__${index.index}__].id}" type="text" class="form-control"
+
+                                                                Показывать в счетчиках
+                                                                <input style="margin-left: 10px" th:name="@{services[__${index.index}__].showInCounter}" th:value="${service.getShowInCounter()}" type="checkbox" class="form-check-input" id="flexCheckDefault" th:checked="${service.getShowInCounter()}">
+
+                                                                <input th:name="@{services[__${index.index}__].id}"
+                                                                       type="text" class="form-control"
                                                                        th:value="${service.getId()}"
                                                                        style="min-width: 30%; max-width: 30%" hidden>
                                                             </div>
-                                                            <div class="col" style="margin-top: 30px">
+                                                            <div class="col-4" style="margin-top: 30px;">
                                                                 Ед. изм.
-                                                                <select class="form-select" th:name="@{services[__${index.index}__].unitOfMeasurementName}"
-                                                                        style="width: 20%">
+                                                                <div class="input-group">
+                                                                <select class="form-select"
+                                                                        th:name="@{services[__${index.index}__].unitOfMeasurementName}"
+                                                                        style="width: 50%">
                                                                     <option>Вибрати</option>
                                                                     <option th:each="unit : ${units}"
                                                                             th:text="${unit.getName()}"
                                                                             th:value="${unit.getName()}"
-                                                                            th:selected="${service.getUnitOfMeasurement() == unit.getName()}"></option>
+                                                                            th:selected="${service.getUnitOfMeasurementName().equals(unit.getName())}"></option>
                                                                 </select>
+                                                                <span class="input-group-text">
+                                                                    <a th:href="@{/admin/service/delete/service/{id}(id = ${service.getId()})}" style="color: black"><i class="fa fa-trash"></i></a>
+                                                                </span>
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${service.getError()}"></div>
+                                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                                             th:text="${service.getError()}"></div>
                                                     </div>
                                                 </div>
 
@@ -77,7 +92,8 @@
                                                         <div class="row">
                                                             <div class="col-4">
                                                                 <button type="button" class="btn btn-outline-secondary"
-                                                                        style="margin-top: 20px" onclick="addBlockForAdditionalService()">
+                                                                        style="margin-top: 20px"
+                                                                        onclick="addBlockForAdditionalService()">
                                                                     Добавить
                                                                 </button>
                                                             </div>
@@ -87,25 +103,41 @@
                                                     </div>
                                                 </div>
                                             </b>
-                                            <center>
-                                                <button type="submit" class="btn btn-success" onclick="submitForm()">
-                                                    Сохранить
-                                                </button>
-                                                <a href="/admin/service/index"
-                                                   class="btn btn-outline-secondary"
-                                                   style="margin-right: 3px">
-                                                    Отменить
-                                                </a>
-                                            </center>
+
                                         </div>
                                         <div class="tab-pane clearfix" id="tab_serviceunit">
+                                            <div th:each="unit, index : ${units}">
+                                                <div class="form-row" style="width: 100%;">
+                                                    <input th:name="@{unitOfMeasurementNames[__${index.index}__].name}"
+                                                        type="text" class="form-control" th:value="${unit.getName()}"
+                                                        style="width: 40%">
+                                                    <a th:href="@{/admin/service/delete/unit/{id}(id = ${unit.getId()})}"
+                                                       class="btn btn-danger form-row-remove-btn"><i
+                                                            class="fa fa-trash"></i></a>
+                                                </div>
+                                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic; margin-bottom: 30px;"
+                                                     th:text="${unit.getError()}"></div>
+                                                <input th:name="@{unitOfMeasurementNames[__${index.index}__].id}"type="text" class="form-control"
+                                                       th:value="${unit.getId()}" hidden>
+                                            </div>
+
                                             <button type="button" class="btn btn-outline-secondary"
-                                                    style="margin-top: 20px" onclick="addBlockForUnitOfMeasurement()">
+                                                    style="margin-top: 20px; margin-left: 12px;"
+                                                    onclick="addBlockForUnitOfMeasurement()">
                                                 Добавить
                                             </button>
                                         </div>
-
                                     </div>
+                                    <center>
+                                        <button type="submit" class="btn btn-success" onclick="submitForm()">
+                                            Сохранить
+                                        </button>
+                                        <a href="/admin/service/index"
+                                           class="btn btn-outline-secondary"
+                                           style="margin-right: 3px">
+                                            Отменить
+                                        </a>
+                                    </center>
                                 </form>
                             </div>
                         </div>
@@ -122,7 +154,8 @@
 </div>
 <script th:inline="javascript">
     var units = [[${units}]]
-    var blockCounter = [[${services.size}]];
+    var unitsCounter = [[${units.size == null ? 0 : units.size}]]
+    var blockCounter = [[${services.size == null ? 0 : services.size}]]
 </script>
 
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>

@@ -180,6 +180,7 @@ function addBlockForAdditionalService() {
     var newBlock = document.createElement("div");
     newBlock.className = "row";
     newBlock.innerHTML = `
+    <div class="row">
         <div class="col-4" style="margin-top: 30px">
             Услуга
             <input name="services[${blockCounter}].name" style="width: 85%;" type="text" class="form-control">
@@ -187,20 +188,31 @@ function addBlockForAdditionalService() {
             Показывать в счетчиках
             <input style="margin-left: 10px" name="services[${blockCounter}].showInCounter" type="checkbox" class="form-check-input" id="flexCheckDefault">
         </div>
-        <div class="col" style="margin-top: 30px">
+        <div class="col-4" style="margin-top: 30px; margin-left: 1%;">
             Ед. изм.
-            <select class="form-select" name="services[${blockCounter}].unitOfMeasurementName" style="width: 20%;">
-                <option>Вибрати</option>
-                ${units.map(function (unit) {
+            <div class="input-group">
+                <select class="form-select" name="services[${blockCounter}].unitOfMeasurementName" style="width: 50%;">
+                    <option>Вибрати</option>
+                    ${units.map(function (unit) {
         return `<option value="${unit.name}">${unit.name}</option>`;
     }).join('')}
-            </select>
+                </select>
+                <span class="input-group-text">               
+                    <a type="button" onclick="removeBlock1(this)"><i class="fa fa-trash"></i></a>        
+                </span>
+            </div>
             <br/>
         </div>
+    </div>
 `;
     blocksContainer.insertBefore(newBlock, blocksContainer.lastElementChild);
     console.log(blockCounter);
     blockCounter++;
+}
+
+function removeBlock1(element) {
+    var parentDiv = element.closest('.row');
+    parentDiv.remove();
 }
 
 function addBlockForSection() {
@@ -252,7 +264,6 @@ function addBlockForUsers() {
     var addButton = document.querySelector('#tab_users .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
 }
-
 function updateInputValue(selectElement) {
     var selectedOption = selectElement.options[selectElement.selectedIndex].value;
     var inputValue = '';
@@ -274,7 +285,12 @@ function addBlockForUnitOfMeasurement() {
     var newBlock = document.createElement('div');
     newBlock.className = 'form-row';
     newBlock.innerHTML =
-        '<br/> <h7>Название</h7>';
-    var addButton = document.querySelector('#tab_serviceunit .btn-success');
+        '<br/>' +
+        '<div class="form-row" style="width: 100%; margin-bottom: 20px;">' +
+        '   <input name="unitOfMeasurementNames['+unitsCounter+'].name" type="text" class="form-control" style="width: 40%">' +
+        '   <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a>' +
+        '</div>';
+    var addButton = document.querySelector('#tab_serviceunit .btn-outline-secondary');
+    unitsCounter++;
     addButton.parentNode.insertBefore(newBlock, addButton);
 }

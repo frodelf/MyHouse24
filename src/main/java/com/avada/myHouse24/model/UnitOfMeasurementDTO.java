@@ -10,4 +10,5 @@ public class UnitOfMeasurementDTO {
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")
     private String name;
+    private String error;
 }

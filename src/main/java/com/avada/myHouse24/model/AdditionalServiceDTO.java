@@ -15,4 +15,5 @@ public class AdditionalServiceDTO {
     @Size(max = 50, message = "Поле не може бути більше 50 символів")
     private String unitOfMeasurementName;
     private String error;
+    private String unitOfMeasurementNameError;
 }

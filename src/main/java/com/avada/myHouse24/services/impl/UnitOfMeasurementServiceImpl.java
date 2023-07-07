@@ -20,6 +20,16 @@ public class UnitOfMeasurementServiceImpl implements UnitOfMeasurementService {
     public void save(UnitOfMeasurement unitOfMeasurement) {
         unitOfMeasurementRepository.save(unitOfMeasurement);
     }
+    @Override
+    public void saveList(List<UnitOfMeasurement> unitOfMeasurement) {
+        for (UnitOfMeasurement measurement : unitOfMeasurement) {
+            save(measurement);
+        }
+    }
+    @Override
+    public void deleteById(long id) {
+        unitOfMeasurementRepository.deleteById(id);
+    }
 
     @Override
     public UnitOfMeasurement getByName(String name) {

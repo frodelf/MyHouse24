@@ -65,14 +65,13 @@ function createPaginationItem(pageNumber) {
     return li;
 }
 
-
 function createEllipsisItem() {
     var li = document.createElement('li');
-    li.innerText = '...';
     li.classList.add('page-item');
-    li.style.margin = '0 5px';
-    li.style.fontWeight = 'bold';
-    li.style.fontSize = '16px';
+    var link = document.createElement('a');
+    link.classList.add('page-link');
+    link.innerText = '...';
+    li.appendChild(link);
     return li;
 }
 

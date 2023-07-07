@@ -22,6 +22,18 @@ public class AdditionalServiceImpl implements AdditionalService {
     }
 
     @Override
+    public void saveList(List<com.avada.myHouse24.entity.AdditionalService> additionalServices) {
+        for (com.avada.myHouse24.entity.AdditionalService additionalService : additionalServices) {
+            save(additionalService);
+        }
+    }
+
+    @Override
+    public void deleteById(long id) {
+        additionalServiceRepository.deleteById(id);
+    }
+
+    @Override
     public com.avada.myHouse24.entity.AdditionalService getById(Long id) {
         return additionalServiceRepository.findById(id).get();
     }

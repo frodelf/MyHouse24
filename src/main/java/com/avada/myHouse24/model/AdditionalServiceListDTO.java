@@ -8,5 +8,5 @@ import java.util.List;
 @Data
 public class AdditionalServiceListDTO {
     private List<AdditionalServiceDTO> services;
-    private List<String> unitOfMeasurementNames;
+    private List<UnitOfMeasurementDTO> unitOfMeasurementNames;
 }
