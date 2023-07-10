@@ -37,4 +37,9 @@ public class AdditionalServiceImpl implements AdditionalService {
     public com.avada.myHouse24.entity.AdditionalService getById(Long id) {
         return additionalServiceRepository.findById(id).get();
     }
+
+    @Override
+    public com.avada.myHouse24.entity.AdditionalService getByName(String name) {
+        return additionalServiceRepository.findByName(name).get();
+    }
 }

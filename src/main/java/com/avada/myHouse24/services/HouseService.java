@@ -1,10 +1,8 @@
 package com.avada.myHouse24.services;
 
 import com.avada.myHouse24.entity.House;
-import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.model.HouseForAddDto;
 import com.avada.myHouse24.model.HouseForViewDto;
-import com.avada.myHouse24.model.UserForViewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 

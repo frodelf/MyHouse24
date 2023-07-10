@@ -8,4 +8,5 @@ public interface AdditionalService {
     void saveList(List<com.avada.myHouse24.entity.AdditionalService> additionalServices);
     void deleteById(long id);
     com.avada.myHouse24.entity.AdditionalService getById(Long id);
+    com.avada.myHouse24.entity.AdditionalService getByName(String name);
 }

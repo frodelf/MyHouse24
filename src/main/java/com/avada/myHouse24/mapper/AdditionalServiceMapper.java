@@ -1,8 +1,11 @@
 package com.avada.myHouse24.mapper;
 
 import com.avada.myHouse24.entity.AdditionalService;
+import com.avada.myHouse24.entity.Tariff;
 import com.avada.myHouse24.entity.UnitOfMeasurement;
 import com.avada.myHouse24.model.AdditionalServiceDTO;
+import com.avada.myHouse24.model.AdditionalServiceForTariffDTO;
+import com.avada.myHouse24.model.TariffDTO;
 import com.avada.myHouse24.services.impl.UnitOfMeasurementServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

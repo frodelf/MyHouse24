@@ -19,7 +19,7 @@ public class UnitOfMeasurementMapper {
     }
     public UnitOfMeasurement toEntity(UnitOfMeasurementDTO unitOfMeasurementDTO){
         UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
-        if(unitOfMeasurementDTO.getId() != null)unitOfMeasurement.setId(Long.valueOf(unitOfMeasurementDTO.getId()));
+        if(unitOfMeasurementDTO.getId() != null && !unitOfMeasurementDTO.getId().isBlank())unitOfMeasurement.setId(Long.valueOf(unitOfMeasurementDTO.getId()));
         unitOfMeasurement.setName(unitOfMeasurementDTO.getName());
         return  unitOfMeasurement;
     }

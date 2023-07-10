@@ -264,6 +264,7 @@ function addBlockForUsers() {
     var addButton = document.querySelector('#tab_users .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
 }
+
 function updateInputValue(selectElement) {
     var selectedOption = selectElement.options[selectElement.selectedIndex].value;
     var inputValue = '';
@@ -281,16 +282,56 @@ function removeBlock(element) {
     var block = element.parentNode.parentNode;
     block.parentNode.removeChild(block);
 }
+
 function addBlockForUnitOfMeasurement() {
     var newBlock = document.createElement('div');
     newBlock.className = 'form-row';
     newBlock.innerHTML =
         '<br/>' +
         '<div class="form-row" style="width: 100%; margin-bottom: 20px;">' +
-        '   <input name="unitOfMeasurementNames['+unitsCounter+'].name" type="text" class="form-control" style="width: 40%">' +
+        '   <input name="unitOfMeasurementNames[' + unitsCounter + '].name" type="text" class="form-control" style="width: 40%">' +
         '   <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a>' +
         '</div>';
     var addButton = document.querySelector('#tab_serviceunit .btn-outline-secondary');
     unitsCounter++;
     addButton.parentNode.insertBefore(newBlock, addButton);
+}
+function addBlockForTariff() {
+    var newBlock = document.createElement('div');
+    newBlock.className = 'form-row';
+    console.log(services);
+    newBlock.innerHTML = `
+    <div class="row" style="margin-bottom: 20px; width: 100%">
+      <div class="col" style="margin-left: 8px;">
+        Услуга
+        <select class="form-select" name="names[`+indexForTariff+`]" style="width: 90%" onchange="updateUnit(this)">
+          <option>Вибрати...</option>
+          ${services.map(item => `<option data-unit-of-measurement="${item.unitOfMeasurementName}">${item.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="col">
+        Цена
+        <input type="number" name="additionalServiceForTariffDTOS[`+indexForTariff+`].price" class="form-control" style="width: 90%">
+      </div>
+      <div class="col">
+        Валюта
+        <input type="text" class="form-control" value="грн" style="width: 90%" readonly>
+      </div>
+      <div class="col-2">
+        Ед. изм.
+        <input type="text" class="form-control" value="" style="width: 90%" readonly>
+      </div>
+    </div>
+  `;
+    indexForTariff++;
+
+    var addButton = document.querySelector('.btn-outline-secondary');
+    addButton.parentNode.insertBefore(newBlock, addButton);
+}
+
+function updateUnit(selectElement) {
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    var unitOfMeasurementName = selectedOption.getAttribute('data-unit-of-measurement');
+    var unitInput = selectElement.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('input[type="text"]');
+    unitInput.value = unitOfMeasurementName;
 }
