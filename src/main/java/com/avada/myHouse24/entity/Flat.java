@@ -23,10 +23,14 @@ public class Flat {
     @ManyToOne
     private House house;
     @ManyToOne
+    private Floor floor;
+    @ManyToOne
+    private Section section;
+    @ManyToOne
     private User user;
     @ManyToOne
     private Tariff tariff;
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Score score;
     @OneToMany
     private List<CounterData> counterData;

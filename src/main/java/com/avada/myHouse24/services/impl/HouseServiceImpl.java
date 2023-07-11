@@ -48,7 +48,7 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public Page<House> getPage(int pageNumber, Model model) {
-        double size = 1.0;
+        double size = 10.0;
         int max = (int)Math.ceil(houseRepository.findAll().size()/size-1);
         if(pageNumber < 0)pageNumber = 0;
         if(pageNumber > max)pageNumber = max;
@@ -60,7 +60,7 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public Page<HouseForViewDto> getPage(int pageNumber, Model model, List<HouseForViewDto> houseForViewDtos) {
-        double size = 1.0;
+        double size = 10.0;
         int max = (int) Math.ceil(houseForViewDtos.size() / size-1 ) > 0 ? (int) Math.ceil(houseForViewDtos.size() / size-1 ) : 0;
         if (pageNumber < 0) pageNumber = 0;
         if (pageNumber > max) pageNumber = max;

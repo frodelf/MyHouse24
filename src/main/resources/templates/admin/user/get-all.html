@@ -80,7 +80,7 @@
                     <form id="formSend" method="get" action="/admin/user/filter/1"
                           onsubmit="event.preventDefault()">
                         <div class="table-responsive">
-                        <table class="table table-bordered table-hover table-striped table-sm"
+                        <table class="table table-hover table-striped table-sm"
                                style="font-size: 14px">
                             <thead>
                             <tr>
@@ -210,7 +210,7 @@
                                 <b>Количество владельцев: <span th:text="${userCount}"></span></b>
                             </p>
                         </div>
-                        <div th:if="${max}>1">
+                        <div th:if="${max}>0">
                             <div class="col">
                                 <ul class="pagination pagination-sm m-0 float-right">
                                     <script>
@@ -224,8 +224,8 @@
                                             var baseUrl = '/admin/user/index/';
                                         }
 
-                                        if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled">«</button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">«</a></li>');
+                                        if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                     </script>
                                     <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
                                         <script src="/pagination.js" data-url="admin/user/index/"
@@ -243,8 +243,8 @@
                                             var baseUrl = '/admin/user/index/';
                                         }
                                         console.log([[${current}]])
-                                        if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">»</button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">»</a></li>');
+                                        if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                     </script>
                                 </ul>
                             </div>

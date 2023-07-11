@@ -147,7 +147,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="card-footer" th:if="${max} > 1">
+                <div class="card-footer" th:if="${max} > 0">
                     <ul class="pagination pagination-sm m-0 float-right">
                         <script>
                             var pageNumber = [[${current}]] - 1;
@@ -160,8 +160,8 @@
                                 var baseUrl = '/admin/user-admin/index/';
                             }
 
-                            if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled">«</button></li>');
-                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">«</a></li>');
+                            if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                         </script>
                         <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
                             <script src="/pagination.js" data-url="admin/user/index/"
@@ -179,8 +179,8 @@
                                 var baseUrl = '/admin/user-admin/index/';
                             }
                             console.log([[${current}]])
-                            if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">»</button></li>');
-                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">»</a></li>');
+                            if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                         </script>
                     </ul>
                 </div>

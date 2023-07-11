@@ -32,4 +32,23 @@ public class ScoreServiceImpl implements ScoreService {
         }
         return numbers;
     }
+    @Override
+    public boolean existNumber(String number){
+        return scoreRepository.existsByNumber(number);
+    }
+
+    @Override
+    public void save(Score score) {
+        scoreRepository.save(score);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        scoreRepository.deleteById(id);
+    }
+
+    @Override
+    public Score getByNumber(String number) {
+        return scoreRepository.findByNumber(number).get();
+    }
 }

@@ -37,12 +37,12 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 20px; margin-right: auto;">
-                Дома
+                Квартиры
             </h4>
             <ol class="breadcrumb" style="margin-right: 3%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Дома
+                    Квартиры
                 </li>
             </ol>
         </div>
@@ -52,70 +52,110 @@
                 </div>
                 <div class="col-xs-12 col-lg-3">
                     <div class="btn-group margin-bottom float-right">
-                        <a href="/admin/house/add" type="button" class="btn btn-success"
+                        <a href="/admin/flat/add" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px">
-                            Добавить дом
+                            Добавить квартиру
                         </a>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/house/index/1"
+                    <a href="/admin/flat/index/1"
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
-                    <form id="formSend" method="get" action="/admin/house/filter/1"
+                    <form id="formSend" method="get" action="/admin/flat/filter/1"
                           onsubmit="event.preventDefault()">
+                        <div class="table-responsive">
                         <table class="table table-hover"
                                style="font-size: 14px">
                             <thead>
-                            <tr>
-                                <th style="width: 5%">№</th>
-                                <th style="width: 25%">Название</th>
-                                <th style="width: 50%">Адрес</th>
-                                <th style="width: 20%"></th>
-                            </tr>
-                            <tr>
-                                <th style="width: 5%"></th>
-                                <th style="width: 25%">
-                                    <input name="name" type="text" class="form-control"
-                                           th:value="${filter.getName()}">
-                                </th>
-                                <th style="width: 50%">
-                                    <input name="address" type="text" class="form-control"
-                                           th:value="${filter.getAddress()}">
-                                </th>
-                                <th style="width: 20%"></th>
-                            </tr>
+                                <tr>
+                                    <th style="min-width: 150px">
+                                        № Квартири
+                                    </th>
+                                    <th style="min-width: 190px">
+                                        Дом
+                                    </th>
+                                    <th style="min-width: 190px">
+                                        Секция
+                                    </th>
+                                    <th style="min-width: 190px">
+                                        Этаж
+                                    </th>
+                                    <th style="min-width: 190px">
+                                        Владелец
+                                    </th>
+                                    <th style="min-width: 190px">
+                                        Остаток (грн)
+                                    </th>
+                                    <th style="min-width: 150px">
+
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th>
+                                        <input name="number" type="number" class="form-control"
+                                               th:value="${filter.getNumber()}">
+                                    </th>
+                                    <th>
+                                        <select class="form-select" name="house" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getHouse()}" th:text="${filter.getHouse() == null ? '' : filter.getHouse().getName()}">
+                                            </option>
+                                            <option th:each="house:${houses}" th:value="${house}" th:text="${house.name}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <select class="form-select" name="section" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getSection()}" th:text="${filter.getSection() == null ? 'Виберите дом' : filter.getSection().getName()}">
+                                            </option>
+                                            <option th:each="section : ${sections}" th:value="${section}" th:text="${section.getName()}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <select class="form-select" name="floor" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getFloor()}" th:text="${filter.getFloor() == null ? 'Виберите дом' : filter.getFloor().getName()}">
+                                            </option>
+                                            <option th:each="floor : ${floors}" th:value="${floor}" th:text="${floor.getName()}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <select class="form-select" name="user" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getUser()}" th:text="${filter.getUser() == null ? '' : filter.getUser().getFirstName()}">
+                                            </option>
+                                            <option th:each="user : ${users}" th:value="${user}" th:text="${user.getFirstName()}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th>
+                                        <input name="rest" type="number" class="form-control"
+                                               th:value="${rest}">
+                                    </th>
+                                    <th>
+
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr class="clickable-row" th:each="house : ${houses}"
-                                th:data-action="@{/admin/house/{id}(id=${house.getId()})}">
-                                <td th:text="${house.getId()}"></td>
-                                <td th:text="${house.getName()}"></td>
-                                <td th:text="${house.getAddress()}"></td>
-                                <td>
-                                    <a class="btn btn-default btn-sm float-right"
-                                       th:href="@{/admin/house/delete/{id}(id=${house.getId()})}"
-                                       title="Удалить"><i class="fa fa-trash"></i>
-                                    </a>
-                                    <a class="btn btn-default btn-sm float-right"
-                                       th:href="@{/admin/house/edit/{id}(id=${house.getId()})}"
-                                       title="Редактировать">
-                                        <i class="fa fa-pencil-alt"></i>
-                                    </a>
-                                </td>
-                            </tr>
+
                             </tbody>
                         </table>
+                        </div>
                     </form>
                 </div>
                 <div class="card-footer">
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                Количество домов: <b th:text="${housesCount}"></b>
+                                Количество домов: <b th:text="${flatCount}"></b>
                             </div>
                             <div class="col">
                                 <div th:if="${max}>0">
@@ -132,8 +172,8 @@
                                                     var baseUrl = '/admin/house/index/';
                                                 }
 
-                                                if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                                if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled">«</button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">«</a></li>');
                                             </script>
                                             <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
                                                 <script src="/pagination.js" data-url="admin/house/index/"
@@ -151,8 +191,8 @@
                                                     var baseUrl = '/admin/house/index/';
                                                 }
                                                 console.log([[${current}]])
-                                                if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                                if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">»</button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">»</a></li>');
                                             </script>
                                         </ul>
                                     </div>
