@@ -65,90 +65,116 @@
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
-                    <form id="formSend" method="get" action="/admin/flat/filter/1"
-                          onsubmit="event.preventDefault()">
-                        <div class="table-responsive">
+                    <form id="formSend" method="get" action="/admin/flat/filter/1"  onsubmit="event.preventDefault()">
+                    <div class="table-responsive">
                         <table class="table table-hover"
                                style="font-size: 14px">
                             <thead>
-                                <tr>
-                                    <th style="min-width: 150px">
-                                        № Квартири
-                                    </th>
-                                    <th style="min-width: 190px">
-                                        Дом
-                                    </th>
-                                    <th style="min-width: 190px">
-                                        Секция
-                                    </th>
-                                    <th style="min-width: 190px">
-                                        Этаж
-                                    </th>
-                                    <th style="min-width: 190px">
-                                        Владелец
-                                    </th>
-                                    <th style="min-width: 190px">
-                                        Остаток (грн)
-                                    </th>
-                                    <th style="min-width: 150px">
+                            <tr>
+                                <th style="min-width: 150px">
+                                    № Квартири
+                                </th>
+                                <th style="min-width: 190px">
+                                    Дом
+                                </th>
+                                <th style="min-width: 190px">
+                                    Секция
+                                </th>
+                                <th style="min-width: 190px">
+                                    Этаж
+                                </th>
+                                <th style="min-width: 190px">
+                                    Владелец
+                                </th>
+                                <th style="min-width: 190px">
+                                    Остаток (грн)
+                                </th>
+                                <th style="min-width: 150px">
 
-                                    </th>
-                                </tr>
-                                <tr>
-                                    <th>
-                                        <input name="number" type="number" class="form-control"
-                                               th:value="${filter.getNumber()}">
-                                    </th>
-                                    <th>
-                                        <select class="form-select" name="house" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getHouse()}" th:text="${filter.getHouse() == null ? '' : filter.getHouse().getName()}">
-                                            </option>
-                                            <option th:each="house:${houses}" th:value="${house}" th:text="${house.name}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <select class="form-select" name="section" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getSection()}" th:text="${filter.getSection() == null ? 'Виберите дом' : filter.getSection().getName()}">
-                                            </option>
-                                            <option th:each="section : ${sections}" th:value="${section}" th:text="${section.getName()}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <select class="form-select" name="floor" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getFloor()}" th:text="${filter.getFloor() == null ? 'Виберите дом' : filter.getFloor().getName()}">
-                                            </option>
-                                            <option th:each="floor : ${floors}" th:value="${floor}" th:text="${floor.getName()}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <select class="form-select" name="user" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getUser()}" th:text="${filter.getUser() == null ? '' : filter.getUser().getFirstName()}">
-                                            </option>
-                                            <option th:each="user : ${users}" th:value="${user}" th:text="${user.getFirstName()}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th>
-                                        <input name="rest" type="number" class="form-control"
-                                               th:value="${rest}">
-                                    </th>
-                                    <th>
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    <input name="number" type="number" class="form-control"
+                                           th:value="${filter.getNumber()}">
+                                </th>
+                                <th>
+                                    <select class="form-select" name="house" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${filter.getHouse() == null ? null : filter.getHouse().getId()}"
+                                                th:text="${filter.getHouse() == null ? '' : filter.getHouse().getName()}">
+                                        </option>
+                                        <option th:each="house:${houses}" th:value="${house.getId()}"
+                                                th:text="${house.name}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="section" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${filter.getSection() == null ? null : filter.getSection().getId()}"
+                                                th:text="${filter.getSection() == null ? 'Виберите дом' : filter.getSection().getName()}">
+                                        </option>
+                                        <option th:each="section : ${sections}" th:value="${section.getId()}"
+                                                th:text="${section.getName()}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="floor" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${filter.getFloor() == null ? null : filter.getFloor().getId()}"
+                                                th:text="${filter.getFloor() == null ? 'Виберите дом' : filter.getFloor().getName()}">
+                                        </option>
+                                        <option th:each="floor : ${floors}" th:value="${floor.getId()}"
+                                                th:text="${floor.getName()}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="user" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${filter.getUser() == null ? null : filter.getUser().getId()}"
+                                                th:text="${filter.getUser() == null ? '' : filter.getUser().getFirstName()}">
+                                        </option>
+                                        <option th:each="user : ${users}" th:value="${user.getId()}"
+                                                th:text="${user.getFirstName()}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <input name="rest" type="number" class="form-control"
+                                           th:value="${rest}">
+                                </th>
+                                <th>
 
-                                    </th>
-                                </tr>
+                                </th>
+                            </tr>
                             </thead>
                             <tbody>
-
+                            <tr th:each="flat : ${flats}" class="clickable-row" th:data-action="@{/admin/flat/{id}(id=${flat.getId()})}">
+                                <td th:text="${flat.number}"></td>
+                                <td th:text="${flat.house.name}"></td>
+                                <td th:text="${flat.section.name}"></td>
+                                <td th:text="${flat.floor.name}"></td>
+                                <td th:text="${flat.user.firstName}"></td>
+                                <td th:text="${rest}"></td>
+                                <td>
+                                    <a class="btn btn-default btn-sm"
+                                       th:href="@{/admin/flat/edit/{id}(id=${flat.getId()})}"
+                                       title="Редактировать">
+                                        <i class="fa fa-pencil-alt"></i>
+                                    </a>
+                                    <a class="btn btn-default btn-sm"
+                                       th:href="@{/admin/flat/delete/{id}(id=${flat.getId()})}"
+                                       title="Удалить">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
-                        </div>
+                    </div>
                     </form>
                 </div>
                 <div class="card-footer">
@@ -167,16 +193,17 @@
                                                 if (window.location.href.includes('filter')) {
                                                     var parts = window.location.href.split('?');
                                                     afterQuestionMark = '?' + parts[1];
-                                                    var baseUrl = '/admin/house/filter/';
+                                                    var baseUrl = '/admin/flat/filter/';
                                                 } else {
-                                                    var baseUrl = '/admin/house/index/';
+                                                    var baseUrl = '/admin/flat/index/';
                                                 }
 
-                                                if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled">«</button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">«</a></li>');
+                                                if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                             </script>
-                                            <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
-                                                <script src="/pagination.js" data-url="admin/house/index/"
+                                            <ul class="pagination pagination-sm m-0 float-right"
+                                                id="pagination-example">
+                                                <script src="/pagination.js" data-url="admin/flat/index/"
                                                         th:current="${current}"
                                                         th:max="${max+1}"></script>
                                             </ul>
@@ -186,13 +213,13 @@
                                                 if (window.location.href.includes('filter')) {
                                                     var parts = window.location.href.split('?');
                                                     afterQuestionMark = '?' + parts[1];
-                                                    var baseUrl = '/admin/house/filter/';
+                                                    var baseUrl = '/admin/flat/filter/';
                                                 } else {
-                                                    var baseUrl = '/admin/house/index/';
+                                                    var baseUrl = '/admin/flat/index/';
                                                 }
                                                 console.log([[${current}]])
-                                                if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">»</button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">»</a></li>');
+                                                if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                             </script>
                                         </ul>
                                     </div>

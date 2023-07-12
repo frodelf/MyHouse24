@@ -7,6 +7,9 @@ import com.avada.myHouse24.services.impl.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
 public class FlatMapper {
@@ -31,11 +34,19 @@ public class FlatMapper {
         flatDTO.setNumber((long) flat.getNumber());
         flatDTO.setArea(flat.getArea());
         flatDTO.setHouse(flat.getHouse());
-        flatDTO.setFloor(flatDTO.getFloor());
+        flatDTO.setFloor(flat.getFloor());
         flatDTO.setSection(flat.getSection());
         flatDTO.setUser(flat.getUser());
         flatDTO.setTariff(flat.getTariff());
         flatDTO.setScoreNumber(flat.getScore().getNumber());
         return flatDTO;
+    }
+
+    public List<FlatDTO> toDtoList(List<Flat> flats){
+        List<FlatDTO> flatDTOS = new ArrayList<>();
+        for (Flat flat : flats) {
+            flatDTOS.add(toDto(flat));
+        }
+        return flatDTOS;
     }
 }

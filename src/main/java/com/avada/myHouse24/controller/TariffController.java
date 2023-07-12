@@ -66,7 +66,7 @@ public class TariffController {
     public String getById(@PathVariable("id")Long id, Model model){
         model.addAttribute("tariffDTO", tariffMapper.toDto(tariffService.getById(id)));
         model.addAttribute("dateEdit", tariffService.getById(id).getDateEdit());
-        return "/admin/tariff/get-by-id";
+        return "/admin/tariff/index";
     }
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable("id")Long id){

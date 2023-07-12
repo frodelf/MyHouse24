@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="uk" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="utf-8">
@@ -21,20 +21,21 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 20px; margin-right: auto;">
-                Новая квартира
+                Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]
             </h4>
             <ol class="breadcrumb" style="margin-right: 3%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Квартири</a></li>
+                <li class="breadcrumb-item"><a href="/admin/flat/index/1" class="text-for-breadcrumb">Квартиры</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/admin/flat/{id}(id = ${flat.getId()})}" class="text-for-breadcrumb">Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Новая квартира
+                    Редактирование
                 </li>
             </ol>
         </div>
         <section class="content">
             <div class="card">
-                <form method="post" th:object="${flatDTO}">
-                <div class="card-body">
+                <form method="post" th:object="${flat}">
+                    <div class="card-body">
                         <div class="row" style="font-weight: bold">
                             <div class="col">
                                 Номер квартиры
@@ -46,24 +47,26 @@
                                 Дом
                                 <select class="form-select" name="house" id="houseSelect">
                                     <option value="">Вибрати...</option>
-                                    <option th:each="house:${houses}" th:value="${house.getId()}" th:text="${house.name}"></option>
+                                    <option th:each="house:${houses}" th:value="${house.getId()}" th:text="${house.name}" th:selected="${house == flat.getHouse()}"></option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></div>
                                 Этаж
                                 <select class="form-select" name="floor">
                                     <option value="">Вибрати...</option>
+                                    <option th:each="floor:${floors}" th:value="${floor.getId()}" th:text="${floor.name}" th:selected="${floor == flat.getFloor()}"></option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('floor')}" th:errors="*{floor}"></div>
                                 Секция
                                 <select class="form-select" name="section">
                                     <option value="">Вибрати...</option>
+                                    <option th:each="section:${sections}" th:value="${section.getId()}" th:text="${section.name}" th:selected="${section == flat.getSection()}"></option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
                                 Владелец
                                 <select class="form-select" name="user"
                                         aria-label="Default select example">
                                     <option value="">Вибрати...</option>
-                                    <option th:each="user:${users}" th:value="${user.getId()}" th:text="${user.firstName}">
+                                    <option th:each="user:${users}" th:value="${user.getId()}" th:text="${user.firstName}" th:selected="${user == flat.getUser()}">
                                     </option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></div>
@@ -71,7 +74,7 @@
                                 <select class="form-select" name="tariff"
                                         aria-label="Default select example">
                                     <option value="">Вибрати...</option>
-                                    <option th:each="tariff:${tariffs}" th:value="${tariff.getId()}" th:text="${tariff.name}"></option>
+                                    <option th:each="tariff:${tariffs}" th:value="${tariff.getId()}" th:text="${tariff.name}" th:selected="${tariff == flat.getTariff()}"></option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('tariff')}" th:errors="*{tariff}"></div>
                             </div>
@@ -87,14 +90,14 @@
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('scoreNumber')}" th:errors="*{scoreNumber}"></div>
                             </div>
                         </div>
-                </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-success float-right" formaction="/admin/flat/copy">Сохранить и добавить новую</button>
-                    <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px" formaction="/admin/flat/add">Сохранить</button>
-                    <a href="/admin/flat/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
-                        Отменить
-                    </a>
-                </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success float-right" formaction="/admin/flat/copy">Сохранить и добавить новую</button>
+                        <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px" formaction="/admin/flat/add">Сохранить</button>
+                        <a href="/admin/flat/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
+                            Отменить
+                        </a>
+                    </div>
                 </form>
             </div>
         </section>

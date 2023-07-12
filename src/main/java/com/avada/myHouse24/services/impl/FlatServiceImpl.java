@@ -65,4 +65,9 @@ public class FlatServiceImpl implements FlatService {
     public List<Flat> getAll() {
         return flatRepository.findAll();
     }
+
+    @Override
+    public int getMaxId() {
+        return Math.toIntExact(flatRepository.findMaxId());
+    }
 }

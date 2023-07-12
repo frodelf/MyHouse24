@@ -14,4 +14,5 @@ public interface FlatService {
     void deleteById(Long id);
     void save(Flat flat);
     List<Flat> getAll();
+    int getMaxId();
 }

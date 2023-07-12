@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true;
+                });
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">
+                Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin/flat/index/1" class="text-for-breadcrumb">Квартиры</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <div class="btn-group margin-bottom float-right">
+                        <a href="/admin/flat/add" type="button" class="btn btn-success"
+                           style="width: 220px; margin-bottom: 20px">
+                            Добавить квартиру
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <div class="float-right">
+                        <a class="btn btn-outline-secondary" href="">
+                            <i class="fa fa-dollar-sign"></i>   Принять платеж
+                        </a>
+                        <a class="btn btn-outline-secondary" href="">
+                            <i class="fa fa-file"></i>   Оформить квитанцию
+                        </a>
+                        <a class="btn btn-primary" th:href="@{/admin/flat/edit/{id}(id=${flat.getId()})}">
+                            Редактировать квартиру
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body" style="padding-top: 0px">
+                    <table class="table table-bordered table-striped table-view"
+                           style="font-size: 13px; font-weight: bold">
+                        <tbody>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Лицевой счет
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.scoreNumber}]]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Номер квартиры
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.number}]]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Площадь
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.area}]]м2
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Дом
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.house.name}]]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Секция
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.section.name}]]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Этаж
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.floor.name}]]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Владелец
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.user.firstName}]]
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold; font-size: 14px; width: 30%">
+                                Тариф
+                            </td>
+                            <td style="width: 70%">
+                                [[${flat.tariff.name}]]
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть показания счетчиков</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть приходы</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть квитанции</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>
