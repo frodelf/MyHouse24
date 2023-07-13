@@ -42,7 +42,7 @@ public class UserController {
         UserForViewDTO forFilter = userMapper.toDtoForView(new User());
         forFilter.setIsDebt(null);
         model.addAttribute("filter", forFilter);
-        model.addAttribute("users", userMapper.toDtoListForView(userService.getPage(id-1, model).getContent()));
+        model.addAttribute("users", userMapper.toDtoListForView(userService.getPage(id, model).getContent()));
         model.addAttribute("userCount", userService.getAll().size());
         model.addAttribute("houses", houseService.getAllName());
         model.addAttribute("allStatus", UserStatus.values());
@@ -207,7 +207,7 @@ public class UserController {
                     .collect(Collectors.toList());
         }
         model.addAttribute("filter", userForViewDTO);
-        model.addAttribute("users", userService.getPage(page-1, model, users));
+        model.addAttribute("users", userService.getPage(page, model, users));
         model.addAttribute("userCount", userService.getAll().size());
         model.addAttribute("houses", houseService.getAllName());
         if(!house.isBlank())model.addAttribute("flats", houseService.getByName(house).getFlats());

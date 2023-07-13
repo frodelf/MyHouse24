@@ -71,6 +71,8 @@ public class FlatController {
         }
         if(!scoreService.existNumber(flatDTO.getScoreNumber())){
             Score score = new Score();
+            score.setFlat(flatMapper.toEntity(flatDTO));
+            score.setStatus("Активен");
             score.setNumber(flatDTO.getScoreNumber());
             scoreService.save(score);
         }

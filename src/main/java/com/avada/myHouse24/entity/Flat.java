@@ -1,9 +1,8 @@
 package com.avada.myHouse24.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,7 +11,10 @@ import java.util.List;
 @Table(name = "flat")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "house")
+
 public class Flat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +22,9 @@ public class Flat {
     private Long id;
     private int number;
     private double area;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "house_id")
+    @JsonIgnore
     private House house;
     @ManyToOne
     private Floor floor;
@@ -31,6 +35,7 @@ public class Flat {
     @ManyToOne
     private Tariff tariff;
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "score_id")
     private Score score;
     @OneToMany
     private List<CounterData> counterData;

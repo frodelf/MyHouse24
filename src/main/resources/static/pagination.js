@@ -49,6 +49,8 @@ function updatePagination() {
 function createPaginationItem(pageNumber) {
     var li = document.createElement('li');
     li.classList.add('page-item');
+    console.log(parseInt(pageNumber))
+    console.log(parseInt(currentPage))
     if (parseInt(pageNumber) === parseInt(currentPage)) {
         li.classList.add('active');
     }

@@ -139,9 +139,9 @@
                                     </th>
                                     <th>
                                         <select class=" form-select" name="transactionPurposeName" onchange="submitForm()"
-                                                aria-label="Default select example">
-                                            <option th:value="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"
-                                                    th:text="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"></option>
+                                                    aria-label="Default select example">
+                                                <option th:value="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"
+                                                        th:text="${accountTransaction.getTransactionPurposeName() != null ? accountTransaction.getTransactionPurposeName() : ''}"></option>
                                             <option th:each="transaction:${transactionPurposeList}"
                                                     th:value="${transaction.getName() != accountTransaction.getTransactionPurposeName() ? transaction.getName() : null}"
                                                     th:text="${transaction.getName() != accountTransaction.getTransactionPurposeName() ? transaction.getName() : null}"></option>

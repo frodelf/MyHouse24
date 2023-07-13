@@ -25,6 +25,7 @@ public class FlatServiceImpl implements FlatService {
 
     @Override
     public Page<Flat> getPage(int pageNumber, Model model) {
+        pageNumber = pageNumber - 1;
         double size = 10.0;
         int max = (int)Math.ceil(flatRepository.findAll().size()/size-1) > 0 ? (int)Math.ceil(flatRepository.findAll().size()/size-1) : 0;
         if(pageNumber < 0)pageNumber = 0;
@@ -37,6 +38,7 @@ public class FlatServiceImpl implements FlatService {
 
     @Override
     public Page<FlatDTO> getPage(int pageNumber, Model model, List<FlatDTO> flatDTOS) {
+        pageNumber = pageNumber - 1;
         double size = 10.0;
         int max = (int) Math.ceil(flatDTOS.size() / size-1) > 0 ? (int) Math.ceil(flatDTOS.size() / size-1) : 0;
         if (pageNumber < 0) pageNumber = 0;

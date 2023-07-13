@@ -44,8 +44,9 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Page<Admin> getPage(int pageNumber, Model model) {
+        pageNumber = pageNumber - 1;
         double size = 10.0;
-        int max = (int)Math.ceil(adminRepository.findAll().size()/size-1);
+        int max = (int)Math.ceil(adminRepository.findAll().size()/size-1) > 0 ? (int)Math.ceil(adminRepository.findAll().size()/size-1) : 0;
         if(pageNumber < 0)pageNumber = 0;
         if(pageNumber > max)pageNumber = max;
         PageRequest pageRequest = PageRequest.of(pageNumber, (int)size);
@@ -65,6 +66,7 @@ public class AdminServiceImpl implements AdminService {
     }
 
     public Page<AdminForViewDTO> getPage(int pageNumber, Model model, List<AdminForViewDTO> adminList) {
+        pageNumber = pageNumber - 1;
         double size = 10.0;
         int max = (int) Math.ceil(adminList.size() / size-1 ) > 0 ? (int) Math.ceil(adminList.size() / size-1 ) : 0;
         if (pageNumber < 0) pageNumber = 0;

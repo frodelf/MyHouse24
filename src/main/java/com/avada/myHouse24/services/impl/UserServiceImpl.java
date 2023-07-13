@@ -65,6 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<User> getPage(int pageNumber, Model model) {
+        pageNumber = pageNumber - 1;
         double size = 10.0;
         int max = (int)Math.ceil(userRepository.findAll().size()/size-1) > 0 ? (int)Math.ceil(userRepository.findAll().size()/size-1) : 0;
         if(pageNumber < 0)pageNumber = 0;
@@ -76,6 +77,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Page<UserForViewDTO> getPage(int pageNumber, Model model, List<UserForViewDTO> userList) {
+        pageNumber = pageNumber - 1;
         double size = 10.0;
         int max = (int) Math.ceil(userList.size() / size-1) > 0 ? (int) Math.ceil(userList.size() / size-1) : 0;
         if (pageNumber < 0) pageNumber = 0;
@@ -135,7 +137,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public long getMaxId() {
-        return userRepository.findMaxId()+1;
+        try {
+            return userRepository.findMaxId() + 1;
+        }catch (Exception e){
+            return 1;
+        }
     }
 
     @Override

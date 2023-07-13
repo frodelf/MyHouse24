@@ -31,7 +31,7 @@ public class AdminController {
         model.addAttribute("allStatus", UserStatus.values());
         model.addAttribute("roles", roleService.getAll());
         model.addAttribute("filter", adminMapper.toDtoForView(new Admin()));
-        model.addAttribute("admins", adminMapper.toDtoListForView(adminService.getPage(id-1, model).getContent()));
+        model.addAttribute("admins", adminMapper.toDtoListForView(adminService.getPage(id, model).getContent()));
         return "admin/user-admin/get-all";
     }
     @GetMapping("/create")
@@ -116,7 +116,7 @@ public class AdminController {
         model.addAttribute("allStatus", UserStatus.values());
         model.addAttribute("roles", roleService.getAll());
         model.addAttribute("filter", adminForViewDto);
-        model.addAttribute("admins", adminService.getPage(id-1, model, admins).getContent());
+        model.addAttribute("admins", adminService.getPage(id, model, admins).getContent());
         return "admin/user-admin/get-all";
     }
 }

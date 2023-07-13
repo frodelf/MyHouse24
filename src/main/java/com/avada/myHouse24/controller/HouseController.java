@@ -49,7 +49,7 @@ public class HouseController {
             return "admin/house/add";
         }
         houseService.add(house);
-        return "admin/house/add";
+        return "redirect:/admin/house/index/1";
     }
 
     @GetMapping("/filter/{page}")
