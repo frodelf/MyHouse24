@@ -1,15 +1,15 @@
 package com.avada.myHouse24.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name = "score")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Setter
+@Getter
+@ToString(exclude = "flat")
 public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,8 @@ public class Score {
     private Long id;
     private double balance;
     private String status;
-    @OneToOne
+    @Column(unique = true)
+    private String number;
+    @OneToOne(mappedBy = "score")
     private Flat flat;
 }

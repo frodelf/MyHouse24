@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">
+                Новая квартира
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Квартири</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Новая квартира
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="card">
+                <form method="post" th:object="${flatDTO}">
+                <div class="card-body">
+                        <div class="row" style="font-weight: bold">
+                            <div class="col">
+                                Номер квартиры
+                                <input type="number" class="form-control" th:field="*{number}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+                                Площадь (кв.м.)
+                                <input type="number" class="form-control" th:field="*{area}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
+                                Дом
+                                <select class="form-select" name="house" id="houseSelect">
+                                    <option value="">Вибрати...</option>
+                                    <option th:each="house:${houses}" th:value="${house.getId()}" th:text="${house.name}"></option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></div>
+                                Этаж
+                                <select class="form-select" name="floor">
+                                    <option value="">Вибрати...</option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('floor')}" th:errors="*{floor}"></div>
+                                Секция
+                                <select class="form-select" name="section">
+                                    <option value="">Вибрати...</option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
+                                Владелец
+                                <select class="form-select" name="user"
+                                        aria-label="Default select example">
+                                    <option value="">Вибрати...</option>
+                                    <option th:each="user:${users}" th:value="${user.getId()}" th:text="${user.firstName}">
+                                    </option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></div>
+                                Тариф
+                                <select class="form-select" name="tariff"
+                                        aria-label="Default select example">
+                                    <option value="">Вибрати...</option>
+                                    <option th:each="tariff:${tariffs}" th:value="${tariff.getId()}" th:text="${tariff.name}"></option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('tariff')}" th:errors="*{tariff}"></div>
+                            </div>
+                            <div class="col">
+                                Лицевой счет
+                                <input type="number" class="form-control" th:field="*{scoreNumber}">
+                                <select class="form-select"
+                                        aria-label="Default select example">
+                                    <option value="" hidden >или выбрате из списка...</option>
+                                    <option th:each="score:${scores}" th:value="${score.getNumber()}" th:text="${score.number}">
+                                    </option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('scoreNumber')}" th:errors="*{scoreNumber}"></div>
+                            </div>
+                        </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-right" formaction="/admin/flat/copy">Сохранить и добавить новую</button>
+                    <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px" formaction="/admin/flat/add">Сохранить</button>
+                    <a href="/admin/flat/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
+                        Отменить
+                    </a>
+                </div>
+                </form>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script>
+    $(document).ready(function() {
+        $('select[name="score"]').change(function() {
+            var selectedScore = $(this).val();
+            $('input[name="score"]').val(selectedScore);
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('#houseSelect').change(function() {
+            var houseId = $(this).val();
+            var floorSelect = $('select[name="floor"]');
+            $.ajax({
+                url: '/admin/flat/getFloors/'+houseId,
+                method: 'GET',
+                success: function(response) {
+                    floorSelect.empty();
+                    var floors = response;
+                    console.log(floors)
+                    console.log(floorSelect)
+                    floorSelect.append('<option value=null>Вибрати...</option>');
+                    $.each(floors, function(index, floor) {
+                        floorSelect.append('<option value="' + floor.id + '">' + floor.name + '</option>');
+                    });
+                },
+                error: function() {
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#houseSelect').change(function() {
+            var houseId = $(this).val();
+            var sectionSelect = $('select[name="section"]');
+            $.ajax({
+                url: '/admin/flat/getSections/'+houseId,
+                method: 'GET',
+                success: function(response) {
+                    sectionSelect.empty();
+                    var section = response;
+                    sectionSelect.append('<option value=null>Вибрати...</option>');
+                    $.each(section, function(index, section) {
+                        console.log(section)
+                        sectionSelect.append('<option value="' + section.id + '">' + section.name + '</option>');
+                    });
+                },
+                error: function() {
+                }
+            });
+        });
+    });
+</script>
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

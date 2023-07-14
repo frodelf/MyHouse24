@@ -10,23 +10,21 @@
     <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
     <script>
         window.addEventListener('DOMContentLoaded', function () {
-            // Отримати посилання на форму
             var form = document.getElementById('formSend');
             var inputs = form.querySelectorAll('input');
-
-            // Додати обробник події input для всіх полів вводу
             for (var i = 0; i < inputs.length; i++) {
                 inputs[i].addEventListener('input', function () {
-                    this.form.isFormDirty = true; // Позначити форму як змінену
+                    this.form.isFormDirty = true;
                 });
             }
-
-            // Додати обробник події click для всіх елементів сторінки
             document.addEventListener('click', function (event) {
                 if (form.isFormDirty) {
-                    form.submit(); // Відправити форму, якщо були внесені зміни
+                    form.submit();
                 }
             });
         });
@@ -75,103 +73,133 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/user/index"
+                    <a href="/admin/user/index/1"
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
+                    <form id="formSend" method="get" action="/admin/user/filter/1"
+                          onsubmit="event.preventDefault()">
+                        <div class="table-responsive">
+                        <table class="table table-hover table-striped table-sm"
+                               style="font-size: 14px">
+                            <thead>
+                            <tr>
+                                <th style="min-width: 120px;">Id</th>
+                                <th style="min-width: 150px;">ФИО</th>
+                                <th style="min-width: 150px;">Телефон</th>
+                                <th style="min-width: 200px;">Email</th>
+                                <th style="min-width: 180px;">Дом</th>
+                                <th style="min-width: 180px;">Квартира</th>
+                                <th style="min-width: 130px;">Добавлен</th>
+                                <th style="min-width: 140px;">Статус</th>
+                                <th style="min-width: 140px;">Есть долг</th>
+                                <th style="min-width: 100px;"></th>
+                            </tr>
+                            <tr>
+                                <th><input name="id" type="number" class="form-control"
+                                           th:value="${filter.getId()}"></th>
+                                <th><input name="fullName" type="text" class="form-control"
+                                           th:value="${filter.getFullName()}"></th>
+                                <th><input name="phone" type="number" class="form-control"
+                                           th:value="${filter.getPhone()}"></th>
+                                <th><input name="email" type="text" class="form-control"
+                                           th:value="${filter.getEmail()}"></th>
+                                <th>
+                                    <select class="form-select" name="house" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${house}" th:text="${house}">
+                                        </option>
+                                        <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="house" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${flat}" th:text="${flat}">
+                                        </option>
+                                        <option th:each="flat:${flats}" th:value="${flat}" th:text="${flat}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th><input name="dateTest" type="date" class="form-control"
+                                           th:value="${filter.getDate()}"></th>
+                                <th>
+                                    <select class="form-select" name="status" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:value="${filter.getStatus()}"
+                                                th:text="${#strings.toString(filter.getStatus()) == 'NEW' ? 'Новий' : #strings.toString(filter.getStatus()) == 'ACTIVE' ? 'Активний' : #strings.toString(filter.getStatus()) == 'DISABLED' ? 'Відключений' : ''}">
+                                        </option>
+                                        <option th:each="status: ${allStatus}" th:value="${status}"
+                                                th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                        </option>
+                                    </select>
+                                </th>
+                                <th>
+                                    <select class="form-select" name="isDebt" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option th:selected="${filter.getIsDebt() == null}"></option>
+                                        <option th:selected="${filter.getIsDebt() == true}" value="true">Да</option>
+                                        <option th:selected="${filter.getIsDebt() == false}" value="false">Нет
+                                        </option>
+                                    </select>
+                                </th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="clickable-row" th:each="user:${users}"
+                                th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
+                                <td th:text="${user.getId()}"></td>
+                                <td th:text="${user.getFullName()}"></td>
+                                <td th:text="${user.getPhone()}"></td>
+                                <td th:text="${user.getEmail()}"></td>
+                                <td>
+                                    <div th:each="house:${user.getHouses()}">
+                                        <h5 th:text="${house}"></h5>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div th:each="flat:${user.getFlats()}">
+                                        <h5 th:text="${flat}"></h5>
+                                    </div>
+                                </td>
+                                <td th:text="${user.getDate()}"></td>
+                                <td>
+                                        <span th:switch="${user.getStatus()}">
+                                            <span th:case="NEW" class="status status-new">Новий</span>
+                                            <span th:case="ACTIVE" class="status status-active">Активний</span>
+                                            <span th:case="DISABLED" class="status status-disabled">Відключений</span>
+                                        </span>
+                                </td>
+
+                                <td th:text="${user.getIsDebt() == true ? 'Да' : 'Нет'}"></td>
+                                <td>
+                                    <div class="btn-group pull-right">
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="message"
+                                           title="Повідомлення" data-toggle="tooltip">
+                                            <i class="fa fa-envelope"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
+                                           title="Редактировать" data-toggle="tooltip">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/user/delete/{id}(id=${user.getId()})}"
+                                           title="Удалить" data-toggle="tooltip"
+                                           data-pjax="0" data-method="post"
+                                           onclick="return confirmDelete();"><i class="fa fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        </div>
+                    </form>
                     <div class="table-responsive">
-                        <form id="formSend" method="get" action="/admin/user/filter" onsubmit="event.preventDefault()">
-                            <table class="table table-bordered table-hover table-striped table-sm"
-                                   style="font-size: 14px">
-                                <thead>
-                                <tr>
-                                    <th style="min-width: 120px;">Id</th>
-                                    <th style="min-width: 150px;">ФИО</th>
-                                    <th style="min-width: 150px;">Телефон</th>
-                                    <th style="min-width: 200px;">Email</th>
-                                    <th style="min-width: 180px;">Дом</th>
-                                    <th style="min-width: 180px;">Квартира</th>
-                                    <th style="min-width: 130px;">Добавлен</th>
-                                    <th style="min-width: 140px;">Статус</th>
-                                    <th style="min-width: 140px;">Есть долг</th>
-                                    <th style="min-width: 100px;"></th>
-                                </tr>
-                                <tr>
-                                    <th><input name="id" type="number" class="form-control"
-                                               th:value="${filter.getId()}"></th>
-                                    <th><input name="fullName" type="text" class="form-control"
-                                               th:value="${filter.getFullName()}"></th>
-                                    <th><input name="phone" type="number" class="form-control"
-                                               th:value="${filter.getPhone()}"></th>
-                                    <th><input name="email" type="text" class="form-control"
-                                               th:value="${filter.getEmail()}"></th>
-                                    <th>
-                                        <input name="houses" type="text" class="form-control">
-                                    </th>
-                                    <th><input name="flats" type="number" class="form-control"
-                                               th:value="${filter.getFlats()}"></th>
-                                    <th><input name="dateTest" type="date" class="form-control"
-                                               th:value="${filter.getDate()}"></th>
-                                    <th>
-                                        <select class=" form-select" name="status"
-                                                aria-label="Default select example">
-                                            <option th:value="${filter.getStatus()}"
-                                                    th:text="${filter.getStatus()}">
-                                            </option>
-                                            <option th:each="status:${allStatus}" th:value="${status.toString()}" th:text="${status.toString()}">
-                                            </option>
-                                        </select>
-                                    </th>
-                                    <th><input name="isDebt" type="text" class="form-control"
-                                               th:value="${filter.getIsDebt()==false || filter.getIsDebt()==null?'':true}">
-                                    </th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr class="clickable-row" th:each="user:${users}"
-                                    th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
-                                    <td th:text="${user.getId()}"></td>
-                                    <td th:text="${user.getFullName()}"></td>
-                                    <td th:text="${user.getPhone()}"></td>
-                                    <td th:text="${user.getEmail()}"></td>
-                                    <td>
-                                        <div th:each="house:${user.getHouses()}">
-                                            <h5 th:text="${house}"></h5>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div th:each="flat:${user.getFlats()}">
-                                            <h5 th:text="${flat}"></h5>
-                                        </div>
-                                    </td>
-                                    <td th:text="${user.getDate()}"></td>
-                                    <td th:text="${user.getStatus()}"></td>
-                                    <td th:text="${user.getIsDebt()}"></td>
-                                    <td>
-                                        <div class="btn-group pull-right">
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="message"
-                                               title="Повідомлення" data-toggle="tooltip">
-                                                <i class="fa fa-envelope"></i>
-                                            </a>
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
-                                               title="Редактировать" data-toggle="tooltip">
-                                                <i class="fa fa-pencil-alt"></i>
-                                            </a>
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="@{/admin/user/delete/{id}(id=${user.getId()})}"
-                                               title="Удалить" data-toggle="tooltip"
-                                               data-pjax="0" data-method="post"
-                                               onclick="return confirmDelete();"><i class="fa fa-trash"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </form>
 
                     </div>
                 </div>
@@ -182,11 +210,44 @@
                                 <b>Количество владельцев: <span th:text="${userCount}"></span></b>
                             </p>
                         </div>
-                        <div class="col">
-                            <ul id="pagination" class="pagination pagination-sm m-0 float-right">
-                                <li class="page-item"><a id="prevPage" class="page-link" href="#">«</a></li>
-                                <li class="page-item"><a id="nextPage" class="page-link" href="#">»</a></li>
-                            </ul>
+                        <div th:if="${max}>0">
+                            <div class="col">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <script>
+                                        var pageNumber = [[${current}]] - 1;
+                                        var afterQuestionMark = '';
+                                        if (window.location.href.includes('filter')) {
+                                            var parts = window.location.href.split('?');
+                                            afterQuestionMark = '?' + parts[1];
+                                            var baseUrl = '/admin/user/filter/';
+                                        } else {
+                                            var baseUrl = '/admin/user/index/';
+                                        }
+
+                                        if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                    </script>
+                                    <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
+                                        <script src="/pagination.js" data-url="admin/user/index/"
+                                                th:current="${current}"
+                                                th:max="${max+1}"></script>
+                                    </ul>
+                                    <script>
+                                        var pageNumber = [[${current}]] + 1;
+                                        var afterQuestionMark = '';
+                                        if (window.location.href.includes('filter')) {
+                                            var parts = window.location.href.split('?');
+                                            afterQuestionMark = '?' + parts[1];
+                                            var baseUrl = '/admin/user/filter/';
+                                        } else {
+                                            var baseUrl = '/admin/user/index/';
+                                        }
+                                        console.log([[${current}]])
+                                        if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                    </script>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -207,11 +268,9 @@
 <script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="/script.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
-        crossorigin="anonymous">
-</script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
 </body>
 

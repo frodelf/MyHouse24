@@ -19,6 +19,8 @@ public class AccountTransaction {
     private Long id;
     @Column(name = "from_date")
     private Date fromDate;
+    @Column(unique = true)
+    private String number;
     private double sum;
     @Column(name = "is_income")
     private boolean isIncome;

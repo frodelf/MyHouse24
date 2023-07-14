@@ -94,17 +94,17 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('.mySelect').select2();
 });
-$(document).ready(function() {
-    $('.nav-link2').click(function(e) {
+$(document).ready(function () {
+    $('.nav-link2').click(function (e) {
         e.preventDefault();
         $(this).next('.nav-treeview').slideToggle();
         $(this).find('.right').toggleClass('fa-angle-down fa-angle-left');
     });
 });
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     var rows = document.getElementsByClassName('clickable-row');
     for (var i = 0; i < rows.length; i++) {
-        rows[i].addEventListener('click', function() {
+        rows[i].addEventListener('click', function () {
             var action = this.getAttribute('data-action');
 
             if (action) {
@@ -113,11 +113,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     flatpickr("#daterange", {
         mode: "range",
         dateFormat: "Y-m-d",
-        onClose: function(selectedDates, dateStr, instance){}
+        onClose: function (selectedDates, dateStr, instance) {
+        }
     });
 });
 document.querySelector('#fileInput').addEventListener('change', (event) => {
@@ -128,6 +129,7 @@ document.querySelector('#fileInput').addEventListener('change', (event) => {
     };
     reader.readAsDataURL(file);
 });
+
 function generatePassword() {
     var passwordLength = 8;
     var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -160,25 +162,176 @@ function togglePasswordVisibility() {
         toggleIcon.classList.add("fa-eye-slash");
     }
 }
+
 function confirmDelete() {
     return confirm("Вы уверены, что хотите удалить этот элемент?");
 }
-window.addEventListener('DOMContentLoaded', function () {
-    // Отримати посилання на форму
-    var form = document.getElementById('formSend');
-    var inputs = form.querySelectorAll('input');
 
-    // Додати обробник події input для всіх полів вводу
-    for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('input', function () {
-            this.form.isFormDirty = true; // Позначити форму як змінену
-        });
-    }
+function submitForm() {
+    document.getElementById("formSend").submit();
+}
 
-    // Додати обробник події click для всіх елементів сторінки
-    document.addEventListener('click', function (event) {
-        if (form.isFormDirty) {
-            form.submit(); // Відправити форму, якщо були внесені зміни
-        }
-    });
+$(document).ready(function () {
+    $('.select2-example').select2();
 });
+
+function addBlockForAdditionalService() {
+    var blocksContainer = document.getElementById("blocks-container");
+    var newBlock = document.createElement("div");
+    newBlock.className = "row";
+    newBlock.innerHTML = `
+    <div class="row">
+        <div class="col-4" style="margin-top: 30px">
+            Услуга
+            <input name="services[${blockCounter}].name" style="width: 85%;" type="text" class="form-control">
+            <br/>
+            Показывать в счетчиках
+            <input style="margin-left: 10px" name="services[${blockCounter}].showInCounter" type="checkbox" class="form-check-input" id="flexCheckDefault">
+        </div>
+        <div class="col-4" style="margin-top: 30px; margin-left: 1%;">
+            Ед. изм.
+            <div class="input-group">
+                <select class="form-select" name="services[${blockCounter}].unitOfMeasurementName" style="width: 50%;">
+                    <option>Вибрати</option>
+                    ${units.map(function (unit) {
+        return `<option value="${unit.name}">${unit.name}</option>`;
+    }).join('')}
+                </select>
+                <span class="input-group-text">               
+                    <a type="button" onclick="removeBlock1(this)"><i class="fa fa-trash"></i></a>        
+                </span>
+            </div>
+            <br/>
+        </div>
+    </div>
+`;
+    blocksContainer.insertBefore(newBlock, blocksContainer.lastElementChild);
+    console.log(blockCounter);
+    blockCounter++;
+}
+
+function removeBlock1(element) {
+    var parentDiv = element.closest('.row');
+    parentDiv.remove();
+}
+
+function addBlockForSection() {
+    var newBlock = document.createElement('div');
+    newBlock.className = 'form-row';
+    newBlock.innerHTML =
+        '<br/> <h7>Название</h7> <div class="form-row" style="width: 100%; margin-bottom: 20px;"> <input name="sections[' + indexForSection + ']" type="text" class="form-control" style="width: 40%" value="Секция ' + (indexForSection + 1) + '"> <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a> </div>';
+
+    var addButton = document.querySelector('#tab_sections .btn-success');
+    addButton.parentNode.insertBefore(newBlock, addButton);
+    indexForSection++;
+}
+
+function addBlockForFloor() {
+    var newBlock = document.createElement('div');
+    newBlock.className = 'form-row';
+    newBlock.innerHTML =
+        '<br/> <h7>Название</h7> <div class="form-row" style="width: 100%; margin-bottom: 20px;"> <input name="floors[' + indexForFloor + ']" type="text" class="form-control" style="width: 40%" value="Етаж ' + (indexForFloor + 1) + '"> <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a> </div>';
+
+    var addButton = document.querySelector('#tab_floors .btn-success');
+    addButton.parentNode.insertBefore(newBlock, addButton);
+    indexForFloor++;
+}
+
+function addBlockForUsers() {
+    var newBlock = document.createElement('div');
+    newBlock.className = 'row';
+    var selectOptions = '';
+    for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+        console.log(user.firstName);
+        selectOptions += '<option value="' + user.firstName + '">' + user.firstName + '</option>';
+    }
+    indexForUsers++;
+    newBlock.innerHTML = `
+    <div class="col-4">
+        <select class="form-select" name="users[${indexForUsers}]" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
+            <option></option>
+            ${selectOptions}
+        </select>
+    </div>
+    <div class="col-8">
+        <div class="form-row" style="width: 100%; margin-bottom: 20px;">
+            <input name="users[${indexForUsers}]" type="text" class="form-control" style="width: 30%" readonly>
+            <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this.parentNode)"><i class="fa fa-trash"></i></a>
+        </div>
+    </div>
+  `;
+    var addButton = document.querySelector('#tab_users .btn-success');
+    addButton.parentNode.insertBefore(newBlock, addButton);
+}
+
+function updateInputValue(selectElement) {
+    var selectedOption = selectElement.options[selectElement.selectedIndex].value;
+    var inputValue = '';
+    for (var i = 0; i < users.length; i++) {
+        var user = users[i];
+        if (user.firstName === selectedOption) {
+            inputValue = user.role.name === "ROLE_ADMIN" ? "Адмін" : "";
+            break;
+        }
+    }
+    selectElement.parentNode.nextElementSibling.querySelector('input').value = inputValue;
+}
+
+function removeBlock(element) {
+    var block = element.parentNode.parentNode;
+    block.parentNode.removeChild(block);
+}
+
+function addBlockForUnitOfMeasurement() {
+    var newBlock = document.createElement('div');
+    newBlock.className = 'form-row';
+    newBlock.innerHTML =
+        '<br/>' +
+        '<div class="form-row" style="width: 100%; margin-bottom: 20px;">' +
+        '   <input name="unitOfMeasurementNames[' + unitsCounter + '].name" type="text" class="form-control" style="width: 40%">' +
+        '   <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a>' +
+        '</div>';
+    var addButton = document.querySelector('#tab_serviceunit .btn-outline-secondary');
+    unitsCounter++;
+    addButton.parentNode.insertBefore(newBlock, addButton);
+}
+function addBlockForTariff() {
+    var newBlock = document.createElement('div');
+    newBlock.className = 'form-row';
+    console.log(services);
+    newBlock.innerHTML = `
+    <div class="row" style="margin-bottom: 20px; width: 100%">
+      <div class="col" style="margin-left: 8px;">
+        Услуга
+        <select class="form-select" name="names[`+indexForTariff+`]" style="width: 90%" onchange="updateUnit(this)">
+          <option>Вибрати...</option>
+          ${services.map(item => `<option data-unit-of-measurement="${item.unitOfMeasurementName}">${item.name}</option>`).join('')}
+        </select>
+      </div>
+      <div class="col">
+        Цена
+        <input type="number" name="additionalServiceForTariffDTOS[`+indexForTariff+`].price" class="form-control" style="width: 90%">
+      </div>
+      <div class="col">
+        Валюта
+        <input type="text" class="form-control" value="грн" style="width: 90%" readonly>
+      </div>
+      <div class="col-2">
+        Ед. изм.
+        <input type="text" class="form-control" value="" style="width: 90%" readonly>
+      </div>
+    </div>
+  `;
+    indexForTariff++;
+
+    var addButton = document.querySelector('.btn-outline-secondary');
+    addButton.parentNode.insertBefore(newBlock, addButton);
+}
+
+function updateUnit(selectElement) {
+    var selectedOption = selectElement.options[selectElement.selectedIndex];
+    var unitOfMeasurementName = selectedOption.getAttribute('data-unit-of-measurement');
+    var unitInput = selectElement.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('input[type="text"]');
+    unitInput.value = unitOfMeasurementName;
+}

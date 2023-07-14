@@ -21,7 +21,7 @@
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index" class="text-for-breadcrumb">Пользователи</a>
+                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Пользователи</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
             </ol>
@@ -39,6 +39,18 @@
                     <table class="table table-bordered table-striped table-view"
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
+                        <tr>
+                            <td>
+                                Статус
+                            </td>
+                            <td>
+                                <span th:switch="${admin.getStatus()}">
+                                    <span th:case="NEW" class="status status-new">Новий</span>
+                                    <span th:case="ACTIVE" class="status status-active">Активний</span>
+                                    <span th:case="DISABLED" class="status status-disabled">Відключений</span>
+                                </span>
+                            </td>
+                        </tr>
                         <tr>
                             <td style="width: 50%">
                                 Пользователь
@@ -66,14 +78,6 @@
                                 Email(логин)
                             </td>
                             <td th:text="${admin.getEmail()}">
-
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                Статус
-                            </td>
-                            <td th:text="${admin.getStatus()}">
 
                             </td>
                         </tr>

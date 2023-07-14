@@ -17,8 +17,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserForAddDTO {
     @NotBlank(message = "Поле не може бути порожнім")
-    @Size(max = 10, message = "Поле повинно містити рівно 10 символів")
-    @Size(min = 10, message = "Поле повинно містити рівно 10 символів")
     private String id;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")

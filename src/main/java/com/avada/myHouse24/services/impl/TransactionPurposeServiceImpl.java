@@ -19,7 +19,22 @@ public class TransactionPurposeServiceImpl implements TransactionPurposeService 
     }
 
     @Override
+    public TransactionPurpose getById(long id) {
+        return transactionPurposeRepository.findById(id).get();
+    }
+
+    @Override
     public List<TransactionPurpose> getAll() {
         return transactionPurposeRepository.findAll();
+    }
+
+    @Override
+    public void save(TransactionPurpose transactionPurpose) {
+        transactionPurposeRepository.save(transactionPurpose);
+    }
+
+    @Override
+    public void deleteById(long id) {
+        transactionPurposeRepository.deleteById(id);
     }
 }

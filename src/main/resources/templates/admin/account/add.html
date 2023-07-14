@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">
+                Новый лицевой счет
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin/account/index/1" class="text-for-breadcrumb">Лицевые
+                    счета </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Новая квартира
+                </li>
+            </ol>
+        </div>
+        <form method="post" action="/admin/account/add" th:object="${scoreDto}">
+        <div class="card-body">
+            <div class="input-group mb-3" style="width: 25%; margin-left: 25px;">
+                <span class="input-group-text" id="basic-addon1">№</span>
+                <input type="text" th:field="*{number}" class="form-control">
+                <input type="text" th:field="*{id}" class="form-control" hidden>
+            </div>
+            <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+        </div>
+        <section class="content">
+            <div class="card">
+            <div class="card-body">
+                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                    Статус
+                <select class="form-select" th:field="*{status}">
+                    <option value="Активен">Активен</option>
+                    <option value="Неактивен">Неактивен</option>
+                </select>
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+                </div>
+                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                    Дом
+                <select class="form-select" th:field="*{house}" id="houseSelect">
+                    <option value="">Вибрати...</option>
+                    <option th:each="house:${houses}" th:value="${house.getId()}" th:text="${house.name}"></option>
+                </select>
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></div>
+                </div>
+                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                    Секция
+                <select class="form-select" th:field="*{section}">
+                    <option value="">Вибрати...</option>
+                    <option th:each="section:${sections}" th:value="${section.getId()}" th:text="${section.name}"></option>
+                </select>
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
+                </div>
+                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                    Квартира
+                <select class="form-select" th:field="*{flat}">
+                    <option value="">Вибрати...</option>
+                    <option th:each="flat:${flats}" th:value="${flat.getId()}" th:text="${flat.number}"></option>
+                </select>
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
+                </div>
+                <span><b>Владелец:</b> не выбран</span>
+                <br/>
+                <span><b>Телефон:</b> не выбран</span>
+            </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px">Сохранить</button>
+                    <a href="/admin/account/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
+                        Отменить
+                    </a>
+                </div>
+            </div>
+        </section>
+        </form>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script>
+    $(document).ready(function() {
+        $('select[name="score"]').change(function() {
+            var selectedScore = $(this).val();
+            $('input[name="score"]').val(selectedScore);
+        });
+    });
+
+</script>
+<script>
+    $(document).ready(function() {
+        $('#houseSelect').change(function() {
+            var houseId = $(this).val();
+            var floorSelect = $('select[name="flat"]');
+            $.ajax({
+                url: '/admin/account/getFlats/'+houseId,
+                method: 'GET',
+                success: function(response) {
+                    floorSelect.empty();
+                    var flats = response;
+                    floorSelect.append('<option value="">Вибрати...</option>');
+                    $.each(flats, function(index, flat) {
+                        console.log(flat)
+                        floorSelect.append('<option value="' + flat.id + '">' + flat.number + '</option>');
+                    });
+                },
+                error: function() {
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#houseSelect').change(function() {
+            var houseId = $(this).val();
+            var sectionSelect = $('select[name="section"]');
+            $.ajax({
+                url: '/admin/account/getSections/'+houseId,
+                method: 'GET',
+                success: function(response) {
+                    sectionSelect.empty();
+                    var section = response;
+                    sectionSelect.append('<option value="">Вибрати...</option>');
+                    $.each(section, function(index, section) {
+                        sectionSelect.append('<option value="' + section.id + '">' + section.name + '</option>');
+                    });
+                },
+                error: function() {
+                }
+            });
+        });
+    });
+</script>
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

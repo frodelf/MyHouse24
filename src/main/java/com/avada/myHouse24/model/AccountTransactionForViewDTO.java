@@ -2,14 +2,12 @@ package com.avada.myHouse24.model;
 
 import lombok.Data;
 
-import java.sql.Date;
-
 @Data
-public class AccountTransactionDTO {
+public class AccountTransactionForViewDTO {
     private String id;
     private String date;
-    private String userName;//
-    private String scoreId;//
+    private String userName;
+    private String scoreNumber;
     private String transactionPurposeName;
     private String adminName;
     private Boolean isIncome;

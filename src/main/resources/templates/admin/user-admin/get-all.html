@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/v4-shims.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true;
+                });
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">
+                Пользователи
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Пользователи
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <div class="btn-group margin-bottom float-right">
+                        <a href="/admin/user-admin/create" type="button" class="btn btn-success"
+                           style="width: 220px; margin-bottom: 20px"
+                           aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
+                            Создать пользователя
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a href="/admin/user-admin/index/1"
+                       class="btn btn-outline-secondary float-right">Очистить</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <form id="formSend" method="get" action="/admin/user-admin/filter/1" onsubmit="event.preventDefault()">
+                            <table class="table table-bordered table-hover table-striped table-sm"
+                                   style="font-size: 14px">
+                                <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Пользователи</th>
+                                    <th>Роль</th>
+                                    <th>Телефон</th>
+                                    <th>Email (логін)</th>
+                                    <th>Статус</th>
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th><input name="fullName" type="text" class="form-control" th:value="${filter.getFullName()}"></th>
+                                    <th>
+                                        <select class="form-select" name="role" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option>
+                                            </option>
+                                            <option th:each="role: ${roles}" th:value="${role.getName()}" th:selected="${filter.getRole() == role.getName()}"
+                                                    th:text="${role.getName().replace('ROLE_', '')}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th><input name="phone" type="number" class="form-control" th:value="${filter.getPhone()}"></th>
+                                    <th><input name="email" type="text" class="form-control" th:value="${filter.getEmail()}"></th>
+                                    <th>
+                                        <select class="form-select" name="status" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option >
+                                            </option>
+                                            <option th:each="status: ${allStatus}" th:value="${status.toString()}"  th:selected="${filter.getStatus() == status.toString()}"
+                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                            </option>
+                                        </select>
+                                    </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="clickable-row" th:each="admin:${admins}"
+                                    th:data-action="@{/admin/user-admin/{id}(id=${admin.getId()})}">
+                                    <td th:text="${admin.getId()}"></td>
+                                    <td th:text="${admin.getFullName()}"></td>
+                                    <td th:text="${admin.getRole().replace('ROLE_', '')}"></td>
+                                    <td th:text="${admin.getPhone()}"></td>
+                                    <td th:text="${admin.getEmail()}"></td>
+                                    <td>
+                                        <span th:switch="${admin.getStatus()}">
+                                            <span th:case="NEW" class="status status-new">Новий</span>
+                                            <span th:case="ACTIVE" class="status status-active">Активний</span>
+                                            <span th:case="DISABLED" class="status status-disabled">Відключений</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group pull-right">
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="message"
+                                               title="Отправить приглашение" data-toggle="tooltip">
+                                                <i class="fa fa-repeat"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/user-admin/edit/{id}(id=${admin.getId()})}"
+                                               title="Редактировать" data-toggle="tooltip">
+                                                <i class="fa fa-pencil-alt"></i>
+                                            </a>
+                                            <a class="btn btn-default btn-sm"
+                                               th:href="@{/admin/user-admin/delete/{id}(id=${admin.getId()})}"
+                                               title="Удалить" data-toggle="tooltip"
+                                               data-pjax="0" data-method="post"
+                                               onclick="return confirmDelete();"><i class="fa fa-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer" th:if="${max} > 0">
+                    <ul class="pagination pagination-sm m-0 float-right">
+                        <script>
+                            var pageNumber = [[${current}]] - 1;
+                            var afterQuestionMark = '';
+                            if (window.location.href.includes('filter')) {
+                                var parts = window.location.href.split('?');
+                                afterQuestionMark = '?' + parts[1];
+                                var baseUrl = '/admin/user-admin/filter/';
+                            } else {
+                                var baseUrl = '/admin/user-admin/index/';
+                            }
+
+                            if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                        </script>
+                        <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
+                            <script src="/pagination.js" data-url="admin/user/index/"
+                                    th:current="${current}"
+                                    th:max="${max+1}"></script>
+                        </ul>
+                        <script>
+                            var pageNumber = [[${current}]] + 1;
+                            var afterQuestionMark = '';
+                            if (window.location.href.includes('filter')) {
+                                var parts = window.location.href.split('?');
+                                afterQuestionMark = '?' + parts[1];
+                                var baseUrl = '/admin/user-admin/filter/';
+                            } else {
+                                var baseUrl = '/admin/user-admin/index/';
+                            }
+                            console.log([[${current}]])
+                            if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                            else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                        </script>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+        crossorigin="anonymous">
+</script>
+
+
+</body>
+
+</html>

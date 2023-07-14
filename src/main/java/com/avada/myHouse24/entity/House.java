@@ -1,9 +1,8 @@
 package com.avada.myHouse24.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -11,7 +10,9 @@ import java.util.List;
 @Table(name = "house")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "flats")
 public class House {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +25,12 @@ public class House {
     private String image2;
     private String image3;
     private String image4;
-    @OneToMany
+    @OneToMany(mappedBy = "house", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Flat> flats;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Section> sections;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Floor> floors;
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Admin> admins;
 }

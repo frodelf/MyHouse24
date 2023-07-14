@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">Новий владелец</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                </li>
+                <li class="breadcrumb-item"><a href="/admin/user-admin/index/1" class="text-for-breadcrumb">Пользователи</a>
+                </li>
+                <li class="breadcrumb-item"><a th:href="@{/admin/user-admin/{id}(id = ${admin.getId()})}" class="text-for-breadcrumb">Пользователь</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Редактирование</li>
+            </ol>
+        </div>
+        <section class="content">
+            <form method="post" th:action="@{/admin/user-admin/edit/{id}(id=${admin.getId()})}" th:object="${adminModel}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <b>
+                                        Имя
+                                        <input type="text" class="form-control" name="firstName" th:value="${admin.getFirstName()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                                        Фамилия
+                                        <input type="text" class="form-control" name="lastName" th:value="${admin.getLastName()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                                        Телефон
+                                        <input type="text" class="form-control" name="phone" th:value="${admin.getPhone()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
+                                        Роль
+                                        <input type="text" class="form-control" name="role" th:value="${admin.getRole()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                                        Статус
+                                        <input type="text" class="form-control" name="status" style="margin-bottom: 20px;" th:value="${admin.getStatus()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+                                    </b>
+                                </div>
+                                <div class="col">
+                                    <b>
+                                        Email (Логин)
+                                        <input type="text" class="form-control" name="email" th:value="${admin.getEmail()}">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                                        Пароль
+                                        <div style="display: flex; align-items: center; width: 100%;">
+                                            <input type="password" id="password-input" class="form-control" style="flex: 1" name="password">
+                                            <button type="button" id="generate-button" onclick="generatePassword()" class="btn btn-outline-secondary" style="width: 30%; height: 38px; font-size: 14px">Сгенерировать</button>
+                                            <button type="button" id="toggle-button" onclick="togglePasswordVisibility()" class="btn btn-primary" style="width: 10%; height: 38px">
+                                                <i id="toggle-icon" class="fas fa-eye-slash"></i>
+                                            </button>
+                                        </div>
+                                        Підтвердити пароль
+                                        <input type="password" id="confirm-password-input" class="form-control" name="passwordAgain" style="margin-bottom: 20px;"  oninput="checkPasswords()">
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${passwordAgainError}"></div>
+                                    </b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success float-right">Сохранить</button>
+                            <a href="/admin/user/index/1" class="btn btn-outline-secondary float-right"
+                               style="margin-right: 3px">
+                                Отменить
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+</body>
+</html>

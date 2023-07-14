@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true;
+                });
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">
+                Лицевые счета
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 3%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Лицевые счета
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="small-box bg-green overflow-hidden">
+                                <div class="inner">
+                                    <h3 id="cashboxBalance">0.00 грн</h3>
+                                    <p>Состояние кассы</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-dollar-sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="small-box bg-blue overflow-hidden">
+                                <div class="inner">
+                                    <h3 id="accountBalance">0.00 грн</h3>
+                                    <p>Баланс по счетам</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="small-box bg-red overflow-hidden">
+                                <div class="inner">
+                                    <h3 id="accountDebts">0.00 грн</h3>
+                                    <p>Задолженность по счетам</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <div class="btn-group margin-bottom float-right ">
+                        <button type="button" class="btn btn-success dropdown-toggle" style="width: 230px;"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
+                            Выберите действие
+                        </button>
+                        <ul class="dropdown-menu" style="width: 230px;">
+                            <li><a class="text-secondary" href="/admin/account/add"
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">Добавить лицевой
+                                счет</a></li>
+                            <li><a class="text-secondary" href=""
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">Выгрузить в
+                                Excel</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a href="/admin/account/index/1"
+                       class="btn btn-outline-secondary float-right">Очистить</a>
+                </div>
+                <div class="card-body">
+                    <form id="formSend" method="get" action="/admin/account/filter/1" th:object="${filter}" onsubmit="event.preventDefault()">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-striped">
+                            <thead>
+                            <tr style="font-weight: bold">
+                                <td style="min-width: 150px">№</td>
+                                <td style="min-width: 150px">Статус</td>
+                                <td style="min-width: 150px">Квартира</td>
+                                <td style="min-width: 190px">Дом</td>
+                                <td style="min-width: 150px">Секции</td>
+                                <td style="min-width: 190px">Владелец</td>
+                                <td style="min-width: 120px">Остаток(грн)</td>
+                                <td style="min-width: 150px"></td>
+                            </tr>
+                                <tr style="font-weight: bold">
+                                    <td>
+                                        <input name="number" type="number" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input th:field="*{status}" type="text" class="form-control">
+                                    </td>
+                                    <td>
+                                        <input  th:field="*{flatNumber}" type="number" class="form-control">
+                                    </td>
+                                    <td>
+                                        <select class="form-select"  th:field="*{house}" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getHouse() == null ? null : filter.getHouse().getId()}"
+                                                    th:text="${filter.getHouse() == null ? '' : filter.getHouse().getName()}">
+                                            </option>
+                                            <option th:each="house:${houses}" th:value="${house.getId()}"
+                                                    th:text="${house.name}">
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <div th:if="${filter.getHouse() != null}">
+                                            <select class="form-select" th:field="*{section}" onchange="submitForm()"
+                                                    aria-label="Default select example">
+                                                <option value="">Вибрать...</option>
+                                                <option th:each="section : ${filter.getHouse().getSections()}" th:text="${section.name}" th:value="${section.getId()}"></option>
+                                            </select>
+                                        </div>
+                                        <div th:if="${filter.getHouse() == null}">
+                                            <select class="form-select" th:field="*{section}" onchange="submitForm()"
+                                                    aria-label="Default select example">
+                                                <option value="">Виберите дом</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" name="user" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option th:value="${filter.getUser() == null ? null : filter.getUser().getId()}"
+                                                    th:text="${filter.getUser() == null ? '' : filter.getUser().getFirstName()}">
+                                            </option>
+                                            <option th:each="user : ${users}" th:value="${user.getId()}"
+                                                    th:text="${user.getFirstName()}">
+                                            </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input name="rest" type="number" class="form-control">
+                                    </td>
+                                    <td></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="clickable-row" th:each="score : ${scores}" th:data-action="@{/admin/account/{id}(id=${score.getId()})}">
+                                    <td>
+                                        [[${score.number}]]
+                                    </td>
+                                    <td>
+                                        <span th:switch="${score.status}">
+                                            <span th:case="Активен" class="status status-new">Активен</span>
+                                            <span th:case="Неактивен" class="status status-disabled">Неактивен</span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        [[${score.flat.number}]]
+                                    </td>
+                                    <td>
+                                        [[${score.flat.house.name}]]
+                                    </td>
+                                    <td>
+                                        [[${score.flat.section.name}]]
+                                    </td>
+                                    <td>
+                                        [[${score.flat.user.firstName}]]
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td class="float-right">
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/account/edit/{id}(id=${score.getId()})}"
+                                           title="Редактировать">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/account/delete/{id}(id=${score.getId()})}"
+                                           title="Удалить">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div th:if="${max}>0">
+                            <div class="col">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <script>
+                                        var pageNumber = [[${current}]] - 1;
+                                        var afterQuestionMark = '';
+                                        if (window.location.href.includes('filter')) {
+                                            var parts = window.location.href.split('?');
+                                            afterQuestionMark = '?' + parts[1];
+                                            var baseUrl = '/admin/account/filter/';
+                                        } else {
+                                            var baseUrl = '/admin/account/index/';
+                                        }
+
+                                        if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                    </script>
+                                    <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
+                                        <script src="/pagination.js" data-url="admin/account/index/"
+                                                th:current="${current}"
+                                                th:max="${max+1}"></script>
+                                    </ul>
+                                    <script>
+                                        var pageNumber = [[${current}]] + 1;
+                                        var afterQuestionMark = '';
+                                        if (window.location.href.includes('filter')) {
+                                            var parts = window.location.href.split('?');
+                                            afterQuestionMark = '?' + parts[1];
+                                            var baseUrl = '/admin/account/filter/';
+                                        } else {
+                                            var baseUrl = '/admin/account/index/';
+                                        }
+                                        console.log([[${current}]])
+                                        if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                    </script>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

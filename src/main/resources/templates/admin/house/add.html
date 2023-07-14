@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 20px; margin-right: auto;">Новый дом</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                </li>
+                <li class="breadcrumb-item"><a href="/admin/house/index/1" class="text-for-breadcrumb">Дома</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Новый дом</li>
+            </ol>
+        </div>
+        <section class="content">
+            <form method="post" action="/admin/house/add" enctype="multipart/form-data" th:object="${house}">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <b>
+                                    Название
+                                    <input name="name" type="text" class="form-control">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                                    <br/>
+                                    Адрес
+                                    <input name="address" type="text" class="form-control">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
+                                    <br/>
+                                    Изображение #1. Размер: (522x350)
+                                    <input name="image" type="file" class="form-control" value="null"
+                                           onchange="previewImage(event, 'previewImage1')">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
+                                    <br/>
+                                    Изображение #2. Размер: (248x160)
+                                    <input name="image1" type="file" class="form-control" value="null"
+                                           onchange="previewImage(event, 'previewImage2')">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image1')}" th:errors="*{image1}"></div>
+                                    <br/>
+                                    Изображение #3. Размер: (248x160)
+                                    <input name="image2" type="file" class="form-control" value="null"
+                                           onchange="previewImage(event, 'previewImage3')">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image2')}" th:errors="*{image2}"></div>
+                                    <br/>
+                                    Изображение #4. Размер: (248x160)
+                                    <input name="image3" type="file" class="form-control" value="null"
+                                           onchange="previewImage(event, 'previewImage4')">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image3')}" th:errors="*{image3}"></div>
+                                    <br/>
+                                    Изображение #5. Размер: (248x160)
+                                    <input name="image4" type="file" class="form-control" value="null"
+                                           onchange="previewImage(event, 'previewImage5')">
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image4')}" th:errors="*{image4}"></div>
+                                </b>
+                            </div>
+                            <div class="col-8">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <img id="previewImage1" class="pull-left img-responsive"
+                                             src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                             style="width: 90%; height: 350px">
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="row">
+                                            <div class="col">
+                                                <img id="previewImage2" class="pull-left img-responsive"
+                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                                     style="width: 90%; height: 160px; margin-bottom: 30px;">
+                                                <br/>
+                                                <img id="previewImage3" class="pull-left img-responsive"
+                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                                     style="width: 90%; height: 160px">
+                                            </div>
+                                            <div class="col">
+                                                <img id="previewImage4" class="pull-left img-responsive"
+                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                                     style="width: 90%; height: 160px; margin-bottom: 30px;">
+                                                <br/>
+                                                <img id="previewImage5" class="pull-left img-responsive"
+                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
+                                                     style="width: 90%; height: 160px">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="nav-tabs-custom" style="margin-top: 50px;">
+                            <ul class="nav nav-tabs">
+                                <li class="active" id="service_tab" style="padding: 15px;">
+                                    <a href="#tab_sections" data-toggle="tab" aria-expanded="true"
+                                       class="active text-for-breadcrumb">Секції</a>
+                                </li>
+                                <li id="service_unit_tab" style="padding: 15px;">
+                                    <a href="#tab_floors" data-toggle="tab" aria-expanded="false"
+                                       class="text-for-breadcrumb">Етажи</a>
+                                </li>
+                                <li id="user_tab" style="padding: 15px;">
+                                    <a href="#tab_users" data-toggle="tab" aria-expanded="false"
+                                       class="text-for-breadcrumb">Пользователи</a>
+                                </li>
+                            </ul>
+                            <form id="serviceForm" method="post" action="/admin/service/add">
+                                <div class="tab-content">
+                                    <div class="tab-pane clearfix active" id="tab_sections">
+                                        <button type="button" class="btn btn-success"
+                                                style="margin-top: 10px; margin-left: 50%;"
+                                                onclick="addBlockForSection()">
+                                            Добавить
+                                        </button>
+                                    </div>
+                                    <div class="tab-pane clearfix" id="tab_floors">
+
+                                        <button type="button" class="btn btn-success"
+                                                style="margin-top: 10px; margin-left: 50%;"
+                                                onclick="addBlockForFloor()">
+                                            Добавить
+                                        </button>
+                                    </div>
+                                    <div class="tab-pane clearfix" id="tab_users">
+                                        <button type="button" class="btn btn-success"
+                                                style="margin-top: 10px; margin-left: 50%;"
+                                                onclick="addBlockForUsers()">
+                                            Добавить
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
+                        <a href="/admin/house/index/1" class="btn btn-outline-secondary float-right"
+                           style="margin-right: 3px">
+                            Отменить
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script th:inline="javascript">
+    var indexForSection = 0;
+    var indexForFloor = 0;
+    var users = [[${users}]]
+    var indexForUsers = 0;
+</script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script>
+    function previewImage(event, imageId) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById(imageId);
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+</body>
+</html>
