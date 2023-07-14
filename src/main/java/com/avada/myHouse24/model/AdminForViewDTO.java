@@ -1,5 +1,6 @@
 package com.avada.myHouse24.model;
 
+import com.avada.myHouse24.enums.UserStatus;
 import lombok.Data;
 
 @Data
@@ -9,5 +10,5 @@ public class AdminForViewDTO {
     private String role;
     private String phone;
     private String email;
-    private String status;
+    private UserStatus status;
 }

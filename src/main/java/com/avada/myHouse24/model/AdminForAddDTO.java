@@ -1,5 +1,6 @@
 package com.avada.myHouse24.model;
 
+import com.avada.myHouse24.enums.UserStatus;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,7 +22,7 @@ public class AdminForAddDTO {
     private String role;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")
-    private String status;
+    private UserStatus status;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")
     @Email(message = "Поле повинно бути email адресою")

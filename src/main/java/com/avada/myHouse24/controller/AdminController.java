@@ -62,7 +62,7 @@ public class AdminController {
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable("id")long id){
         Admin admin = adminService.getById(id);
-        admin.setStatus("DISABLED");
+        admin.setStatus(UserStatus.DISABLED);
         adminService.save(admin);
         return "redirect:/admin/user-admin/index/1";
     }
@@ -108,9 +108,9 @@ public class AdminController {
                     .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(adminForViewDto.getEmail()))
                     .collect(Collectors.toList());
         }
-        if(!adminForViewDto.getStatus().isBlank()){
+        if (adminForViewDto.getStatus() != null) {
             admins = admins.stream()
-                    .filter(dto -> dto.getStatus() != null && dto.getStatus().contains(adminForViewDto.getStatus()))
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus() == adminForViewDto.getStatus())
                     .collect(Collectors.toList());
         }
         model.addAttribute("allStatus", UserStatus.values());
