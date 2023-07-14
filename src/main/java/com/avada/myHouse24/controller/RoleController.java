@@ -3,8 +3,8 @@ package com.avada.myHouse24.controller;
 import com.avada.myHouse24.entity.Permission;
 import com.avada.myHouse24.entity.Role;
 import com.avada.myHouse24.model.RoleForm;
-import com.avada.myHouse24.service.roles.PermissionService;
-import com.avada.myHouse24.service.roles.RoleService;
+import com.avada.myHouse24.services.impl.PermissionService;
+import com.avada.myHouse24.services.impl.RoleService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 @RequestMapping("/admin")
 @Controller

@@ -1,4 +1,4 @@
-package com.avada.myHouse24.service.roles;
+package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Permission;
 import com.avada.myHouse24.repo.PermissionRepository;
