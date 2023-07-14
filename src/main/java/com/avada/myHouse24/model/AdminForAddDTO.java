@@ -20,8 +20,6 @@ public class AdminForAddDTO {
     private String phone;
     @NotBlank(message = "Поле не може бути порожнім")
     private String role;
-    @NotBlank(message = "Поле не може бути порожнім")
-    @Size(max = 50, message = "Поле не може бути більше 50 символів")
     private UserStatus status;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")

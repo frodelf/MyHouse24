@@ -19,4 +19,5 @@ public class ScoreDTO {
     private Section section;
     @NotNull(message = "Поле не може бути пустим")
     private Flat flat;
+    private Double balance;
 }

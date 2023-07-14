@@ -26,4 +26,5 @@ public class FlatDTO {
     private Tariff tariff;
     @NotNull(message = "Поле не може бути пустим")
     private String scoreNumber;
+    private Long balance;
 }

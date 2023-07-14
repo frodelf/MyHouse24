@@ -80,4 +80,8 @@ public class HouseController {
         model.addAttribute("house", houseService.getById(id));
         return "admin/house/index";
     }
+    @GetMapping("/name/{name}")
+    public String getByName(@PathVariable("name") String name){
+        return "redirect:/admin/house/"+houseService.getByName(name).getId();
+    }
 }

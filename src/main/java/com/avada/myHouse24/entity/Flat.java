@@ -31,6 +31,7 @@ public class Flat {
     @ManyToOne
     private Section section;
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
     @ManyToOne
     private Tariff tariff;

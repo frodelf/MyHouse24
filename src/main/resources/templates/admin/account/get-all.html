@@ -170,7 +170,16 @@
                                         </select>
                                     </td>
                                     <td>
-                                        <input name="rest" type="number" class="form-control">
+                                        <select class="form-select" name="isDebt" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option></option>
+                                            <option value="true" th:selected="${filter.getIsDebt() == true}">
+                                                Да
+                                            </option>
+                                            <option value="false" th:selected="${filter.getIsDebt() == false}">
+                                                Нет
+                                            </option>
+                                        </select>
                                     </td>
                                     <td></td>
                                 </tr>
@@ -199,7 +208,7 @@
                                         [[${score.flat.user.firstName}]]
                                     </td>
                                     <td>
-
+                                        [[${score.balance}]]
                                     </td>
                                     <td class="float-right">
                                         <a class="btn btn-default btn-sm"

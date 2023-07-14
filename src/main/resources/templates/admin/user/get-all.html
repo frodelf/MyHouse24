@@ -156,12 +156,12 @@
                                 <td th:text="${user.getEmail()}"></td>
                                 <td>
                                     <div th:each="house:${user.getHouses()}">
-                                        <h5 th:text="${house}"></h5>
+                                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/name/{name}(name = ${house})}">[[${house}]]</a><br/>
                                     </div>
                                 </td>
                                 <td>
                                     <div th:each="flat:${user.getFlats()}">
-                                        <h5 th:text="${flat}"></h5>
+                                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/name/{number}(number = ${flat})}">[[${flat}]]</a><br/>
                                     </div>
                                 </td>
                                 <td th:text="${user.getDate()}"></td>

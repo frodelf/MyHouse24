@@ -151,7 +151,20 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="flat : ${flats}">
+                        <tr th:each="flat , index : ${flats}">
+                            <td th:text="${index.index}">
+                            </td>
+                            <td>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${flat.house.id})}">[[${flat.house.name}]]</a><br/>
+                            </td>
+                            <td>[[${flat.section.id}]]<br/>
+                            </td>
+                            <td>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${flat.id})}">[[${flat.number}]]</a><br/>
+                            </td>
+                            <td th:text="${flat.scoreNumber}">
+
+                            </td>
                         </tr>
                         </tbody>
                     </table>

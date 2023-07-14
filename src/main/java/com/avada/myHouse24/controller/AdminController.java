@@ -35,7 +35,9 @@ public class AdminController {
         return "admin/user-admin/get-all";
     }
     @GetMapping("/create")
-    public String add(@ModelAttribute("admin") AdminForAddDTO admin){
+    public String add(@ModelAttribute("admin") AdminForAddDTO admin, Model model){
+        model.addAttribute("roles", roleService.getAll());
+        model.addAttribute("statuses", UserStatus.values());
         return "admin/user-admin/add";
     }
     @PostMapping("/create")
@@ -69,6 +71,8 @@ public class AdminController {
     @GetMapping("/edit/{id}")
     public String edit(@ModelAttribute("adminModel") AdminForAddDTO admin, @PathVariable("id")long id, Model model){
         model.addAttribute("admin", adminMapper.toDtoForAdd(adminService.getById(id)));
+        model.addAttribute("roles", roleService.getAll());
+        model.addAttribute("statuses", UserStatus.values());
         return "admin/user-admin/edit";
     }
     @PostMapping("/edit/{id}")

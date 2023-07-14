@@ -23,10 +23,10 @@ public class UserMapper {
         userForViewDTO.setFullName((user.getLastName() == null? "":user.getLastName()) + " " +(user.getFirstName()==null?"":user.getFirstName()) + " " + (user.getFathersName()==null?"":user.getFathersName()));
         userForViewDTO.setPhone(user.getPhone());
         userForViewDTO.setEmail(user.getEmail());
-        if(user.getFlats() != null)
+        if(user.getFlats() != null) {
             userForViewDTO.setHouses(getHouseNamesFromFlat(user.getFlats()));
-        if(user.getFlats() != null)
-            userForViewDTO.setFlats(getHouseNamesFromFlat(user.getFlats()));
+            userForViewDTO.setFlats(getFlatNames(user.getFlats()));
+        }
         userForViewDTO.setDate(user.getFromDate());
         userForViewDTO.setStatus(user.getStatus()==null?"":String.valueOf(user.getStatus()));
         userForViewDTO.setIsDebt(userService.isDebt(user));
@@ -79,14 +79,14 @@ public class UserMapper {
     private List<String> getHouseNamesFromFlat(List<Flat> flats){
         ArrayList<String> housesName = new ArrayList<>();
         for (Flat flat : flats) {
-            housesName.add(flat.getHouse().getName());
+            if(!housesName.contains(flat.getHouse().getName()))housesName.add(flat.getHouse().getName());
         }
         return housesName;
     }
     private List<String> getFlatNames(List<Flat> flats){
         ArrayList<String> flatNames = new ArrayList<>();
         for (Flat flat : flats) {
-            flatNames.add(flat.getNumber()+", "+flat.getHouse().getName());
+            flatNames.add(String.valueOf(flat.getNumber()));
         }
         return flatNames;
     }

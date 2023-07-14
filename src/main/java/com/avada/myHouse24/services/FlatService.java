@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface FlatService {
     Flat getById(Long id);
+    Flat getByNumber(int number);
     Page<Flat> getPage(int pageNumber, Model model);
     Page<FlatDTO> getPage(int pageNumber, Model model, List<FlatDTO> flatDTOS);
     void deleteById(Long id);

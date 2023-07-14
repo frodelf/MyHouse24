@@ -83,7 +83,7 @@
                                 Лицевой счет
                             </td>
                             <td style="width: 70%">
-                                [[${flat.scoreNumber}]]
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account/{id}(id = ${scoreId})}">[[${flat.scoreNumber}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -107,7 +107,7 @@
                                 Дом
                             </td>
                             <td style="width: 70%">
-                                [[${flat.house.name}]]
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${flat.house.id})}">[[${flat.house.name}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -131,7 +131,7 @@
                                 Владелец
                             </td>
                             <td style="width: 70%">
-                                [[${flat.user.firstName}]]
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${flat.user.id})}">[[${flat.user.firstName}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -139,7 +139,7 @@
                                 Тариф
                             </td>
                             <td style="width: 70%">
-                                [[${flat.tariff.name}]]
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/tariff/{id}(id = ${flat.tariff.id})}">[[${flat.tariff.name}]]</a><br/>
                             </td>
                         </tr>
                         </tbody>

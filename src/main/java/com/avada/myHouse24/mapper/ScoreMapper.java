@@ -17,6 +17,7 @@ public class ScoreMapper {
         scoreDTO.setHouse(score.getFlat().getHouse());
         scoreDTO.setSection(score.getFlat().getSection());
         scoreDTO.setFlat(score.getFlat());
+        scoreDTO.setBalance(score.getBalance());
         return scoreDTO;
     }
     public Score toEntity(ScoreDTO scoreDTO){
@@ -25,6 +26,7 @@ public class ScoreMapper {
         score.setNumber(scoreDTO.getNumber());
         score.setStatus(scoreDTO.getStatus());
         score.setFlat(score.getFlat());
+        score.setBalance(scoreDTO.getBalance());
         return score;
     }
 

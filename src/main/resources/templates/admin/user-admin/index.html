@@ -44,7 +44,7 @@
                                 Статус
                             </td>
                             <td>
-                                <span th:switch="${admin.getStatus()}">
+                                <span th:switch="${admin.getStatus().name()}">
                                     <span th:case="NEW" class="status status-new">Новий</span>
                                     <span th:case="ACTIVE" class="status status-active">Активний</span>
                                     <span th:case="DISABLED" class="status status-disabled">Відключений</span>

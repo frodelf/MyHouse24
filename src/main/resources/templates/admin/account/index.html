@@ -70,7 +70,7 @@
                                     Дом
                                 </td>
                                 <td>
-                                    [[${scoreDto.flat.house.name}]]
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${scoreDto.flat.house.getId()})}">[[${scoreDto.flat.house.name}]]</a><br/>
                                 </td>
                             </tr>
                             <tr>
@@ -86,7 +86,7 @@
                                     Квартира
                                 </td>
                                 <td>
-                                    [[${scoreDto.flat.number}]]
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${scoreDto.flat.id})}">[[${scoreDto.flat.number}]]</a><br/>
                                 </td>
                             </tr>
                             <tr>
@@ -94,7 +94,8 @@
                                     Владелец
                                 </td>
                                 <td>
-                                    [[${scoreDto.flat.user.firstName}]]
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${scoreDto.flat.user.id})}">[[${scoreDto.flat.user.firstName}]]</a><br/>
+
                                 </td>
                             </tr>
                             <tr>

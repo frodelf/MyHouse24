@@ -115,6 +115,17 @@ public class ScoreController {
                     .filter(dto -> dto.getFlat() != null && dto.getFlat().getUser().getId() == scoreForFilterDTO.getUser().getId())
                     .collect(Collectors.toList());
         }
+        if(scoreForFilterDTO.getIsDebt() != null){
+            if(scoreForFilterDTO.getIsDebt()){
+                scoreDTOS = scoreDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && dto.getBalance() >= 0)
+                        .collect(Collectors.toList());
+            }else {
+                scoreDTOS = scoreDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && dto.getBalance() < 0)
+                        .collect(Collectors.toList());
+            }
+        }
         model.addAttribute("scores", scoreService.getPage(page, model, scoreDTOS));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("sections", new ArrayList<>());

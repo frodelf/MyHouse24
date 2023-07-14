@@ -33,7 +33,7 @@ public class FlatController {
     @GetMapping("/index/{id}")
     public String getAll(@PathVariable("id")int id, Model model){
         FlatDTO flatDTO = new FlatDTO();
-        model.addAttribute("flats", flatService.getPage(id, model));
+        model.addAttribute("flats", flatMapper.toDtoList(flatService.getPage(id, model).getContent()));
         model.addAttribute("filter", flatDTO);
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("users", userService.getAll());
@@ -81,7 +81,7 @@ public class FlatController {
     }
 
     @GetMapping("/filter/{page}")
-    public String filter(@ModelAttribute("flatDTO") FlatDTO flatDTO, @PathVariable("page")int page, Model model){
+    public String filter(@ModelAttribute("flatDTO") FlatDTO flatDTO, @PathVariable("page")int page, @RequestParam("rest") Boolean rest, Model model){
         List<FlatDTO> flatDTOS = flatMapper.toDtoList(flatService.getAll());
         if(flatDTO.getNumber() != null){
             flatDTOS = flatDTOS.stream()
@@ -108,7 +108,22 @@ public class FlatController {
                     .filter(dto -> dto.getUser() != null && dto.getUser().equals(flatDTO.getUser()))
                     .collect(Collectors.toList());
         }
+        if(rest != null){
+            if(rest){
+                flatDTOS = flatDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && Math.toIntExact(dto.getBalance()) < 0)
+                        .collect(Collectors.toList());
+
+            }
+            else {
+                flatDTOS = flatDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && Math.toIntExact(dto.getBalance()) >= 0)
+                        .collect(Collectors.toList());
+
+            }
+        }
         model.addAttribute("flats", flatService.getPage(page, model, flatDTOS));
+        if(rest != null) model.addAttribute("rest", rest);
         model.addAttribute("filter", flatDTO);
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("users", userService.getAll());
@@ -124,6 +139,7 @@ public class FlatController {
     @GetMapping("/{id}")
     public String getById(@PathVariable("id") long id, Model model){
         model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
+        model.addAttribute("scoreId", flatService.getById(id).getScore().getId());
         return "/admin/flat/index";
     }
     @GetMapping("/edit/{id}")
@@ -164,5 +180,9 @@ public class FlatController {
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         return "/admin/flat/copy";
+    }
+    @GetMapping("/name/{name}")
+    public String getByName(@PathVariable("name") int number){
+        return "redirect:/admin/flat/"+flatService.getByNumber(number).getId();
     }
 }

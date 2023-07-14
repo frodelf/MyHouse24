@@ -39,6 +39,7 @@ public class FlatMapper {
         flatDTO.setUser(flat.getUser());
         flatDTO.setTariff(flat.getTariff());
         flatDTO.setScoreNumber(flat.getScore().getNumber());
+        flatDTO.setBalance((long) flat.getScore().getBalance());
         return flatDTO;
     }
 

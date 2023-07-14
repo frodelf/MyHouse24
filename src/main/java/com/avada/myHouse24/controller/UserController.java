@@ -2,6 +2,7 @@ package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.enums.UserStatus;
+import com.avada.myHouse24.mapper.FlatMapper;
 import com.avada.myHouse24.mapper.UserMapper;
 import com.avada.myHouse24.model.UserForAddDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
@@ -35,6 +36,7 @@ public class UserController {
     private final HouseServiceImpl houseService;
     private final UserMapper userMapper;
     private final EmailService emailService;
+    private final FlatMapper flatMapper;
 
 
     @GetMapping("/index/{id}")
@@ -118,6 +120,7 @@ public class UserController {
     @GetMapping("/{id}")
     public String index(Model model, @PathVariable("id") long id) {
         model.addAttribute("user", userMapper.toDtoForAdd(userService.getById(id)));
+        model.addAttribute("flats", flatMapper.toDtoList(userService.getById(id).getFlats()));
         return "admin/user/index";
     }
 

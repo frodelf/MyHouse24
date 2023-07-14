@@ -3,9 +3,7 @@ package com.avada.myHouse24.entity;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.services.registration.RegistrationRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +17,9 @@ import java.util.List;
 @Table(name = "user")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "flats")
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,7 +47,7 @@ public class User implements UserDetails {
     private String description;
     private String image;
     private boolean enabled = false;
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     List<Flat> flats;
     @ManyToOne
     private Role roles;

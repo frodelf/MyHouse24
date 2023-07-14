@@ -143,8 +143,16 @@
                                     </select>
                                 </th>
                                 <th>
-                                    <input name="rest" type="number" class="form-control"
-                                           th:value="${rest}">
+                                    <select class="form-select" name="rest" onchange="submitForm()"
+                                            aria-label="Default select example">
+                                        <option value=""></option>
+                                        <option value="true" th:selected="${rest == true}">
+                                            Есть борг
+                                        </option>
+                                        <option value="false"th:selected="${rest == false}">
+                                            Нет борга
+                                        </option>
+                                    </select>
                                 </th>
                                 <th>
 
@@ -158,7 +166,17 @@
                                 <td th:text="${flat.section.name}"></td>
                                 <td th:text="${flat.floor.name}"></td>
                                 <td th:text="${flat.user.firstName}"></td>
-                                <td th:text="${rest}"></td>
+                                <td>
+                                    <div th:if="${flat.balance > 0}">
+                                        <div style="color: green">[[${flat.balance}]]</div>
+                                    </div>
+                                    <div th:if="${flat.balance < 0}">
+                                        <div style="color: red">[[${flat.balance}]]</div>
+                                    </div>
+                                    <div th:if="${flat.balance == 0}">
+                                        [[${flat.balance}]]
+                                    </div>
+                                </td>
                                 <td>
                                     <a class="btn btn-default btn-sm"
                                        th:href="@{/admin/flat/edit/{id}(id=${flat.getId()})}"

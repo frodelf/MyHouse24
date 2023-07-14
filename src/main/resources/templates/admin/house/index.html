@@ -59,8 +59,10 @@
                                     <h6 th:text="${house.getFloors().size()}"></h6>
                                     <br/>
                                     <div th:each="user : ${house.getAdmins()}">
-                                        <h4 th:text="${user.getRole().getName()}"></h4>
-                                        <a th:href="@{/admin/user-admin/{id}(id = ${user.getId()})}" th:text="${user.getFirstName()}"></a>
+                                        <span>
+                                        <h7 th:text="${user.getFirstName()}"></h7>:
+                                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user-admin/{id}(id = ${user.getId()})}" th:text="${user.getFirstName()}"></a>
+                                        </span>
                                     </div>
                                 </div>
                             </div>

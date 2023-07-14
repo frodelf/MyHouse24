@@ -24,6 +24,10 @@ public class FlatServiceImpl implements FlatService {
     }
 
     @Override
+    public Flat getByNumber(int number) {
+        return flatRepository.findByNumber(number).get();
+    }
+    @Override
     public Page<Flat> getPage(int pageNumber, Model model) {
         pageNumber = pageNumber - 1;
         double size = 10.0;
