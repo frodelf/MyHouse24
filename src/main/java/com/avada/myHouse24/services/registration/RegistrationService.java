@@ -31,9 +31,9 @@ public class RegistrationService {
     public void register(RegistrationRequest request) {
 
         log.info(passwordEncoder.toString());
-
+//        User user = new User();
         User user = new User(request);
-        String encoded_pass = passwordEncoder.encode(user.getPassword());
+        String encoded_pass = passwordEncoder.encode(request.getPassword());
         log.info(encoded_pass);
         user.setPassword(encoded_pass);
         User savedUser = userRepository.save(user);

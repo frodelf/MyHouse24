@@ -7,8 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Objects;
 import java.util.Properties;
@@ -18,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 @Configuration
 @PropertySource("classpath:mail.properties")
-public class Config {
+public class MailConfig {
 
     @Autowired
     Environment environment;

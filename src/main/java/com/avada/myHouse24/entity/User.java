@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.sql.Date;
 import java.util.Collection;
@@ -65,6 +67,13 @@ public class User implements UserDetails {
         this.phone = phoneNumber;
         this.email = email;
         this.password = password;
+    }
+    public User(RegistrationRequest request) {
+        this.firstName = request.getFirstName();
+        this.lastName = request.getLastName();
+        this.fathersName = request.getFathersName();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
