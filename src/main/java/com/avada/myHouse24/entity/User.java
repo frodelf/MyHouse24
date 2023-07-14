@@ -68,13 +68,7 @@ public class User implements UserDetails {
         this.email = email;
         this.password = password;
     }
-    public User(RegistrationRequest request) {
-        this.firstName = request.getFirstName();
-        this.lastName = request.getLastName();
-        this.fathersName = request.getFathersName();
-        this.email = request.getEmail();
-        this.password = request.getPassword();
-    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return null;

@@ -55,12 +55,14 @@
                                 </div>
                             </td>
                             <input type="hidden" th:field="*{roles[__${roleIndex.index}__].id}" />
+                            <!-- Add a hidden input field for the director role permissions -->
+                            <input type="hidden" th:if="${role.name == 'ROLE_DIRECTOR'}" th:field="*{roles[__${roleIndex.index}__].permissions}" />
                         </tr>
                         </tbody>
                     </table>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <button type="button" class="btn btn-secondary" onclick="undoChanges()">Отменить</button>
+                    <div class="row" style="padding-top: 15px">
+                        <div class="col-md-12 d-flex justify-content-end">
+                            <button type="button" style="margin-right: 5px" class="btn btn-secondary" onclick="undoChanges()">Отменить</button>
                             <button type="submit" class="btn btn-success">Сохранить</button>
                         </div>
                     </div>
