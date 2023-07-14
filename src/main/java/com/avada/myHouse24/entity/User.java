@@ -1,6 +1,7 @@
 package com.avada.myHouse24.entity;
 
 import com.avada.myHouse24.enums.UserStatus;
+//import com.avada.myHouse24.service.registration.RegistrationRequest;
 import com.avada.myHouse24.service.registration.RegistrationRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,8 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.sql.Date;
 import java.util.Collection;
@@ -46,15 +45,15 @@ public class User implements UserDetails {
     private String description;
     private String image;
     private boolean enabled = false;
-    @OneToMany
-    List<Flat> flats;
-    public User(RegistrationRequest request) {
-        this.firstName = request.getFirstName();
-        this.lastName = request.getLastName();
-        this.fathersName = request.getFathersName();
-        this.email = request.getEmail();
-        this.password = request.getPassword();
-    }
+//    @OneToMany
+//    List<Flat> flats;
+//    public User(RegistrationRequest request) {
+//        this.firstName = request.getFirstName();
+//        this.lastName = request.getLastName();
+//        this.fathersName = request.getFathersName();
+//        this.email = request.getEmail();
+//        this.password = request.getPassword();
+//    }
 
     public User(Long id, String firstName, String lastName, String fathersName, String phoneNumber, String email, String password) {
         this.id = id;
@@ -64,6 +63,13 @@ public class User implements UserDetails {
         this.phone = phoneNumber;
         this.email = email;
         this.password = password;
+    }
+    public User(RegistrationRequest request) {
+        this.firstName = request.getFirstName();
+        this.lastName = request.getLastName();
+        this.fathersName = request.getFathersName();
+        this.email = request.getEmail();
+        this.password = request.getPassword();
     }
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
