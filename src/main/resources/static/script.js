@@ -217,9 +217,15 @@ function removeBlock1(element) {
 
 function addBlockForSection() {
     var newBlock = document.createElement('div');
-    newBlock.className = 'form-row';
-    newBlock.innerHTML =
-        '<br/> <h7>Название</h7> <div class="form-row" style="width: 100%; margin-bottom: 20px;"> <input name="sections[' + indexForSection + ']" type="text" class="form-control" style="width: 40%" value="Секция ' + (indexForSection + 1) + '"> <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a> </div>';
+    newBlock.className = 'row';
+    newBlock.innerHTML = `
+    <br/>
+    <h7>Название</h7>
+    <div class="form-row" style="width: 100%; margin-bottom: 20px; margin-left: 1px;">
+      <input name="sections[${indexForSection}]" type="text" class="form-control" style="width: 40%" value="Секция ${indexForSection + 1}">
+      <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a>
+    </div>
+  `;
 
     var addButton = document.querySelector('#tab_sections .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
@@ -228,9 +234,15 @@ function addBlockForSection() {
 
 function addBlockForFloor() {
     var newBlock = document.createElement('div');
-    newBlock.className = 'form-row';
-    newBlock.innerHTML =
-        '<br/> <h7>Название</h7> <div class="form-row" style="width: 100%; margin-bottom: 20px;"> <input name="floors[' + indexForFloor + ']" type="text" class="form-control" style="width: 40%" value="Етаж ' + (indexForFloor + 1) + '"> <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a> </div>';
+    newBlock.className = 'row';
+    newBlock.innerHTML = `
+    <br/>
+    <h7>Название</h7>
+    <div class="form-row" style="width: 100%; margin-bottom: 20px; margin-left: 1px;">
+      <input name="floors[${indexForFloor}]" type="text" class="form-control" style="width: 40%" value="Етаж ${indexForFloor + 1}">
+      <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this)"><i class="fa fa-trash"></i></a>
+    </div>
+  `;
 
     var addButton = document.querySelector('#tab_floors .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
@@ -244,26 +256,27 @@ function addBlockForUsers() {
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
         console.log(user.firstName);
-        selectOptions += '<option value="' + user.firstName + '">' + user.firstName + '</option>';
+        selectOptions += `<option value="${user.firstName}">${user.firstName}</option>`;
     }
     indexForUsers++;
     newBlock.innerHTML = `
     <div class="col-4">
-        <select class="form-select" name="users[${indexForUsers}]" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
-            <option></option>
-            ${selectOptions}
-        </select>
+      <select class="form-select" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
+        <option></option>
+        ${selectOptions}
+      </select>
     </div>
     <div class="col-8">
-        <div class="form-row" style="width: 100%; margin-bottom: 20px;">
-            <input name="users[${indexForUsers}]" type="text" class="form-control" style="width: 30%" readonly>
-            <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this.parentNode)"><i class="fa fa-trash"></i></a>
-        </div>
+      <div class="form-row" style="width: 100%; margin-bottom: 20px;">
+        <input name="users[${indexForUsers}]" type="text" class="form-control" style="width: 30%" readonly>
+        <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this.parentNode)"><i class="fa fa-trash"></i></a>
+      </div>
     </div>
   `;
     var addButton = document.querySelector('#tab_users .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
 }
+
 
 function updateInputValue(selectElement) {
     var selectedOption = selectElement.options[selectElement.selectedIndex].value;
@@ -271,7 +284,7 @@ function updateInputValue(selectElement) {
     for (var i = 0; i < users.length; i++) {
         var user = users[i];
         if (user.firstName === selectedOption) {
-            inputValue = user.role.name === "ROLE_ADMIN" ? "Адмін" : "";
+            inputValue = user.role.name.replace('ROLE_', '');
             break;
         }
     }

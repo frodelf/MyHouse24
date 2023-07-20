@@ -8,6 +8,8 @@ public interface TransactionPurposeService {
     TransactionPurpose getByName(String name);
     TransactionPurpose getById(long id);
     List<TransactionPurpose> getAll();
+    List<TransactionPurpose> getAllIncomeTrue();
+    List<TransactionPurpose> getAllIncomeFalse();
     void save(TransactionPurpose transactionPurpose);
     void deleteById(long id);
 }

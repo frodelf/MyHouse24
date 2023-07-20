@@ -20,10 +20,10 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
                 Новый лицевой счет
             </h4>
-            <ol class="breadcrumb" style="margin-right: 3%">
+            <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item"><a href="/admin/account/index/1" class="text-for-breadcrumb">Лицевые
                     счета </a></li>
@@ -32,63 +32,72 @@
                 </li>
             </ol>
         </div>
-        <form method="post" action="/admin/account/add" th:object="${scoreDto}">
-        <div class="card-body">
-            <div class="input-group mb-3" style="width: 25%; margin-left: 25px;">
-                <span class="input-group-text" id="basic-addon1">№</span>
-                <input type="text" th:field="*{number}" class="form-control">
-                <input type="text" th:field="*{id}" class="form-control" hidden>
-            </div>
-            <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
-        </div>
         <section class="content">
-            <div class="card">
-            <div class="card-body">
-                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
-                    Статус
-                <select class="form-select" th:field="*{status}">
-                    <option value="Активен">Активен</option>
-                    <option value="Неактивен">Неактивен</option>
-                </select>
-                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
-                </div>
-                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
-                    Дом
-                <select class="form-select" th:field="*{house}" id="houseSelect">
-                    <option value="">Вибрати...</option>
-                    <option th:each="house:${houses}" th:value="${house.getId()}" th:text="${house.name}"></option>
-                </select>
-                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></div>
-                </div>
-                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
-                    Секция
-                <select class="form-select" th:field="*{section}">
-                    <option value="">Вибрати...</option>
-                    <option th:each="section:${sections}" th:value="${section.getId()}" th:text="${section.name}"></option>
-                </select>
-                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
-                </div>
-                <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
-                    Квартира
-                <select class="form-select" th:field="*{flat}">
-                    <option value="">Вибрати...</option>
-                    <option th:each="flat:${flats}" th:value="${flat.getId()}" th:text="${flat.number}"></option>
-                </select>
-                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
-                </div>
-                <span><b>Владелец:</b> не выбран</span>
-                <br/>
-                <span><b>Телефон:</b> не выбран</span>
-            </div>
-                <div class="card-footer">
-                    <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px">Сохранить</button>
-                    <a href="/admin/account/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
-                        Отменить
-                    </a>
-                </div>
-            </div>
-        </section>
+        <form method="post" action="/admin/account/add" th:object="${scoreDto}">
+                    <div class="input-group mb-3" style="width: 25%">
+                        <span class="input-group-text" id="basic-addon1">№</span>
+                        <input type="text" th:field="*{number}" class="form-control">
+                        <input type="text" th:field="*{id}" class="form-control" hidden>
+                    </div>
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                         th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+                    <div class="card">
+                        <div class="card-body">
+                            <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                                Статус
+                                <select class="form-select" th:field="*{status}">
+                                    <option value="Активен">Активен</option>
+                                    <option value="Неактивен">Неактивен</option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+                            </div>
+                            <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                                Дом
+                                <select class="form-select" th:field="*{house}" id="houseSelect">
+                                    <option value="">Вибрати...</option>
+                                    <option th:each="house:${houses}" th:value="${house.getId()}"
+                                            th:text="${house.name}"></option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></div>
+                            </div>
+                            <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                                Секция
+                                <select class="form-select" th:field="*{section}">
+                                    <option value="">Вибрати...</option>
+                                    <option th:each="section:${sections}" th:value="${section.getId()}"
+                                            th:text="${section.name}"></option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
+                            </div>
+                            <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
+                                Квартира
+                                <select class="form-select" th:field="*{flat}">
+                                    <option value="">Вибрати...</option>
+                                    <option th:each="flat:${flats}" th:value="${flat.getId()}"
+                                            th:text="${flat.number}"></option>
+                                </select>
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                     th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
+                            </div>
+                            <span><b>Владелец:</b> не выбран</span>
+                            <br/>
+                            <span><b>Телефон:</b> не выбран</span>
+                        </div>
+                        <div class="card-footer">
+                            <button type="submit" class="btn btn-success float-right"
+                                    style="background-color: #089a08;margin-right: 10px">Сохранить
+                            </button>
+                            <a href="/admin/account/index/1" class="btn btn-outline-secondary float-right"
+                               style="margin-right: 10px">
+                                Отменить
+                            </a>
+                        </div>
+                    </div>
         </form>
+        </section>
     </div>
     <footer class="main-footer">
         Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
@@ -97,8 +106,8 @@
     </footer>
 </div>
 <script>
-    $(document).ready(function() {
-        $('select[name="score"]').change(function() {
+    $(document).ready(function () {
+        $('select[name="score"]').change(function () {
             var selectedScore = $(this).val();
             $('input[name="score"]').val(selectedScore);
         });
@@ -106,45 +115,44 @@
 
 </script>
 <script>
-    $(document).ready(function() {
-        $('#houseSelect').change(function() {
+    $(document).ready(function () {
+        $('#houseSelect').change(function () {
             var houseId = $(this).val();
-            var floorSelect = $('select[name="flat"]');
+            var flatSelect = $('select[name="flat"]');
             $.ajax({
-                url: '/admin/account/getFlats/'+houseId,
+                url: '/admin/account/getFlats/' + houseId,
                 method: 'GET',
-                success: function(response) {
-                    floorSelect.empty();
+                success: function (response) {
+                    flatSelect.empty();
                     var flats = response;
-                    floorSelect.append('<option value="">Вибрати...</option>');
-                    $.each(flats, function(index, flat) {
-                        console.log(flat)
-                        floorSelect.append('<option value="' + flat.id + '">' + flat.number + '</option>');
+                    flatSelect.append('<option value="">Вибрати...</option>');
+                    $.each(flats, function (index, flat) {
+                        flatSelect.append('<option value="' + flat.id + '">' + flat.number + '</option>');
                     });
                 },
-                error: function() {
+                error: function () {
                 }
             });
         });
     });
 </script>
 <script>
-    $(document).ready(function() {
-        $('#houseSelect').change(function() {
+    $(document).ready(function () {
+        $('#houseSelect').change(function () {
             var houseId = $(this).val();
             var sectionSelect = $('select[name="section"]');
             $.ajax({
-                url: '/admin/account/getSections/'+houseId,
+                url: '/admin/account/getSections/' + houseId,
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     sectionSelect.empty();
                     var section = response;
                     sectionSelect.append('<option value="">Вибрати...</option>');
-                    $.each(section, function(index, section) {
+                    $.each(section, function (index, section) {
                         sectionSelect.append('<option value="' + section.id + '">' + section.name + '</option>');
                     });
                 },
-                error: function() {
+                error: function () {
                 }
             });
         });

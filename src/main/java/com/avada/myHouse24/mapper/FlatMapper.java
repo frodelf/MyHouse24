@@ -1,6 +1,7 @@
 package com.avada.myHouse24.mapper;
 
 import com.avada.myHouse24.entity.Flat;
+import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.model.FlatDTO;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.ScoreServiceImpl;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +27,16 @@ public class FlatMapper {
         flat.setSection(flatDTO.getSection());
         flat.setUser(flatDTO.getUser());
         flat.setTariff(flatDTO.getTariff());
-        flat.setScore(scoreService.getByNumber(flatDTO.getScoreNumber()));
+        Score score = new Score();
+        try {
+            score = scoreService.getByNumber(flatDTO.getScoreNumber());
+        }catch (NoSuchElementException e){
+            score.setNumber(flatDTO.getScoreNumber());
+            scoreService.save(score);
+        }
+        score.setStatus("Активен");
+        scoreService.save(score);
+        flat.setScore(score);
         return flat;
     }
     public FlatDTO toDto(Flat flat){
@@ -38,8 +49,10 @@ public class FlatMapper {
         flatDTO.setSection(flat.getSection());
         flatDTO.setUser(flat.getUser());
         flatDTO.setTariff(flat.getTariff());
-        flatDTO.setScoreNumber(flat.getScore().getNumber());
-        flatDTO.setBalance((long) flat.getScore().getBalance());
+        if(flat.getScore()!=null) {
+            flatDTO.setScoreNumber(flat.getScore().getNumber());
+            flatDTO.setBalance((long) flat.getScore().getBalance());
+        }
         return flatDTO;
     }
 

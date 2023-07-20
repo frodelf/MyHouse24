@@ -20,9 +20,10 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">
-                Лицевой счет            </h4>
-            <ol class="breadcrumb" style="margin-right: 3%">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                Лицевой счет
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item"><a href="/admin/account/index/1" class="text-for-breadcrumb">Лицевые счета</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -31,7 +32,7 @@
             </ol>
         </div>
         <section class="content">
-            <div class="input-group mb-3" style="width: 25%; margin-left: 25px;">
+            <div class="input-group mb-3" style="width: 25%">
                 <span class="input-group-text" id="basic-addon1">№</span>
                 <input type="text" th:field="*{scoreDto.number}" class="form-control" readonly>
             </div>
@@ -46,7 +47,7 @@
                             <i class="fa fa-file"></i>   Оформить квитанцию
                         </a>
                         <a class="btn btn-primary" th:href="@{/admin/account/edit/{id}(id=${scoreDto.getId()})}">
-                            Редактировать квартиру
+                            Редактировать счет
                         </a>
                     </div>
                 </div>

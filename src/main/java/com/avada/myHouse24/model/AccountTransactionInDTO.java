@@ -12,9 +12,7 @@ import java.sql.Date;
 @NoArgsConstructor
 @Data
 public class AccountTransactionInDTO {
-    @NotBlank(message = "Поле не повино бути пустим")
-    @Size(min = 10, max = 10, message = "Поле має бути розміру 10 символів")
-    private String id;
+    private Long id;
     private Date date;
     @NotBlank(message = "Поле не повино бути пустим")
     @Length(max = 50, message = "Довжина поля повинна бути до 50 символів")
@@ -40,4 +38,7 @@ public class AccountTransactionInDTO {
     @Length(max = 50, message = "Довжина поля повинна бути до 50 символів")
     private String comment;
     private boolean addToStats;
+    @NotBlank(message = "Поле не повино бути пустим")
+    @Length(max = 10, message = "Довжина поля повинна бути до 10 символів")
+    private String number;
 }

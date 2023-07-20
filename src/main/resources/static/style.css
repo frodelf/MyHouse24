@@ -35,3 +35,18 @@
 .status-disabled {
     background-color: red;
 }
+
+.content-header{
+    width: 100%;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.wrapper{
+    width: 99.5%;
+}
+
+.content{
+    padding-right: 8px;
+    padding-left: 8px;
+}

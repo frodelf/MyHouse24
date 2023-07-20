@@ -17,8 +17,8 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">Новый дом</h4>
-            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+            <h4 style="margin-left: 10px; margin-right: auto;">Дом [[${house.getName()}]]</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
                 </li>
                 <li class="breadcrumb-item"><a href="/admin/house/index/1" class="text-for-breadcrumb">Дома</a>
@@ -28,94 +28,84 @@
         </div>
         <section class="content">
             <div class="card">
+                <div class="card-header">
+                    <a class="btn btn-primary float-right" th:href="@{/admin/house/edit/{id}(id=${house.getId()})}">
+                        Редактировать квартиру
+                    </a>
+                </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-4">
-                            <div class="row">
-                                <div class="col">
-                                    <b>
-                                        Название
-                                        <br/>
-                                        <br/>
-                                        Адрес
-                                        <br/>
-                                        <br/>
-                                        Секций
-                                        <br/>
-                                        <br/>
-                                        Этажей
-                                        <br/>
-                                        <br/>
-                                        Пользователи
-                                    </b>
-                                </div>
-                                <div class="col">
-                                    <h6 th:text="${house.getName()}"></h6>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                <b>
+                                    Название
                                     <br/>
-                                    <h6 th:text="${house.getAddress()}"></h6>
-                                    <div style="margin-bottom: 29px;"></div>
-                                    <h6 th:text="${house.getSections().size()}"></h6>
-                                    <div style="margin-bottom: 29px;"></div>
-                                    <h6 th:text="${house.getFloors().size()}"></h6>
                                     <br/>
-                                    <div th:each="user : ${house.getAdmins()}">
+                                    Адрес
+                                    <br/>
+                                    <br/>
+                                    Секций
+                                    <br/>
+                                    <br/>
+                                    Этажей
+                                    <br/>
+                                    <br/>
+                                    Пользователи
+                                </b>
+                            </div>
+                            <div class="col-2">
+                                <h6 th:text="${house.getName()}"></h6>
+                                <br/>
+                                <h6 th:text="${house.getAddress()}"></h6>
+                                <div style="margin-bottom: 29px;"></div>
+                                <h6 th:text="${house.getSections().size()}"></h6>
+                                <div style="margin-bottom: 29px;"></div>
+                                <h6 th:text="${house.getFloors().size()}"></h6>
+                                <br/>
+                                <div th:each="user : ${house.getAdmins()}">
                                         <span>
                                         <h7 th:text="${user.getFirstName()}"></h7>:
-                                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user-admin/{id}(id = ${user.getId()})}" th:text="${user.getFirstName()}"></a>
+                                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                                           th:href="@{/admin/user-admin/{id}(id = ${user.getId()})}"
+                                           th:text="${user.getFirstName()}"></a>
                                         </span>
-                                    </div>
                                 </div>
                             </div>
-                        </div>
-                            <div class="col-8">
-                                <div class="row">
-                                    <div class="col-6">
-                                        <img id="previewImage1" class="pull-left img-responsive"
-                                             src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                             style="width: 90%; height: 350px">
-                                    </div>
-                                    <div class="col-6">
-                                        <div class="row">
-                                            <div class="col">
-                                                <img id="previewImage2" class="pull-left img-responsive"
-                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                                     style="width: 90%; height: 160px; margin-bottom: 30px;">
-                                                <br/>
-                                                <img id="previewImage3" class="pull-left img-responsive"
-                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                                     style="width: 90%; height: 160px">
-                                            </div>
-                                            <div class="col">
-                                                <img id="previewImage4" class="pull-left img-responsive"
-                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                                     style="width: 90%; height: 160px; margin-bottom: 30px;">
-                                                <br/>
-                                                <img id="previewImage5" class="pull-left img-responsive"
-                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg"
-                                                     style="width: 90%; height: 160px">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-4">
+                                <img id="previewImage1" class="pull-left img-responsive"
+                                     th:src="@{/uploads/house/{name}(name = ${house.getImage()})}"
+                                     style="width: 90%; height: 350px">
+                            </div>
+                            <div class="col-2">
+                                <img id="previewImage2" class="pull-left img-responsive"
+                                     th:src="@{/uploads/house/{name}(name = ${house.getImage1()})}"
+                                     style="width: 90%; height: 160px; margin-bottom: 30px;">
+                                <br/>
+                                <img id="previewImage3" class="pull-left img-responsive"
+                                     th:src="@{/uploads/house/{name}(name = ${house.getImage2()})}"
+                                     style="width: 90%; height: 160px">
+                            </div>
+                            <div class="col-2">
+                                <img id="previewImage4" class="pull-left img-responsive"
+                                     th:src="@{/uploads/house/{name}(name = ${house.getImage3()})}"
+                                     style="width: 90%; height: 160px; margin-bottom: 30px;">
+                                <br/>
+                                <img id="previewImage5" class="pull-left img-responsive"
+                                     th:src="@{/uploads/house/{name}(name = ${house.getImage4()})}"
+                                     style="width: 90%; height: 160px">
                             </div>
                         </div>
-                    </div>
-                    <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
-                        <a href="/admin/house/index/1" class="btn btn-outline-secondary float-right"
-                           style="margin-right: 3px">
-                            Отменить
-                        </a>
                     </div>
                 </div>
+            </div>
         </section>
     </div>
-    <footer class="main-footer">
-        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
-            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
-        Документация API доступна <a href="/doc">по ссылке</a>.
-    </footer>
 </div>
+<footer class="main-footer">
+    Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+        href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+    Документация API доступна <a href="/doc">по ссылке</a>.
+</footer>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -12,6 +12,7 @@ public interface ScoreService {
     Score getById(long id);
     Score getByNumber(String number);
     List<Score> getAll();
+    List<Score> getAllByStatus(String status);
     List<String> getOnlyNumber();
     boolean existNumber(String number);
     void save(Score score);

@@ -20,10 +20,10 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
                 Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]
             </h4>
-            <ol class="breadcrumb" style="margin-right: 3%">
+            <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item"><a href="/admin/flat/index/1" class="text-for-breadcrumb">Квартиры</a></li>
                 <li class="breadcrumb-item"><a th:href="@{/admin/flat/{id}(id = ${flat.getId()})}" class="text-for-breadcrumb">Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]</a></li>
@@ -82,7 +82,7 @@
                         <div class="col">
                             Лицевой счет
                             <input type="number" class="form-control" th:field="*{scoreNumber}">
-                            <select class="form-select"
+                            <select class="form-select" name="scoreNumber"
                                     aria-label="Default select example">
                                 <option value="" hidden >или выбрате из списка...</option>
                                 <option th:each="score:${scores}" th:value="${score.getNumber()}" th:text="${score.number}">
@@ -111,12 +111,12 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('select[name="score"]').change(function() {
+        $('select[name="scoreNumber"]').change(function() {
             var selectedScore = $(this).val();
-            $('input[name="score"]').val(selectedScore);
+            $('input[name="scoreNumber"]').val(selectedScore);
+            $('select[name="scoreNumber"]').val("Вибрано");
         });
     });
-
 </script>
 <script>
     $(document).ready(function() {

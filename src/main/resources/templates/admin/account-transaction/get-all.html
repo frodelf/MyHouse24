@@ -33,8 +33,8 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">Касса</h4>
-            <ol class="breadcrumb" style="margin-right: 3%">
+            <h4 style="margin-left: 10px; margin-right: auto;">Касса</h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Касса</li>
             </ol>
@@ -193,7 +193,7 @@
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
                                             <a class="btn btn-default btn-sm"
-                                               th:href="@{/admin/account-transaction/delete/{id}(id = ${accountTransaction.getId()})}"
+                                               th:href="@{/admin/account-transaction/delete/{id}(id = ${transaction.getId()})}"
                                                title="Удалить" data-toggle="tooltip"
                                                data-pjax="0" data-method="post"
                                                data-confirm="Вы уверены, что хотите удалить этот элемент?"><i

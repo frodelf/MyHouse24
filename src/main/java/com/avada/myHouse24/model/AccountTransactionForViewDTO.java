@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class AccountTransactionForViewDTO {
-    private String id;
+    private Long id;
     private String date;
     private String userName;
     private String scoreNumber;
@@ -14,5 +14,5 @@ public class AccountTransactionForViewDTO {
     private Boolean addToStats;
     private String sum;
     private String comment;
-
+    private String number;
 }

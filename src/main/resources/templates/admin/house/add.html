@@ -17,8 +17,8 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">Новый дом</h4>
-            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+            <h4 style="margin-left: 10px; margin-right: auto;">Новый дом</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
                 </li>
                 <li class="breadcrumb-item"><a href="/admin/house/index/1" class="text-for-breadcrumb">Дома</a>
@@ -34,35 +34,36 @@
                             <div class="col-4">
                                 <b>
                                     Название
-                                    <input name="name" type="text" class="form-control">
+                                    <input th:field="*{name}" type="text" class="form-control">
+                                    <input th:field="*{id}" type="text" class="form-control" hidden>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                                     <br/>
                                     Адрес
-                                    <input name="address" type="text" class="form-control">
+                                    <input th:field="*{address}" type="text" class="form-control">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                                     <br/>
                                     Изображение #1. Размер: (522x350)
-                                    <input name="image" type="file" class="form-control" value="null"
+                                    <input th:field="*{image}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage1')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
                                     <br/>
                                     Изображение #2. Размер: (248x160)
-                                    <input name="image1" type="file" class="form-control" value="null"
+                                    <input th:field="*{image1}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage2')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image1')}" th:errors="*{image1}"></div>
                                     <br/>
                                     Изображение #3. Размер: (248x160)
-                                    <input name="image2" type="file" class="form-control" value="null"
+                                    <input th:field="*{image2}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage3')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image2')}" th:errors="*{image2}"></div>
                                     <br/>
                                     Изображение #4. Размер: (248x160)
-                                    <input name="image3" type="file" class="form-control" value="null"
+                                    <input th:field="*{image3}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage4')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image3')}" th:errors="*{image3}"></div>
                                     <br/>
                                     Изображение #5. Размер: (248x160)
-                                    <input name="image4" type="file" class="form-control" value="null"
+                                    <input th:field="*{image4}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage5')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image4')}" th:errors="*{image4}"></div>
                                 </b>

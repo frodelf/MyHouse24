@@ -6,6 +6,7 @@ import com.avada.myHouse24.model.HouseForViewDto;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
+import com.avada.myHouse24.validator.HouseValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class HouseController {
     private final HouseServiceImpl houseService;
+    private final HouseValidator houseValidator;
     private final AdminServiceImpl adminService;
     private final HouseMapper houseMapper;
     private final RoleServiceImpl roleService;
@@ -44,6 +46,7 @@ public class HouseController {
 
     @PostMapping("/add")
     public String add(@ModelAttribute("house") @Valid HouseForAddDto house, BindingResult bindingResult, Model model) throws IOException {
+        houseValidator.validate(house, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", adminService.getAll());
             return "admin/house/add";
@@ -83,5 +86,22 @@ public class HouseController {
     @GetMapping("/name/{name}")
     public String getByName(@PathVariable("name") String name){
         return "redirect:/admin/house/"+houseService.getByName(name).getId();
+    }
+
+    @GetMapping("/edit/{id}")
+    public String edit(@PathVariable("id")long id, Model model){
+        model.addAttribute("users", adminService.getAll());
+        model.addAttribute("house", houseService.getById(id));
+        return "admin/house/edit";
+    }
+    @PostMapping("/edit/{id}")
+    public String edit(@ModelAttribute("house") @Valid HouseForAddDto house, @PathVariable("id")Long id, BindingResult bindingResult, Model model) throws IOException {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("users", adminService.getAll());
+            model.addAttribute("house", houseService.getById(id));
+            return "admin/house/edit";
+        }
+        houseService.add(house);
+        return "redirect:/admin/house/index/1";
     }
 }

@@ -13,21 +13,23 @@ import java.sql.Date;
 @NoArgsConstructor
 @Data
 public class AccountTransactionOutDTO {
-    @NotBlank(message = "Поле не повино бути пустим")
-    @Length(max = 10, message = "Довжина поля повинна бути до 10 символів")
-    private String id;
+
+    private Long id;
     private Date date;
     @Pattern(regexp = "^(?!Виберите\\.\\.\\.).*$", message = "Поле не вибрано")
     private String transactionPurposeName;
     private boolean isIncome;
     @NotBlank(message = "Поле не повино бути пустим")
     @Length(max = 10, message = "Довжина поля повинна бути до 10 символів")
-    @Pattern(regexp = "^\\d+(\\.\\d{1,2})?$", message = "Поле повинно містити десяткове число")
+    @Pattern(regexp = "^-?\\d+(\\.\\d{1,2})?$", message = "Поле повинно містити десяткове число")
     private String sum;
     @Pattern(regexp = "^(?!Виберите\\.\\.\\.).*$", message = "Поле не вибрано")
     private String adminName;
     @NotBlank(message = "Поле не повино бути пустим")
     @Length(max = 500, message = "Довжина поля повинна бути до 500 символів")
     private String comment;
+    @NotBlank(message = "Поле не повино бути пустим")
+    @Length(max = 10, message = "Довжина поля повинна бути до 10 символів")
+    private String number;
     private boolean addToStats;
 }

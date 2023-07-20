@@ -5,6 +5,7 @@ import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.model.HouseForAddDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+//import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -73,4 +74,15 @@ public class ImageUtil {
     public static void deleteImage(String name) {
         new File(name).delete();
     }
+
+//    public MultipartFile convertToMultipartFile(String filePath) throws IOException {
+//        File file = new File(filePath);
+//        Path path = Paths.get(file.getAbsolutePath());
+//        String name = file.getName();
+//        String originalFileName = file.getName();
+//        String contentType = Files.probeContentType(path);
+//        byte[] content = Files.readAllBytes(path);
+//
+//        return new MockMultipartFile(name, originalFileName, contentType, content);
+//    }
 }

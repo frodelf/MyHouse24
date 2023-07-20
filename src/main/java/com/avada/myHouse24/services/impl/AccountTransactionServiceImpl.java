@@ -1,6 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.AccountTransaction;
+import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.model.AccountTransactionForViewDTO;
 import com.avada.myHouse24.repo.AccountTransactionRepository;
 import com.avada.myHouse24.services.AccountTransactionService;
@@ -110,5 +111,15 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
         long max = 9_999_999_999L;
         long randomNumber = min + (long) (Math.random() * (max - min));
         return randomNumber;
+    }
+
+    public void clearAllScore(Score score){
+        List<AccountTransaction> accountTransactions = accountTransactionRepository.findAll();
+        for (AccountTransaction accountTransaction : accountTransactions) {
+            if(accountTransaction.getScore() != null && accountTransaction.getScore().getId() == score.getId()){
+                accountTransaction.setScore(null);
+                accountTransactionRepository.save(accountTransaction);
+            }
+        }
     }
 }

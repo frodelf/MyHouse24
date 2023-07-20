@@ -32,14 +32,16 @@ public class Flat {
     private Section section;
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
     @ManyToOne
     private Tariff tariff;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "score_id")
+    @OneToOne(cascade = CascadeType.DETACH)
+    @JoinColumn(name = "score_id", nullable = false)
+    @JsonIgnore
     private Score score;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<CounterData> counterData;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Invoice> invoices;
 }

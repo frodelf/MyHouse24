@@ -30,7 +30,7 @@ public class AccountTransaction {
     private String comment;
     @ManyToOne
     private User user;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     private Score score;
     @ManyToOne
     private Admin admin;

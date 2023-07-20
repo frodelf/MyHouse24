@@ -6,6 +6,7 @@ import com.avada.myHouse24.services.TransactionPurposeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -26,6 +27,24 @@ public class TransactionPurposeServiceImpl implements TransactionPurposeService 
     @Override
     public List<TransactionPurpose> getAll() {
         return transactionPurposeRepository.findAll();
+    }
+
+    @Override
+    public List<TransactionPurpose> getAllIncomeTrue() {
+        List<TransactionPurpose> result = new ArrayList<>();
+        for (TransactionPurpose transactionPurpose : transactionPurposeRepository.findAll()) {
+            if(transactionPurpose.isIncome())result.add(transactionPurpose);
+        }
+        return result;
+    }
+
+    @Override
+    public List<TransactionPurpose> getAllIncomeFalse() {
+        List<TransactionPurpose> result = new ArrayList<>();
+        for (TransactionPurpose transactionPurpose : transactionPurposeRepository.findAll()) {
+            if(!transactionPurpose.isIncome())result.add(transactionPurpose);
+        }
+        return result;
     }
 
     @Override

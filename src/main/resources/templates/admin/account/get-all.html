@@ -36,10 +36,10 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
                 Лицевые счета
             </h4>
-            <ol class="breadcrumb" style="margin-right: 3%">
+            <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                     Лицевые счета
@@ -124,7 +124,7 @@
                             </tr>
                                 <tr style="font-weight: bold">
                                     <td>
-                                        <input name="number" type="number" class="form-control">
+                                        <input th:field="*{number}" type="number" class="form-control">
                                     </td>
                                     <td>
                                         <input th:field="*{status}" type="text" class="form-control">
@@ -196,16 +196,16 @@
                                         </span>
                                     </td>
                                     <td>
-                                        [[${score.flat.number}]]
+                                        [[${score.flat == null ? '(Не задано)' : score.flat.number}]]
                                     </td>
                                     <td>
-                                        [[${score.flat.house.name}]]
+                                        [[${score.flat == null ? '(Не задано)' : score.flat.house.name}]]
                                     </td>
                                     <td>
-                                        [[${score.flat.section.name}]]
+                                        [[${score.flat == null ? '(Не задано)' : score.flat.section.name}]]
                                     </td>
                                     <td>
-                                        [[${score.flat.user.firstName}]]
+                                        [[${score.flat == null ? '(Не задано)' : score.flat.user.firstName}]]
                                     </td>
                                     <td>
                                         [[${score.balance}]]

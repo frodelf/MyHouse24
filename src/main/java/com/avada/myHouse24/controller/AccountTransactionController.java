@@ -46,7 +46,7 @@ public class AccountTransactionController {
         model.addAttribute("users", userService.getAll());
         model.addAttribute("admins", adminService.getAll());
         model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
         model.addAttribute("maxId", accountTransactionService.getNumber());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
 
@@ -59,38 +59,39 @@ public class AccountTransactionController {
             model.addAttribute("users", userService.getAll());
             model.addAttribute("admins", adminService.getAll());
             model.addAttribute("scores", scoreService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
             model.addAttribute("maxId", accountTransactionService.getNumber());
             model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
             return "admin/account-transaction/add-in";
         }
         accountTransactionInDTO.setIncome(true);
         accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
-        return "redirect:/admin/account-transaction/index";
+        return "redirect:/admin/account-transaction/index/1";
     }
 
     @GetMapping("update/in/{id}")
-    public String updateIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, @PathVariable("id") long id, Model model) {
+    public String updateIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, @PathVariable("id") Long id, Model model) {
         model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForIn(accountTransactionService.getById(id)));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("admins", adminService.getAll());
         model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
         return "admin/account-transaction/update-in";
     }
 
     @PostMapping("update/in/{id}")
-    public String updateIn(@ModelAttribute("accountTransactionInDTO") @Valid AccountTransactionInDTO accountTransactionInDTO,BindingResult bindingResult, @PathVariable("id") long id, Model model) {
+    public String updateIn(@ModelAttribute("accountTransactionInDTO") @Valid AccountTransactionInDTO accountTransactionInDTO,BindingResult bindingResult, @PathVariable("id") Long id, Model model) {
         if(bindingResult.hasErrors()){
             model.addAttribute("accountTransaction", accountTransactionInDTO);
             model.addAttribute("users", userService.getAll());
             model.addAttribute("admins", adminService.getAll());
             model.addAttribute("scores", scoreService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
             return "admin/account-transaction/update-in";
         }
+        accountTransactionInDTO.setIncome(true);
         accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
-        return "redirect:/admin/account-transaction/index";
+        return "redirect:/admin/account-transaction/index/1";
     }
 
     @GetMapping("/create/out")
@@ -98,7 +99,7 @@ public class AccountTransactionController {
         model.addAttribute("users", userService.getAll());
         model.addAttribute("admins", adminService.getAll());
         model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
         model.addAttribute("maxId", accountTransactionService.getNumber());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
         return "admin/account-transaction/add-out";
@@ -110,39 +111,41 @@ public class AccountTransactionController {
             model.addAttribute("users", userService.getAll());
             model.addAttribute("admins", adminService.getAll());
             model.addAttribute("scores", scoreService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
             model.addAttribute("maxId", accountTransactionService.getNumber());
             model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
             return "admin/account-transaction/add-out";
         }
+        accountTransactionOutDTO.setSum("-"+accountTransactionOutDTO.getSum());
         accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
-        return "redirect:/admin/account-transaction/index";
+        return "redirect:/admin/account-transaction/index/1";
     }
 
     @GetMapping("/update/out/{id}")
-    public String updateOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") long id,  Model model){
+    public String updateOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") Long id,  Model model){
         model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForOut(accountTransactionService.getById(id)));
         model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
         model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
         return "admin/account-transaction/update-out";
     }
 
     @PostMapping("/update/out/{id}")
-    public String updateOut(@ModelAttribute("accountTransactionOutDTO") @Valid AccountTransactionOutDTO accountTransactionOutDTO, BindingResult bindingResult, @PathVariable("id") long id, Model model){
+    public String updateOut(@ModelAttribute("accountTransactionOutDTO") @Valid AccountTransactionOutDTO accountTransactionOutDTO, BindingResult bindingResult, @PathVariable("id") Long id, Model model){
         if (bindingResult.hasErrors()){
             model.addAttribute("accountTransaction", accountTransactionOutDTO);
             model.addAttribute("admins", adminService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
+            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
             return "admin/account-transaction/update-out";
         }
+        accountTransactionOutDTO.setSum(accountTransactionOutDTO.getSum());
         accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
-        return "redirect:/admin/account-transaction/index";
+        return "redirect:/admin/account-transaction/index/1";
     }
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable("id")long id){
         accountTransactionService.deleteById(id);
-        return "redirect:/admin/account-transaction/index";
+        return "redirect:/admin/account-transaction/index/1";
     }
     @GetMapping("/{id}")
     public String getAccountTransaction(@PathVariable("id")long id, Model model){
@@ -176,9 +179,9 @@ public class AccountTransactionController {
     public String filter(@ModelAttribute AccountTransactionForViewDTO accountTransactionForViewDTO, @PathVariable("number")int number, Model model){
         List<AccountTransactionForViewDTO> accountTransactions = accountTransactionMapper.toDtoForViewList(accountTransactionService.getAll());
 
-        if (!accountTransactionForViewDTO.getId().isBlank()) {
+        if (accountTransactionForViewDTO.getId() != null) {
             accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getId() != null && dto.getId().contains(accountTransactionForViewDTO.getId()))
+                    .filter(dto -> dto.getId() != null && dto.getId().toString().contains(accountTransactionForViewDTO.getId().toString()))
                     .collect(Collectors.toList());
         }
         if (!accountTransactionForViewDTO.getDate().isBlank()) {

@@ -45,7 +45,7 @@ public class FlatController {
     @GetMapping("/add")
     public String add(@ModelAttribute("flatDTO") FlatDTO flatDTO, Model model){
         model.addAttribute("houses", houseService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
+        model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         return "/admin/flat/add";
@@ -64,24 +64,18 @@ public class FlatController {
     public String add(@ModelAttribute("flatDTO") @Valid FlatDTO flatDTO, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("houses", houseService.getAll());
-            model.addAttribute("scores", scoreService.getAll());
+            model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
             model.addAttribute("users", userService.getAll());
             model.addAttribute("tariffs", tariffService.getAll());
             return "/admin/flat/add";
         }
-        if(!scoreService.existNumber(flatDTO.getScoreNumber())){
-            Score score = new Score();
-            score.setFlat(flatMapper.toEntity(flatDTO));
-            score.setStatus("Активен");
-            score.setNumber(flatDTO.getScoreNumber());
-            scoreService.save(score);
-        }
+        flatDTO.setScoreNumber(flatDTO.getScoreNumber().replace(",",""));
         flatService.save(flatMapper.toEntity(flatDTO));
         return "redirect:/admin/flat/index/1";
     }
 
     @GetMapping("/filter/{page}")
-    public String filter(@ModelAttribute("flatDTO") FlatDTO flatDTO, @PathVariable("page")int page, @RequestParam("rest") Boolean rest, Model model){
+    public String filter(@RequestParam(value = "rest", required = false) Boolean rest, @ModelAttribute("flatDTO") FlatDTO flatDTO, @PathVariable("page")int page,  Model model){
         List<FlatDTO> flatDTOS = flatMapper.toDtoList(flatService.getAll());
         if(flatDTO.getNumber() != null){
             flatDTOS = flatDTOS.stream()
@@ -144,18 +138,20 @@ public class FlatController {
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") long id, Model model){
-
         model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("floors", floorService.getAll());
         model.addAttribute("sections", sectionService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
+        model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         return "/admin/flat/edit";
     }
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable("id") long id){
+        Score score = flatService.getById(id).getScore();
+        score.setStatus("Неактивен");
+        scoreService.save(score);
         flatService.deleteById(id);
         return "redirect:/admin/flat/index/1";
     }
@@ -166,17 +162,18 @@ public class FlatController {
             score.setNumber(flatDTO.getScoreNumber());
             scoreService.save(score);
         }
+        flatDTO.setScoreNumber(flatDTO.getScoreNumber().replace(",",""));
         flatService.save(flatMapper.toEntity(flatDTO));
         Integer page = Math.toIntExact(flatDTO.getId() == null ? (flatService.getMaxId() - 1) : flatDTO.getId());
         return "redirect:/admin/flat/copy/"+page;
     }
     @GetMapping("/copy/{id}")
     public String copy(@PathVariable("id") long id, Model model){
-        model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
+        model.addAttribute("flat", flatMapper.toDto(flatService.getById(id+1)));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("floors", floorService.getAll());
         model.addAttribute("sections", sectionService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
+        model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         return "/admin/flat/copy";

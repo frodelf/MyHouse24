@@ -84,6 +84,12 @@ public class HouseServiceImpl implements HouseService {
     @Override
     public void add(HouseForAddDto houseDto) throws IOException {
         House house = new House();
+        if(houseDto.getId() != null){
+            house = getById(houseDto.getId());
+            house.setSections(new ArrayList<Section>());
+            house.setFloors(new ArrayList<Floor>());
+            house.setAdmins(new ArrayList<Admin>());
+        }
         for (String section : houseDto.getSections()) {
             if(house.getSections() == null)house.setSections(new ArrayList<Section>());
             house.getSections().add(new Section(section));
@@ -94,16 +100,33 @@ public class HouseServiceImpl implements HouseService {
         }
         for (String user : houseDto.getUsers()) {
             if(house.getAdmins() == null)house.setAdmins(new ArrayList<Admin>());
-            if(user!=null)house.getAdmins().add(adminService.getByName(user.substring(0, user.indexOf(","))));
+            if(user!=null)house.getAdmins().add(adminService.getByName(user));
         }
         house.setName(houseDto.getName());
         house.setAddress(houseDto.getAddress());
-        house.setImage(ImageUtil.imageForHouseForAdd(houseDto.getImage()));
-        house.setImage1(ImageUtil.imageForHouseForAdd(houseDto.getImage1()));
-        house.setImage2(ImageUtil.imageForHouseForAdd(houseDto.getImage2()));
-        house.setImage3(ImageUtil.imageForHouseForAdd(houseDto.getImage3()));
-        house.setImage4(ImageUtil.imageForHouseForAdd(houseDto.getImage4()));
+        if(!houseDto.getImage().getOriginalFilename().isBlank() && houseDto.getImage().getOriginalFilename() != null && !houseDto.getImage().getOriginalFilename().isEmpty())
+            house.setImage(ImageUtil.imageForHouseForAdd(houseDto.getImage()));
+        if(!houseDto.getImage1().getOriginalFilename().isBlank() && houseDto.getImage1().getOriginalFilename() != null && !houseDto.getImage1().getOriginalFilename().isEmpty())
+            house.setImage1(ImageUtil.imageForHouseForAdd(houseDto.getImage1()));
+        if(!houseDto.getImage2().getOriginalFilename().isBlank() && houseDto.getImage2().getOriginalFilename() != null && !houseDto.getImage2().getOriginalFilename().isEmpty())
+            house.setImage2(ImageUtil.imageForHouseForAdd(houseDto.getImage2()));
+        if(!houseDto.getImage3().getOriginalFilename().isBlank() && houseDto.getImage3().getOriginalFilename() != null && !houseDto.getImage3().getOriginalFilename().isEmpty())
+            house.setImage3(ImageUtil.imageForHouseForAdd(houseDto.getImage3()));
+        if(!houseDto.getImage4().getOriginalFilename().isBlank() && houseDto.getImage4().getOriginalFilename() != null && !houseDto.getImage4().getOriginalFilename().isEmpty())
+            house.setImage4(ImageUtil.imageForHouseForAdd(houseDto.getImage4()));
 
         houseRepository.save(house);
+    }
+    public List<House> forSelect(int page, int pageSize, String search) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<House> housePage;
+
+        if (search != null && !search.isEmpty()) {
+            housePage = houseRepository.findByNameContainingIgnoreCase(search, pageable);
+        } else {
+            housePage = houseRepository.findAll(pageable);
+        }
+
+        return housePage.getContent();
     }
 }

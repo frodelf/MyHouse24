@@ -16,14 +16,14 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">Новая приходная ведомость</h4>
-            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+            <h4 style="margin-left: 10px; margin-right: auto;">Новая приходная ведомость</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
                 </li>
                 <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">Платежи</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Приходная ведомость №
-                    [[${accountTransaction.getId()}]]
+                    [[${accountTransaction.getNumber()}]]
                 </li>
             </ol>
         </div>
@@ -47,7 +47,7 @@
                 <div class="card-header">
                     <div class="container">
                         <div class="row">
-                            <div class="col">
+                            <div class="col" style="font-weight: bold; font-size: 22px; color: #484646">
                                 Приходная ведомость
                             </div>
                             <div class="col">
@@ -80,7 +80,7 @@
                                 Лицевой счет
                             </td>
                             <td>
-                                [[${accountTransaction.getScoreId()}]]
+                                [[${accountTransaction.scoreNumber}]]
                             </td>
                         </tr><tr>
                         <td>

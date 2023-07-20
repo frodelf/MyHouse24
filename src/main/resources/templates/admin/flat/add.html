@@ -20,10 +20,10 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
                 Новая квартира
             </h4>
-            <ol class="breadcrumb" style="margin-right: 3%">
+            <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Квартири</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -78,9 +78,9 @@
                             <div class="col">
                                 Лицевой счет
                                 <input type="number" class="form-control" th:field="*{scoreNumber}">
-                                <select class="form-select"
+                                <select class="form-select" name="scoreNumber"
                                         aria-label="Default select example">
-                                    <option value="" hidden >или выбрате из списка...</option>
+                                    <option value="" hidden >или выберите из списка...</option>
                                     <option th:each="score:${scores}" th:value="${score.getNumber()}" th:text="${score.number}">
                                     </option>
                                 </select>
@@ -107,12 +107,12 @@
 </div>
 <script>
     $(document).ready(function() {
-        $('select[name="score"]').change(function() {
+        $('select[name="scoreNumber"]').change(function() {
             var selectedScore = $(this).val();
-            $('input[name="score"]').val(selectedScore);
+            $('input[name="scoreNumber"]').val(selectedScore);
+            $('select[name="scoreNumber"]').val("Вибрано");
         });
     });
-
 </script>
 <script>
     $(document).ready(function() {

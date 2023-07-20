@@ -19,6 +19,6 @@ public class Score {
     private String status;
     @Column(unique = true)
     private String number;
-    @OneToOne(mappedBy = "score")
+    @OneToOne(mappedBy = "score",cascade = CascadeType.DETACH)
     private Flat flat;
 }

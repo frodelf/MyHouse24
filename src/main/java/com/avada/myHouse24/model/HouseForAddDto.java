@@ -10,6 +10,7 @@ import java.util.List;
 
 @Data
 public class HouseForAddDto {
+    private Long id;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")
     private String name;

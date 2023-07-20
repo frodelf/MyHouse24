@@ -20,8 +20,8 @@
         <div th:replace="blocks/menu :: menu"></div>
         <div class="content-wrapper">
             <div class="content-header" style="display: flex; align-items: center;">
-                <h4 style="margin-left: 20px; margin-right: auto;">Новая приходная ведомость</h4>
-                <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+                <h4 style="margin-left: 10px; margin-right: auto;">Новая приходная ведомость</h4>
+                <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
                     <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
                     </li>
                     <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">Платежи</a>
@@ -34,7 +34,7 @@
                     <div class="col">
                         <div class="input-group mb-3">
                             <span class="input-group-text">№</span>
-                            <input type="number" class="form-control" name="id" th:value="${accountTransaction.getId()}">
+                            <input type="number" class="form-control" name="number" th:value="${accountTransaction.getNumber()}">
                             <p style="margin-left: 10px; margin-right: 10px;">от</p>
                             <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                             <input type="date" name="date" class="form-control"
@@ -68,9 +68,9 @@
                                                 aria-label="Default select example">
                                             <option th:value="${accountTransaction.getUserName()}"
                                                     th:text="${accountTransaction.getUserName()}"></option>
-                                            <option th:each="user:${users}" th:value="${user.name}"
+                                            <option th:each="user:${users}" th:value="${user.firstName}"
                                                     th:field="*{userName}"
-                                                    th:text="${user.name}"></option>
+                                                    th:text="${user.firstName}"></option>
                                         </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
@@ -112,8 +112,8 @@
                                                 aria-label="Default select example">
                                             <option th:value="${accountTransaction.getAdminName()}"
                                                     th:text="${accountTransaction.getAdminName()}"></option>
-                                            <option th:each="admin:${admins}" th:value="${admin.name}"
-                                                    th:text="${admin.name}"></option>
+                                            <option th:each="admin:${admins}" th:value="${admin.firstName}"
+                                                    th:text="${admin.firstName}"></option>
                                         </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('adminName')}" th:errors="*{adminName}"></div>

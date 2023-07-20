@@ -12,6 +12,7 @@ import com.avada.myHouse24.services.impl.FlatServiceImpl;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.ScoreServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
+import com.avada.myHouse24.validator.ScoreValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -30,6 +31,7 @@ public class ScoreController {
     private final HouseServiceImpl houseService;
     private final FlatServiceImpl flatService;
     private final FlatMapper flatMapper;
+    private final ScoreValidator scoreValidator;
     private final UserServiceImpl userService;
     private final ScoreServiceImpl scoreService;
     private final ScoreMapper scoreMapper;
@@ -46,12 +48,14 @@ public class ScoreController {
     @GetMapping("/getSections/{id}")
     @ResponseBody
     public List<Section> getSectionsByHouseId(@PathVariable("id") int id) {
-        return houseService.getById(id).getSections();
+        List<Section> sections = houseService.getById(id).getSections();
+        return sections;
     }
     @GetMapping("/getFlats/{id}")
     @ResponseBody
     public List<FlatDTO> getFlatsByHouseId(@PathVariable("id") int id) {
-        return flatMapper.toDtoList(houseService.getById(id).getFlats());
+        List<FlatDTO> flats = flatMapper.toDtoList(houseService.getById(id).getFlats());
+        return flats;
     }
     @GetMapping("/add")
     public String add(@ModelAttribute("scoreDto")ScoreDTO scoreDTO, Model model) {
@@ -61,11 +65,14 @@ public class ScoreController {
         return "/admin/account/add";
     }
     @PostMapping("/add")
-    public String add(@ModelAttribute("scoreDto") @Valid ScoreDTO scoreDTO, BindingResult bindingResult, Model model) {
+    public String add(@ModelAttribute("scoreDto") @Valid ScoreDTO scoreDTO, BindingResult bindingResult, @RequestParam(value = "flat", defaultValue = "-1")Long flatId, Model model) {
+        scoreDTO.setFlat(flatId != null  &&  flatId != -1 ? flatService.getById(flatId) : null);
+        scoreValidator.validate(scoreDTO, bindingResult);
         if(bindingResult.hasErrors()){
             model.addAttribute("houses", houseService.getAll());
             return "/admin/account/add";
         }
+        scoreDTO.setBalance(0.0);
         scoreService.save(scoreMapper.toEntity(scoreDTO));
         return "redirect:/admin/account/index/1";
     }
@@ -132,5 +139,10 @@ public class ScoreController {
         model.addAttribute("users", userService.getAll());
         model.addAttribute("filter", scoreForFilterDTO);
         return "/admin/account/get-all";
+    }
+    @GetMapping("/delete/{id}")
+    public String deleteById(@PathVariable("id")Long id){
+        scoreService.deleteById(id);
+        return "redirect:/admin/account/index/1";
     }
 }

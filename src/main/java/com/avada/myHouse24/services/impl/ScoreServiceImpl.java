@@ -1,5 +1,6 @@
 package com.avada.myHouse24.services.impl;
 
+import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.model.ScoreDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
@@ -20,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScoreServiceImpl implements ScoreService {
     private final ScoreRepository scoreRepository;
+    private final AccountTransactionServiceImpl accountTransactionService;
+    private final FlatServiceImpl flatService;
     @Override
     public Score getById(long id) {
         return scoreRepository.findById(id).get();
@@ -27,7 +30,13 @@ public class ScoreServiceImpl implements ScoreService {
 
     @Override
     public List<Score> getAll() {
+
         return scoreRepository.findAll();
+    }
+
+    @Override
+    public List<Score> getAllByStatus(String status) {
+        return scoreRepository.findAllByStatus(status);
     }
 
     @Override
@@ -51,6 +60,12 @@ public class ScoreServiceImpl implements ScoreService {
 
     @Override
     public void deleteById(Long id) {
+        if(getById(id).getFlat() != null) {
+            Flat flat = getById(id).getFlat();
+            flat.setScore(null);
+            flatService.save(flat);
+        }
+        accountTransactionService.clearAllScore(getById(id));
         scoreRepository.deleteById(id);
     }
     @Override

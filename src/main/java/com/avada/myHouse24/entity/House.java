@@ -31,6 +31,6 @@ public class House {
     private List<Section> sections;
     @OneToMany(cascade = CascadeType.ALL)
     private List<Floor> floors;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     private List<Admin> admins;
 }

@@ -16,8 +16,8 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 20px; margin-right: auto;">Новий владелец</h4>
-            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 3%;">
+            <h4 style="margin-left: 10px; margin-right: auto;">Новий владелец</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
                 </li>
                 <li class="breadcrumb-item"><a href="/admin/user-admin/index/1" class="text-for-breadcrumb">Пользователи</a>
@@ -46,8 +46,8 @@
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                                         Роль
                                         <select class="form-select" th:field="*{role}" aria-label="Default select example">
-                                            <option th:value="${admin.getRole()}" th:text="${admin.getRole().replace('ROLE_', '')}"></option>
-                                            <option th:each="role : ${roles}" th:value="${role}" th:text="${role.name.replace('ROLE_', '')}"  th:selected="${admin.getRole() == role.name}"></option>
+                                            <option th:value="${role.name}" th:text="${admin.getRole().replace('ROLE_', '')}"></option>
+                                            <option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name.replace('ROLE_', '')}"  th:selected="${admin.getRole() == role.name}"></option>
                                         </select>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
                                         Статус
