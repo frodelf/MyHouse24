@@ -17,6 +17,7 @@ public class CounterData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+    private String number;
     private String status;
     private double data;
     @Column(name = "from_date")
