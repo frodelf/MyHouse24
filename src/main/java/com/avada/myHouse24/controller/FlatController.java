@@ -133,7 +133,7 @@ public class FlatController {
     @GetMapping("/{id}")
     public String getById(@PathVariable("id") long id, Model model){
         model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
-        model.addAttribute("scoreId", flatService.getById(id).getScore().getId());
+        model.addAttribute("scoreId", flatService.getById(id).getScore() == null ? null : flatService.getById(id).getScore().getId());
         return "/admin/flat/index";
     }
     @GetMapping("/edit/{id}")

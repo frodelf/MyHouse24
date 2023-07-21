@@ -4,6 +4,9 @@ import com.avada.myHouse24.entity.CounterData;
 import com.avada.myHouse24.model.CounterDataDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class CounterDataMapper {
     public CounterDataDTO toDto(CounterData counterData){
@@ -28,5 +31,11 @@ public class CounterDataMapper {
         counterData.setAdditionalService(counterDataDTO.getAdditionalService());
         return counterData;
     }
-
+    public List<CounterDataDTO> toDtoList(List<CounterData> counterDataList){
+        List<CounterDataDTO> counterDataDTOList = new ArrayList<>();
+        for (CounterData counterData : counterDataList) {
+            counterDataDTOList.add(toDto(counterData));
+        }
+        return counterDataDTOList;
+    }
 }

@@ -12,7 +12,7 @@ public enum CounterDataStatus {
     CounterDataStatus(String name) {
         this.name = name;
     }
-    public List<String> getAll() {
+    public static List<String> getAll() {
         return Arrays.asList(New.name, Reviewed.name, ReviewedAndPaid.name, Zero.name);
     }
 }

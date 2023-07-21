@@ -45,12 +45,12 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/flat/index/1"
+                    <a href="/admin/counter-data/index/1"
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                    <table>
+                    <table class="table table-hover table-striped">
                         <thead>
                             <tr>
                                 <b>
@@ -60,18 +60,51 @@
                                     <th style="min-width: 200px">Счетчик</th>
                                     <th style="min-width: 150px">Текущие показания</th>
                                     <th style="min-width: 150px">Ед. изм.</th>
-                                    <th style="min-width: 150px"></th>
+                                    <th style="min-width: 100px"></th>
                                 </b>
                             </tr>
                             <tr>
                                 <form id="formSend" method="get" action="/admin/counter-data/filter/1" th:object="${filter}">
                                 <th>
-                                    <select id="mySelect2ForHouses" style="width: 100%;" th:field="*{house}" onchange="submitForm()">
-
+                                    <select id="mySelect2ForHouses" style="width: 90%;" th:field="*{house}" onchange="submitForm()">
+                                        <option th:value="${filter.house}">[[${filter.getHouseName()}]]</option>
                                     </select>
                                 </th>
-                                <th></th>
-                                <th></th>
+                                <th>
+                                    <div th:if="${sections == null}">
+                                        <select class="form-select"  th:field="*{section}" onchange="submitForm()"
+                                                aria-label="Default select example" style="width: 90%">
+                                            <option value="">Виберите дом</option>
+                                        </select>
+                                    </div>
+                                    <div th:if="${sections != null}">
+                                        <select class="form-select"  th:field="*{section}" onchange="submitForm()"
+                                                aria-label="Default select example" style="width: 90%">
+                                            <option value=""></option>
+                                            <option th:each="section : ${sections}" th:value="${section.id}" th:text="${section.name}"></option>
+                                        </select>
+                                    </div>
+                                </th>
+                                    <th>
+                                        <div th:if="${sections == null}">
+                                            <select class="form-select"  th:field="*{flat}" onchange="submitForm()"
+                                                    aria-label="Default select example" style="width: 90%">
+                                                <option value="">Виберите дом</option>
+                                            </select>
+                                        </div>
+                                        <div th:if="${sections != null}">
+                                            <select class="form-select"  th:field="*{flat}" onchange="submitForm()"
+                                                    aria-label="Default select example" style="width: 90%">
+                                                <option value=""></option>
+                                                <option th:each="flat : ${flats}" th:value="${flat.id}" th:text="${flat.number}"></option>
+                                            </select>
+                                        </div>
+                                    </th>
+                                <th>
+                                    <select id="mySelect2ForAdditionalServices" style="width: 90%;" th:field="*{additionalService}" onchange="submitForm()">
+                                        <option th:value="${filter.additionalService}">[[${filter.getAdditionalServiceName()}]]</option>
+                                    </select>
+                                </th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -80,9 +113,76 @@
                             </tr>
                         </thead>
                         <tbody>
-
+                            <tr th:each="counter : ${counters}" class="clickable-row" th:data-action="@{/admin/counter-data/counter-list/{id}(id=${counter.id})}">
+                                <td th:text="${counter.flat.house.name}"></td>
+                                <td th:text="${counter.flat.section.name}"></td>
+                                <td th:text="${counter.flat.number}"></td>
+                                <td th:text="${counter.additionalService.name}"></td>
+                                <td style="background-color: #e0f5e0" th:text="${counter.data}"></td>
+                                <td style="background-color: #e0f5e0" th:text="${counter.additionalService.getUnitOfMeasurement().name}"></td>
+                                <td>
+                                    <a class="btn btn-default btn-sm"
+                                       th:href="@{/admin/counter-data/copy/{id}(id=${counter.id})}"
+                                       title="Снять новое показание счетчика">
+                                        <i class="fa fa-weight"></i>
+                                    </a>
+                                    <a class="btn btn-default btn-sm"
+                                       th:href="@{/admin/counter-data/counter-list/{id}(id=${counter.id})}"
+                                       title="Открыть историю показаний для счетчика">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <div th:if="${max}>0">
+                                    <div class="col">
+                                        <ul class="pagination pagination-sm m-0 float-right">
+                                            <script>
+                                                var pageNumber = [[${current}]] - 1;
+                                                var afterQuestionMark = '';
+                                                if (window.location.href.includes('filter')) {
+                                                    var parts = window.location.href.split('?');
+                                                    afterQuestionMark = '?' + parts[1];
+                                                    var baseUrl = '/admin/counter-data/filter/';
+                                                } else {
+                                                    var baseUrl = '/admin/counter-data/index/';
+                                                }
+
+                                                if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                            </script>
+                                            <ul class="pagination pagination-sm m-0 float-right"
+                                                id="pagination-example">
+                                                <script src="/pagination.js" data-url="admin/counter-data/index/"
+                                                        th:current="${current}"
+                                                        th:max="${max+1}"></script>
+                                            </ul>
+                                            <script>
+                                                var pageNumber = [[${current}]] + 1;
+                                                var afterQuestionMark = '';
+                                                if (window.location.href.includes('filter')) {
+                                                    var parts = window.location.href.split('?');
+                                                    afterQuestionMark = '?' + parts[1];
+                                                    var baseUrl = '/admin/counter-data/filter/';
+                                                } else {
+                                                    var baseUrl = '/admin/counter-data/index/';
+                                                }
+                                                console.log([[${current}]])
+                                                if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                            </script>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -97,7 +197,21 @@
 <script>
     $('#mySelect2ForHouses').select2({
         ajax: {
-            url: '/admin/counter-data/get-houses',
+            url: '/admin/house/get-houses',
+            data: function (params) {
+                var query = {
+                    _search: params.term || '',
+                    _page: params.page || 1
+                };
+                return query;
+            }
+        }
+    }).trigger('select2:open');
+</script>
+<script>
+    $('#mySelect2ForAdditionalServices').select2({
+        ajax: {
+            url: '/admin/service/get-additional-services',
             data: function (params) {
                 var query = {
                     _search: params.term || '',

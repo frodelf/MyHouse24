@@ -20,7 +20,7 @@ public class ScoreValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         ScoreDTO scoreDTO = (ScoreDTO) target;
-        if (scoreService.existNumber(scoreDTO.getNumber())) {
+        if (scoreService.existNumber(scoreDTO.getNumber()) && scoreDTO.getId() == null) {
             errors.rejectValue("number", "field.required", "Такий рахунок вже існує");
         }
         if(scoreDTO.getFlat() == null){

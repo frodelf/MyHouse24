@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                Показание счетчикa
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin/counter-date/index/1" class="text-for-breadcrumb">Счетчики</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Показание счетчикa №[[${counter.number}]]
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="input-group mb-3" style="width: 50%">
+                <span class="input-group-text">№</span>
+                <input type="number" class="form-control" name="number" th:value="${counter.getNumber()}" readonly>
+                <h5 style="margin-left: 10px; margin-right: 10px;">от</h5>
+                <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                <input type="date" th:value="${counter.fromDate}" class="form-control" readonly>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a th:href="@{/admin/counter/edit/{id}(id=${counter.id})}"
+                       class="btn btn-primary float-right">Редактировать</a>
+                </div>
+                <div class="card-body">
+                    <table class="table" style="width: 40%">
+                        <tr>
+                            <td style="font-weight: bold">
+                                Счетчик
+                            </td>
+                            <td th:text="${counter.additionalService.name}"></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Дом
+                            </td>
+                            <td>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${counter.flat.house.id})}">[[${counter.flat.house.name}]]</a><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Секция
+                            </td>
+                            <td th:text="${counter.flat.section.name}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Квартира
+                            </td>
+                            <td>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${counter.flat.id})}">[[${counter.flat.number}]]</a><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Пользователь
+                            </td>
+                            <td>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${counter.flat.user.id})}">[[${counter.flat.user.firstName}]]</a><br/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Текущие показания
+                            </td>
+                            <td th:text="${counter.data}">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Ед. изм.
+                            </td>
+                            <td th:text="${counter.additionalService.getUnitOfMeasurement().name}">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: bold">
+                                Статус
+                            </td>
+                            <td th:text="${counter.status}">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>
