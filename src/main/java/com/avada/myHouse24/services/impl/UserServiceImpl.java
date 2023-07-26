@@ -1,6 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Flat;
+import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.model.UserForViewDTO;
@@ -149,5 +150,16 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    public List<User> forSelect(int page, int pageSize, String search) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<User> userPage;
 
+        if (search != null && !search.isEmpty()) {
+            userPage = userRepository.findByFirstNameContainingIgnoreCase(search, pageable);
+        } else {
+            userPage = userRepository.findAll(pageable);
+        }
+
+        return userPage.getContent();
+    }
 }

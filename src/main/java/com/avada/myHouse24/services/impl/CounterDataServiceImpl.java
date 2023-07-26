@@ -88,12 +88,6 @@ public class CounterDataServiceImpl implements CounterDataService {
         if(counterDataFilterDto.getAdditionalService() != null)counterDataFilterDto.setAdditionalServiceName(additionalService.getById(counterDataFilterDto.getAdditionalService()).getName());
         return counterDataFilterDto;
     }
-    public String generateRandomNumber() {
-        Random random = new Random();
-        long min = 1000000000L;
-        long max = 9999999999L;
-        return String.valueOf(min + ((long) (random.nextDouble() * (max - min + 1))));
-    }
     public boolean existNumber(String number){
         return counterDataRepository.existsByNumber(number);
     }

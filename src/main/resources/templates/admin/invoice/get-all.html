@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                inputs[i].addEventListener('input', function () {
+                    this.form.isFormDirty = true;
+                });
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                Квитанции на оплату
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    Квитанции на оплату
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                    <div class="row">
+                        <div class="col-xs-12 col-md-4">
+                            <div class="small-box bg-green overflow-hidden">
+                                <div class="inner">
+                                    <h3 id="cashboxBalance">0.00 грн</h3>
+                                    <p>Состояние кассы</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-dollar-sign"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="small-box bg-blue overflow-hidden">
+                                <div class="inner">
+                                    <h3 id="accountBalance">0.00 грн</h3>
+                                    <p>Баланс по счетам</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 col-md-4">
+                            <div class="small-box bg-red overflow-hidden">
+                                <div class="inner">
+                                    <h3 id="accountDebts">0.00 грн</h3>
+                                    <p>Задолженность по счетам</p>
+                                </div>
+                                <div class="icon">
+                                    <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <div class="btn-group margin-bottom float-right ">
+                        <button type="button" class="btn btn-success dropdown-toggle" style="width: 230px;"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
+                            Выберите действие
+                        </button>
+                        <ul class="dropdown-menu" style="width: 250px;">
+                            <li><a class="text-secondary" href="/admin/invoice/add"
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">Создать общую квитанцию</a></li>
+                            <li><a class="text-secondary" style="padding-inline: 15px; display: block; text-decoration: none;">Удалить</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <a href="/admin/flat/index/1"
+                       class="btn btn-outline-secondary float-right">Очистить</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <form id="formSend" method="get" th:object="${filter}"
+                              th:action="@{/admin/invoice/filter/{id}(id = ${id})}"
+                              onsubmit="event.preventDefault()">
+                            <table>
+                                <thead>
+                                <tr style="font-weight: bold">
+                                    <th style="min-width: 80px"></th>
+                                    <th style="min-width: 120px">№ квитанции</th>
+                                    <th style="min-width: 100px">Статус</th>
+                                    <th style="min-width: 100px">Дата</th>
+                                    <th style="min-width: 100px">Месяц</th>
+                                    <th style="min-width: 100px">Квартира</th>
+                                    <th style="min-width: 180px">Владелец</th>
+                                    <th style="min-width: 100px">Проведена</th>
+                                    <th style="min-width: 100px">Сума(грн)</th>
+                                    <th style="min-width: 80px"></th>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td><input type="number" class="form-control" th:field="*{number}"></td>
+                                    <td>
+                                        <select class="form-select" onchange="submitForm()"  th:field="*{status}"
+                                                aria-label="Default select example" style="width: 90%">
+                                        <option value=""></option>
+                                        <option value="">Оплачена</option>
+                                        <option value="">Частково оплачена</option>
+                                        <option value="">Неоплачена</option>
+                                    </select>
+                                    </td>
+                                    <td>
+                                        <input type="date" class="form-control"  th:field="*{date}">
+                                    </td>
+                                    <td>
+                                        <input type="month" class="form-control" name="month">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control"  name="flatNumber">
+                                    </td>
+                                    <td>
+                                        <select id="mySelect2ForUsers" style="width: 90%;" onchange="submitForm()"  th:field="*{user}">
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" onchange="submitForm()"  th:field="*{addToStats}"
+                                                aria-label="Default select example" style="width: 90%">
+                                            <option value=""></option>
+                                            <option value="true">Проведена</option>
+                                            <option value="false">Не проведена</option>
+                                        </select>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <div th:each="invoice : ${invoices}">
+                                </div>
+                                </tbody>
+                            </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script>
+    $('#mySelect2ForUsers').select2({
+        ajax: {
+            url: '/admin/user/get-users',
+            data: function (params) {
+                var query = {
+                    _search: params.term || '',
+                    _page: params.page || 1
+                };
+                return query;
+            }
+        }
+    }).trigger('select2:open');
+</script>
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

@@ -19,8 +19,10 @@ public class Invoice {
     @Column(name = "id")
     private Long id;
     private String status;
+    private String number;
     @Column(name = "from_date")
     private Date fromDate;
+    private Date date;
     @Column(name = "to_date")
     private Date toDate;
     private double sum;
@@ -32,6 +34,6 @@ public class Invoice {
     private Tariff tariff;
     @ManyToOne
     private Score score;
-    @ManyToMany
-    private List<AdditionalService> additionalService;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<InvoiceAdditionalService> invoiceAdditionalServices;
 }

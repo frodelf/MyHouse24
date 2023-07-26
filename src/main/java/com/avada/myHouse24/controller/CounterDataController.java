@@ -9,6 +9,7 @@ import com.avada.myHouse24.model.CounterDataFilterDto;
 import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.services.impl.CounterDataServiceImpl;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
+import com.avada.myHouse24.util.NumberUtil;
 import com.avada.myHouse24.validator.CounterDataValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -56,7 +57,7 @@ public class CounterDataController {
     public String add(Model model) {
         CounterDataDTO counterDataDTO = new CounterDataDTO();
         counterDataDTO.setFromDate(Date.valueOf(LocalDate.now()));
-        counterDataDTO.setNumber(counterDataService.generateRandomNumber());
+        counterDataDTO.setNumber(NumberUtil.generateRandomNumber());
         model.addAttribute("statuses", CounterDataStatus.getAll());
         model.addAttribute("counterDataDTO", counterDataDTO);
         return "/admin/counter-data/add";
@@ -81,7 +82,7 @@ public class CounterDataController {
         counterDataDTO.setAdditionalService(counterDataDTOForExample.getAdditionalService());
         counterDataDTO.setStatus(counterDataDTOForExample.getStatus());
         counterDataDTO.setFromDate(Date.valueOf(LocalDate.now()));
-        counterDataDTO.setNumber(counterDataService.generateRandomNumber());
+        counterDataDTO.setNumber(NumberUtil.generateRandomNumber());
         model.addAttribute("statuses", CounterDataStatus.getAll());
         model.addAttribute("counterDataDTO", counterDataDTO);
         return "/admin/counter-data/add";

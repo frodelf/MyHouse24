@@ -15,7 +15,6 @@ public interface CounterDataService {
     CounterData getById(long id);
     void save(CounterData counterData);
     void deleteById(long id);
-    String generateRandomNumber();
     CounterDataFilterDto updateFilter(CounterDataFilterDto counterDataFilterDto);
     public boolean existNumber(String number);
     long getMaxId();
