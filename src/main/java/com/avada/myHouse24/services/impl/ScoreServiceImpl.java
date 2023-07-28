@@ -1,6 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Flat;
+import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.model.ScoreDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
@@ -103,5 +104,18 @@ public class ScoreServiceImpl implements ScoreService {
         model.addAttribute("max", max);
         model.addAttribute("current", pageNumber+1);
         return scoreDTOPage;
+    }
+
+    public List<Score> forSelect(int page, int pageSize, String search) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Score> scorePage;
+
+        if (search != null && !search.isEmpty()) {
+            scorePage = scoreRepository.findByNumberContainingIgnoreCase(search, pageable);
+        } else {
+            scorePage = scoreRepository.findAll(pageable);
+        }
+
+        return scorePage.getContent();
     }
 }

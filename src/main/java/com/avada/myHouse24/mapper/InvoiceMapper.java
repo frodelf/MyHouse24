@@ -6,11 +6,13 @@ import com.avada.myHouse24.model.InvoiceDto;
 import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.services.impl.FlatServiceImpl;
 import com.avada.myHouse24.services.impl.InvoiceServiceImpl;
+import com.avada.myHouse24.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 @Component
 @RequiredArgsConstructor
@@ -30,6 +32,8 @@ public class InvoiceMapper {
         invoiceDto.setStatus(invoice.getStatus());
         invoiceDto.setTariff(invoice.getTariff());
         invoiceDto.setInvoiceAdditionalServices(invoice.getInvoiceAdditionalServices());
+        invoiceDto.setSum(invoice.getSum());
+        invoiceDto.setMonths(DateUtil.toMonth(String.valueOf(invoice.getDate()), new Locale("uk")));
         return invoiceDto;
     }
 

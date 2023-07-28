@@ -1,9 +1,7 @@
 package com.avada.myHouse24.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.List;
@@ -12,7 +10,9 @@ import java.util.List;
 @Table(name = "invoice")
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
+@ToString(exclude = "flat")
 public class Invoice {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +29,7 @@ public class Invoice {
     @Column(name = "add_to_stats")
     private boolean addToStats;
     @ManyToOne
+    @JoinColumn(name = "flat_id")
     private Flat flat;
     @ManyToOne
     private Tariff tariff;

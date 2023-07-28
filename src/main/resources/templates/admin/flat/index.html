@@ -151,9 +151,9 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть показания счетчиков</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть приходы</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть квитанции</a>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/counter-data/counter-list/{id}(id=${flat.id})}">Посмотреть показания счетчиков</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account-transaction/filter/1?id=&date=&addToStats=&transactionPurposeName=&userName=&scoreNumber={id}&isIncome=(id=${flat.scoreNumber})}">Посмотреть приходы</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/invoice/filter/1?number=&status=&dateExample=&months=&flatNumber={id}&addToStats=(id=${flat.number})}">Посмотреть квитанции</a>
                 </div>
             </div>
         </section>

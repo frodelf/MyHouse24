@@ -27,13 +27,6 @@ public class Tariff {
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TariffAdditionalService> tariffAdditionalService;
 
-    public List<AdditionalService> getTariffAdditionalService() {
-        ArrayList<AdditionalService> additionalServiceArrayList = new ArrayList<>();
-        for (TariffAdditionalService additionalService : tariffAdditionalService) {
-            additionalServiceArrayList.add(additionalService.getAdditionalService());
-        }
-        return additionalServiceArrayList;
-    }
 
     public void setTariffAdditionalService(List<AdditionalServiceForTariffDTO> additionalServiceForTariffDTOS) {
         if (this.tariffAdditionalService != null) {

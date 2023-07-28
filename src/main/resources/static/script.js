@@ -348,3 +348,27 @@ function updateUnit(selectElement) {
     var unitInput = selectElement.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('input[type="text"]');
     unitInput.value = unitOfMeasurementName;
 }
+function addBlock() {
+    var container = document.getElementById("container");
+    var newRow = document.createElement("div");
+    newRow.classList.add("row");
+    newRow.style.marginTop = "20px";
+    newRow.innerHTML = `
+            <div class="col-3">
+                Услуга
+            </div>
+            <div class="col-2">
+                Расход
+            </div>
+            <div class="col-2">
+                Ед. изм.
+            </div>
+            <div class="col-2">
+                Цена за ед., грн.
+            </div>
+            <div class="col-3">
+                Стоимость, грн.
+            </div>
+        `;
+    container.appendChild(newRow);
+}

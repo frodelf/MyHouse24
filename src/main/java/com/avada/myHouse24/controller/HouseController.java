@@ -1,11 +1,13 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.mapper.HouseMapper;
 import com.avada.myHouse24.model.HouseForAddDto;
 import com.avada.myHouse24.model.HouseForViewDto;
 import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
+import com.avada.myHouse24.services.impl.FlatServiceImpl;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.validator.HouseValidator;
@@ -32,6 +34,7 @@ import java.util.stream.Collectors;
 public class HouseController {
     private final HouseServiceImpl houseService;
     private final HouseValidator houseValidator;
+    private final FlatServiceImpl flatService;
     private final AdminServiceImpl adminService;
     private final HouseMapper houseMapper;
     private final RoleServiceImpl roleService;
@@ -124,5 +127,11 @@ public class HouseController {
         response.put("results", select2Options);
         response.put("pagination", Map.of("more", (page * pageSize) < totalResults));
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/getHouseByFlat/{id}")
+    @ResponseBody
+    public Select2Option getHouseById(@PathVariable("id")long id){
+        House house = flatService.getById(id).getHouse();
+        return new Select2Option(house.getId(), house.getName());
     }
 }

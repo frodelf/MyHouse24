@@ -32,24 +32,27 @@
             </ol>
         </div>
         <section class="content">
-            <form method="post" action="/admin/invoice/add" th:object="${invoiceDto}">
+            <form id="myForm" method="post" action="/admin/invoice/add" th:object="${invoiceDto}">
                 <div class="input-group mb-3" style="width: 50%">
                     <span class="input-group-text">№</span>
                     <input type="number" class="form-control" th:field="*{number}">
                     <h5 style="margin-left: 10px; margin-right: 10px;">от</h5>
                     <span class="input-group-text"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                     <input type="date" class="form-control" th:field="*{date}">
+                    <input type="number" class="form-control" th:field="*{id}" hidden>
+
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                         th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                         th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
                 </div>
                 <div class="card">
-                    <div class="card-header">
-                        <a href="/admin/flat/index/1"
-                           class="btn btn-outline-secondary float-right">Очистить</a>
-                    </div>
                     <div class="card-body">
                         <div class="font-weight-bold">
                             <div class="row">
                                 <div class="col">
                                     <div th:if="${invoiceDto.flat == null}">
+                                        <br/>
                                         Дом
                                         <select id="mySelect2ForHouses" style="width: 100%;">
                                         </select>
@@ -67,39 +70,118 @@
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
                                         <br/>
-
+                                        Лицевой счет
+                                        <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
+                                        </select>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></div>
                                     </div>
                                     <div th:if="${invoiceDto.flat != null}">
+                                        <br/>
                                         Дом
                                         <select id="mySelect2ForHouses" style="width: 100%;">
-                                            <option th:value="${invoiceDto.flat.house.id}" th:text="${invoiceDto.flat.house.name}"></option>
+                                            <option th:value="${invoiceDto.flat.house.id}"
+                                                    th:text="${invoiceDto.flat.house.name}"></option>
                                         </select>
                                         <br/>
                                         <br/>
                                         Секция
                                         <select class="form-select" name="section">
-                                            <option th:each="section : ${invoiceDto.flat.house.getSections()}" th:value="${section.id}" th:text="${section.name}" th:selected="${section.id == invoiceDto.flat.section.id}"></option>
+                                            <option th:each="section : ${invoiceDto.flat.house.getSections()}"
+                                                    th:value="${section.id}" th:text="${section.name}"
+                                                    th:selected="${section.id == invoiceDto.flat.section.id}"></option>
                                         </select>
                                         <br/>
                                         Квартира
                                         <select class="form-select" th:field="*{flat}">
-                                            <option th:each="flat : ${invoiceDto.flat.house.getFlats()}" th:value="${flat.id}" th:text="${flat.number}" th:selected="${flat.id == invoiceDto.flat.id}"></option>
+                                            <option th:each="flat : ${invoiceDto.flat.house.getFlats()}"
+                                                    th:value="${flat.id}" th:text="${flat.number}"
+                                                    th:selected="${flat.id == invoiceDto.flat.id}"></option>
                                         </select>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
                                         <br/>
-
+                                        Лицевой счет
+                                        <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
+                                            <option th:value="${invoiceDto.flat.score.id}"
+                                                    th:text="${invoiceDto.flat.score.number}"></option>
+                                        </select>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                             th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></div>
                                     </div>
                                 </div>
                                 <div class="col">
-                                    Проведена
+                                    <input type="checkbox" th:field="*{addToStats}">Проведена
+                                    <br/>
                                     Статус
+                                    <select class="form-select" th:field="*{status}">
+                                        <option th:each="status : ${statuses}" th:value="${status}"
+                                                th:text="${status}"></option>
+                                    </select>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
+                                    <br/>
                                     Тариф
-                                    Период с
-                                    Период по
+                                    <select class="form-select" th:field="*{tariff}">
+                                        <option th:each="tariff : ${tariffs}" th:value="${tariff.id}"
+                                                th:text="${tariff.name}"></option>
+                                    </select>
+                                    <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                         th:if="${#fields.hasErrors('tariff')}" th:errors="*{tariff}"></div>
+                                    <br/>
+                                    <div class="row">
+                                        <div class="col">
+                                            Период с
+                                            <input type="date" class="form-control" th:field="*{fromDate}" value="1">
+                                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                                 th:if="${#fields.hasErrors('fromDate')}" th:errors="*{fromDate}"></div>
+                                        </div>
+                                        <div class="col">
+                                            Период по
+                                            <input type="date" class="form-control" th:field="*{toDate}" value="1">
+                                            <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                                                 th:if="${#fields.hasErrors('toDate')}" th:errors="*{toDate}"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <table id="myTable" class="table" style="margin-top: 20px;">
+                                <thead>
+                                <tr>
+                                    <th style="width: 30%">Услуга</th>
+                                    <th style="width: 20%">Расход</th>
+                                    <th style="width: 15%">Ед. изм.</th>
+                                    <th style="width: 10%">Цена за ед., грн.</th>
+                                    <th style="width: 20%">Стоимость, грн.</th>
+                                    <th style="width: 5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                            <div style="margin-top: 20px" class="row">
+                                <div class="col-9">
+                                    <button type="button" onclick="addRow()"
+                                            class="btn btn-outline-secondary">Добавить услугу
+                                    </button>
+                                    <button type="button" onclick="addRowsByTariff()"
+                                            class="btn btn-outline-secondary">Установить все услуги согласно тарифу
+                                    </button>
+                                </div>
+                                <div class="col-3">
+                                    <div id="outputValues"></div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success float-right"
+                                style="background-color: #089a08;margin-right: 10px">Сохранить
+                        </button>
+                        <a href="/admin/invoice/index/1" class="btn btn-outline-secondary float-right"
+                           style="margin-right: 10px">
+                            Отменить
+                        </a>
                     </div>
                 </div>
             </form>
@@ -111,6 +193,316 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
+////
+<script th:inline="javascript">
+    var services = [[${services}]];
+    var tariff = [[${invoiceDto.tariff}]]
+    var invoiceAdditionalServices = [[${invoiceDto.invoiceAdditionalServices}]]
+</script>
+<script>
+    document.querySelector(".btn-success").addEventListener("click", function (event) {
+        event.preventDefault();
+        var rows = document.querySelectorAll("#myTable tbody tr");
+        var isValid = true;
+        rows.forEach(function (row) {
+            if (!validateRow(row)) {
+                isValid = false;
+            }
+        });
+        if (isValid) {
+            document.querySelector("#myForm").submit();
+        } else {
+            alert("Заповніть всі поля в таблиці для послуг");
+        }
+    });
+
+    function validateRow(row) {
+        var inputs = row.querySelectorAll("input[type='text'], input[type='number'], select");
+        var isValid = true;
+        inputs.forEach(function (input) {
+            if (!input.value.trim()) {
+                isValid = false;
+                input.classList.add("is-invalid");
+            } else {
+                input.classList.remove("is-invalid");
+            }
+        });
+        var errorMessageDiv = row.querySelector(".error-message");
+        if (!errorMessageDiv) {
+            errorMessageDiv = document.createElement("div");
+            errorMessageDiv.classList.add("invalid-feedback");
+            errorMessageDiv.classList.add("error-message");
+            row.appendChild(errorMessageDiv);
+        }
+
+        if (isValid) {
+            errorMessageDiv.textContent = "";
+        } else {
+            errorMessageDiv.textContent = "Поле не може бути пустим";
+        }
+
+        return isValid;
+    }
+</script>
+
+<script>
+    function addRowsByTariff() {
+        var tableBody = document.querySelector("#myTable tbody")
+        var rows = tableBody.getElementsByTagName("tr");
+        while (rows.length > 0) {
+            tableBody.removeChild(rows[0]);
+        }
+        var selectElement = document.getElementById("tariff");
+        var selectedValue = selectElement.value;
+        $.ajax({
+            url: '/admin/tariff/getTariffById/' + selectedValue,
+            method: 'GET',
+            success: function (response) {
+                for (var i = 0; i < response.tariffAdditionalService.length; i++) {
+                    addRows(response.tariffAdditionalService[i]);
+                }
+            },
+        });
+    }
+</script>
+<script>
+    function onLoadFunction() {
+        for (var i = 0; i < invoiceAdditionalServices.length; i++) {
+            addRows(invoiceAdditionalServices[i]);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", onLoadFunction);
+    function addRows(response) {
+        calculateProduct();
+        updateTotal();
+        var tableBody = document.querySelector("#myTable tbody")
+        var rowCount = tableBody.rows.length;
+        var newRow = document.createElement("tr");
+
+        var cell = document.createElement("td");
+        var select = document.createElement("select");
+        select.classList.add("form-select");
+        select.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].additionalService")
+        select.style.width = "90%";
+
+        select.onchange = function () {
+            var selectedService = services.find(service => service.id === parseInt(select.value));
+            inputName.value = selectedService ? selectedService.unitOfMeasurement.name : '';
+        };
+
+        var option = document.createElement("option");
+        option.value = "";
+        option.text = "";
+        select.appendChild(option);
+        for (var i = 0; i < services.length; i++) {
+            var service = services[i];
+            var option = document.createElement("option");
+            option.value = service.id;
+            option.text = service.name;
+            option.selected = (option.value.toString() === response.additionalService.id.toString());
+            select.appendChild(option);
+        }
+
+        cell.appendChild(select);
+        newRow.appendChild(cell);
+        //////////////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputConsumption = document.createElement("input");
+        inputConsumption.classList.add("form-control");
+        inputConsumption.setAttribute("type", "number");
+        inputConsumption.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].consumption");
+        if(response.consumption != null)        inputConsumption.setAttribute("value", response.consumption);
+        inputConsumption.oninput = calculateProduct;
+        cell.appendChild(inputConsumption);
+        newRow.appendChild(cell);
+//////////////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputName = document.createElement("input");
+        inputName.classList.add("form-control");
+        inputName.setAttribute("type", "text");
+        inputName.setAttribute("value", response.additionalService.unitOfMeasurement.name);
+        inputName.setAttribute("readonly", true);
+        cell.appendChild(inputName);
+        newRow.appendChild(cell);
+//////////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputPrice = document.createElement("input");
+        inputPrice.classList.add("form-control");
+        inputPrice.setAttribute("type", "number");
+        inputPrice.setAttribute("value", response.price);
+        inputPrice.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].price");
+        inputPrice.oninput = calculateProduct;
+        cell.appendChild(inputPrice);
+        newRow.appendChild(cell);
+        ///////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputProduct = document.createElement("input");
+        inputProduct.classList.add("form-control");
+        inputProduct.setAttribute("type", "number");
+        inputProduct.setAttribute("readonly", true);
+        cell.appendChild(inputProduct);
+        newRow.appendChild(cell);
+
+        var cell = document.createElement("td");
+        var deleteButton = document.createElement("button");
+        deleteButton.classList.add("btn", "btn-danger");
+        deleteButton.innerHTML = '<i class="fa fa-trash"></i>';
+        deleteButton.onclick = function () {
+            tableBody.removeChild(newRow);
+            calculateProduct();
+        };
+        cell.appendChild(deleteButton);
+        newRow.appendChild(cell);
+
+        tableBody.appendChild(newRow);
+        calculateProduct();
+        updateTotal();
+        function calculateProduct() {
+            var rows = document.querySelectorAll("#myTable tbody tr");
+            rows.forEach(function (row) {
+                var inputConsumption = row.querySelector("input[name$='.consumption']");
+                var inputPrice = row.querySelector("input[name$='.price']");
+                var inputProduct = row.querySelector("input[type='number'][readonly]");
+                var consumption = parseFloat(inputConsumption.value) || 0;
+                var price = parseFloat(inputPrice.value) || 0;
+                var product = consumption * price;
+                inputProduct.value = product.toString();
+            });
+
+            updateTotal();
+        }
+
+        function updateTotal() {
+            var rows = document.querySelectorAll("#myTable tbody tr");
+            var total = 0;
+
+            rows.forEach(function (row) {
+                var inputProduct = row.querySelector("input[type='number'][readonly]");
+                var productValue = parseFloat(inputProduct.value) || 0;
+                total += productValue;
+            });
+
+            var outputDiv = document.querySelector("#outputValues");
+            outputDiv.textContent = "Итого: " + total;
+        }
+    }
+    $(document).ready(function() {
+
+    });
+</script>
+
+<script>
+    function addRow() {
+        updateTotal();
+        var tableBody = document.querySelector("#myTable tbody")
+        var rowCount = tableBody.rows.length;
+        var newRow = document.createElement("tr");
+
+        var cell = document.createElement("td");
+        var select = document.createElement("select");
+        select.classList.add("form-select");
+        select.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].additionalService")
+        select.style.width = "90%";
+
+        select.onchange = function () {
+            var selectedService = services.find(service => service.id === parseInt(select.value));
+            inputName.value = selectedService ? selectedService.unitOfMeasurement.name : '';
+        };
+
+        var option = document.createElement("option");
+        option.value = "";
+        option.text = "";
+        select.appendChild(option);
+        for (var i = 0; i < services.length; i++) {
+            var service = services[i];
+            var option = document.createElement("option");
+            option.value = service.id;
+            option.text = service.name;
+            select.appendChild(option);
+        }
+        cell.appendChild(select);
+        newRow.appendChild(cell);
+        //////////////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputConsumption = document.createElement("input");
+        inputConsumption.classList.add("form-control");
+        inputConsumption.setAttribute("type", "number");
+        inputConsumption.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].consumption");
+        inputConsumption.oninput = calculateProduct;
+        cell.appendChild(inputConsumption);
+        newRow.appendChild(cell);
+//////////////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputName = document.createElement("input");
+        inputName.classList.add("form-control");
+        inputName.setAttribute("type", "text");
+        inputName.setAttribute("readonly", true);
+        cell.appendChild(inputName);
+        newRow.appendChild(cell);
+//////////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputPrice = document.createElement("input");
+        inputPrice.classList.add("form-control");
+        inputPrice.setAttribute("type", "number");
+        inputPrice.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].price");
+        inputPrice.oninput = calculateProduct;
+        cell.appendChild(inputPrice);
+        newRow.appendChild(cell);
+        ///////////////////////////////////////////////////
+        var cell = document.createElement("td");
+        var inputProduct = document.createElement("input");
+        inputProduct.classList.add("form-control");
+        inputProduct.setAttribute("type", "number");
+        inputProduct.setAttribute("readonly", true);
+        cell.appendChild(inputProduct);
+        newRow.appendChild(cell);
+
+        var cell = document.createElement("td");
+        var deleteButton = document.createElement("button");
+        deleteButton.classList.add("btn", "btn-danger");
+        deleteButton.innerHTML = '<i class="fa fa-trash"></i>';
+        deleteButton.onclick = function () {
+            tableBody.removeChild(newRow);
+            calculateProduct();
+        };
+        cell.appendChild(deleteButton);
+        newRow.appendChild(cell);
+
+        tableBody.appendChild(newRow);
+
+        function calculateProduct() {
+            var rows = document.querySelectorAll("#myTable tbody tr");
+            rows.forEach(function (row) {
+                var inputConsumption = row.querySelector("input[name$='.consumption']");
+                var inputPrice = row.querySelector("input[name$='.price']");
+                var inputProduct = row.querySelector("input[type='number'][readonly]");
+                var consumption = parseFloat(inputConsumption.value) || 0;
+                var price = parseFloat(inputPrice.value) || 0;
+                var product = consumption * price;
+                inputProduct.value = product.toString();
+            });
+
+            updateTotal();
+        }
+
+        function updateTotal() {
+            var rows = document.querySelectorAll("#myTable tbody tr");
+            var total = 0;
+
+            rows.forEach(function (row) {
+                var inputProduct = row.querySelector("input[type='number'][readonly]");
+                var productValue = parseFloat(inputProduct.value) || 0;
+                total += productValue;
+            });
+
+            var outputDiv = document.querySelector("#outputValues");
+            outputDiv.textContent = "Итого: " + total;
+        }
+    }
+</script>
+
+
 <script>
     $(document).ready(function () {
         $('#mySelect2ForHouses').select2({
@@ -125,8 +517,8 @@
                 }
             }
         });
-        $('.houseSelect, #mySelect2ForHouses').on('change', function () {
-            var houseId = $('.houseSelect').val() || $('#mySelect2ForHouses').val();
+        $('#mySelect2ForHouses').on('change', function () {
+            var houseId = $('#mySelect2ForHouses').val();
             var flatSelect = $('select[name="flat"]');
             var sectionSelect = $('select[name="section"]');
             $.ajax({
@@ -155,6 +547,89 @@
                     });
                 },
                 error: function () {
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('#mySelect2ForScore').select2({
+            ajax: {
+                url: '/admin/account/get-scores',
+                data: function (params) {
+                    var query = {
+                        _search: params.term || '',
+                        _page: params.page || 1
+                    };
+                    return query;
+                }
+            }
+        });
+        $('#mySelect2ForScore').on('change', function () {
+            var scoreId = $('#mySelect2ForScore').val();
+            var flatSelect = $('select[name="flat"]');
+            var sectionSelect = $('select[name="section"]');
+
+            $.ajax({
+                url: '/admin/flat/getFlatByScore/' + scoreId,
+                method: 'GET',
+                success: async function (response) {
+                    var flat = response;
+                    try {
+                        var houseResponse = await $.ajax({
+                            url: '/admin/house/getHouseByFlat/' + flat.id,
+                            method: 'GET'
+                        });
+                        var house = houseResponse;
+                        var value = house.id;
+                        var text = house.text;
+                        var newOption = new Option(text, value, false, false);
+                        $('#mySelect2ForHouses').append(newOption);
+                        flatSelect.empty();
+                        sectionSelect.empty();
+                        sectionSelect.append('<option value="' + flat.section.id + '">' + flat.section.name + '</option>');
+                        flatSelect.append('<option value="' + flat.id + '">' + flat.number + '</option>');
+
+                        var flatsResponse = await $.ajax({
+                            url: '/admin/flat/getFlatsByFlat/' + flat.id,
+                            method: 'GET'
+                        });
+                        var flats = flatsResponse;
+                        $.each(flats, function (index, flat) {
+                            flatSelect.append('<option value="' + flat.id + '">' + flat.number + '</option>');
+                        });
+
+                        var sectionsResponse = await $.ajax({
+                            url: '/admin/flat/getSectionsByFlat/' + flat.id,
+                            method: 'GET'
+                        });
+                        var sections = sectionsResponse;
+                        $.each(sections, function (index, section) {
+                            sectionSelect.append('<option value="' + section.id + '">' + section.name + '</option>');
+                        });
+                    } catch (error) {
+                        console.log("Error occurred:", error);
+                    }
+                },
+                error: function () {
+                    console.log("Error occurred in the first request.");
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        $('select[name="flat"]').on('change', function () {
+            var flat = $(this).val();
+            $.ajax({
+                url: '/admin/account/getScoreByFlat/' + flat,
+                method: 'GET',
+                success: async function (response) {
+                    var score = response;
+                    var scoreOption = new Option(score.number, score.id, false, false)
+                    $('#mySelect2ForScore').append(scoreOption);
                 }
             });
         });

@@ -41,7 +41,9 @@ public class Flat {
     @JsonIgnore
     private Score score;
     @OneToMany(mappedBy = "flat",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<CounterData> counterData;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flat", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Invoice> invoices;
 }

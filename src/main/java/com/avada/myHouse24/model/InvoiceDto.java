@@ -11,17 +11,16 @@ import java.util.List;
 public class InvoiceDto {
     private Long id;
     private String number;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date toDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date fromDate;
     private Flat flat;
     private User user;
     private Score score;
     private Boolean addToStats;
     private String status;
+    private String months;
     private Tariff tariff;
+    private Double sum;
     private List<InvoiceAdditionalService> invoiceAdditionalServices;
 }

@@ -2,12 +2,14 @@ package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.House;
+import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.entity.Section;
 import com.avada.myHouse24.mapper.FlatMapper;
 import com.avada.myHouse24.mapper.ScoreMapper;
 import com.avada.myHouse24.model.FlatDTO;
 import com.avada.myHouse24.model.ScoreDTO;
 import com.avada.myHouse24.model.ScoreForFilterDTO;
+import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.services.impl.FlatServiceImpl;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.ScoreServiceImpl;
@@ -15,13 +17,16 @@ import com.avada.myHouse24.services.impl.UserServiceImpl;
 import com.avada.myHouse24.validator.ScoreValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Controller
@@ -144,5 +149,25 @@ public class ScoreController {
     public String deleteById(@PathVariable("id")Long id){
         scoreService.deleteById(id);
         return "redirect:/admin/account/index/1";
+    }
+    @GetMapping("/get-scores")
+    public ResponseEntity<Map<String, Object>> getAllHouses(@RequestParam("_page") int page,
+                                                            @RequestParam("_search") String search){
+        int pageSize = 10;
+        List<Score> scores = scoreService.forSelect(page, pageSize, search);
+        List<Select2Option> select2Options = new ArrayList<>();
+        for (Score score : scores) {
+            select2Options.add(new Select2Option(score.getId(), score.getNumber()));
+        }
+        int totalResults = 10;
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", select2Options);
+        response.put("pagination", Map.of("more", (page * pageSize) < totalResults));
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/getScoreByFlat/{id}")
+    @ResponseBody
+    public Score getScoreByFlat(@PathVariable("id")long id){
+        return flatService.getById(id).getScore();
     }
 }

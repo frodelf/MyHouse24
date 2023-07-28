@@ -1,5 +1,6 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.Floor;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.entity.Section;
@@ -181,5 +182,21 @@ public class FlatController {
     @GetMapping("/name/{name}")
     public String getByName(@PathVariable("name") int number){
         return "redirect:/admin/flat/"+flatService.getByNumber(number).getId();
+    }
+    @GetMapping("/getFlatByScore/{id}")
+    @ResponseBody
+    public Flat getFlatByScore(@PathVariable("id")long id){
+        Flat flat = scoreService.getById(id).getFlat();
+        return flat;
+    }
+    @GetMapping("/getFlatsByFlat/{id}")
+    @ResponseBody
+    public List<Flat> getFlatsByFlat(@PathVariable("id")long id){
+        return flatService.getById(id).getHouse().getFlats();
+    }
+    @GetMapping("/getSectionsByFlat/{id}")
+    @ResponseBody
+    public List<Section> getSectionsByFlat(@PathVariable("id")long id){
+        return flatService.getById(id).getHouse().getSections();
     }
 }

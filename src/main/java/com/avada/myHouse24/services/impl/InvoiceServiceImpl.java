@@ -7,6 +7,7 @@ import com.avada.myHouse24.model.HouseForViewDto;
 import com.avada.myHouse24.model.InvoiceDto;
 import com.avada.myHouse24.repo.InvoiceRepository;
 import com.avada.myHouse24.services.InvoiceService;
+import com.avada.myHouse24.util.DateUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,7 +16,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.sql.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class InvoiceServiceImpl implements InvoiceService {
@@ -82,9 +88,43 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         return invoices.getContent();
     }
-    public List<InvoiceDto> filter(InvoiceDto invoiceDto){
+    public List<InvoiceDto> filter(InvoiceDto filter, String flatNumber, Date dateExample){
         List<InvoiceDto> invoiceDtos = invoiceMapper.toDtoList(invoiceRepository.findAll());
-
+        if(filter.getNumber() != null){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getNumber() != null && dto.getNumber().contains(filter.getNumber()))
+                    .collect(Collectors.toList());
+        }
+        if(!filter.getStatus().isBlank()){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus().equals(filter.getStatus()))
+                    .collect(Collectors.toList());
+        }
+        if(!filter.getMonths().isBlank()){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getMonths() != null && dto.getMonths().equals(DateUtil.toMonthForMY(filter.getMonths(), new Locale("uk"))))
+                    .collect(Collectors.toList());
+        }
+        if(dateExample != null && !Objects.equals(dateExample.toString(), "1000-01-01")){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getDate() != null && dto.getDate().toString().contains(dateExample.toString()))
+                    .collect(Collectors.toList());
+        }
+        if(!flatNumber.isBlank()){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getFlat() != null && String.valueOf(dto.getFlat().getNumber()).contains(flatNumber))
+                    .collect(Collectors.toList());
+        }
+        if(filter.getUser() != null){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getUser() != null && Objects.equals(dto.getUser().getId(), filter.getId()))
+                    .collect(Collectors.toList());
+        }
+        if(filter.getAddToStats() != null){
+            invoiceDtos = invoiceDtos.stream()
+                    .filter(dto -> dto.getAddToStats() != null && dto.getAddToStats().equals(filter.getAddToStats()))
+                    .collect(Collectors.toList());
+        }
         return invoiceDtos;
     }
 }
