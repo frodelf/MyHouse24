@@ -43,20 +43,20 @@
                                                      style="width: 160px; height: 160px">
                                             </div>
                                             <div th:if="${user.getImageName()} != ''">
-                                                <img class="img-circle pull-left img-responsive" id="selectedImage2"
-                                                     th:src="'/uploads/user/'+${user.getImageName()}"
+                                                <img class="img-circle pull-left img-responsive" id="selectedImage1"
+                                                     th:src="'https://myhouse24.s3.us-west-1.amazonaws.com/'+${user.getImageName()}"
                                                      style="width: 160px; height: 160px">
                                             </div>
                                         </div>
                                         <div class="col">
                                             <b>Сменить изображение</b>
                                             </br>
-                                            <label for="fileInput"
+                                            <label for="fileIn"
                                                    style="cursor: pointer; margin-top: 10px; margin-bottom: 0px;"
-                                                   class="btn btn-secondary">
+                                                   class="btn btn-secondary" onchange="previewImage(event, 'previewImage1')">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> Додати фото
                                             </label>
-                                            <input id="fileInput" type="file" style="display:none;" name="image">
+                                            <input id="fileIn" type="file" style="display:none;" name="image" onchange="previewImage(event, 'previewImage1')">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                                  th:text="${error}"></div>
                                         </div>
@@ -188,5 +188,15 @@
 <script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
 <script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="/script.js"></script>
+<script>
+    function previewImage(event, imageId) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById(imageId);
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 </body>
 </html>

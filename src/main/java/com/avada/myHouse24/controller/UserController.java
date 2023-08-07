@@ -8,6 +8,7 @@ import com.avada.myHouse24.mapper.UserMapper;
 import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.model.UserForAddDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
+import com.avada.myHouse24.services.impl.AmazonS3Service;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
@@ -39,6 +40,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
+    private final AmazonS3Service amazonS3Service;
     private final HouseServiceImpl houseService;
     private final UserMapper userMapper;
     private final EmailService emailService;
@@ -87,7 +89,7 @@ public class UserController {
         user.setStatus(UserStatus.NEW);
         user.setFromDate(Date.valueOf(LocalDate.now()));
         user.setRoles(roleService.getById(1));
-        user.setImage(ImageUtil.imageForUser(user, image));
+        user.setImage(amazonS3Service.uploadFile(image));
         userService.save(user);
         return "redirect:/admin/user/index/1";
     }
@@ -107,7 +109,6 @@ public class UserController {
             model.addAttribute("user", userMapper.toDtoForAdd(userService.getById(id)));
             return "admin/user/edit";
         }
-        User user = userService.getById(id);
         User userResult = userMapper.toEntityForAdd(userDTO);
         if (!userDTO.getPassword().equals("")) {
             if (!userDTO.getPassword().equals(userDTO.getPasswordAgain())) {
@@ -115,10 +116,10 @@ public class UserController {
                 model.addAttribute("passwordAgainError", "Паролі не співпадають");
                 return "admin/user/add";
             }
-            user.setPassword(userDTO.getPassword());
+            userResult.setPassword(userDTO.getPassword());
         }
-        userResult.setPassword(user.getPassword());
-        userResult.setImage(ImageUtil.imageForUser(user, image));
+        amazonS3Service.deleteFile(userService.getById(userResult.getId()).getImage());
+        userResult.setImage(amazonS3Service.uploadFile(image));
         userService.save(userResult);
         return "redirect:/admin/user/index/1";
     }

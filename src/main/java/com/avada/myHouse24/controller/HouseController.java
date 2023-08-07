@@ -6,10 +6,7 @@ import com.avada.myHouse24.mapper.HouseMapper;
 import com.avada.myHouse24.model.HouseForAddDto;
 import com.avada.myHouse24.model.HouseForViewDto;
 import com.avada.myHouse24.model.Select2Option;
-import com.avada.myHouse24.services.impl.AdminServiceImpl;
-import com.avada.myHouse24.services.impl.FlatServiceImpl;
-import com.avada.myHouse24.services.impl.HouseServiceImpl;
-import com.avada.myHouse24.services.impl.RoleServiceImpl;
+import com.avada.myHouse24.services.impl.*;
 import com.avada.myHouse24.validator.HouseValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +34,7 @@ public class HouseController {
     private final FlatServiceImpl flatService;
     private final AdminServiceImpl adminService;
     private final HouseMapper houseMapper;
-    private final RoleServiceImpl roleService;
+    private final AmazonS3Service amazonS3Service;
 
     @GetMapping("/index/{page}")
     public String getAll(@PathVariable("page") int page, Model model) {
