@@ -18,9 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AccountTransactionMapper {
-    private final AccountTransactionRepository accountTransactionRepository;
     private final UserServiceImpl userService;
-    private final AccountTransactionServiceImpl accountTransactionService;
     private final ScoreServiceImpl scoreService;
     private final AdminServiceImpl adminService;
     private final TransactionPurposeServiceImpl transactionPurposeService;
