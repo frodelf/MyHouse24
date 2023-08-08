@@ -98,8 +98,10 @@
                                                 aria-label="Default select example">
                                             <option >
                                             </option>
-                                            <option th:each="status: ${allStatus}" th:value="${status.toString()}"  th:selected="${filter.getStatus() == status.toString()}"
-                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                            <option th:each="status: ${allStatus}"
+                                                    th:value="${status}"
+                                                    th:selected="${filter.getStatus() != null  &&  filter.getStatus().toString() == status.toString()}"
+                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'INACTIVE' ? 'Не активний' : #strings.toString(status) == 'DISABLED' ? 'Вимкнений' : ''}">
                                             </option>
                                         </select>
                                     </th>
@@ -115,7 +117,7 @@
                                     <td th:text="${admin.getPhone()}"></td>
                                     <td th:text="${admin.getEmail()}"></td>
                                     <td>
-                                        <span th:switch="${admin.getStatus()}">
+                                        <span th:switch="${admin.getStatus().toString()}">
                                             <span th:case="NEW" class="status status-new">Новий</span>
                                             <span th:case="ACTIVE" class="status status-active">Активний</span>
                                             <span th:case="DISABLED" class="status status-disabled">Відключений</span>

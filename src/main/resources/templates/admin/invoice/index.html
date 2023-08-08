@@ -44,10 +44,10 @@
                 <div class="card-header">
                     Просмотр Квитанции
                     <div class="float-right">
-                        <a class="btn btn-outline-secondary" href="">
+                        <a class="btn btn-outline-secondary" th:href="@{/admin/invoice/print/{id}(id=${invoiceDto.id})}">
                             Печать
                         </a>
-                        <a class="btn btn-outline-secondary" href="">
+                        <a class="btn btn-outline-secondary" th:href="@{/admin/invoice/print/{id}(id=${invoiceDto.id})}">
                             Отправить на e-mail
                         </a>
                         <a class="btn btn-primary" th:href="@{/admin/invoice/edit/{id}(id=${invoiceDto.getId()})}">

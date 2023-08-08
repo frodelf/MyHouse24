@@ -140,4 +140,17 @@ public class HouseServiceImpl implements HouseService {
 
         return housePage.getContent();
     }
+    public List<HouseForViewDto> filter(HouseForViewDto house, List<HouseForViewDto> houses){
+        if (!house.getName().isBlank()) {
+            houses = houses.stream()
+                    .filter(dto -> dto.getName() != null && dto.getName().contains(house.getName()))
+                    .collect(Collectors.toList());
+        }
+        if (!house.getAddress().isBlank()) {
+            houses = houses.stream()
+                    .filter(dto -> dto.getAddress() != null && dto.getAddress().contains(house.getAddress()))
+                    .collect(Collectors.toList());
+        }
+        return houses;
+    }
 }

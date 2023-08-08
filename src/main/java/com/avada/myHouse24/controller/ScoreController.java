@@ -96,49 +96,7 @@ public class ScoreController {
     }
     @GetMapping("/filter/{page}")
     public String filter(@PathVariable("page")int page, @ModelAttribute("filter") ScoreForFilterDTO scoreForFilterDTO, Model model) {
-        List<ScoreDTO> scoreDTOS = scoreMapper.toDtoList(scoreService.getAll());
-        if (!scoreForFilterDTO.getNumber().isBlank()) {
-            scoreDTOS = scoreDTOS.stream()
-                    .filter(dto -> dto.getNumber() != null && dto.getNumber().contains(scoreForFilterDTO.getNumber()))
-                    .collect(Collectors.toList());
-        }
-        if (!scoreForFilterDTO.getStatus().isBlank()) {
-            scoreDTOS = scoreDTOS.stream()
-                    .filter(dto -> dto.getStatus() != null && dto.getStatus().contains(scoreForFilterDTO.getStatus()))
-                    .collect(Collectors.toList());
-        }
-        if (scoreForFilterDTO.getFlatNumber() != null) {
-            scoreDTOS = scoreDTOS.stream()
-                    .filter(dto -> dto.getFlat() != null && String.valueOf(dto.getFlat().getNumber()).contains(scoreForFilterDTO.getFlatNumber().toString()))
-                    .collect(Collectors.toList());
-        }
-        if (scoreForFilterDTO.getHouse() != null) {
-            scoreDTOS = scoreDTOS.stream()
-                    .filter(dto -> dto.getHouse() != null && dto.getHouse().getId() == scoreForFilterDTO.getHouse().getId())
-                    .collect(Collectors.toList());
-        }
-        if (scoreForFilterDTO.getSection() != null) {
-            scoreDTOS = scoreDTOS.stream()
-                    .filter(dto -> dto.getSection() != null && dto.getSection().getId() == scoreForFilterDTO.getSection().getId())
-                    .collect(Collectors.toList());
-        }
-        if (scoreForFilterDTO.getUser() != null) {
-            scoreDTOS = scoreDTOS.stream()
-                    .filter(dto -> dto.getFlat() != null && dto.getFlat().getUser().getId() == scoreForFilterDTO.getUser().getId())
-                    .collect(Collectors.toList());
-        }
-        if(scoreForFilterDTO.getIsDebt() != null){
-            if(scoreForFilterDTO.getIsDebt()){
-                scoreDTOS = scoreDTOS.stream()
-                        .filter(dto -> dto.getBalance() != null && dto.getBalance() >= 0)
-                        .collect(Collectors.toList());
-            }else {
-                scoreDTOS = scoreDTOS.stream()
-                        .filter(dto -> dto.getBalance() != null && dto.getBalance() < 0)
-                        .collect(Collectors.toList());
-            }
-        }
-        model.addAttribute("scores", scoreService.getPage(page, model, scoreDTOS));
+        model.addAttribute("scores", scoreService.getPage(page, model, scoreService.filter(scoreForFilterDTO, scoreMapper.toDtoList(scoreService.getAll()))));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("sections", new ArrayList<>());
         model.addAttribute("users", userService.getAll());

@@ -91,36 +91,10 @@ public class AdminController {
     }
     @GetMapping("/filter/{id}")
     public String filter(@ModelAttribute AdminForViewDTO adminForViewDto, @PathVariable("id")int id, Model model){
-        List<AdminForViewDTO> admins = adminMapper.toDtoListForView(adminService.getAll());
-        if(!adminForViewDto.getFullName().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(adminForViewDto.getFullName()))
-                    .collect(Collectors.toList());
-        }
-        if(!adminForViewDto.getRole().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getRole() != null && dto.getRole().contains(adminForViewDto.getRole()))
-                    .collect(Collectors.toList());
-        }
-        if(!adminForViewDto.getPhone().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(adminForViewDto.getPhone()))
-                    .collect(Collectors.toList());
-        }
-        if(!adminForViewDto.getEmail().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(adminForViewDto.getEmail()))
-                    .collect(Collectors.toList());
-        }
-        if (adminForViewDto.getStatus() != null) {
-            admins = admins.stream()
-                    .filter(dto -> dto.getStatus() != null && dto.getStatus() == adminForViewDto.getStatus())
-                    .collect(Collectors.toList());
-        }
         model.addAttribute("allStatus", UserStatus.values());
         model.addAttribute("roles", roleService.getAll());
         model.addAttribute("filter", adminForViewDto);
-        model.addAttribute("admins", adminService.getPage(id, model, admins).getContent());
+        model.addAttribute("admins", adminService.getPage(id, model, adminService.filter(adminForViewDto, adminMapper.toDtoListForView(adminService.getAll()))).getContent());
         return "admin/user-admin/get-all";
     }
 }

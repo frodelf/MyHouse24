@@ -19,9 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -161,5 +163,65 @@ public class UserServiceImpl implements UserService {
         }
 
         return userPage.getContent();
+    }
+    public List<UserForViewDTO> filter(UserForViewDTO userForViewDTO, List<UserForViewDTO> users, Date date, String flat, String house){
+        if (date.equals(new Date(2023, 01, 01)))
+            userForViewDTO.setDate(date);
+        if(date != null && date.getYear() != -900){
+            userForViewDTO.setDate(date);
+        }
+        if (!userForViewDTO.getId().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getId() != null && dto.getId().contains(userForViewDTO.getId()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getFullName().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(userForViewDTO.getFullName()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getPhone().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(userForViewDTO.getPhone()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getEmail().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(userForViewDTO.getEmail()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!house.isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getHouses().containsAll(userForViewDTO.getHouses()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!flat.isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getFlats().containsAll(userForViewDTO.getFlats()))
+                    .collect(Collectors.toList());
+        }
+        if (userForViewDTO.getDate() != null) {
+            users = users.stream()
+                    .filter(dto -> dto.getDate() != null && dto.getDate().equals(date))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getStatus().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus().equals(userForViewDTO.getStatus()))
+                    .collect(Collectors.toList());
+        }
+
+        if (userForViewDTO.getIsDebt() != null) {
+            users = users.stream()
+                    .filter(dto -> dto.getIsDebt() != null && dto.getIsDebt().equals(userForViewDTO.getIsDebt()))
+                    .collect(Collectors.toList());
+        }
+        return users;
     }
 }

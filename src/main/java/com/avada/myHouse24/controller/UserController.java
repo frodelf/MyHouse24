@@ -157,67 +157,12 @@ public class UserController {
     @GetMapping("/filter/{page}")
     public String filter(@ModelAttribute UserForViewDTO userForViewDTO, @RequestParam(value = "dateTest", required = false, defaultValue = "1000-01-01") Date date, @RequestParam(value = "houses", defaultValue = "")String house,
                          @RequestParam(value = "flat", defaultValue = "")String flat, @PathVariable("page")int page, Model model) {
-        if (date.equals(new Date(2023, 01, 01)))
-            userForViewDTO.setDate(date);
+
 
         List<UserForViewDTO> users = userMapper.toDtoListForView(userService.getAll());
-        if(date != null && date.getYear() != -900){
-            userForViewDTO.setDate(date);
-        }
-        if (!userForViewDTO.getId().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getId() != null && dto.getId().contains(userForViewDTO.getId()))
-                    .collect(Collectors.toList());
-        }
 
-        if (!userForViewDTO.getFullName().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(userForViewDTO.getFullName()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getPhone().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(userForViewDTO.getPhone()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getEmail().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(userForViewDTO.getEmail()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!house.isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getHouses().containsAll(userForViewDTO.getHouses()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!flat.isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getFlats().containsAll(userForViewDTO.getFlats()))
-                    .collect(Collectors.toList());
-        }
-        if (userForViewDTO.getDate() != null) {
-            users = users.stream()
-                    .filter(dto -> dto.getDate() != null && dto.getDate().equals(date))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getStatus().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getStatus() != null && dto.getStatus().equals(userForViewDTO.getStatus()))
-                    .collect(Collectors.toList());
-        }
-
-        if (userForViewDTO.getIsDebt() != null) {
-            users = users.stream()
-                    .filter(dto -> dto.getIsDebt() != null && dto.getIsDebt().equals(userForViewDTO.getIsDebt()))
-                    .collect(Collectors.toList());
-        }
         model.addAttribute("filter", userForViewDTO);
-        model.addAttribute("users", userService.getPage(page, model, users));
+        model.addAttribute("users", userService.getPage(page, model, userService.filter(userForViewDTO, userMapper.toDtoListForView(userService.getAll()), date, flat, house)));
         model.addAttribute("userCount", userService.getAll().size());
         model.addAttribute("houses", houseService.getAllName());
         if(!house.isBlank())model.addAttribute("flats", houseService.getByName(house).getFlats());

@@ -114,4 +114,13 @@ public class InvoiceController {
         model.addAttribute("invoiceDto", invoiceMapper.toDto(invoiceService.getById(id)));
         return "/admin/invoice/index";
     }
+    @GetMapping("/print/{id}")
+    public String print(@PathVariable("id")long id, Model model){
+        model.addAttribute("invoice", invoiceService.getById(id));
+        return "/admin/invoice/print";
+    }
+    @GetMapping("/template")
+    public String template(){
+        return "/admin/invoice/template";
+    }
 }

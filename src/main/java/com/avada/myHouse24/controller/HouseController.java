@@ -63,18 +63,7 @@ public class HouseController {
 
     @GetMapping("/filter/{page}")
     public String filter(@PathVariable("page") int page, @ModelAttribute("house") HouseForViewDto house, Model model) {
-        List<HouseForViewDto> houses = houseMapper.toDtoForViewList(houseService.getAll());
-        if (!house.getName().isBlank()) {
-            houses = houses.stream()
-                    .filter(dto -> dto.getName() != null && dto.getName().contains(house.getName()))
-                    .collect(Collectors.toList());
-        }
-        if (!house.getAddress().isBlank()) {
-            houses = houses.stream()
-                    .filter(dto -> dto.getAddress() != null && dto.getAddress().contains(house.getAddress()))
-                    .collect(Collectors.toList());
-        }
-        model.addAttribute("houses", houseService.getPage(page, model, houses));
+        model.addAttribute("houses", houseService.getPage(page, model, houseService.filter(house, houseMapper.toDtoForViewList(houseService.getAll()))));
         model.addAttribute("filter", house);
         model.addAttribute("housesCount", houseService.getAll().size());
         return "admin/house/get-all";
