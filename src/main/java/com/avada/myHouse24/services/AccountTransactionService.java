@@ -20,6 +20,5 @@ public interface AccountTransactionService {
     AccountTransaction getByNumber(String number);
     Page<AccountTransactionForViewDTO> getPage(int pageNumber, ModelAndView model, List<AccountTransactionForViewDTO> userList);
     Page<AccountTransaction> getPage(int pageNumber, ModelAndView model);
-    List<AccountTransactionForViewDTO> filterByDateRange(List<AccountTransactionForViewDTO> transactions, String dateRange);
     long getNumber();
 }

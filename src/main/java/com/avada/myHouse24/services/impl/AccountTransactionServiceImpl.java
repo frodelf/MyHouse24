@@ -55,7 +55,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     @Override
     public long getSumWhereIsIncomeIsFalse() {
         Long sum = accountTransactionRepository.sumWhereIsIncomeIsFalse();
-        if(sum == null || sum <= 0) return 0;
+        if(sum == null) return 0;
         return sum;
     }
     @Override
@@ -79,19 +79,6 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
             }
         }
         throw new RuntimeException("По такому номеру касси не знайдено");
-    }
-    public List<AccountTransactionForViewDTO> filterByDateRange(List<AccountTransactionForViewDTO> transactions, String dateRange) {
-        String[] range = dateRange.split(" to ");
-        LocalDate startDate = LocalDate.parse(range[0]);
-        LocalDate endDate = LocalDate.parse(range[1]);
-        ArrayList<AccountTransactionForViewDTO> filteredTransactions = new ArrayList<>();
-        for (AccountTransactionForViewDTO transaction : transactions) {
-            LocalDate transactionDate = LocalDate.parse(transaction.getDate(), DateTimeFormatter.ISO_DATE);
-            if (transactionDate.isEqual(startDate) || transactionDate.isEqual(endDate) || (transactionDate.isAfter(startDate) && transactionDate.isBefore(endDate))) {
-                filteredTransactions.add(transaction);
-            }
-        }
-        return filteredTransactions;
     }
     public Page<AccountTransaction> getPage(int pageNumber, ModelAndView model) {
         double size = 10.0;
@@ -141,9 +128,10 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
                     .filter(dto -> dto.getId() != null && dto.getId().toString().contains(accountTransactionForViewDTO.getId().toString()))
                     .collect(Collectors.toList());
         }
-        if (!accountTransactionForViewDTO.getDate().isBlank()) {
-            accountTransactions = filterByDateRange(accountTransactions, accountTransactionForViewDTO.getDate());
-        }
+        if (accountTransactionForViewDTO.getDate()!=null) {
+            accountTransactions = accountTransactions.stream()
+                    .filter(dto -> dto.getId() != null && dto.getDate().toString().equals(accountTransactionForViewDTO.getDate().toString()))
+                    .collect(Collectors.toList());        }
         if (accountTransactionForViewDTO.getScoreNumber() != null) {
             accountTransactions = accountTransactions.stream()
                     .filter(dto -> dto.getScoreNumber() != null && dto.getScoreNumber().contains(accountTransactionForViewDTO.getScoreNumber()))

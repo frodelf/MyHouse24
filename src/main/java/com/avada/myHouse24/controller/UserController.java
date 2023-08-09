@@ -155,12 +155,8 @@ public class UserController {
     }
 
     @GetMapping("/filter/{page}")
-    public String filter(@ModelAttribute UserForViewDTO userForViewDTO, @RequestParam(value = "dateTest", required = false, defaultValue = "1000-01-01") Date date, @RequestParam(value = "houses", defaultValue = "")String house,
+    public String filter(@ModelAttribute UserForViewDTO userForViewDTO, @RequestParam(value = "dateTest", required = false, defaultValue = "1000-01-01") Date date, @RequestParam(value = "house", defaultValue = "")String house,
                          @RequestParam(value = "flat", defaultValue = "")String flat, @PathVariable("page")int page, Model model) {
-
-
-        List<UserForViewDTO> users = userMapper.toDtoListForView(userService.getAll());
-
         model.addAttribute("filter", userForViewDTO);
         model.addAttribute("users", userService.getPage(page, model, userService.filter(userForViewDTO, userMapper.toDtoListForView(userService.getAll()), date, flat, house)));
         model.addAttribute("userCount", userService.getAll().size());

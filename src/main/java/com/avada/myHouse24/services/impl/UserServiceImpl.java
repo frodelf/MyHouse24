@@ -196,13 +196,13 @@ public class UserServiceImpl implements UserService {
 
         if (!house.isBlank()) {
             users = users.stream()
-                    .filter(dto -> dto.getHouses().containsAll(userForViewDTO.getHouses()))
+                    .filter(dto -> dto.getHouses().contains(house))
                     .collect(Collectors.toList());
         }
 
         if (!flat.isBlank()) {
             users = users.stream()
-                    .filter(dto -> dto.getFlats().containsAll(userForViewDTO.getFlats()))
+                    .filter(dto -> dto.getFlats().contains(flat))
                     .collect(Collectors.toList());
         }
         if (userForViewDTO.getDate() != null) {

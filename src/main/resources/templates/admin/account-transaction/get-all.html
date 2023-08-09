@@ -126,9 +126,8 @@
                                                th:value="${accountTransaction.getId() != null ? accountTransaction.getId() : ''}">
                                     </th>
                                     <th>
-                                        <input name="date" id="daterange" type="text" class="form-control"
-                                               th:value="${accountTransaction.getDate() != null ? accountTransaction.getDate() : ''}"
-                                               readonly>
+                                        <input name="date" type="date" class="form-control"
+                                               th:value="${accountTransaction.getDate() != null ? accountTransaction.getDate() : ''}">
                                     </th>
                                     <th>
                                         <select class=" form-select" name="addToStats"

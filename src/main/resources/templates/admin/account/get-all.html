@@ -108,32 +108,38 @@
                        class="btn btn-outline-secondary float-right">Очистить</a>
                 </div>
                 <div class="card-body">
-                    <form id="formSend" method="get" action="/admin/account/filter/1" th:object="${filter}" onsubmit="event.preventDefault()">
-                    <div class="table-responsive">
-                        <table class="table table-hover table-striped">
-                            <thead>
-                            <tr style="font-weight: bold">
-                                <td style="min-width: 150px">№</td>
-                                <td style="min-width: 150px">Статус</td>
-                                <td style="min-width: 150px">Квартира</td>
-                                <td style="min-width: 190px">Дом</td>
-                                <td style="min-width: 150px">Секции</td>
-                                <td style="min-width: 190px">Владелец</td>
-                                <td style="min-width: 120px">Остаток(грн)</td>
-                                <td style="min-width: 150px"></td>
-                            </tr>
+                    <form id="formSend" method="get" action="/admin/account/filter/1" th:object="${filter}"
+                          onsubmit="event.preventDefault()">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped">
+                                <thead>
+                                <tr style="font-weight: bold">
+                                    <td style="min-width: 150px">№</td>
+                                    <td style="min-width: 150px">Статус</td>
+                                    <td style="min-width: 150px">Квартира</td>
+                                    <td style="min-width: 190px">Дом</td>
+                                    <td style="min-width: 150px">Секции</td>
+                                    <td style="min-width: 190px">Владелец</td>
+                                    <td style="min-width: 120px">Остаток(грн)</td>
+                                    <td style="min-width: 150px"></td>
+                                </tr>
                                 <tr style="font-weight: bold">
                                     <td>
                                         <input th:field="*{number}" type="number" class="form-control">
                                     </td>
                                     <td>
-                                        <input th:field="*{status}" type="text" class="form-control">
+                                        <select class="form-select" th:field="*{status}" onchange="submitForm()"
+                                                aria-label="Default select example">
+                                            <option value=""></option>
+                                            <option value="Активен">Активен</option>
+                                            <option value="Неактивен">Неактивен</option>
+                                        </select>
                                     </td>
                                     <td>
-                                        <input  th:field="*{flatNumber}" type="number" class="form-control">
+                                        <input th:field="*{flatNumber}" type="number" class="form-control">
                                     </td>
                                     <td>
-                                        <select class="form-select"  th:field="*{house}" onchange="submitForm()"
+                                        <select class="form-select" th:field="*{house}" onchange="submitForm()"
                                                 aria-label="Default select example">
                                             <option th:value="${filter.getHouse() == null ? null : filter.getHouse().getId()}"
                                                     th:text="${filter.getHouse() == null ? '' : filter.getHouse().getName()}">
@@ -148,7 +154,9 @@
                                             <select class="form-select" th:field="*{section}" onchange="submitForm()"
                                                     aria-label="Default select example">
                                                 <option value="">Вибрать...</option>
-                                                <option th:each="section : ${filter.getHouse().getSections()}" th:text="${section.name}" th:value="${section.getId()}"></option>
+                                                <option th:each="section : ${filter.getHouse().getSections()}"
+                                                        th:text="${section.name}"
+                                                        th:value="${section.getId()}"></option>
                                             </select>
                                         </div>
                                         <div th:if="${filter.getHouse() == null}">
@@ -183,9 +191,10 @@
                                     </td>
                                     <td></td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="clickable-row" th:each="score : ${scores}" th:data-action="@{/admin/account/{id}(id=${score.getId()})}">
+                                </thead>
+                                <tbody>
+                                <tr class="clickable-row" th:each="score : ${scores}"
+                                    th:data-action="@{/admin/account/{id}(id=${score.getId()})}">
                                     <td>
                                         [[${score.number}]]
                                     </td>
@@ -223,9 +232,9 @@
                                         </a>
                                     </td>
                                 </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
                     </form>
                 </div>
                 <div class="card-footer">

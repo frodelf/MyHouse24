@@ -117,7 +117,7 @@ public class InvoiceServiceImpl implements InvoiceService {
         }
         if(filter.getUser() != null){
             invoiceDtos = invoiceDtos.stream()
-                    .filter(dto -> dto.getUser() != null && Objects.equals(dto.getUser().getId(), filter.getId()))
+                    .filter(dto -> dto.getUser() != null && Objects.equals(dto.getUser().getId(), filter.getUser().getId()))
                     .collect(Collectors.toList());
         }
         if(filter.getAddToStats() != null){

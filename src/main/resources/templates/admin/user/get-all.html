@@ -109,16 +109,16 @@
                                             aria-label="Default select example">
                                         <option th:value="${house}" th:text="${house}">
                                         </option>
-                                        <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
+                                        <option th:each="house:${houses}" th:value="${house.toString()}" th:text="${house}">
                                         </option>
                                     </select>
                                 </th>
                                 <th>
-                                    <select class="form-select" name="house" onchange="submitForm()"
+                                    <select class="form-select" name="flat" onchange="submitForm()"
                                             aria-label="Default select example">
                                         <option th:value="${flat}" th:text="${flat}">
                                         </option>
-                                        <option th:each="flat:${flats}" th:value="${flat}" th:text="${flat}">
+                                        <option th:each="flat:${flats}" th:value="${flat.number}" th:text="${flat.number}">
                                         </option>
                                     </select>
                                 </th>

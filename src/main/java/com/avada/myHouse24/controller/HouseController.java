@@ -90,7 +90,7 @@ public class HouseController {
         return "admin/house/edit";
     }
     @PostMapping("/edit/{id}")
-    public String edit(@ModelAttribute("house") @Valid HouseForAddDto house, @PathVariable("id")Long id, BindingResult bindingResult, Model model) throws IOException {
+    public String edit(@ModelAttribute("house") @Valid HouseForAddDto house, BindingResult bindingResult, @PathVariable("id")Long id, Model model) throws IOException {
         if (bindingResult.hasErrors()) {
             model.addAttribute("users", adminService.getAll());
             model.addAttribute("house", houseService.getById(id));

@@ -65,9 +65,9 @@
                             <div style="margin-bottom: 25px; font-weight: bold; width: 90%; margin-left: 20px;">
                                 Секция
                                 <select class="form-select" th:field="*{section}">
-                                    <option value="">Вибрати...</option>
+                                    <option th:value="${scoreDto.section == null ? null : scoreDto.section.id}" th:text="${scoreDto.section == null ? 'Вибрати...' : scoreDto.section.name}"></option>
                                     <option th:each="section:${sections}" th:value="${section.getId()}"
-                                            th:text="${section.name}"></option>
+                                            th:text="${section.name}" th:selected="${section.name.trim().equals(scoreDto.section.name.trim())}"></option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                      th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
