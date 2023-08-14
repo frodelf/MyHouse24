@@ -44,13 +44,20 @@
                     </div>
                 </div>
                 <div class="card-body">
-
+                    <div th:each="template : ${templates}">
+                        <div class="form-check">
+                            <input class="form-check-input" th:value="${template.id}" type="radio" name="selectTemplate" id="flexRadioDefault1" th:checked="${template.isMain == true}">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                <span th:text="${template.name}"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
                         Отправить на e-mail
                     </a>
-                    <a href="#" class="btn btn-success float-right" style="margin-right: 10px">Скачать</a>
+                    <button onclick="downloadTemplate()" class="btn btn-success float-right" style="margin-right: 10px">Скачать</button>
                 </div>
             </div>
         </section>
@@ -61,7 +68,27 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
-
+<script>
+    function downloadTemplate(){
+        var selectedTemplateId = document.querySelector('input[name="selectTemplate"]:checked').value;
+        console.log(selectedTemplateId);
+        $.ajax({
+            url: '/admin/invoice/download/' + selectedTemplateId,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (data) {
+                var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'template.xlsx';
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+            },
+        });
+    }
+</script>
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 <script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>

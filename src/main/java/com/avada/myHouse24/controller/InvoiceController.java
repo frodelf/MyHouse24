@@ -1,15 +1,16 @@
 package com.avada.myHouse24.controller;
 
-import com.avada.myHouse24.entity.Invoice;
+import com.avada.myHouse24.entity.TemplateForInvoice;
 import com.avada.myHouse24.enums.InvoiceStatus;
 import com.avada.myHouse24.mapper.InvoiceMapper;
+import com.avada.myHouse24.mapper.TemplateForInvoiceMapper;
 import com.avada.myHouse24.model.InvoiceDto;
-import com.avada.myHouse24.services.impl.AdditionalServiceImpl;
-import com.avada.myHouse24.services.impl.InvoiceServiceImpl;
-import com.avada.myHouse24.services.impl.TariffServiceImpl;
-import com.avada.myHouse24.util.DateUtil;
+import com.avada.myHouse24.model.TemplateForInvoiceDTO;
+import com.avada.myHouse24.services.impl.*;
 import com.avada.myHouse24.util.NumberUtil;
 import com.avada.myHouse24.validator.InvoiceValidator;
+import com.avada.myHouse24.validator.TemplateForInvoiceValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,18 +20,23 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 @Controller
 @RequestMapping("/admin/invoice")
 @RequiredArgsConstructor
 public class InvoiceController {
-    private final InvoiceServiceImpl invoiceService;
+
+    private final InvoiceMapper invoiceMapper;
+    private final AmazonS3Service amazonS3Service;
     private final TariffServiceImpl tariffService;
+    private final InvoiceServiceImpl invoiceService;
     private final InvoiceValidator invoiceValidator;
     private final AdditionalServiceImpl additionalService;
-    private final InvoiceMapper invoiceMapper;
+    private final TemplateForInvoiceServiceImpl templateForInvoiceService;
+    private final TemplateForInvoiceMapper templateForInvoiceMapper;
+    private final TemplateForInvoiceValidator templateForInvoiceValidator;
+
 
     @GetMapping("/index/{id}")
     public String getAll(@PathVariable("id") int id, Model model) {
@@ -41,7 +47,6 @@ public class InvoiceController {
 
     @GetMapping("/filter/{page}")
     public String filter(@PathVariable("page") int page, @ModelAttribute("filter") InvoiceDto filter, Model model, @RequestParam("flatNumber") String flatNumber, @RequestParam(value = "dateExample", defaultValue = "1000-01-01") Date dateExample) {
-//        String s = DateUtil.toMonthForMY(filter.getMonths(), new Locale("uk"));
         model.addAttribute("invoices", invoiceService.getPage(page, model, invoiceService.filter(filter, flatNumber, dateExample)).getContent());
         model.addAttribute("filter", filter);
         if (!Objects.equals(dateExample.toString(), "1000-01-01"))
@@ -114,13 +119,52 @@ public class InvoiceController {
         model.addAttribute("invoiceDto", invoiceMapper.toDto(invoiceService.getById(id)));
         return "/admin/invoice/index";
     }
+
+    @GetMapping("/template")
+    public String template(@ModelAttribute("template") TemplateForInvoiceDTO template, Model model){
+        model.addAttribute("templates", templateForInvoiceService.getAll());
+        System.out.println(templateForInvoiceService.getTemplateWhereIsMainIsTrue());
+        return "/admin/invoice/template";
+    }
+    @PostMapping("/template/add")
+    public String templateAdd(@ModelAttribute("template") @Valid TemplateForInvoiceDTO template, BindingResult bindingResult, Model model){
+        templateForInvoiceValidator.validate(template, bindingResult);
+        if(bindingResult.hasErrors()){
+            model.addAttribute("templates", templateForInvoiceService.getAll());
+            return "/admin/invoice/template";
+        }
+        template.setIsMain(false);
+        templateForInvoiceService.save(templateForInvoiceMapper.toEntity(template));
+        return "redirect:/admin/invoice/template";
+    }
+    @GetMapping("/download/{id}")
+    @ResponseBody
+    public byte[] download(@PathVariable("id")long id){
+        return amazonS3Service.downloadFile(templateForInvoiceService.getById(id).getFileName());
+    }
+    @GetMapping("/doDefault/{id}")
+    public String doDefault(@PathVariable("id")long id){
+        TemplateForInvoice templateForInvoice = new TemplateForInvoice();
+        if(templateForInvoiceService.getTemplateWhereIsMainIsTrue() != null) {
+            templateForInvoice = templateForInvoiceService.getTemplateWhereIsMainIsTrue();
+            templateForInvoice.setIsMain(false);
+            templateForInvoiceService.save(templateForInvoice);
+        }
+        templateForInvoice = templateForInvoiceService.getById(id);
+        templateForInvoice.setIsMain(true);
+        templateForInvoiceService.save(templateForInvoice);
+        return "redirect:/admin/invoice/template";
+    }
+    @GetMapping("/remove/{id}")
+    public String remove(@PathVariable("id")long id){
+        templateForInvoiceService.deleteById(id);
+        return "redirect:/admin/invoice/template";
+    }
+
     @GetMapping("/print/{id}")
     public String print(@PathVariable("id")long id, Model model){
         model.addAttribute("invoice", invoiceService.getById(id));
+        model.addAttribute("templates", templateForInvoiceService.getAll());
         return "/admin/invoice/print";
-    }
-    @GetMapping("/template")
-    public String template(){
-        return "/admin/invoice/template";
     }
 }

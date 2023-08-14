@@ -34,7 +34,6 @@ public class AmazonS3Service {
         return fileName;
     }
 
-
     public byte[] downloadFile(String fileName) {
         S3Object s3Object = s3Client.getObject(bucketName, fileName);
         S3ObjectInputStream inputStream = s3Object.getObjectContent();
@@ -46,7 +45,6 @@ public class AmazonS3Service {
         }
         return null;
     }
-
 
     public void deleteFile(String fileName) {
         s3Client.deleteObject(bucketName, fileName);
