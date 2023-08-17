@@ -37,12 +37,15 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Лицевые счета
+                <span th:text="#{Лицевые_счета}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Лицевые счета
+                    <span th:text="#{Лицевые_счета}"></span>
                 </li>
             </ol>
         </div>
@@ -54,7 +57,9 @@
                             <div class="small-box bg-green overflow-hidden">
                                 <div class="inner">
                                     <h3 id="cashboxBalance">0.00 грн</h3>
-                                    <p>Состояние кассы</p>
+                                    <p>
+                                        <span th:text="#{Состояние_кассы}"></span>
+                                        </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign"></i>
@@ -65,7 +70,9 @@
                             <div class="small-box bg-blue overflow-hidden">
                                 <div class="inner">
                                     <h3 id="accountBalance">0.00 грн</h3>
-                                    <p>Баланс по счетам</p>
+                                    <p>
+                                        <span th:text="#{Баланс_по_счетам}"></span>
+                                        </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -76,7 +83,9 @@
                             <div class="small-box bg-red overflow-hidden">
                                 <div class="inner">
                                     <h3 id="accountDebts">0.00 грн</h3>
-                                    <p>Задолженность по счетам</p>
+                                    <p>
+                                        <span th:text="#{Задолженность_по_счетам}"></span>
+                                        </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -89,15 +98,18 @@
                     <div class="btn-group margin-bottom float-right ">
                         <button type="button" class="btn btn-success dropdown-toggle" style="width: 230px;"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
-                            Выберите действие
+                            <span th:text="#{Выберите_действие}"></span>
+
                         </button>
                         <ul class="dropdown-menu" style="width: 230px;">
                             <li><a class="text-secondary" href="/admin/account/add"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Добавить лицевой
-                                счет</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Добавить_лицевой_счет}"></span>
+                            </a></li>
                             <li><a class="text-secondary" href=""
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Выгрузить в
-                                Excel</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Выгрузить_в_Excel}"></span>
+                                </a></li>
                         </ul>
                     </div>
                 </div>
@@ -105,7 +117,9 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/account/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                    </a>
                 </div>
                 <div class="card-body">
                     <form id="formSend" method="get" action="/admin/account/filter/1" th:object="${filter}"
@@ -115,12 +129,24 @@
                                 <thead>
                                 <tr style="font-weight: bold">
                                     <td style="min-width: 150px">№</td>
-                                    <td style="min-width: 150px">Статус</td>
-                                    <td style="min-width: 150px">Квартира</td>
-                                    <td style="min-width: 190px">Дом</td>
-                                    <td style="min-width: 150px">Секции</td>
-                                    <td style="min-width: 190px">Владелец</td>
-                                    <td style="min-width: 120px">Остаток(грн)</td>
+                                    <td style="min-width: 150px">
+                                        <span th:text="#{Статус}"></span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span th:text="#{Квартиры}"></span>
+                                    </td>
+                                    <td style="min-width: 190px">
+                                        <span th:text="#{Дом}"></span>
+                                    </td>
+                                    <td style="min-width: 150px">
+                                        <span th:text="#{Секции}"></span>
+                                        </td>
+                                    <td style="min-width: 190px">
+                                        <span th:text="#{Владелец}"></span>
+                                        </td>
+                                    <td style="min-width: 120px">
+                                        <span th:text="#{Остаток_грн}"></span>
+                                        </td>
                                     <td style="min-width: 150px"></td>
                                 </tr>
                                 <tr style="font-weight: bold">

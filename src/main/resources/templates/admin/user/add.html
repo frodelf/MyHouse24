@@ -17,14 +17,21 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Новий владелец</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Новый_владелец}"></span>
+                </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Владельцы
-                    квартир</a>
+                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Владельцы_квартир}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Новый владелец</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Новый_владелец}"></span>
+                    </li>
             </ol>
         </div>
         <section class="content">
@@ -41,36 +48,46 @@
                                                  style="width: 160px; height: 160px">
                                         </div>
                                         <div class="col">
-                                            <b>Сменить изображение</b>
+                                            <b>
+                                                <span th:text="#{Сменить_изображение}"></span>
+                                                </b>
                                             </br>
                                             <label for="fileInput"
                                                    style="cursor: pointer; margin-top: 10px; margin-bottom: 0px;"
                                                    class="btn btn-secondary">
-                                                <i class="fa fa-file-image-o" aria-hidden="true"></i> Додати фото
+                                                <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                                                <span th:text="#{Додати_фото}"></span>
+
                                             </label>
                                             <input id="fileInput" type="file" style="display:none;" name="image">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${error}"></div>
                                         </div>
                                     </div>
                                     <b>
-                                        Фамилия
+                                        <span th:text="#{Фамилия}"></span>
+
                                         <input type="text" class="form-control" name="lastName">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-                                        Имя
+                                        <span th:text="#{Имя}"></span>
+
                                         <input type="text" class="form-control" name="firstName">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
-                                        Отчество
+                                        <span th:text="#{Отчество}"></span>
+
                                         <input type="text" class="form-control" name="fathersName">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('fathersName')}" th:errors="*{fathersName}"></div>
-                                        Дата рождения
+                                        <span th:text="#{Дата_рождения}"></span>
+
                                         <input type="date" class="form-control" name="birthday">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
                                     </b>
                                     <h3 style="margin-top: 20px; font-weight: 5">
-                                        Контактные данные
+                                        <span th:text="#{Контактные_данные}"></span>
+
                                     </h3>
                                     <b>
-                                        Телефон
+                                        <span th:text="#{Телефон}"></span>
+
                                         <input type="number" class="form-control" name="phone">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></div>
                                         Viber
@@ -86,7 +103,8 @@
                                 </div>
                                 <div class="col">
                                     <b>
-                                        Статус
+                                        <span th:text="#{Статус}"></span>
+
                                         <select class="form-select" name="status" aria-label="Default select example">
                                             <option value="" text=""></option>
                                             <option th:each="status:${status}" th:text="${status}" th:value="${status}"></option>
@@ -96,15 +114,16 @@
                                         <input type="number" class="form-control" style="margin-bottom: 20px;" name="id" th:value="${maxId}" readonly>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${idError}"></div>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
-                                        О владельце (заметки)
+                                        <span th:text="#{О_владельце}"></span>
                                         <textarea type="text" class="form-control" style="height: 240px" name="description"></textarea>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                                     </b>
                                     <h3 style="margin-top: 20px; font-weight: 5">
-                                        Изменить пароль
+                                        <span th:text="#{Изменить_пароль}"></span>
                                     </h3>
                                     <b>
-                                        Пароль
+                                        <span th:text="#{Пароль}"></span>
+
                                         <div style="display: flex; align-items: center; width: 100%;">
                                             <input type="password" id="password-input" class="form-control" style="flex: 1" name="password">
                                             <button type="button" id="generate-button" onclick="generatePassword()" class="btn btn-outline-secondary" style="width: 30%; height: 38px; font-size: 14px">Сгенерировать</button>
@@ -113,7 +132,7 @@
                                             </button>
                                         </div>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${passwordError}"></div>
-                                        Підтвердити пароль
+                                        <span th:text="#{Подтвердите_пароль}"></span>
                                         <input type="password" id="confirm-password-input" class="form-control" name="passwordAgain" style="margin-bottom: 20px;"  oninput="checkPasswords()">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${passwordAgainError}"></div>
                                     </b>
@@ -122,9 +141,12 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
+                        <button type="submit" class="btn btn-success float-right">
+                            <span th:text="#{Сохранить}"></span>
+                            </button>
                         <a href="/admin/user/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 3px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
+
                         </a>
                     </div>
                 </div>

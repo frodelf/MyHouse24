@@ -21,13 +21,18 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Новая квартира
+                <span th:text="#{Новая_квитанция}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/invoice/1" class="text-for-breadcrumb">Квитанции</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a href="/admin/invoice/1" class="text-for-breadcrumb">
+                    <span th:text="#{Квитанции}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Новая Квитанция
+                    <span th:text="#{Новая_квитанция}"></span>
+
                 </li>
             </ol>
         </div>
@@ -53,24 +58,27 @@
                                 <div class="col">
                                     <div th:if="${invoiceDto.flat == null}">
                                         <br/>
-                                        Дом
+                                        <span th:text="#{Дом}"></span>
+
                                         <select id="mySelect2ForHouses" style="width: 100%;">
                                         </select>
                                         <br/>
                                         <br/>
-                                        Секция
+                                        <span th:text="#{Секция}"></span>
+
                                         <select class="form-select" name="section">
                                             <option value="">Вибрати...</option>
                                         </select>
                                         <br/>
-                                        Квартира
+                                        <span th:text="#{Квартира}"></span>
+
                                         <select class="form-select" th:field="*{flat}">
                                             <option value="">Вибрати...</option>
                                         </select>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
                                         <br/>
-                                        Лицевой счет
+                                        <span th:text="#{Лицевой_счет}"></span>
                                         <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
                                         </select>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
@@ -78,21 +86,24 @@
                                     </div>
                                     <div th:if="${invoiceDto.flat != null}">
                                         <br/>
-                                        Дом
+                                        <span th:text="#{Дом}"></span>
+
                                         <select id="mySelect2ForHouses" style="width: 100%;">
                                             <option th:value="${invoiceDto.flat.house.id}"
                                                     th:text="${invoiceDto.flat.house.name}"></option>
                                         </select>
                                         <br/>
                                         <br/>
-                                        Секция
+                                        <span th:text="#{Секция}"></span>
+
                                         <select class="form-select" name="section">
                                             <option th:each="section : ${invoiceDto.flat.house.getSections()}"
                                                     th:value="${section.id}" th:text="${section.name}"
                                                     th:selected="${section.id == invoiceDto.flat.section.id}"></option>
                                         </select>
                                         <br/>
-                                        Квартира
+                                        <span th:text="#{Квартира}"></span>
+
                                         <select class="form-select" th:field="*{flat}">
                                             <option th:each="flat : ${invoiceDto.flat.house.getFlats()}"
                                                     th:value="${flat.id}" th:text="${flat.number}"
@@ -101,7 +112,8 @@
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
                                         <br/>
-                                        Лицевой счет
+                                        <span th:text="#{Лицевой_счет}"></span>
+
                                         <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
                                             <option th:value="${invoiceDto.flat.score.id}"
                                                     th:text="${invoiceDto.flat.score.number}"></option>
@@ -111,9 +123,12 @@
                                     </div>
                                 </div>
                                 <div class="col">
-                                    <input type="checkbox" th:field="*{addToStats}">Проведена
+                                    <input type="checkbox" th:field="*{addToStats}">
+                                    <span th:text="#{Проведена}"></span>
+
                                     <br/>
-                                    Статус
+                                    <span th:text="#{Статус}"></span>
+
                                     <select class="form-select" th:field="*{status}">
                                         <option th:each="status : ${statuses}" th:value="${status}"
                                                 th:text="${status}"></option>
@@ -121,7 +136,8 @@
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
                                     <br/>
-                                    Тариф
+                                    <span th:text="#{Тариф}"></span>
+
                                     <select class="form-select" th:field="*{tariff}">
                                         <option th:each="tariff : ${tariffs}" th:value="${tariff.id}"
                                                 th:text="${tariff.name}"></option>
@@ -131,13 +147,13 @@
                                     <br/>
                                     <div class="row">
                                         <div class="col">
-                                            Период с
+                                            <span th:text="#{Период_с}"></span>
                                             <input type="date" class="form-control" th:field="*{fromDate}" value="1">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                                  th:if="${#fields.hasErrors('fromDate')}" th:errors="*{fromDate}"></div>
                                         </div>
                                         <div class="col">
-                                            Период по
+                                            <span th:text="#{Период_по}"></span>
                                             <input type="date" class="form-control" th:field="*{toDate}" value="1">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                                  th:if="${#fields.hasErrors('toDate')}" th:errors="*{toDate}"></div>
@@ -148,11 +164,21 @@
                             <table id="myTable" class="table" style="margin-top: 20px;">
                                 <thead>
                                 <tr>
-                                    <th style="width: 30%">Услуга</th>
-                                    <th style="width: 20%">Расход</th>
-                                    <th style="width: 15%">Ед. изм.</th>
-                                    <th style="width: 10%">Цена за ед., грн.</th>
-                                    <th style="width: 20%">Стоимость, грн.</th>
+                                    <th style="width: 30%">
+                                        <span th:text="#{Услуга}"></span>
+                                        </th>
+                                    <th style="width: 20%">
+                                        <span th:text="#{Расход}"></span>
+                                        </th>
+                                    <th style="width: 15%">
+                                        <span th:text="#{Ед.изм.}"></span>
+                                        Ед. изм.</th>
+                                    <th style="width: 10%">
+                                        <span th:text="#{Цена_за_ед}"></span>
+                                        </th>
+                                    <th style="width: 20%">
+                                        <span th:text="#{Стоимость_грн}"></span>
+                                        Стоимость, грн.</th>
                                     <th style="width: 5%"></th>
                                 </tr>
                                 </thead>
@@ -162,10 +188,14 @@
                             <div style="margin-top: 20px" class="row">
                                 <div class="col-9">
                                     <button type="button" onclick="addRow()"
-                                            class="btn btn-outline-secondary">Добавить услугу
+                                            class="btn btn-outline-secondary">
+                                    <span th:text="#{Добавить_услугу}"></span>
+
                                     </button>
                                     <button type="button" onclick="addRowsByTariff()"
-                                            class="btn btn-outline-secondary">Установить все услуги согласно тарифу
+                                            class="btn btn-outline-secondary">
+                                        <span th:text="#{Установить_все_услуги_согласно_тарифу}"></span>
+                                        Установить все услуги согласно тарифу
                                     </button>
                                 </div>
                                 <div class="col-3">
@@ -176,11 +206,14 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success float-right"
-                                style="background-color: #089a08;margin-right: 10px">Сохранить
+                                style="background-color: #089a08;margin-right: 10px">
+                            <span th:text="#{Сохранить}"></span>
+
                         </button>
                         <a href="/admin/invoice/index/1" class="btn btn-outline-secondary float-right"
                            style="margin-right: 10px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
+
                         </a>
                     </div>
                 </div>

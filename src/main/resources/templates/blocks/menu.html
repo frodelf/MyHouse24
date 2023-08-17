@@ -1,12 +1,14 @@
 <div th:fragment="menu">
     <!--  navbar  -->
     <nav class="main-header navbar navbar-expand">
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" style="width: 100%">
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <div class="nav-link">Панель Адміністратора</div>
+                <div class="nav-link">
+                    <span th:text="#{Панель_Администратора}"></span>
+                </div>
             </li>
             <li class="nav-item ml-auto">
                 <div class="row">
@@ -44,94 +46,122 @@
                                 <li class="nav-item">
                                     <a href="/admin" style="width:100%" class="nav-link selected">
                                         <i class="fa fa-chart-line"></i>
-                                        <p class="pl-1">Статистика</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Статистика}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/account-transaction/index/1" style="width:100%; " class="nav-link">
                                         <i class="fa fa-dollar-sign" aria-hidden="true" style="width:16px"></i>
-                                        <p class="pl-1">Касса</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Касса}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/invoice/index/1" style="width:100%; " class="nav-link">
                                         <i class="fa fa-file" aria-hidden="true"></i>
-                                        <p class="pl-1">Квитанции на оплату</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Квитанции_на_оплату}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/account/index/1" style="width:100%; " class="nav-link">
                                         <i class="fa fa-credit-card" aria-hidden="true"></i>
-                                        <p class="pl-1">Лицевые счета</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Лицевые_счета}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/flat/index/1" style="width:100%;" class="nav-link">
                                         <i class="fa fa-key" aria-hidden="true"></i>
-                                        <p class="pl-1">Квартиры</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Квартиры}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/user/index/1" style="width:100%; " class="nav-link">
                                         <i class="fa fa-users" aria-hidden="true" style="font-size: 14px"></i>
-                                        <p class="pl-1">Владельцы квартир</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Владельцы_квартир}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/house/index/1" style="width:100%; " class="nav-link">
                                         <i class="fa fa-building" aria-hidden="true" style="width:16px"></i>
-                                        <p class="pl-1">Дома</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Дома}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/message/index/1" style="width:100%;" class="nav-link">
                                         <i class="fa fa-envelope" aria-hidden="true"></i>
-                                        <p class="pl-1">Сообщения</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Сообщения}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/master-request/index/1" style="width:100%; " class="nav-link">
                                         <i class="fa fa-wrench" aria-hidden="true"></i>
-                                        <p class="pl-1">Заявки вызова мастера</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Заявки_вызова_мастера}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="/admin/counter-data/index/1" style="width:100%;" class="nav-link">
                                         <i class="fa fa-weight" aria-hidden="true"></i>
-                                        <p class="pl-1">Показания счетчиков</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Показания_счетчиков}"></span>
+                                        </p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link2 nav-link">
                                         <i class="fa fa-desktop"></i>
                                         <p>
-                                            Управление сайтом
-                                            <i class="right fas fa-angle-left"></i>
+                                            <span th:text="#{Управление_сайтом}"></span>
                                         </p>
+                                        <i class="right fas fa-angle-left"></i>
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
                                             <a href="/index" class="nav-link" >
                                                 <i class="far fa-circle nav-icon"></i>
-                                                <p>Главная страница</p>
+                                                <p>
+                                                    <span th:text="#{Главная_страница}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/about" class="nav-link" >
                                                 <i class="far fa-circle nav-icon"></i>
-                                                <p>О нас</p>
+                                                <p>
+                                                    <span th:text="#{О_нас}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/services" class="nav-link" style="width:100%;">
                                                 <i class="far fa-circle nav-icon"></i>
-                                                <p>Услуги</p>
+                                                <p>
+                                                    <span th:text="#{Услуги}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item">
                                             <a href="/contacts" class="nav-link" style="width:100%;">
                                                 <i class="far fa-circle nav-icon"></i>
-                                                <p>Контакты</p>
+                                                <p>
+                                                    <span th:text="#{Контакты}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                     </ul>
@@ -139,44 +169,58 @@
                                 <li class="nav-item">
                                     <a href="#" style="width:100%" class="nav-link2 nav-link">
                                         <i class="fa fa-cogs" aria-hidden="true"></i>
-                                        <p class="pl-1">Настройка системы</p>
+                                        <p class="pl-1">
+                                            <span th:text="#{Настройка_системы}"></span>
+                                        </p>
                                         <i class="right fas fa-angle-left"></i>
                                     </a>
                                     <ul class="nav nav-treeview" style="font-weight: 400">
                                         <li class="nav-item dropdown-items">
                                             <a href="/admin/service/index" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-briefcase nav-icon" aria-hidden="true"></i>
-                                                <p>Услуги</p>
+                                                <p>
+                                                    <span th:text="#{Услуги}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
                                             <a href="/admin/tariff/index" class="nav-link dropdown-links" style="margin:0; width:100%; ">
                                                 <i style="font-size: 12px;" class="fa fa-money-bill nav-icon" aria-hidden="true"></i>
-                                                <p>Тарифы</p>
+                                                <p>
+                                                    <span th:text="#{Тарифы}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
                                             <a href="/admin/user-admin/index/1" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-user-plus nav-icon" aria-hidden="true"></i>
-                                                <p>Пользователи</p>
+                                                <p>
+                                                    <span th:text="#{Пользователи}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
                                             <a href="/admin/role-form" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-users nav-icon" aria-hidden="true"></i>
-                                                <p>Роли</p>
+                                                <p>
+                                                    <span th:text="#{Пользователи}"></span>
+                                                    Роли</p>
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
                                             <a href="/admin/pay-company/index" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-credit-card nav-icon" aria-hidden="true"></i>
-                                                <p>Платежные реквизиты</p>
+                                                <p>
+                                                    <span th:text="#{Платежные_реквизиты}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
                                             <a href="/admin/transaction-purpose/index" class="nav-link dropdown-links" style="width:100%;  margin: 0 0 50px;">
                                                 <i style="font-size: 12px;" class="fa fa-list-ol nav-icon" aria-hidden="true"></i>
-                                                <p>Статьи платежей</p>
+                                                <p>
+                                                    <span th:text="#{Статьи_платежей}"></span>
+                                                </p>
                                             </a>
                                         </li>
                                     </ul>
@@ -190,7 +234,10 @@
     </aside>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            var comboboxElements = document.querySelectorAll('[role=".select2-selection"]');
+            var select2Elements = document.querySelectorAll('.select2');
+            console.log(select2Elements)
+            console.log(document.querySelectorAll('.select2-selection'))
+            console.log(document.querySelectorAll('.selection'))
             const themeToggle = $("#themeToggle");
             const body = $("body");
             const nav = $("nav");
@@ -208,9 +255,10 @@
                     nav.removeClass("navbar-light").addClass("navbar-dark");
                     aside.removeClass("sidebar-light-primary").addClass("sidebar-dark-primary");
                     asideForTheme.css("background-color", "#343a40");
-                    comboboxElements.forEach(function(element) {
-                        element.style.backgroundColor="#343a40";
+                    select2Elements.forEach(function(element) {
+                        element.querySelector('.select2-selection').style.backgroundColor="#343a40";
                     });
+
                     tableRows.forEach(row => {
                         row.classList.add("table-dark");
                     });
@@ -220,9 +268,11 @@
                     nav.removeClass("navbar-dark").addClass("navbar-light");
                     aside.removeClass("sidebar-dark-primary").addClass("sidebar-light-primary");
                     asideForTheme.css("background-color", "");
-                    comboboxElements.forEach(function(element) {
-                        element.style.backgroundColor="";
-                    });                    tableRows.forEach(row => {
+                    select2Elements.forEach(function(element) {
+                        element.querySelector('.select2-selection').style.backgroundColor="";
+                    });
+
+                    tableRows.forEach(row => {
                         row.classList.remove("table-dark");
                     });
                     $(".text-for-breadcrumb").css("color", "#212529BF");

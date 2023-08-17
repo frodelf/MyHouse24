@@ -21,14 +21,18 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Печатная форма документа
+                <span th:text="#{Печатная_форма_документа}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item"><a th:href="@{/admin/invoice/{id}(id = ${invoice.id})}"
-                                               class="text-for-breadcrumb">Квитанция [[${invoice.number}]]</a></li>
+                                               class="text-for-breadcrumb">
+                    <span th:text="#{Квитанция}"></span>
+                     [[${invoice.number}]]</a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Печатная форма документа
+                    <span th:text="#{Печатная_форма_документа}"></span>
                 </li>
             </ol>
         </div>
@@ -37,9 +41,12 @@
                 <div class="card-header">
                     <div class="text-for-breadcrumb">
                         <h5>
-                            Список шаблонов
+                            <span th:text="#{Список_шаблонов}"></span>
+
                             <a href="/admin/invoice/template"
-                               class="btn btn-outline-secondary float-right">Настройка шаблонов</a>
+                               class="btn btn-outline-secondary float-right">
+                                <span th:text="#{Настройка_шаблонов}"></span>
+                                </a>
                         </h5>
                     </div>
                 </div>
@@ -55,9 +62,11 @@
                 </div>
                 <div class="card-footer">
                     <a href="#" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
-                        Отправить на e-mail
+                        <span th:text="#{Отправить_на_e-mail}"></span>
                     </a>
-                    <button onclick="downloadTemplate()" class="btn btn-success float-right" style="margin-right: 10px">Скачать</button>
+                    <button onclick="downloadTemplate()" class="btn btn-success float-right" style="margin-right: 10px">
+                        <span th:text="#{Скачать}"></span>
+                        </button>
                 </div>
             </div>
         </section>

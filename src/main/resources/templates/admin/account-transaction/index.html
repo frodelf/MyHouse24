@@ -16,13 +16,21 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Новая приходная ведомость</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Новая_приходная_ведомость}"></span>
+            </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">Платежи</a>
+                <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Платежи}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Приходная ведомость №
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Приходная_ведомость}"></span>
+                    №
                     [[${accountTransaction.getNumber()}]]
                 </li>
             </ol>
@@ -48,18 +56,26 @@
                     <div class="container">
                         <div class="row">
                             <div class="col" style="font-weight: bold; font-size: 22px; color: #484646">
-                                Приходная ведомость
+                                <span th:text="#{Приходная_ведомость}"></span>
                             </div>
                             <div class="col">
                                 <div class="float-right">
                                     <a class="btn btn-outline-secondary"
-                                       th:href="${accountTransaction.getIsIncome() ? '/admin/account-transaction/copy/in/' + accountTransaction.getId() : '/admin/account-transaction/copy/out/' + accountTransaction.getId()}">Копировать</a>
+                                       th:href="${accountTransaction.getIsIncome() ? '/admin/account-transaction/copy/in/' + accountTransaction.getId() : '/admin/account-transaction/copy/out/' + accountTransaction.getId()}">
+                                        <span th:text="#{Копировать}"></span>
+                                        </a>
                                     <a class="btn btn-outline-secondary"
-                                       th:href="@{/admin/account-transaction/delete/{id}(id=${accountTransaction.getId()})}">Удалить</a>
+                                       th:href="@{/admin/account-transaction/delete/{id}(id=${accountTransaction.getId()})}">
+                                        <span th:text="#{Удалить}"></span>
+                                        </a>
                                     <a class="btn btn-primary"
                                        th:href="${accountTransaction.getIsIncome() ? '/admin/account-transaction/update/in/' + accountTransaction.getId() : '/admin/account-transaction/update/out/' + accountTransaction.getId()}"
-                                       title="Редактировать" data-toggle="tooltip">Редактировать</a>
-                                    <a class="btn btn-outline-secondary " href="">Вигрузить в Exel</a>
+                                       title="Редактировать" data-toggle="tooltip">
+                                        <span th:text="#{Редактировать}"></span>
+                                        </a>
+                                    <a class="btn btn-outline-secondary " href="">
+                                        <span th:text="#{Вигрузить_в_Exel}"></span>
+                                        </a>
                                 </div>
                             </div>
                         </div>

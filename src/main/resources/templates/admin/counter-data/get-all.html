@@ -21,12 +21,16 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Счетчики
+                <span th:text="#{Счетчики}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Счетчики
+                    <span th:text="#{Счетчики}"></span>
+
                 </li>
             </ol>
         </div>
@@ -38,7 +42,8 @@
                     <div class="btn-group margin-bottom float-right">
                         <a href="/admin/counter-data/add" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px">
-                            Добавить показание
+                            <span th:text="#{Добавить_показание}"></span>
+
                         </a>
                     </div>
                 </div>
@@ -46,7 +51,9 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/counter-data/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                        </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -54,12 +61,25 @@
                         <thead>
                             <tr>
                                 <b>
-                                    <th style="min-width: 300px">Дом</th>
-                                    <th style="min-width: 200px">Секция</th>
-                                    <th style="min-width: 150px">№ квартиры</th>
-                                    <th style="min-width: 200px">Счетчик</th>
-                                    <th style="min-width: 150px">Текущие показания</th>
-                                    <th style="min-width: 150px">Ед. изм.</th>
+                                    <th style="min-width: 300px">
+                                        <span th:text="#{Дом}"></span>
+                                        </th>
+                                    <th style="min-width: 200px">
+                                        <span th:text="#{Секция}"></span>
+                                        </th>
+                                    <th style="min-width: 150px">
+                                        №
+                                        <span th:text="#{Квартиры}"></span>
+                                        </th>
+                                    <th style="min-width: 200px">
+                                        <span th:text="#{Счетчик}"></span>
+                                        </th>
+                                    <th style="min-width: 150px">
+                                        <span th:text="#{Текущие_показания}"></span>
+                                        </th>
+                                    <th style="min-width: 150px">
+                                        <span th:text="#{Ед.изм.}"></span>
+                                        </th>
                                     <th style="min-width: 100px"></th>
                                 </b>
                             </tr>
@@ -74,7 +94,9 @@
                                     <div th:if="${sections == null}">
                                         <select class="form-select"  th:field="*{section}" onchange="submitForm()"
                                                 aria-label="Default select example" style="width: 90%">
-                                            <option value="">Виберите дом</option>
+                                            <option value="">
+                                                <span th:text="#{Виберите_дом}"></span>
+                                                </option>
                                         </select>
                                     </div>
                                     <div th:if="${sections != null}">

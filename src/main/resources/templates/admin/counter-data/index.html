@@ -21,13 +21,18 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Показание счетчикa
+                <span th:text="#{Показания_счетчиков}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/counter-date/index/1" class="text-for-breadcrumb">Счетчики</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a href="/admin/counter-date/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Счетчики}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Показание счетчикa №[[${counter.number}]]
+                    <span th:text="#{Показания_счетчика}"></span>
+                     №[[${counter.number}]]
                 </li>
             </ol>
         </div>
@@ -42,19 +47,23 @@
             <div class="card">
                 <div class="card-header">
                     <a th:href="@{/admin/counter/edit/{id}(id=${counter.id})}"
-                       class="btn btn-primary float-right">Редактировать</a>
+                       class="btn btn-primary float-right">
+                        <span th:text="#{Редактировать}"></span>
+                        </a>
                 </div>
                 <div class="card-body">
                     <table class="table" style="width: 40%">
                         <tr>
                             <td style="font-weight: bold">
-                                Счетчик
+                                <span th:text="#{Счетчик}"></span>
+
                             </td>
                             <td th:text="${counter.additionalService.name}"></td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Дом
+                                <span th:text="#{Дом}"></span>
+
                             </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${counter.flat.house.id})}">[[${counter.flat.house.name}]]</a><br/>
@@ -62,14 +71,16 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Секция
+                                <span th:text="#{Секция}"></span>
+
                             </td>
                             <td th:text="${counter.flat.section.name}">
                             </td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Квартира
+                                <span th:text="#{Квартира}"></span>
+
                             </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${counter.flat.id})}">[[${counter.flat.number}]]</a><br/>
@@ -77,7 +88,8 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Пользователь
+                                <span th:text="#{Пользователь}"></span>
+
                             </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${counter.flat.user.id})}">[[${counter.flat.user.firstName}]]</a><br/>
@@ -85,7 +97,8 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Текущие показания
+                                <span th:text="#{Текущие_показания}"></span>
+
                             </td>
                             <td th:text="${counter.data}">
 
@@ -93,14 +106,16 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Ед. изм.
+                                <span th:text="#{Ед.изм.}"></span>
+
                             </td>
                             <td th:text="${counter.additionalService.getUnitOfMeasurement().name}">
                             </td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold">
-                                Статус
+                                <span th:text="#{Статус}"></span>
+
                             </td>
                             <td th:text="${counter.status}">
                             </td>

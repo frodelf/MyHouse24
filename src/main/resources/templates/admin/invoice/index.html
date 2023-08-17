@@ -21,14 +21,20 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Квитанция
+                <span th:text="#{Квитанция}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/invoice/index/1" class="text-for-breadcrumb">Квитанции</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a href="/admin/invoice/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Квитанции}"></span>
+                    </a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Квитанция №[[${invoiceDto.number}]]
+                    <span th:text="#{Квитанция}"></span>
+                     №[[${invoiceDto.number}]]
                 </li>
             </ol>
         </div>
@@ -42,16 +48,18 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    Просмотр Квитанции
+                    <span th:text="#{Просмотр_Квитанции}"></span>
                     <div class="float-right">
                         <a class="btn btn-outline-secondary" th:href="@{/admin/invoice/print/{id}(id=${invoiceDto.id})}">
-                            Печать
+                            <span th:text="#{Печать}"></span>
+
                         </a>
                         <a class="btn btn-outline-secondary" th:href="@{/admin/invoice/print/{id}(id=${invoiceDto.id})}">
-                            Отправить на e-mail
+                            <span th:text="#{Отправить_на_e-mail}"></span>
+
                         </a>
                         <a class="btn btn-primary" th:href="@{/admin/invoice/edit/{id}(id=${invoiceDto.getId()})}">
-                            Редактировать счет
+                            <span th:text="#{Редактировать_счет}"></span>
                         </a>
                     </div>
                 </div>
@@ -60,64 +68,94 @@
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                         <tr>
-                            <td style="font-weight: bold; width: 25%">Проведена</td>
+                            <td style="font-weight: bold; width: 25%">
+                                <span th:text="#{Проведена}"></span>
+                                </td>
                             <td>
                                 <span th:switch="${invoiceDto.addToStats}">
-                                    <span th:case="true" class="status status-new">Проведена</span>
-                                    <span th:case="false" class="status status-disabled">Не проведена</span>
+                                    <span th:case="true" class="status status-new">
+                                                        <span th:text="#{Проведена}"></span>
+</span>
+                                    <span th:case="false" class="status status-disabled">
+                                                        <span th:text="#{Не_проведена}"></span>
+</span>
                                 </span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Статус</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Статус}"></span>
+                                </td>
                             <td>
                                 <span th:switch="${invoiceDto.status}">
-                                    <span th:case="'Оплачено'" class="status status-new">Оплачено</span>
-                                    <span th:case="'Частично оплачено'" class="status status-active">Частично оплачено</span>
-                                    <span th:case="'Не оплачено'" class="status status-disabled">Не оплачено</span>
+                                    <span th:case="'Оплачено'" class="status status-new">
+                                                        <span th:text="#{Оплачено}"></span>
+</span>
+                                    <span th:case="'Частично оплачено'" class="status status-active">
+                                                        <span th:text="#{Частично_оплачено}"></span>
+</span>
+                                    <span th:case="'Не оплачено'" class="status status-disabled">
+                                                        <span th:text="#{Не_оплачено}"></span>
+</span>
                                 </span>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Период</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Период}"></span>
+                                </td>
                             <td>
                                 [[${invoiceDto.fromDate}]] - [[${invoiceDto.toDate}]]
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Владелец</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Владелец}"></span>
+                                </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${invoiceDto.flat.user.id})}">[[${invoiceDto.user.firstName}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Лицевой счет</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Лицевой_счет}"></span>
+                                </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account/{id}(id = ${invoiceDto.flat.score.id})}">[[${invoiceDto.score.number}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Телефон</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Телефон}"></span>
+                                </td>
                             <td th:text="${invoiceDto.user.phone}"></td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Дом</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Дом}"></span>
+                                </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${invoiceDto.flat.house.id})}">[[${invoiceDto.flat.house.name}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Квартира</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Квартира}"></span>
+                                </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${invoiceDto.flat.id})}">[[${invoiceDto.flat.number}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Секция</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Секция}"></span>
+                                </td>
                             <td th:text="${invoiceDto.flat.section.name}"></td>
                         </tr>
                         <tr>
-                            <td style="font-weight: bold">Тариф</td>
+                            <td style="font-weight: bold">
+                                <span th:text="#{Тариф}"></span>
+                                </td>
                             <td>
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/tariff/{id}(id = ${invoiceDto.tariff.id})}">[[${invoiceDto.tariff.name}]]</a><br/>
                             </td>
@@ -128,11 +166,21 @@
                         <thead>
                             <tr style="font-weight: bold">
                                 <td style="width: 3%">#</td>
-                                <td style="width: 20%">Услуга</td>
-                                <td style="width: 30%">Количество потребления (расход)</td>
-                                <td style="width: 10%">Ед. изм.</td>
-                                <td style="width: 20%">Цена за ед., грн</td>
-                                <td style="width: 20%">Стоимость, грн</td>
+                                <td style="width: 20%">
+                                    <span th:text="#{Услуга}"></span>
+                                    </td>
+                                <td style="width: 30%">
+                                    <span th:text="#{Количество_потребления_расход}"></span>
+                                    </td>
+                                <td style="width: 10%">
+                                    <span th:text="#{Ед.изм.}"></span>
+                                    </td>
+                                <td style="width: 20%">
+                                    <span th:text="#{Цена_за_ед}"></span>
+                                    </td>
+                                <td style="width: 20%">
+                                    <span th:text="#{Стоимость_грн}"></span>
+                                    </td>
                             </tr>
                         </thead>
                         <tbody>

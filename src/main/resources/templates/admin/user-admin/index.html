@@ -17,13 +17,21 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Пользоваетель</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Пользователь}"></span>
+                </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Пользователи</a>
+                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Пользователи}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Пользователь</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Пользователь}"></span>
+                    </li>
             </ol>
         </div>
         <section class="content">
@@ -31,7 +39,7 @@
                 <div class="card-header">
                     <div class="float-right">
                         <a class="btn btn-primary" th:href="@{/admin/user-admin/edit/{id}(id=${admin.getId()})}">
-                            Редактировать пользователя
+                            <span th:text="#{Редактировать_пользователя}"></span>
                         </a>
                     </div>
                 </div>
@@ -41,7 +49,8 @@
                         <tbody>
                         <tr>
                             <td>
-                                Статус
+                                <span th:text="#{Статус}"></span>
+
                             </td>
                             <td>
                                 <span th:switch="${admin.getStatus().name()}">
@@ -53,13 +62,15 @@
                         </tr>
                         <tr>
                             <td style="width: 50%">
-                                Пользователь
+                                <span th:text="#{Пользователь}"></span>
+
                             </td>
                             <td th:text="${admin.getFullName()}" style="width: 50%"></td>
                         </tr>
                         <tr>
                             <td>
-                                Роль
+                                <span th:text="#{Роль}"></span>
+
                             </td>
                             <td th:text="${admin.getPhone()}">
 
@@ -67,7 +78,8 @@
                         </tr>
                         <tr>
                             <td>
-                                Телефон
+                                <span th:text="#{Телефон}"></span>
+
                             </td>
                             <td th:text="${admin.getPhone()}">
 

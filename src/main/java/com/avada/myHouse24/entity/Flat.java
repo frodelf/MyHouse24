@@ -22,7 +22,7 @@ public class Flat {
     private Long id;
     private int number;
     private double area;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "house_id")
     @JsonIgnore
     private House house;

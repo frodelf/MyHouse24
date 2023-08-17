@@ -21,14 +21,20 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Новое показание
+                <span th:text="#{Новое_показание}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item"><a href="/admin/counter-data/index/1"
-                                               class="text-for-breadcrumb">Счетчики</a></li>
+                                               class="text-for-breadcrumb">
+                    <span th:text="#{Счетчики}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Новое показание
+                    <span th:text="#{Новое_показание}"></span>
+
                 </li>
             </ol>
         </div>
@@ -52,26 +58,29 @@
                         <div class="row" style="font-weight: bold">
                             <div class="col">
                                 <div th:if="${counterDataDTO.flat == null}">
-                                    Дом
+                                    <span th:text="#{Дом}"></span>
+
                                     <select id="mySelect2ForHouses" style="width: 100%;">
 
                                     </select>
                                     <br/>
                                     <br/>
-                                    Секция
+                                    <span th:text="#{Секция}"></span>
+
                                     <select class="form-select" name="section">
                                         <option value="">Вибрати...</option>
 
                                     </select>
                                     <br/>
-                                    Квартира
+                                    <span th:text="#{Квартира}"></span>
                                     <select class="form-select" th:field="*{flat}">
                                         <option value="">Вибрати...</option>
                                     </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
                                     <br/>
-                                    Счетчик
+                                    <span th:text="#{Счетчик}"></span>
+
                                     <select id="mySelect2ForAdditionalServices" style="width: 100%;"
                                             th:field="*{additionalService}" onchange="submitForm()">
                                     </select>
@@ -80,25 +89,29 @@
                                          th:errors="*{additionalService}"></div>
                                 </div>
                                 <div th:if="${counterDataDTO.flat != null}">
-                                    Дом
+                                    <span th:text="#{Дом}"></span>
+
                                     <select id="mySelect2ForHouses" style="width: 100%;">
                                         <option th:value="${counterDataDTO.flat.house.id}" th:text="${counterDataDTO.flat.house.name}"></option>
                                     </select>
                                     <br/>
                                     <br/>
-                                    Секция
+                                    <span th:text="#{Секция}"></span>
+
                                     <select class="form-select" name="section">
                                         <option th:each="section : ${counterDataDTO.flat.house.getSections()}" th:value="${section.id}" th:text="${section.name}" th:selected="${section.id == counterDataDTO.flat.section.id}"></option>
                                     </select>
                                     <br/>
-                                    Квартира
+                                    <span th:text="#{Квартира}"></span>
+
                                     <select class="form-select" th:field="*{flat}">
                                         <option th:each="flat : ${counterDataDTO.flat.house.getFlats()}" th:value="${flat.id}" th:text="${flat.number}" th:selected="${flat.id == counterDataDTO.flat.id}"></option>
                                     </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
                                     <br/>
-                                    Счетчик
+                                    <span th:text="#{Счетчик}"></span>
+
                                     <select id="mySelect2ForAdditionalServices" style="width: 100%;"
                                             th:field="*{additionalService}" onchange="submitForm()">
                                         <option th:value="${counterDataDTO.additionalService.id}" th:text="${counterDataDTO.additionalService.name}"></option>
@@ -109,7 +122,8 @@
                                 </div>
                                 </div>
                             <div class="col">
-                                Статус
+                                <span th:text="#{Статус}"></span>
+
                                 <select class="form-select" th:field="*{status}">
                                     <option value="">Вибрати...</option>
                                     <option th:each="status : ${statuses}" th:value="${status}"
@@ -118,7 +132,8 @@
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                      th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
                                 <br/>
-                                Показание счетчиков
+                                <span th:text="#{Показание_счетчиков}"></span>
+
                                 <input th:field="*{data}" type="number" class="form-control">
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                      th:if="${#fields.hasErrors('data')}" th:errors="*{data}"></div>
@@ -127,15 +142,19 @@
                     </div>
                     <div class="card-footer">
                         <button type="submit" class="btn btn-success float-right" formaction="/admin/counter-data/copy">
-                            Сохранить и добавить новую
+                            <span th:text="#{Сохранить_и_добавить_новую}"></span>
+
                         </button>
                         <button type="submit" class="btn btn-success float-right"
                                 style="background-color: #089a08;margin-right: 10px"
-                                formaction="/admin/counter-data/add">Сохранить
+                                formaction="/admin/counter-data/add">
+                            <span th:text="#{Сохранить}"></span>
+
                         </button>
                         <a href="/admin/counter-data/index/1" class="btn btn-outline-secondary float-right"
                            style="margin-right: 10px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
+
                         </a>
                     </div>
                 </div>

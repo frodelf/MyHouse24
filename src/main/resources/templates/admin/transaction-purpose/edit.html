@@ -21,15 +21,19 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Новая статья
+                <span th:text="#{Новая_статья}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Статьи приходов/расходов
+                    <span th:text="#{Статьи_приходов_расходов}"></span>
+
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Новая статья
+                    <span th:text="#{Новая_статья}"></span>
                 </li>
             </ol>
         </div>
@@ -38,28 +42,32 @@
                 <div class="card">
                     <div class="card-body">
                         <b>
-                            Название
+                            <span th:text="#{Название}"></span>
                             <input name="name" type="text" class="form-control" th:value="${purpose.getName()}"
                                    style="min-width: 60%; max-width: 60%; ">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                             <br/>
-                            Приход/расход
+                            <span th:text="#{Приход_расход}"></span>
                             <select class="form-select" name="isIncome" style="min-width: 60%; max-width: 60%;"
                                     aria-label="Default select example">
                                 <option value="true" th:selected="${purpose.getIsIncome()}">
-                                    Приход
+                                    <span th:text="#{Приход}"></span>
+
                                 </option>
                                 <option value="false" th:selected="${!purpose.getIsIncome()}">
-                                    Расход
+                                    <span th:text="#{Расход}"></span>
                                 </option>
                             </select>
                         </b>
                     </div>
                     <div class="card-header">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
+                        <button type="submit" class="btn btn-success float-right">
+                            <span th:text="#{Сохранить}"></span>
+                            </button>
                         <a href="/admin/transaction-purpose/index" class="btn btn-outline-secondary float-right"
                            style="margin-right: 3px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
+
                         </a>
                     </div>
                 </div>

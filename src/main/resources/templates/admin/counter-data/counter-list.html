@@ -37,14 +37,20 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Показания счетчиков, [[${counters.isEmpty() ? '' : counters.get(0).getFlat().getNumber()}]]
+                <span th:text="#{Показания_счетчиков}"></span>
+                , [[${counters.isEmpty() ? '' : counters.get(0).getFlat().getNumber()}]]
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item"><a href="/admin/counter-data/index/1"
-                                               class="text-for-breadcrumb">Счетчики</a></li>
+                                               class="text-for-breadcrumb">
+                    <span th:text="#{Счетчики}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Показания счетчиков, [[${counters.isEmpty() ? '' : counters.get(0).getFlat().getNumber()}]]
+                    <span th:text="#{Показания_счетчиков}"></span>
+                    , [[${counters.isEmpty() ? '' : counters.get(0).getFlat().getNumber()}]]
                 </li>
             </ol>
         </div>
@@ -63,15 +69,33 @@
                                 <thead>
                                 <tr>
                                     <th style="min-width: 80px">№</th>
-                                    <th style="min-width: 100px">Статус</th>
-                                    <th style="min-width: 100px">Дата</th>
-                                    <th style="min-width: 100px">Месяц</th>
-                                    <th style="min-width: 180px">Дом</th>
-                                    <th style="min-width: 100px">Секция</th>
-                                    <th style="min-width: 110px">№ квартири</th>
-                                    <th style="min-width: 150px">Счетчик</th>
-                                    <th style="min-width: 100px">Показания</th>
-                                    <th style="min-width: 80px">Ед. изм.</th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Статус}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Дата}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Месяц}"></span>
+                                        </th>
+                                    <th style="min-width: 180px">
+                                        <span th:text="#{Дом}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Секция}"></span>
+                                        </th>
+                                    <th style="min-width: 110px">
+                                        №<span th:text="#{Квартиры}"></span>
+                                         </th>
+                                    <th style="min-width: 150px">
+                                        <span th:text="#{Счетчик}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Показания}"></span>
+                                        </th>
+                                    <th style="min-width: 80px">
+                                        <span th:text="#{Ед.изм.}"></span>
+                                        </th>
                                     <th style="min-width: 120px"></th>
                                 </tr>
                                 <tr>

@@ -17,13 +17,21 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Профиль владельца</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Профиль_владельца}"></span>
+                </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Тарифы</a>
+                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Тарифы}"></span>
+                    Тарифы</a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Тариф №[[${tariffDTO.id}]]</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Тариф}"></span>
+                    Тариф №[[${tariffDTO.id}]]</li>
             </ol>
         </div>
         <section class="content">
@@ -31,7 +39,7 @@
                 <div class="card-header">
                     <div class="float-right">
                         <a class="btn btn-primary" th:href="@{/admin/tariff/edit/{id}(id=${tariffDTO.getId()})}">
-                            Редактировать тариф
+                            <span th:text="#{Редактирование_тарифа}"></span>
                         </a>
                     </div>
                 </div>
@@ -41,7 +49,7 @@
                         <tbody>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Название тарифа
+                                <span th:text="#{Название_тарифа}"></span>
                             </td>
                             <td style="width: 70%">
                                 [[${tariffDTO.name}]]
@@ -49,7 +57,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px">
-                                Описание тарифа
+                                <span th:text="#{Описание_тарифа}"></span>
                             </td>
                             <td>
                                 [[${tariffDTO.description}]]
@@ -57,7 +65,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px">
-                                Дата редактирования
+                                <span th:text="#{Дата_редактирования}"></span>
                             </td>
                             <td>
                                 [[${dateEdit}]]
@@ -74,16 +82,18 @@
                                     №
                                 </th>
                                 <th style="width: 35%">
-                                    Услуга
+                                    <span th:text="#{Услуга}"></span>
+
                                 </th>
                                 <th style="width: 15%">
-                                    Уд. изм.
+                                    <span th:text="#{Ед.изм.}"></span>
                                 </th>
                                 <th style="width: 25%">
-                                    Цена за ед., грн
+                                    <span th:text="#{Цена_за_ед}"></span>
                                 </th>
                                 <th style="width: 15%">
-                                    Валюта
+                                    <span th:text="#{Валюта}"></span>
+
                                 </th>
                             </b>
                         </tr>

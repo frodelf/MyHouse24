@@ -21,11 +21,14 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Тарифы
+                <span th:text="#{Тарифы}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Тарифы}"></span>
                     Тарифы
                 </li>
             </ol>
@@ -36,7 +39,7 @@
                     <div class="card-header">
                         <a href="/admin/tariff/add" type="button" class="float-right btn btn-success"
                            style="width: 220px;">
-                            Добавить тариф
+                            <span th:text="#{Добавить_тариф}"></span>
                         </a>
                     </div>
                     <div class="card-body">
@@ -45,13 +48,15 @@
                                 <tr>
                                     <b>
                                         <th style="min-width: 20%">
-                                            Названия тарифа
+                                            <span th:text="#{Названия_тарифа}"></span>
+
                                         </th>
                                         <th style="min-width: 40%">
-                                            Описание тарифа
+                                            <span th:text="#{Описание_тарифа}"></span>
+
                                         </th>
                                         <th style="min-width: 20%">
-                                            Редактирование тарифа
+                                            <span th:text="#{Редактирование_тарифа}"></span>
                                         </th>
                                         <th style="min-width: 20%">
                                         </th>

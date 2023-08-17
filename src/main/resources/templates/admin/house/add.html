@@ -17,13 +17,21 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Новый дом</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Новый_дом}"></span>
+                </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/house/index/1" class="text-for-breadcrumb">Дома</a>
+                <li class="breadcrumb-item"><a href="/admin/house/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Дома}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Новый дом</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Новый_дом}"></span>
+                </li>
             </ol>
         </div>
         <section class="content">
@@ -33,36 +41,43 @@
                         <div class="row">
                             <div class="col-4">
                                 <b>
-                                    Название
+                                    <span th:text="#{Название}"></span>
+
                                     <input th:field="*{name}" type="text" class="form-control">
                                     <input th:field="*{id}" type="text" class="form-control" hidden>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                                     <br/>
-                                    Адрес
+                                    <span th:text="#{Адрес}"></span>
+
                                     <input th:field="*{address}" type="text" class="form-control">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                                     <br/>
-                                    Изображение #1. Размер: (522x350)
+                                    <span th:text="#{Изображение}"></span>
+                                     #1. Размер: (522x350)
                                     <input th:field="*{image}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage1')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
                                     <br/>
-                                    Изображение #2. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #2. Размер: (248x160)
                                     <input th:field="*{image1}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage2')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image1')}" th:errors="*{image1}"></div>
                                     <br/>
-                                    Изображение #3. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #3. Размер: (248x160)
                                     <input th:field="*{image2}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage3')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image2')}" th:errors="*{image2}"></div>
                                     <br/>
-                                    Изображение #4. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #4. Размер: (248x160)
                                     <input th:field="*{image3}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage4')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image3')}" th:errors="*{image3}"></div>
                                     <br/>
-                                    Изображение #5. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #5. Размер: (248x160)
                                     <input th:field="*{image4}" type="file" class="form-control" value="null"
                                            onchange="previewImage(event, 'previewImage5')">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image4')}" th:errors="*{image4}"></div>
@@ -104,15 +119,21 @@
                             <ul class="nav nav-tabs">
                                 <li class="active" id="service_tab" style="padding: 15px;">
                                     <a href="#tab_sections" data-toggle="tab" aria-expanded="true"
-                                       class="active text-for-breadcrumb">Секції</a>
+                                       class="active text-for-breadcrumb">
+                                        <span th:text="#{Секции}"></span>
+                                        </a>
                                 </li>
                                 <li id="service_unit_tab" style="padding: 15px;">
                                     <a href="#tab_floors" data-toggle="tab" aria-expanded="false"
-                                       class="text-for-breadcrumb">Етажи</a>
+                                       class="text-for-breadcrumb">
+                                        <span th:text="#{Этаж}"></span>
+                                        </a>
                                 </li>
                                 <li id="user_tab" style="padding: 15px;">
                                     <a href="#tab_users" data-toggle="tab" aria-expanded="false"
-                                       class="text-for-breadcrumb">Пользователи</a>
+                                       class="text-for-breadcrumb">
+                                        <span th:text="#{Пользователи}"></span>
+                                        </a>
                                 </li>
                             </ul>
                             <form id="serviceForm" method="post" action="/admin/service/add">
@@ -121,7 +142,8 @@
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForSection()">
-                                            Добавить
+                                            <span th:text="#{Добавить}"></span>
+
                                         </button>
                                     </div>
                                     <div class="tab-pane clearfix" id="tab_floors">
@@ -129,14 +151,16 @@
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForFloor()">
-                                            Добавить
+                                            <span th:text="#{Добавить}"></span>
+
                                         </button>
                                     </div>
                                     <div class="tab-pane clearfix" id="tab_users">
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForUsers()">
-                                            Добавить
+                                            <span th:text="#{Добавить}"></span>
+
                                         </button>
                                     </div>
                                 </div>
@@ -144,10 +168,12 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
+                        <button type="submit" class="btn btn-success float-right">
+                            <span th:text="#{Сохранить}"></span>
+                            </button>
                         <a href="/admin/house/index/1" class="btn btn-outline-secondary float-right"
                            style="margin-right: 3px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
                         </a>
                     </div>
                 </div>

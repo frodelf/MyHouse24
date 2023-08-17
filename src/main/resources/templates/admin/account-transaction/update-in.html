@@ -20,13 +20,21 @@
         <div th:replace="blocks/menu :: menu"></div>
         <div class="content-wrapper">
             <div class="content-header" style="display: flex; align-items: center;">
-                <h4 style="margin-left: 10px; margin-right: auto;">Новая приходная ведомость</h4>
+                <h4 style="margin-left: 10px; margin-right: auto;">
+                    <span th:text="#{Новая_приходная_ведомость}"></span>
+                </h4>
                 <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                    <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                    <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                        <span th:text="#{Главная}"></span>
+                        </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">Платежи</a>
+                    <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">
+                        <span th:text="#{Платежи}"></span>
+                        </a>
                     </li>
-                    <li class="breadcrumb-item active" aria-current="page">Новая приходная ведомость</li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <span th:text="#{Новая_приходная_ведомость}"></span>
+                    </li>
                 </ol>
             </div>
             <section class="content">
@@ -56,14 +64,15 @@
                                                id="flexCheckDefault"
                                                checked th:value="${accountTransaction.isIncome()}">
                                         <label class="form-check-label" for="flexCheckDefault">
-                                            Проведен
+                                            <span th:text="#{Проведен}"></span>
                                         </label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="font-weight: bold;">
                                 <div class="col">
-                                    <p style="margin-top: 20px;">Владелец квартиры
+                                    <p style="margin-top: 20px;">
+                                        <span th:text="#{Владелец_квартиры}"></span>
                                         <select class="mySelect form-select" name="userName"
                                                 aria-label="Default select example">
                                             <option th:value="${accountTransaction.getUserName()}"
@@ -74,7 +83,9 @@
                                         </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></div>
-                                    <p style="margin-top: 20px;">Лицевой счет</p>
+                                    <p style="margin-top: 20px;">
+                                        <span th:text="#{Лицевой_счет}"></span>
+                                    </p>
                                     <select class="mySelect form-select" name="scoreId"
                                             aria-label="Default select example">
                                         <option th:value="${accountTransaction.getScoreId()}"
@@ -85,7 +96,9 @@
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('scoreId')}" th:errors="*{scoreId}"></div>
 
-                                    <p style="margin-top: 20px;">Статья</p>
+                                    <p style="margin-top: 20px;">
+                                        <span th:text="#{Статья}"></span>
+                                        </p>
                                     <select class="mySelect form-select" name="transactionPurposeName"
                                             aria-label="Default select example">
                                         <option th:value="${accountTransaction.getTransactionPurposeName()}"
@@ -99,7 +112,8 @@
                                          th:if="${#fields.hasErrors('transactionPurposeName')}"
                                          th:errors="*{transactionPurposeName}"></div>
 
-                                    <p style="margin-top: 20px;">Сумма
+                                    <p style="margin-top: 20px;">
+                                        <span th:text="#{Сумма}"></span>
                                         <input class="form-control" type="text" name="sum"
                                                th:value="${accountTransaction.sum}" aria-label="default input example">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
@@ -107,7 +121,9 @@
 
                                 </div>
                                 <div class="col">
-                                    <p style="margin-top: 20px;">Менеджер
+                                    <p style="margin-top: 20px;">
+                                        <span th:text="#{Менеджер}"></span>
+
                                         <select class="mySelect form-select" name="adminName"
                                                 aria-label="Default select example">
                                             <option th:value="${accountTransaction.getAdminName()}"
@@ -122,13 +138,18 @@
                             <div style="display: flex; justify-content: flex-end;">
                                 <a href="/admin/account-transaction/index/1" class="btn btn-outline-secondary"
                                    style="margin-right: 3px">
-                                    Отменить
+                                    <span th:text="#{Отменить}"></span>
+
                                 </a>
-                                <button type="submit" class="btn btn-success">Сохранить</button>
+                                <button type="submit" class="btn btn-success">
+                                    <span th:text="#{Сохранить}"></span>
+                                    </button>
                             </div>
 
                             <label for="exampleFormControlTextarea1" class="form-label"
-                                   style="margin-top: 10px">Комментарий</label>
+                                   style="margin-top: 10px">
+                                <span th:text="#{Комментарий}"></span>
+                                </label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" name="comment"
                                       rows="3">[[${accountTransaction.comment}]]</textarea>
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"

@@ -35,12 +35,16 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Пользователи
+                <span th:text="#{Пользователи}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Пользователи
+                    <span th:text="#{Пользователи}"></span>
+
                 </li>
             </ol>
         </div>
@@ -53,7 +57,7 @@
                         <a href="/admin/user-admin/create" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px"
                            aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
-                            Создать пользователя
+                            <span th:text="#{Создать_пользователя}"></span>
                         </a>
                     </div>
                 </div>
@@ -61,7 +65,9 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/user-admin/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                        </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -71,11 +77,19 @@
                                 <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>Пользователи</th>
-                                    <th>Роль</th>
-                                    <th>Телефон</th>
+                                    <th>
+                                        <span th:text="#{Пользователи}"></span>
+                                        </th>
+                                    <th>
+                                        <span th:text="#{Роль}"></span>
+                                        </th>
+                                    <th>
+                                        <span th:text="#{Телефон}"></span>
+                                        </th>
                                     <th>Email (логін)</th>
-                                    <th>Статус</th>
+                                    <th>
+                                        <span th:text="#{Статус}"></span>
+                                        </th>
                                     <th></th>
                                 </tr>
                                 <tr>

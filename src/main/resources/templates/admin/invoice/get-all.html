@@ -41,12 +41,14 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Квитанции на оплату
+                <span th:text="#{Квитанции_на_оплату}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Квитанции на оплату
+                    <span th:text="#{Квитанции_на_оплату}"></span>
                 </li>
             </ol>
         </div>
@@ -61,7 +63,9 @@
                                 <div class="small-box bg-green overflow-hidden">
                                     <div class="inner">
                                         <h3 id="cashboxBalance">0.00 грн</h3>
-                                        <p>Состояние кассы</p>
+                                        <p>
+                                            <span th:text="#{Состояние_кассы}"></span>
+                                            </p>
                                     </div>
                                     <div class="icon">
                                         <i class="fa fa-dollar-sign"></i>
@@ -72,7 +76,9 @@
                                 <div class="small-box bg-blue overflow-hidden">
                                     <div class="inner">
                                         <h3 id="accountBalance">0.00 грн</h3>
-                                        <p>Баланс по счетам</p>
+                                        <p>
+                                            <span th:text="#{Баланс_по_счетам}"></span>
+                                            </p>
                                     </div>
                                     <div class="icon">
                                         <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -83,7 +89,9 @@
                                 <div class="small-box bg-red overflow-hidden">
                                     <div class="inner">
                                         <h3 id="accountDebts">0.00 грн</h3>
-                                        <p>Задолженность по счетам</p>
+                                        <p>
+                                            <span th:text="#{Задолженность_по_счетам}"></span>
+                                            </p>
                                     </div>
                                     <div class="icon">
                                         <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -98,15 +106,18 @@
                             <button type="button" class="btn btn-success dropdown-toggle" style="width: 230px;"
                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
                                     fdprocessedid="729zhf">
-                                Выберите действие
+                                <span th:text="#{Выберите_действие}"></span>
                             </button>
                             <ul class="dropdown-menu" style="width: 250px;">
                                 <li><a class="text-secondary" href="/admin/invoice/add"
-                                       style="padding-inline: 15px; display: block; text-decoration: none;">Создать
-                                    общую квитанцию</a></li>
+                                       style="padding-inline: 15px; display: block; text-decoration: none;">
+                                    <span th:text="#{Создать_общую_квитанцию}"></span>
+                                    </a></li>
                                 <li>
                                     <a id="deleteLink" class="text-secondary" href="#"
-                                       style="padding-inline: 15px; display: block; text-decoration: none;">Удалить</a>
+                                       style="padding-inline: 15px; display: block; text-decoration: none;">
+                                        <span th:text="#{Удалить}"></span>
+                                        </a>
                                 </li>
                             </ul>
                         </div>
@@ -115,7 +126,9 @@
                 <div class="card">
                     <div class="card-header">
                         <a href="/admin/invoice/index/1"
-                           class="btn btn-outline-secondary float-right">Очистить</a>
+                           class="btn btn-outline-secondary float-right">
+                            <span th:text="#{Очистить}"></span>
+                            </a>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -123,14 +136,30 @@
                                 <thead>
                                 <tr style="font-weight: bold">
                                     <th style="min-width: 80px"></th>
-                                    <th style="min-width: 120px">№ квитанции</th>
-                                    <th style="min-width: 130px">Статус</th>
-                                    <th style="min-width: 100px">Дата</th>
-                                    <th style="min-width: 100px">Месяц</th>
-                                    <th style="min-width: 200px">Квартира</th>
-                                    <th style="min-width: 180px">Владелец</th>
-                                    <th style="min-width: 160px">Проведена</th>
-                                    <th style="min-width: 100px">Сума(грн)</th>
+                                    <th style="min-width: 120px">№
+                                        <span th:text="#{квитанции}"></span>
+                                        </th>
+                                    <th style="min-width: 130px">
+                                        <span th:text="#{Статус}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Дата}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Месяц}"></span>
+                                        </th>
+                                    <th style="min-width: 200px">
+                                        <span th:text="#{Квартира}"></span>
+                                        </th>
+                                    <th style="min-width: 180px">
+                                        <span th:text="#{Владелец}"></span>
+                                        </th>
+                                    <th style="min-width: 160px">
+                                        <span th:text="#{Проведена}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Сумма_грн}"></span>
+                                        </th>
                                     <th style="min-width: 140px"></th>
                                 </tr>
                                 <tr>
@@ -142,9 +171,15 @@
                                         <select class="form-select" onchange="submitForm()" th:field="*{status}"
                                                 aria-label="Default select example" style="width: 90%">
                                             <option value=""></option>
-                                            <option value="Оплачена">Оплачена</option>
-                                            <option value="Частково оплачена">Частково оплачена</option>
-                                            <option value="Неоплачена">Неоплачена</option>
+                                            <option value="Оплачена">
+                                                <span th:text="#{Оплачена}"></span>
+                                                </option>
+                                            <option value="Частково оплачена">
+                                                <span th:text="#{Частково_оплачена}"></span>
+                                                </option>
+                                            <option value="Неоплачена">
+                                                <span th:text="#{Неоплачена}"></span>
+                                                </option>
                                         </select>
                                     </td>
                                     <td>

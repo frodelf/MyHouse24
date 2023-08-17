@@ -33,10 +33,16 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Касса</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Касса}"></span>
+            </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Касса</li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Касса}"></span>
+                </li>
             </ol>
         </div>
         <section class="content">
@@ -47,7 +53,9 @@
                             <div class="small-box bg-green overflow-hidden">
                                 <div class="inner">
                                     <h3 id="cashboxBalance">0.00 грн</h3>
-                                    <p>Состояние кассы</p>
+                                    <p>
+                                        <span th:text="#{Состояние_кассы}"></span>
+                                        </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign"></i>
@@ -58,7 +66,9 @@
                             <div class="small-box bg-blue overflow-hidden">
                                 <div class="inner">
                                     <h3 id="accountBalance">0.00 грн</h3>
-                                    <p>Баланс по счетам</p>
+                                    <p>
+                                        <span th:text="#{Баланс_по_счетам}"></span>
+                                    </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -69,7 +79,9 @@
                             <div class="small-box bg-red overflow-hidden">
                                 <div class="inner">
                                     <h3 id="accountDebts">0.00 грн</h3>
-                                    <p>Задолженность по счетам</p>
+                                    <p>
+                                        <span th:text="#{Задолженность_по_счетам}"></span>
+                                        </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -82,15 +94,17 @@
                     <div class="btn-group margin-bottom float-right ">
                         <button type="button" class="btn btn-success dropdown-toggle" style="width: 230px;"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
-                            Выберите действие
+                            <span th:text="#{Выберите_действие}"></span>
                         </button>
                         <ul class="dropdown-menu" style="width: 230px;">
                             <li><a class="text-secondary" href="/admin/account-transaction/create/in"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Создать
-                                приход</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Создать_приход}"></span>
+                                </a></li>
                             <li><a class="text-secondary" href="/admin/account-transaction/create/out"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Создать
-                                расход</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Создать_расход}"></span>
+                            </a></li>
                             <li><a class="text-secondary" id="downloadExcelButton"
                                         style="padding-inline: 15px; display: block; text-decoration: none;">Выгрузить в Excel</a></li>
                         </ul>
@@ -102,7 +116,9 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/account-transaction/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                    </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -112,13 +128,28 @@
                                 <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>Дата</th>
-                                    <th>Статус</th>
-                                    <th>Тип платежа</th>
-                                    <th>Владелец</th>
-                                    <th>Лицевой счет</th>
-                                    <th>Приход/расход</th>
-                                    <th>Сумма (грн)</th>
+                                    <th>
+                                        <span th:text="#{Дата}">Дата</span>
+                                    </th>
+                                    <th>
+                                        <span th:text="#{Статус}">Статус</span>
+                                    </th>
+                                    <th>
+                                        <span th:text="#{Тип_платежа}">Тип платежу</span>
+                                    </th>
+                                    <th>
+                                        <span th:text="#{Владелец}">Власник</span>
+                                    </th>
+                                    <th>
+                                        <span th:text="#{Лицевой_счет}">Рахунок</span>
+                                    </th>
+                                    <th>
+                                        <span th:text="#{Приход_расход}">Прихід/розхід</span>
+                                    </th>
+                                    <th>
+                                        <span th:text="#{Сумма_грн}">Сума (грн)</span>
+                                    </th>
+
                                     <th></th>
                                 </tr>
                                 <tr>
@@ -210,9 +241,13 @@
                     <div class="row">
                         <div class="col">
                             <p>
-                                <b>Проведен приход: <span th:text="${sumWhereIsIncomeIsTrue}"></span></b>
+                                <b>
+                                    <span th:text="#{Проведен_приход}"></span>
+                                     <span th:text="${sumWhereIsIncomeIsTrue}"></span></b>
                                 <br/>
-                                <b>Проведен расход: <span th:text="${sumWhereIsIncomeIsFalse}"></span></b>
+                                <b>
+                                    <span th:text="#{Проведен_расход}"></span>
+                                     <span th:text="${sumWhereIsIncomeIsFalse}"></span></b>
                             </p>
                         </div>
                         <div th:if="${max != null && max > 0}">

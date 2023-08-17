@@ -21,13 +21,19 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Настройка шаблонов </h4>
+                <span th:text="#{Настройка_шаблонов}"></span>
+            </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item"><a href="/admin/invoice/index/1"
-                                               class="text-for-breadcrumb">Квитанции</a></li>
+                                               class="text-for-breadcrumb">
+                    <span th:text="#{Квитанции}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Настройка шаблонов
+                    <span th:text="#{Настройка_шаблонов}"></span>
+
                 </li>
             </ol>
         </div>
@@ -36,43 +42,66 @@
                 <div class="card-header">
                     <div class="text-for-breadcrumb">
                         <h5>
-                            Список шаблонов
+                            <span th:text="#{Список_шаблонов}"></span>
+
                         </h5>
                     </div>
                 </div>
-                <div class="card-body">
-                    <div class="col-xs-12 col-lg-12">
-                        <div class="template">
-                            <a href="/myhome/files/testTemplate.xlsx" download="" style="text-decoration: none;">
-                                <i class="fa fa-download" aria-hidden="true"></i>
-                                <span>Завантажити шаблон </span>
-                            </a>
-                            <a href="/myhome/admin/invoices/template?default_id=14" class="text-success" style="text-decoration: none;margin-right: 10px; margin-left: 10px">•
-                                <span>Назначити шаблоном за замовчуванням </span>
-                            </a>
-                            <a href="/myhome/admin/invoices/template?delete_id=14" class="text-danger" style="text-decoration: none;">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                <span>Видалити шаблон</span>
-                            </a>
+                <form method="post" action="/admin/invoice/template/add" enctype="multipart/form-data" th:object="${template}">
+                    <div class="card-body">
+                        <div class="col-xs-12 col-lg-12">
+                            <div th:each="template : ${templates}">
+                                <span th:text="${template.name + (template.isMain == null || template.isMain == false?'':'(За замовчуванням)')}"></span>
+                                <br/>
+                                <button type="button" class="btn" style="text-decoration: none;"
+                                        th:onclick="'downloadTemplate(' + ${template.id} + ')'">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                    <span>
+                                                        <span th:text="#{Завантажити_шаблон}"></span>
+</span>
+                                </button>
+                                <a th:href="@{/admin/invoice/doDefault/{id}(id=${template.id})}" class="btn text-success"
+                                        style="text-decoration: none;margin-right: 10px; margin-left: 10px">
+                                    <span>
+                                                        <span th:text="#{Назначити_шаблоном_за_замовчуванням}"></span>
+</span>
+                                </a>
+                                <a class="btn text-danger" th:href="@{/admin/invoice/remove/{id}(id=${template.id})}"                                    style="text-decoration: none;">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                    <span>
+                                        <span th:text="#{Видалити_шаблон}"></span>
+                                    </span>
+                                </a>
+                                <br/>
+                                <br/>
+                            </div>
                         </div>
-
-
+                        <b>
+                            <span th:text="#{Загрузить_пользовательский_шаблон}"></span>
+                            </b>
+                        <input th:field="*{fileTemplate}" type="file" class="form-control" style="width: 35%;" accept=".xlsx">
+                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                             th:if="${#fields.hasErrors('fileTemplate')}" th:errors="*{fileTemplate}"></div>
+                        <b>
+                            <span th:text="#{Название}"></span>
+                            </b>
+                        <input type="text" class="form-control" th:field="*{name}" style="width: 35%;">
+                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
+                             th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     </div>
-                    <b>Загрузить пользовательский шаблон</b>
-                    <input type="file" class="form-control" style="width: 35%;" accept=".xlsx">
-                    <b>Название</b>
-                    <input type="text" class="form-control" style="width: 35%;">
-                </div>
-                <div class="card-footer">
-                    <center>
-                        <a href="#" class="btn btn-outline-secondary" style="margin-right: 10px">
-                            Отменить
-                        </a>
-                        <a href="#" class="btn btn-success" style="margin-right: 10px">
-                            Сохранить
-                        </a>
-                    </center>
-                </div>
+                    <div class="card-footer">
+                        <center>
+                            <a href="/admin/invoice/template" class="btn btn-outline-secondary" style="margin-right: 10px">
+                                <span th:text="#{Отменить}"></span>
+
+                            </a>
+                            <button type="submit" class="btn btn-success" style="margin-right: 10px">
+                                <span th:text="#{Сохранить}"></span>
+
+                            </button>
+                        </center>
+                    </div>
+                </form>
             </div>
         </section>
     </div>
@@ -82,9 +111,26 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
+<script>
+    function downloadTemplate(id){
+        $.ajax({
+            url: '/admin/invoice/download/' + id,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (data) {
+                var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'template.xlsx';
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+            },
+        });
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    }
+</script>
 <script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
 <script src="/adminlte/dist/js/demo.js"></script>
 <script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>

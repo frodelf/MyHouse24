@@ -21,7 +21,8 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Редактирование услуг
+                <span th:text="#{Редактирование_услуг}"></span>
+
             </h4>
         </div>
         <section class="content">
@@ -34,13 +35,16 @@
                                     <li class="active" id="service_tab" style="padding: 15px;"><a href="#tab_service"
                                                                                                   data-toggle="tab"
                                                                                                   aria-expanded="true"
-                                                                                                  class="active text-for-breadcrumb">Услуги</a>
+                                                                                                  class="active text-for-breadcrumb">
+                                        <span th:text="#{Услуги}"></span>
+                                        </a>
                                     </li>
                                     <li id="service_unit_tab" style="padding: 15px;"><a href="#tab_serviceunit"
                                                                                         data-toggle="tab"
                                                                                         aria-expanded="false"
-                                                                                        class="text-for-breadcrumb">Единицы
-                                        измерения</a></li>
+                                                                                        class="text-for-breadcrumb">
+                                        <span th:text="#{Единицы_измерения}"></span>
+                                        </a></li>
                                 </ul>
                                 <form id="serviceForm" method="post" action="/admin/service/add">
                                     <div class="tab-content">
@@ -50,13 +54,15 @@
                                                     <div class="container">
                                                         <div class="row">
                                                             <div class="col-4" style="margin-top: 30px">
-                                                                Услуга
+                                                                <span th:text="#{Услуга}"></span>
+
                                                                 <input th:name="@{services[__${index.index}__].name}"
                                                                        type="text" class="form-control"
                                                                        style="width: 85%;"
                                                                        th:value="${service.getName()}">
 
-                                                                Показывать в счетчиках
+                                                                <span th:text="#{Показывать_в_счетчиках}"></span>
+
                                                                 <input style="margin-left: 10px" th:name="@{services[__${index.index}__].showInCounter}" th:value="${service.getShowInCounter()}" type="checkbox" class="form-check-input" id="flexCheckDefault" th:checked="${service.getShowInCounter()}">
 
                                                                 <input th:name="@{services[__${index.index}__].id}"
@@ -65,12 +71,14 @@
                                                                        style="min-width: 30%; max-width: 30%" hidden>
                                                             </div>
                                                             <div class="col-4" style="margin-top: 30px;">
-                                                                Ед. изм.
+                                                                <span th:text="#{Ед.изм.}"></span>
                                                                 <div class="input-group">
                                                                 <select class="form-select"
                                                                         th:name="@{services[__${index.index}__].unitOfMeasurementName}"
                                                                         style="width: 50%">
-                                                                    <option>Вибрати</option>
+                                                                    <option>
+                                                                        <span th:text="#{Выбрать}"></span>
+                                                                        </option>
                                                                     <option th:each="unit : ${units}"
                                                                             th:text="${unit.getName()}"
                                                                             th:value="${unit.getName()}"
@@ -94,7 +102,7 @@
                                                                 <button type="button" class="btn btn-outline-secondary"
                                                                         style="margin-top: 20px"
                                                                         onclick="addBlockForAdditionalService()">
-                                                                    Добавить
+                                                                    <span th:text="#{Добавить}"></span>
                                                                 </button>
                                                             </div>
                                                             <div class="col">
@@ -124,18 +132,21 @@
                                             <button type="button" class="btn btn-outline-secondary"
                                                     style="margin-top: 20px; margin-left: 12px;"
                                                     onclick="addBlockForUnitOfMeasurement()">
-                                                Добавить
+                                                <span th:text="#{Добавить}"></span>
+
                                             </button>
                                         </div>
                                     </div>
                                     <center>
                                         <button type="submit" class="btn btn-success" onclick="submitForm()">
-                                            Сохранить
+                                            <span th:text="#{Сохранить}"></span>
+
                                         </button>
                                         <a href="/admin/service/index"
                                            class="btn btn-outline-secondary"
                                            style="margin-right: 3px">
-                                            Отменить
+                                            <span th:text="#{Отменить}"></span>
+
                                         </a>
                                     </center>
                                 </form>
