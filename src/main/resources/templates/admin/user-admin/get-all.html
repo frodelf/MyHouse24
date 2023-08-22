@@ -29,7 +29,7 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -72,7 +72,7 @@
                 <div class="card-body">
                     <div class="table-responsive">
                         <form id="formSend" method="get" action="/admin/user-admin/filter/1" onsubmit="event.preventDefault()">
-                            <table class="table table-bordered table-hover table-striped table-sm"
+                            <table class="table table-bordered table-hover table-striped table-sm" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                                    style="font-size: 14px">
                                 <thead>
                                 <tr>
@@ -163,7 +163,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="card-footer" th:if="${max} > 0">
+                <div class="card-footer" th:if="${max} != null and ${max} > 0">
                     <ul class="pagination pagination-sm m-0 float-right">
                         <script>
                             var pageNumber = [[${current}]] - 1;

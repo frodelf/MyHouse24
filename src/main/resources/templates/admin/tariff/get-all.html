@@ -15,7 +15,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -43,7 +43,7 @@
                         </a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-hover table-striped table-sm" style="width: 100%">
+                        <table class="table table-bordered table-hover table-striped table-sm" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="width: 100%">
                             <thead>
                                 <tr>
                                     <b>

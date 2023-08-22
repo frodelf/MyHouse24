@@ -1,5 +1,6 @@
 package com.avada.myHouse24.entity;
 
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -29,6 +30,7 @@ public class Admin implements UserDetails {
     private String email;
     private String phone;
     private String password;
+    private Theme theme;
     @Enumerated(EnumType.STRING)
     private UserStatus status;
     @ManyToOne

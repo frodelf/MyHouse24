@@ -37,7 +37,6 @@ public class AdditionalServiceController {
 
     @GetMapping("/index")
     public String getAll(Model model){
-        List<UnitOfMeasurement> unitOfMeasurements = unitOfMeasurementService.getAll();
         model.addAttribute("services", additionalServiceMapper.toDtoList(additionalServiceImpl.getAll()));
         model.addAttribute("units", unitOfMeasurementMapper.toDtoList(unitOfMeasurementService.getAll()));
         return "admin/service/get-all";

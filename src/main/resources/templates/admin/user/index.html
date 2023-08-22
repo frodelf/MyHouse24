@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-striped table-view"
+                    <table class="table table-bordered table-striped table-view" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                         <tr>
@@ -154,7 +154,7 @@
                     <p style="margin-top: 25px;">
                         <span th:text="#{Квартиры}"></span>
                         </p>
-                    <table class="table table-bordered table-striped table-view"
+                    <table class="table table-bordered table-striped table-view" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <thead>
                         <tr>

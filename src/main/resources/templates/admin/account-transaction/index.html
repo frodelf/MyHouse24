@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table" style="font-weight: bold;">
+                    <table class="table"  th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="font-weight: bold;">
                         <tr>
                             <td style="width: 50%">
                                 Владелец квартиры

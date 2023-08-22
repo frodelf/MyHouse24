@@ -31,7 +31,7 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -73,7 +73,7 @@
                 <div class="card-body">
                     <form id="formSend" method="get" action="/admin/flat/filter/1"  onsubmit="event.preventDefault()">
                     <div class="table-responsive">
-                        <table class="table table-hover table-striped"
+                        <table class="table table-hover table-striped" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                                style="font-size: 14px">
                             <thead>
                             <tr>

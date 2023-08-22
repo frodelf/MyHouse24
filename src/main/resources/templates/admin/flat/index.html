@@ -31,7 +31,7 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -87,7 +87,7 @@
                     </div>
                 </div>
                 <div class="card-body" style="padding-top: 0px">
-                    <table class="table table-bordered table-striped table-view"
+                    <table class="table table-bordered table-striped table-view" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                         <tr>

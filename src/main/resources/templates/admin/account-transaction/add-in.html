@@ -13,7 +13,7 @@
 
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <form method="post" action="/admin/account-transaction/create/in" th:object="${accountTransactionInDTO}">
     <div class="wrapper">
         <div th:replace="blocks/menu :: menu"></div>

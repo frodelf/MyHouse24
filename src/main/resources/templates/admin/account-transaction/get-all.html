@@ -28,7 +28,7 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -126,7 +126,7 @@
                               onsubmit="event.preventDefault()">
                             <table class="table table-bordered table-hover table-striped table-sm">
                                 <thead>
-                                <tr>
+                                <tr th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="height: auto;">
                                     <th>№</th>
                                     <th>
                                         <span th:text="#{Дата}">Дата</span>
@@ -152,7 +152,7 @@
 
                                     <th></th>
                                 </tr>
-                                <tr>
+                                <tr th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="height: auto;">
                                     <th><input name="id" type="number" class="form-control"
                                                th:value="${accountTransaction.getId() != null ? accountTransaction.getId() : ''}">
                                     </th>
@@ -200,7 +200,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="clickable-row" th:each="transaction:${accountTransactionList}"
+                                <tr class="clickable-row" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="height: auto;" th:each="transaction:${accountTransactionList}"
                                     th:data-action="@{/admin/account-transaction/{id}(id=${transaction.getId()})}">
                                     <td th:text="${transaction.getId()}"></td>
                                     <td th:text="${transaction.getDate()}"></td>

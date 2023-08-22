@@ -1,6 +1,7 @@
 package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.AdminMapper;
 import com.avada.myHouse24.model.AdminForAddDTO;
@@ -79,7 +80,9 @@ public class AdminController {
     public String edit(@ModelAttribute("adminModel") @Valid AdminForAddDTO admin, BindingResult bindingResult, @PathVariable("id")long id, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("admin", adminMapper.toDtoForAdd(adminService.getById(id)));
-            if(!admin.getPassword().isBlank() && !admin.getPassword().equals(admin.getPasswordAgain()))model.addAttribute("passwordAgainError", "Паролі не співпадають");
+            if(!admin.getPassword().isBlank()
+                    && !admin.getPassword().equals(admin.getPasswordAgain())
+            )model.addAttribute("passwordAgainError", "Паролі не співпадають");
             return "admin/user-admin/edit";
         }
         Admin result = adminService.getById(id);
@@ -96,5 +99,16 @@ public class AdminController {
         model.addAttribute("filter", adminForViewDto);
         model.addAttribute("admins", adminService.getPage(id, model, adminService.filter(adminForViewDto, adminMapper.toDtoListForView(adminService.getAll()))).getContent());
         return "admin/user-admin/get-all";
+    }
+    @GetMapping("/change/theme/{theme}")
+    @ResponseBody
+    public void changeTheme(@PathVariable("theme")String theme){
+        Admin admin = adminService.getAuthAdmin();
+        if(theme.equals("light")){
+            admin.setTheme(Theme.LIGHT);
+        } else if (theme.equals("dark")) {
+            admin.setTheme(Theme.DARK);
+        }
+        adminService.save(admin);
     }
 }

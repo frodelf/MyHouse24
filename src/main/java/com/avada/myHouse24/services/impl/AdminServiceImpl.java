@@ -110,4 +110,7 @@ public class AdminServiceImpl implements AdminService {
         }
         return admins;
     }
+    public Admin getAuthAdmin(){
+        return adminRepository.findById(1L).get();
+    }
 }
