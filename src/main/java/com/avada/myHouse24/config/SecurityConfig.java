@@ -3,6 +3,7 @@ package com.avada.myHouse24.config;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,32 +25,34 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService() {
-        return new UserDetailsServiceImpl();
+        return new AdminDetailsServiceImpl();
     }
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
     @Bean
-    public DaoAuthenticationProvider authenticationProvider(){
+    public DaoAuthenticationProvider authenticationProviderAdmin(){
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
         authenticationProvider.setUserDetailsService(userDetailsService());
         return authenticationProvider;
     }
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Order(2)
+    SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .authenticationProvider(authenticationProviderAdmin())
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login/**", "/cabinet/login", "/cabinet/login/**", "/cabinet/registration", "/oauth/**").permitAll();
-                    auth.requestMatchers("/favicon.ico").permitAll();
+                    auth.requestMatchers( "/admin/login/**", "/oauth/**").permitAll();
+                    auth.requestMatchers("/favicon.ico", "/dist/**").permitAll();
                     auth.requestMatchers("/secured").authenticated();
-                    auth.requestMatchers("/admin/**").authenticated();
-                    auth.anyRequest().permitAll();
+                    auth.anyRequest().authenticated();
                 })
-                .formLogin(formLogin -> formLogin.loginPage("/cabinet/login"))
-                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/cabinet/login"))
+                .formLogin(formLogin -> formLogin.loginPage("/admin/login"))
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .invalidateHttpSession(true)
