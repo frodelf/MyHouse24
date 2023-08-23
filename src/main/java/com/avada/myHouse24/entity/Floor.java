@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "floor")
 @NoArgsConstructor
-@AllArgsConstructor
 @Data
 public class Floor {
     @Id
@@ -16,6 +15,11 @@ public class Floor {
     @Column(name = "id")
     private Long id;
     private String name;
+
+    public Floor(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 
     public Floor(String name) {
         this.name = name;

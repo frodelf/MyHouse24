@@ -6,18 +6,44 @@ import com.avada.myHouse24.model.HouseForAddDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 //import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Random;
 
 @Log4j2
 @RequiredArgsConstructor
+@Component
 public class ImageUtil {
+    @Value("${upload.path}")
+    private String uploadPath;
+
+    public void saveFile(String uploadDir, String fileName, MultipartFile file) throws IOException {
+
+        log.info(this.uploadPath);
+
+        Path path = Paths.get(uploadPath + uploadDir);
+
+        if (!Files.exists(path)) {
+            Files.createDirectories(path);
+        }
+
+        try (InputStream inputStream = file.getInputStream()) {
+            Path filePath = path.resolve(fileName);
+            log.info("Saving path: " + filePath);
+            Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ioe) {
+            throw new IOException("Could not save image file: " + fileName, ioe);
+        }
+    }
     public static String imageForUser(User user, MultipartFile image) throws IOException {
         String nameImage ="";
         try {

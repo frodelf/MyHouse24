@@ -1,23 +1,20 @@
 spring:
+  messages:
+    basename: i18n/messages
+  thymeleaf:
+    cache: false
   datasource:
     url: jdbc:mysql://localhost:3306/house24
     username: root
-    password: 1234
+    password: ${DATABASE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: ${GITHUB_CLIENT_ID}
-            clientSecret: ${GITHUB_CLIENT_SECRET}
   mail:
     host: smtp.gmail.com
     port: 587
-    username: kripword@gmail.com
+    username: freeideamonthly1@gmail.com
     password: ${SMTP_PASSWORD}
     properties:
       mail:
@@ -28,3 +25,5 @@ spring:
             required: true
           ssl:
             trust: smtp.gmail.com
+upload:
+  path: C:\Users\NikkiLA\Desktop\SpringProject\images

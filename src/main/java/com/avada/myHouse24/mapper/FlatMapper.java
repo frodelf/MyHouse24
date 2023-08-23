@@ -3,6 +3,7 @@ package com.avada.myHouse24.mapper;
 import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.model.FlatDTO;
+import com.avada.myHouse24.model.FlatForMessageDTO;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.ScoreServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +61,17 @@ public class FlatMapper {
         List<FlatDTO> flatDTOS = new ArrayList<>();
         for (Flat flat : flats) {
             flatDTOS.add(toDto(flat));
+        }
+        return flatDTOS;
+    }
+    public FlatForMessageDTO toView(Flat flat){
+        FlatForMessageDTO flatDTO = new FlatForMessageDTO(flat.getId(), flat.getNumber());
+        return flatDTO;
+    }
+    public List<FlatForMessageDTO> toDtoForMsgList(List<Flat> flats){
+        List<FlatForMessageDTO> flatDTOS = new ArrayList<>();
+        for (Flat flat : flats){
+            flatDTOS.add(toView(flat));
         }
         return flatDTOS;
     }
