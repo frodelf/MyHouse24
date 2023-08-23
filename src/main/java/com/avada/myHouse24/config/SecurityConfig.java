@@ -39,13 +39,13 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .csrf().disable()
-//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+//                .csrf().disable()
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers("/login/**", "/cabinet/login", "/cabinet/login/**", "/cabinet/registration", "/oauth/**").permitAll();
                     auth.requestMatchers("/favicon.ico").permitAll();
                     auth.requestMatchers("/secured").authenticated();
-//                    auth.requestMatchers("/admin/**").authenticated();
+                    auth.requestMatchers("/admin/**").authenticated();
                     auth.anyRequest().permitAll();
                 })
                 .formLogin(formLogin -> formLogin.loginPage("/cabinet/login"))
