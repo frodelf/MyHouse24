@@ -44,18 +44,14 @@ public class SecurityConfig {
     SecurityFilterChain userSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .authenticationProvider(authenticationProviderAdmin())
-//                .securityMatcher("/cabinet/**")
-                .csrf(csrf -> csrf.disable())
-//                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
+                .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers( "/admin/login/**", "/oauth/**").permitAll();
-                    auth.requestMatchers("/favicon.ico").permitAll();
+                    auth.requestMatchers("/favicon.ico", "/dist/**").permitAll();
                     auth.requestMatchers("/secured").authenticated();
-                    auth.anyRequest().permitAll();
+                    auth.anyRequest().authenticated();
                 })
                 .formLogin(formLogin -> formLogin.loginPage("/admin/login"))
-//                .formLogin(withDefaults())
-//                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/cabinet/login").permitAll())
                 .logout(logout -> logout
                         .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                         .invalidateHttpSession(true)
