@@ -118,8 +118,8 @@ public class UserController {
             }
             userResult.setPassword(userDTO.getPassword());
         }
-        amazonS3Service.deleteFile(userService.getById(userResult.getId()).getImage());
-        userResult.setImage(amazonS3Service.uploadFile(image));
+//        amazonS3Service.deleteFile(userService.getById(userResult.getId()).getImage());
+//        userResult.setImage(amazonS3Service.uploadFile(image));
         userService.save(userResult);
         return "redirect:/admin/user/index/1";
     }
