@@ -22,7 +22,6 @@ public class CounterDataValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         CounterDataDTO counterDataDTO = (CounterDataDTO) target;
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "number", "field.required", "Поле 'number' не може бути пустим");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "fromDate", "field.required", "Поле 'fromDate' не може бути пустим");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "status", "field.required", "Поле 'status' не може бути пустим");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "data", "field.required", "Поле 'data' не може бути пустим");

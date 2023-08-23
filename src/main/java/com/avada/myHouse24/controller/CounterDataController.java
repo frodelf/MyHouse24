@@ -11,6 +11,7 @@ import com.avada.myHouse24.services.impl.CounterDataServiceImpl;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.util.NumberUtil;
 import com.avada.myHouse24.validator.CounterDataValidator;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -47,7 +48,6 @@ public class CounterDataController {
         if (filter.getHouse() != null)
             model.addAttribute("sections", houseService.getById(filter.getHouse()).getSections());
         if (filter.getHouse() != null) model.addAttribute("flats", houseService.getById(filter.getHouse()).getFlats());
-        counterDataService.filter(filter);
         model.addAttribute("counters", counterDataService.getPage(page, model, counterDataService.filter(filter)));
         model.addAttribute("houses", houseService.getAll());
         return "/admin/counter-data/get-all";
@@ -64,7 +64,7 @@ public class CounterDataController {
     }
 
     @PostMapping("/add")
-    public String add(@ModelAttribute("counterDataDTO") CounterDataDTO counterDataDTO, BindingResult bindingResult, Model model) {
+    public String add(@ModelAttribute("counterDataDTO") @Valid CounterDataDTO counterDataDTO, BindingResult bindingResult, Model model) {
         counterDataValidator.validate(counterDataDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("statuses", CounterDataStatus.getAll());
@@ -89,7 +89,7 @@ public class CounterDataController {
     }
 
     @PostMapping("/copy")
-    public String copy(@ModelAttribute("counterDataDTO") CounterDataDTO counterDataDTO, BindingResult bindingResult, Model model) {
+    public String copy(@ModelAttribute("counterDataDTO") @Valid CounterDataDTO counterDataDTO, BindingResult bindingResult, Model model) {
         counterDataValidator.validate(counterDataDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("statuses", CounterDataStatus.getAll());
