@@ -1,6 +1,7 @@
 package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.AccountTransaction;
+import com.avada.myHouse24.entity.Admin;
 import com.avada.myHouse24.mapper.AccountTransactionMapper;
 import com.avada.myHouse24.model.AccountTransactionForViewDTO;
 import com.avada.myHouse24.model.AccountTransactionInDTO;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.ui.Model;
@@ -27,6 +29,7 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -57,6 +60,7 @@ class AccountTransactionControllerTest {
     @Mock
     private BindingResult bindingResult;
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void index() throws Exception {
         AccountTransactionForViewDTO accountTransactionForViewDTO = new AccountTransactionForViewDTO();
         accountTransactionForViewDTO.setIsIncome(true);
@@ -66,6 +70,7 @@ class AccountTransactionControllerTest {
         when(accountTransactionService.getPage(eq(1), any(ModelAndView.class)))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
 
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account-transaction/index/1"))
                 .andExpect(status().isOk())
@@ -83,11 +88,13 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void addIn() throws Exception {
         when(userService.getAll()).thenReturn(Collections.emptyList());
         when(adminService.getAll()).thenReturn(Collections.emptyList());
         when(scoreService.getAll()).thenReturn(Collections.emptyList());
         when(transactionPurposeService.getAllIncomeTrue()).thenReturn(Collections.emptyList());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account-transaction/create/in"))
                 .andExpect(status().isOk())
@@ -104,18 +111,22 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testAddIn() throws Exception {
         AccountTransactionInDTO dto = new AccountTransactionInDTO(1L, new Date(1,1,1), "transactionPurposeName",
                 "userName","scoreId",true,"10.0","adminName","comment",true,"number");
         when(accountTransactionMapper.toEntityForIn(any())).thenReturn(new AccountTransaction());
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/create/in"))
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/create/in")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists(
                         "users","admins","scores",
                         "transactionPurposes","maxId","fromDate"
                 ));
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/create/in")
-                        .flashAttr("accountTransactionInDTO", dto))
+                        .flashAttr("accountTransactionInDTO", dto)
+                        .with(csrf()))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin/account-transaction/index/1"));
 
@@ -124,11 +135,13 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void updateIn() throws Exception {
         AccountTransactionInDTO dummyDto = new AccountTransactionInDTO();
         when(accountTransactionMapper.toDtoForIn(any())).thenReturn(dummyDto);
         when(userService.getAll()).thenReturn(Collections.emptyList());
         when(adminService.getAll()).thenReturn(Collections.emptyList());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         when(scoreService.getAll()).thenReturn(Collections.emptyList());
         when(transactionPurposeService.getAllIncomeTrue()).thenReturn(Collections.emptyList());
 
@@ -147,16 +160,20 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testUpdateIn() throws Exception {
         AccountTransactionInDTO dto = new AccountTransactionInDTO(1L, new Date(1,1,1), "transactionPurposeName",
                 "userName","scoreId",true,"10.0","adminName","comment",true,"number");
 
         when(accountTransactionMapper.toEntityForIn(any())).thenReturn(new AccountTransaction());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/update/in/1"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/update/in/1")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("accountTransaction","users","admins","scores","transactionPurposes"));
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/update/in/1")
+                        .with(csrf())
                         .flashAttr("accountTransactionInDTO", dto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin/account-transaction/index/1"));
@@ -166,11 +183,13 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void addOut() throws Exception {
         when(userService.getAll()).thenReturn(Collections.emptyList());
         when(adminService.getAll()).thenReturn(Collections.emptyList());
         when(scoreService.getAll()).thenReturn(Collections.emptyList());
         when(transactionPurposeService.getAllIncomeFalse()).thenReturn(Collections.emptyList());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account-transaction/create/out"))
                 .andExpect(status().isOk())
@@ -186,15 +205,19 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testAddOut() throws Exception {
         AccountTransactionOutDTO accountTransactionOutDTO = new AccountTransactionOutDTO(1L, new Date(1,1,1), "transactionPurposeName",
                 true, "10.0", "adminName","comment","number",true);
         when(accountTransactionMapper.toEntityForOut(any())).thenReturn(new AccountTransaction());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/create/out"))
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/create/out")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("users","admins","scores","transactionPurposes","maxId","fromDate"));
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/create/out")
+                        .with(csrf())
                         .flashAttr("accountTransactionOutDTO", accountTransactionOutDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin/account-transaction/index/1"));
@@ -204,12 +227,14 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void updateOut() throws Exception {
         AccountTransactionOutDTO dummyDto = new AccountTransactionOutDTO();
         when(accountTransactionMapper.toDtoForOut(any())).thenReturn(dummyDto);
         when(adminService.getAll()).thenReturn(Collections.emptyList());
         when(transactionPurposeService.getAllIncomeFalse()).thenReturn(Collections.emptyList());
 
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account-transaction/update/out/1"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/account-transaction/update-out"))
@@ -223,15 +248,19 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testUpdateOut() throws Exception {
         AccountTransactionOutDTO accountTransactionOutDTO = new AccountTransactionOutDTO(1L, new Date(1,1,1), "transactionPurposeName",
                 true, "10.0", "adminName","comment","number",true);
         when(accountTransactionMapper.toEntityForOut(any())).thenReturn(new AccountTransaction());
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/update/out/1"))
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/update/out/1")
+                        .with(csrf()))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("accountTransaction","admins","transactionPurposes"));
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/account-transaction/update/out/1")
+                        .with(csrf())
                         .flashAttr("accountTransactionOutDTO", accountTransactionOutDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin/account-transaction/index/1"));
@@ -241,7 +270,9 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void deleteById() throws Exception {
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account-transaction/delete/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/admin/account-transaction/index/1"));
@@ -250,11 +281,13 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void getAccountTransaction() throws Exception {
         AccountTransaction accountTransaction = new AccountTransaction();
         accountTransaction.setId(1L);
         accountTransaction.setIncome(true);
         AccountTransactionForViewDTO accountTransactionForViewDTO = new AccountTransactionForViewDTO();
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         accountTransactionForViewDTO.setId(1L);
         accountTransactionForViewDTO.setIsIncome(true);
         when(accountTransactionMapper.toDtoForView(any())).thenReturn(accountTransactionForViewDTO);
@@ -270,6 +303,7 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void copyIn() throws Exception {
         AccountTransaction dummyTransaction = new AccountTransaction();
         when(accountTransactionService.getById(anyLong())).thenReturn(dummyTransaction);
@@ -277,6 +311,7 @@ class AccountTransactionControllerTest {
         when(accountTransactionMapper.toDtoForIn(any())).thenReturn(new AccountTransactionInDTO());
         when(userService.getAll()).thenReturn(Collections.emptyList());
         when(adminService.getAll()).thenReturn(Collections.emptyList());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         when(scoreService.getAll()).thenReturn(Collections.emptyList());
         when(transactionPurposeService.getAll()).thenReturn(Collections.emptyList());
 
@@ -297,7 +332,9 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void copyOut() throws Exception {
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         AccountTransaction accountTransaction = new AccountTransaction();
         when(accountTransactionService.getById(anyLong())).thenReturn(accountTransaction);
         when(accountTransactionService.getMaxId()).thenReturn(1L);
@@ -318,8 +355,10 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void filter() throws Exception {
         AccountTransactionForViewDTO accountTransactionForViewDTO = new AccountTransactionForViewDTO();
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         when(accountTransactionService.getPage(eq(1), any(ModelAndView.class), anyList()))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
         when(transactionPurposeService.getAll()).thenReturn(Collections.emptyList());
@@ -337,7 +376,9 @@ class AccountTransactionControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void excel() throws Exception {
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account-transaction/excel"))
                 .andExpect(status().isOk());
 

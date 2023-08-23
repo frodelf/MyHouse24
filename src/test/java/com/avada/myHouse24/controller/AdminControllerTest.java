@@ -14,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -29,6 +30,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -48,6 +50,7 @@ class AdminControllerTest {
     private AdminMapper adminMapper;
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void getAll() throws Exception {
         AdminForViewDTO adminForViewDTO = new AdminForViewDTO();
         adminForViewDTO.setFullName("full time");
@@ -57,6 +60,7 @@ class AdminControllerTest {
         when(adminService.getPage(eq(1), any(Model.class)))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
 
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/user-admin/index/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("allStatus", "roles", "filter", "admins"));
@@ -67,8 +71,10 @@ class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void add() throws Exception {
         when(roleService.getAll()).thenReturn(Collections.emptyList());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/user-admin/create"))
                 .andExpect(status().isOk())
@@ -79,11 +85,14 @@ class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testAdd() throws Exception {
         AdminForAddDTO admin = new AdminForAddDTO();
         admin.setPassword("qwert");
         admin.setPasswordAgain("qwerty");
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/user-admin/create")
+                        .with(csrf())
                         .flashAttr("admin", admin))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/user-admin/add"));
@@ -95,22 +104,26 @@ class AdminControllerTest {
         admin.setStatus(UserStatus.NEW);
         admin.setEmail("email@emai.com");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/user-admin/create")
+                        .with(csrf())
                         .flashAttr("admin", admin))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/user-admin/index/1"));
 
         admin.setPasswordAgain("qwer");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/user-admin/create")
+                        .with(csrf())
                         .flashAttr("admin", admin))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/user-admin/add"));
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void index() throws Exception {
         AdminForViewDTO admin = new AdminForViewDTO();
         admin.setStatus(UserStatus.NEW);
         when(adminService.getById(anyLong())).thenReturn(new Admin());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         when(adminMapper.toDtoForView(any())).thenReturn(admin);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/user-admin/{id}", 1))
@@ -123,8 +136,10 @@ class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void delete() throws Exception {
         when(adminService.getById(anyLong())).thenReturn(new Admin());
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/user-admin/delete/{id}", 1))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/user-admin/index/1"));
@@ -134,10 +149,12 @@ class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void edit() throws Exception {
         AdminForAddDTO admin = new AdminForAddDTO();
         admin.setRole("ROLE_ADMIN");
 
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         when(adminService.getById(anyLong())).thenReturn(new Admin());
         when(adminMapper.toDtoForAdd(any())).thenReturn(admin);
         when(roleService.getAll()).thenReturn(Collections.emptyList());
@@ -152,6 +169,7 @@ class AdminControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testEdit() throws Exception {
         AdminForAddDTO admin = new AdminForAddDTO();
         admin.setId(1L);
@@ -161,8 +179,10 @@ class AdminControllerTest {
 
         when(adminService.getById(anyLong())).thenReturn(new Admin());
         when(adminMapper.toDtoForAdd(any())).thenReturn(admin);
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/user-admin/edit/{id}", 1)
+                        .with(csrf())
                         .flashAttr("adminModel", admin))
                 .andExpect(status().isOk())
                 .andExpect(view().name("admin/user-admin/edit"));
@@ -174,16 +194,18 @@ class AdminControllerTest {
         admin.setEmail("email@emai.com");
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/user-admin/edit/{id}", 1)
-                .flashAttr("adminModel", admin))
+                        .with(csrf())
+                        .flashAttr("adminModel", admin))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/user-admin/index/1"));
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void filter() throws Exception {
         AdminForViewDTO adminForViewDto = new AdminForViewDTO();
         List<AdminForViewDTO> adminPage = Collections.singletonList(new AdminForViewDTO());
-
+        when(adminService.getAuthAdmin()).thenReturn(new Admin());
         when(adminService.getAll()).thenReturn(Collections.singletonList(new Admin()));
         when(adminService.getPage(eq(1), any(Model.class), anyList()))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));

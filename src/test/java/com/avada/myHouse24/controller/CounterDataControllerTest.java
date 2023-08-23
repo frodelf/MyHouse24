@@ -15,6 +15,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.ui.Model;
@@ -29,6 +30,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -51,6 +53,7 @@ class CounterDataControllerTest {
     private AdminRepository adminRepository;
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void getAll() throws Exception {
         when(counterDataService.getPage(anyInt(), any())).thenReturn(new PageImpl<>(Collections.emptyList()));
 
@@ -63,6 +66,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void filter() throws Exception {
         CounterDataFilterDto filterDto = new CounterDataFilterDto();
         when(counterDataService.filter(any())).thenReturn(new ArrayList<>());
@@ -79,6 +83,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void add() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/add"))
                 .andExpect(status().isOk())
@@ -87,16 +92,19 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testAdd() throws Exception {
         CounterDataDTO counterDataDTO = new CounterDataDTO();
         counterDataDTO.setStatus(CounterDataStatus.New.name());
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/counter-data/add")
+                        .with(csrf())
                         .flashAttr("counterDataDTO", counterDataDTO))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/admin/counter-data/add"));
         counterDataDTO.setNumber("qewf");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/counter-data/add")
+                        .with(csrf())
                         .flashAttr("counterDataDTO", counterDataDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/counter-data/index/1"));
@@ -105,6 +113,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void copy() throws Exception {
         CounterDataDTO counterDataDTOForExample = new CounterDataDTO();
 
@@ -119,6 +128,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testCopy() throws Exception {
         CounterDataDTO counterDataDTO = new CounterDataDTO();
         counterDataDTO.setStatus(CounterDataStatus.New.name());
@@ -126,6 +136,7 @@ class CounterDataControllerTest {
         when(counterDataService.getMaxId()).thenReturn(1L);
 
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/counter-data/copy")
+                        .with(csrf())
                         .flashAttr("counterDataDTO", counterDataDTO))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("statuses"))
@@ -133,6 +144,7 @@ class CounterDataControllerTest {
 
         counterDataDTO.setNumber("qwerty");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/counter-data/copy")
+                        .with(csrf())
                         .flashAttr("counterDataDTO", counterDataDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/counter-data/copy/1"));
@@ -141,6 +153,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void getById() throws Exception {
         CounterData counterData = new CounterData();
         counterData.setFlat(new Flat());
@@ -159,6 +172,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testFilter() throws Exception {
         CounterDataFilterDto filterDto = new CounterDataFilterDto();
         filterDto.setHouse(1L);
@@ -181,6 +195,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void editById() throws Exception {
         CounterDataDTO counterDataDTO = new CounterDataDTO();
         CounterData counterData = new CounterData();
@@ -198,6 +213,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void deleteById() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/delete/{id}", 1))
                 .andExpect(status().is3xxRedirection())
@@ -207,6 +223,7 @@ class CounterDataControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void index() throws Exception {
         CounterData counterData = new CounterData();
         AdditionalService additionalService = new AdditionalService();

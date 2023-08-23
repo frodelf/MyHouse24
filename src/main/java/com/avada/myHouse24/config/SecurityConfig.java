@@ -50,7 +50,7 @@ public class SecurityConfig {
                     auth.requestMatchers( "/admin/login/**", "/oauth/**").permitAll();
                     auth.requestMatchers("/favicon.ico", "/dist/**").permitAll();
                     auth.requestMatchers("/secured").authenticated();
-                    auth.anyRequest().authenticated();
+                    auth.anyRequest().permitAll();
                 })
                 .formLogin(formLogin -> formLogin.loginPage("/admin/login"))
                 .logout(logout -> logout

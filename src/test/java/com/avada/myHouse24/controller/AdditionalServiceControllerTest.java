@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -26,6 +27,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -47,6 +49,7 @@ class AdditionalServiceControllerTest {
     private UnitOfMeasurementMapper unitOfMeasurementMapper;
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void getAll() throws Exception {
         when(additionalService.getAll()).thenReturn(Collections.emptyList());
         when(unitOfMeasurementService.getAll()).thenReturn(Collections.emptyList());
@@ -62,11 +65,13 @@ class AdditionalServiceControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void add() throws Exception {
         AdditionalServiceListDTO additionalServiceListDTO = new AdditionalServiceListDTO();
         when(unitOfMeasurementMapper.toEntityList(anyList())).thenReturn(new ArrayList<>());
         when(additionalServiceMapper.toEntityList(anyList())).thenReturn(new ArrayList<>());
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/service/add")
+                        .with(csrf())
                         .flashAttr("additionalServiceListDTO", additionalServiceListDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/service/index"));
@@ -76,6 +81,7 @@ class AdditionalServiceControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void delete() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/service/delete/service/1"))
                 .andExpect(status().is3xxRedirection())
@@ -85,6 +91,7 @@ class AdditionalServiceControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void getAllHouses() throws Exception {
         int page = 1;
         String search = "";
