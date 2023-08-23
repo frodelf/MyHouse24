@@ -31,18 +31,22 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Дома
+                <span th:text="#{Дома}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Дома
+                    <span th:text="#{Дома}"></span>
+
                 </li>
             </ol>
         </div>
@@ -54,7 +58,7 @@
                     <div class="btn-group margin-bottom float-right">
                         <a href="/admin/house/add" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px">
-                            Добавить дом
+                            <span th:text="#{Добавить_дом}"></span>
                         </a>
                     </div>
                 </div>
@@ -62,18 +66,24 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/house/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                        </a>
                 </div>
                 <div class="card-body">
                     <form id="formSend" method="get" action="/admin/house/filter/1"
                           onsubmit="event.preventDefault()">
-                        <table class="table table-hover"
+                        <table class="table table-hover" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                                style="font-size: 14px">
                             <thead>
                             <tr>
                                 <th style="width: 5%">№</th>
-                                <th style="width: 25%">Название</th>
-                                <th style="width: 50%">Адрес</th>
+                                <th style="width: 25%">
+                                    <span th:text="#{Название}"></span>
+                                    </th>
+                                <th style="width: 50%">
+                                    <span th:text="#{Адрес}"></span>
+                                    </th>
                                 <th style="width: 20%"></th>
                             </tr>
                             <tr>
@@ -115,7 +125,8 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                Количество домов: <b th:text="${housesCount}"></b>
+                                <span th:text="#{Количество_домов}"></span>
+                                : <b th:text="${housesCount}"></b>
                             </div>
                             <div class="col">
                                 <div th:if="${max}>0">

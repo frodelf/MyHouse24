@@ -13,39 +13,46 @@
 
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Пригласить владельца квартир
+                <span th:text="#{Пригласить_владельца_квартир}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Владельцы
-                    квартир</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a></li>
+                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Владельцы_квартир}"></span>
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Пригласить владельца квартир
+                    <span th:text="#{Пригласить_владельца_квартир}"></span>
                 </li>
             </ol>
         </div>
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    Отправить приглашение
+                    <span th:text="#{Отправить_приглашение}"></span>
+
                 </div>
                 <div class="card-body">
                     <form method="post" action="/admin/user/invite">
                         <b>
-                            Телефон
+                            <span th:text="#{Телефон}"></span>
                             <input type="number" class="form-control" style="margin-bottom: 10px; width: 50%" name="phone">
                             Email
                             <input type="type" class="form-control" style="width: 50%" name="email">
                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${error}"></div>
                         </b>
                         <center>
-                            <button class="btn btn-success" style="margin-top: 25px" type="submit">Отправить приглашение</button>
+                            <button class="btn btn-success" style="margin-top: 25px" type="submit">
+                                <span th:text="#{Отправить_приглашение}"></span>
+                                </button>
                         </center>
                     </form>
                 </div>

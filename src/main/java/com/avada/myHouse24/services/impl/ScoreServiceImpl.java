@@ -1,8 +1,10 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Flat;
+import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.model.ScoreDTO;
+import com.avada.myHouse24.model.ScoreForFilterDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.repo.ScoreRepository;
 import com.avada.myHouse24.services.ScoreService;
@@ -16,6 +18,7 @@ import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +33,6 @@ public class ScoreServiceImpl implements ScoreService {
 
     @Override
     public List<Score> getAll() {
-
         return scoreRepository.findAll();
     }
 
@@ -103,5 +105,62 @@ public class ScoreServiceImpl implements ScoreService {
         model.addAttribute("max", max);
         model.addAttribute("current", pageNumber+1);
         return scoreDTOPage;
+    }
+
+    public List<Score> forSelect(int page, int pageSize, String search) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<Score> scorePage;
+
+        if (search != null && !search.isEmpty()) {
+            scorePage = scoreRepository.findByNumberContainingIgnoreCase(search, pageable);
+        } else {
+            scorePage = scoreRepository.findAll(pageable);
+        }
+
+        return scorePage.getContent();
+    }
+    public List<ScoreDTO> filter(ScoreForFilterDTO scoreForFilterDTO, List<ScoreDTO> scoreDTOS){
+        if (!scoreForFilterDTO.getNumber().isBlank()) {
+            scoreDTOS = scoreDTOS.stream()
+                    .filter(dto -> dto.getNumber() != null && dto.getNumber().contains(scoreForFilterDTO.getNumber()))
+                    .collect(Collectors.toList());
+        }
+        if (!scoreForFilterDTO.getStatus().isBlank()) {
+            scoreDTOS = scoreDTOS.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus().contains(scoreForFilterDTO.getStatus()))
+                    .collect(Collectors.toList());
+        }
+        if (scoreForFilterDTO.getFlatNumber() != null) {
+            scoreDTOS = scoreDTOS.stream()
+                    .filter(dto -> dto.getFlat() != null && String.valueOf(dto.getFlat().getNumber()).contains(scoreForFilterDTO.getFlatNumber().toString()))
+                    .collect(Collectors.toList());
+        }
+        if (scoreForFilterDTO.getHouse() != null) {
+            scoreDTOS = scoreDTOS.stream()
+                    .filter(dto -> dto.getHouse() != null && dto.getHouse().getId() == scoreForFilterDTO.getHouse().getId())
+                    .collect(Collectors.toList());
+        }
+        if (scoreForFilterDTO.getSection() != null) {
+            scoreDTOS = scoreDTOS.stream()
+                    .filter(dto -> dto.getSection() != null && dto.getSection().getId() == scoreForFilterDTO.getSection().getId())
+                    .collect(Collectors.toList());
+        }
+        if (scoreForFilterDTO.getUser() != null) {
+            scoreDTOS = scoreDTOS.stream()
+                    .filter(dto -> dto.getFlat() != null && dto.getFlat().getUser().getId() == scoreForFilterDTO.getUser().getId())
+                    .collect(Collectors.toList());
+        }
+        if(scoreForFilterDTO.getIsDebt() != null){
+            if(scoreForFilterDTO.getIsDebt()){
+                scoreDTOS = scoreDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && dto.getBalance() >= 0)
+                        .collect(Collectors.toList());
+            }else {
+                scoreDTOS = scoreDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && dto.getBalance() < 0)
+                        .collect(Collectors.toList());
+            }
+        }
+        return scoreDTOS;
     }
 }

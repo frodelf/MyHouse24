@@ -18,9 +18,7 @@ import java.util.List;
 @Component
 @RequiredArgsConstructor
 public class AccountTransactionMapper {
-    private final AccountTransactionRepository accountTransactionRepository;
     private final UserServiceImpl userService;
-    private final AccountTransactionServiceImpl accountTransactionService;
     private final ScoreServiceImpl scoreService;
     private final AdminServiceImpl adminService;
     private final TransactionPurposeServiceImpl transactionPurposeService;
@@ -85,7 +83,7 @@ public class AccountTransactionMapper {
         AccountTransactionForViewDTO accountTransactionForViewDTO = new AccountTransactionForViewDTO();
         accountTransactionForViewDTO.setId(accountTransaction.getId());
         accountTransactionForViewDTO.setNumber(accountTransaction.getNumber());
-        accountTransactionForViewDTO.setDate(String.valueOf(accountTransaction.getFromDate()));
+        accountTransactionForViewDTO.setDate(accountTransaction.getFromDate().toLocalDate());
         try {
             accountTransactionForViewDTO.setUserName(accountTransaction.getUser().getFirstName());
         }catch (Exception e){

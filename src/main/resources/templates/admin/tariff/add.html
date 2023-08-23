@@ -15,19 +15,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Тариф: Основной тариф
+                <span th:text="#{Основной_тариф}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/tariff/index" class="text-for-breadcrumb">Тарифы</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a href="/admin/tariff/index" class="text-for-breadcrumb">
+                    <span th:text="#{Тарифы}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Тариф
+                    <span th:text="#{Тариф}"></span>
                 </li>
             </ol>
         </div>
@@ -37,10 +42,14 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-8">
-                                <h6>Название тарифа</h6>
+                                <h6>
+                                    <span th:text="#{Название_тарифа}"></span>
+                                    </h6>
                                 <input type="text" th:field="*{name}" class="form-control" style="width: 100%">
                                 <div style="color: red;margin-bottom: 25px; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
-                                <h6>Описание тарифа</h6>
+                                <h6>
+                                    <span th:text="#{Описание_тарифа}"></span>
+                                    </h6>
                                 <textarea class="form-control" th:field="*{description}" style="width: 100%"></textarea>
                                 <div style="color: red; font-size: small; font-weight: bold; margin-bottom: 25px; font-style: italic" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
                             </div>
@@ -48,13 +57,18 @@
 
                             </div>
 
-                            <button type="button" class="btn btn-outline-secondary" onclick="addBlockForTariff()" style="width: 200px">Добавить услугу</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="addBlockForTariff()" style="width: 200px">
+                                <span th:text="#{Добавить_услугу}"></span>
+                                </button>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
+                        <button type="submit" class="btn btn-success float-right">
+                            <span th:text="#{Сохранить}"></span>
+                            </button>
                         <a href="/admin/tariff/index/" class="btn btn-outline-secondary float-right" style="margin-right: 3px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
+
                         </a>
                     </div>
                 </div>

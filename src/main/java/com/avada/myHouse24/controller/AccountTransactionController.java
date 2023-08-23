@@ -6,14 +6,23 @@ import com.avada.myHouse24.model.AccountTransactionForViewDTO;
 import com.avada.myHouse24.model.AccountTransactionInDTO;
 import com.avada.myHouse24.model.AccountTransactionOutDTO;
 import com.avada.myHouse24.services.impl.*;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -32,193 +41,210 @@ public class AccountTransactionController {
     private final TransactionPurposeServiceImpl transactionPurposeService;
 
     @GetMapping("/index/{id}")
-    public String index(@PathVariable("id")int id, Model model) {
-        model.addAttribute("accountTransaction", new AccountTransactionForViewDTO());
-        model.addAttribute("accountTransactionList", accountTransactionMapper.toDtoForViewList(accountTransactionService.getPage(id, model).getContent()));
-        model.addAttribute("transactionPurposeList", transactionPurposeService.getAll());
-        model.addAttribute("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
-        model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
-        return "admin/account-transaction/get-all";
+    public ModelAndView index(@PathVariable("id") int id) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/get-all");
+
+        modelAndView.addObject("accountTransaction", new AccountTransactionForViewDTO());
+        modelAndView.addObject("accountTransactionList", accountTransactionMapper.toDtoForViewList(accountTransactionService.getPage(id, modelAndView).getContent()));
+        modelAndView.addObject("transactionPurposeList", transactionPurposeService.getAll());
+        modelAndView.addObject("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
+        modelAndView.addObject("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
+
+        return modelAndView;
     }
+
 
     @GetMapping("/create/in")
-    public String addIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, Model model) {
-        model.addAttribute("users", userService.getAll());
-        model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
-        model.addAttribute("maxId", accountTransactionService.getNumber());
-        model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
+    public ModelAndView addIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/add-in");
 
-        return "admin/account-transaction/add-in";
+        modelAndView.addObject("users", userService.getAll());
+        modelAndView.addObject("admins", adminService.getAll());
+        modelAndView.addObject("scores", scoreService.getAll());
+        modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
+        modelAndView.addObject("maxId", accountTransactionService.getNumber());
+        modelAndView.addObject("fromDate", Date.valueOf(LocalDate.now()));
+
+        return modelAndView;
     }
 
-    @PostMapping("create/in")
-    public String addIn(@ModelAttribute("accountTransactionInDTO") @Valid AccountTransactionInDTO accountTransactionInDTO, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
-            model.addAttribute("users", userService.getAll());
-            model.addAttribute("admins", adminService.getAll());
-            model.addAttribute("scores", scoreService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
-            model.addAttribute("maxId", accountTransactionService.getNumber());
-            model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-            return "admin/account-transaction/add-in";
+    @PostMapping("/create/in")
+    public ModelAndView addIn(@ModelAttribute("accountTransactionInDTO") @Valid AccountTransactionInDTO accountTransactionInDTO, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("admin/account-transaction/add-in");
+            modelAndView.addObject("users", userService.getAll());
+            modelAndView.addObject("admins", adminService.getAll());
+            modelAndView.addObject("scores", scoreService.getAll());
+            modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
+            modelAndView.addObject("maxId", accountTransactionService.getNumber());
+            modelAndView.addObject("fromDate", Date.valueOf(LocalDate.now()));
+        } else {
+            accountTransactionInDTO.setIncome(true);
+            accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
+            modelAndView.setViewName("redirect:/admin/account-transaction/index/1");
         }
-        accountTransactionInDTO.setIncome(true);
-        accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
-        return "redirect:/admin/account-transaction/index/1";
+
+        return modelAndView;
     }
 
-    @GetMapping("update/in/{id}")
-    public String updateIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, @PathVariable("id") Long id, Model model) {
-        model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForIn(accountTransactionService.getById(id)));
-        model.addAttribute("users", userService.getAll());
-        model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
-        return "admin/account-transaction/update-in";
+    @GetMapping("/update/in/{id}")
+    public ModelAndView updateIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, @PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-in");
+
+        modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForIn(accountTransactionService.getById(id)));
+        modelAndView.addObject("users", userService.getAll());
+        modelAndView.addObject("admins", adminService.getAll());
+        modelAndView.addObject("scores", scoreService.getAll());
+        modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
+
+        return modelAndView;
     }
 
-    @PostMapping("update/in/{id}")
-    public String updateIn(@ModelAttribute("accountTransactionInDTO") @Valid AccountTransactionInDTO accountTransactionInDTO,BindingResult bindingResult, @PathVariable("id") Long id, Model model) {
-        if(bindingResult.hasErrors()){
-            model.addAttribute("accountTransaction", accountTransactionInDTO);
-            model.addAttribute("users", userService.getAll());
-            model.addAttribute("admins", adminService.getAll());
-            model.addAttribute("scores", scoreService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
-            return "admin/account-transaction/update-in";
+    @PostMapping("/update/in/{id}")
+    public ModelAndView updateIn(@ModelAttribute("accountTransactionInDTO") @Valid AccountTransactionInDTO accountTransactionInDTO, BindingResult bindingResult, @PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("admin/account-transaction/update-in");
+            modelAndView.addObject("accountTransaction", accountTransactionInDTO);
+            modelAndView.addObject("users", userService.getAll());
+            modelAndView.addObject("admins", adminService.getAll());
+            modelAndView.addObject("scores", scoreService.getAll());
+            modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeTrue());
+        } else {
+            accountTransactionInDTO.setIncome(true);
+            accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
+            modelAndView.setViewName("redirect:/admin/account-transaction/index/1");
         }
-        accountTransactionInDTO.setIncome(true);
-        accountTransactionService.save(accountTransactionMapper.toEntityForIn(accountTransactionInDTO));
-        return "redirect:/admin/account-transaction/index/1";
+        return modelAndView;
     }
 
     @GetMapping("/create/out")
-    public String addOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, Model model) {
-        model.addAttribute("users", userService.getAll());
-        model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
-        model.addAttribute("maxId", accountTransactionService.getNumber());
-        model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-        return "admin/account-transaction/add-out";
+    public ModelAndView addOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/add-out");
+
+        modelAndView.addObject("users", userService.getAll());
+        modelAndView.addObject("admins", adminService.getAll());
+        modelAndView.addObject("scores", scoreService.getAll());
+        modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
+        modelAndView.addObject("maxId", accountTransactionService.getNumber());
+        modelAndView.addObject("fromDate", Date.valueOf(LocalDate.now()));
+
+        return modelAndView;
     }
 
     @PostMapping("/create/out")
-    public String addOut(@ModelAttribute("accountTransactionOutDTO") @Valid AccountTransactionOutDTO accountTransactionOutDTO, BindingResult bindingResult, Model model) {
-        if (bindingResult.hasErrors()){
-            model.addAttribute("users", userService.getAll());
-            model.addAttribute("admins", adminService.getAll());
-            model.addAttribute("scores", scoreService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
-            model.addAttribute("maxId", accountTransactionService.getNumber());
-            model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-            return "admin/account-transaction/add-out";
-        }
-        accountTransactionOutDTO.setSum("-"+accountTransactionOutDTO.getSum());
-        accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
-        return "redirect:/admin/account-transaction/index/1";
-    }
+    public ModelAndView addOut(@ModelAttribute("accountTransactionOutDTO") @Valid AccountTransactionOutDTO accountTransactionOutDTO, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView();
 
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("admin/account-transaction/add-out");
+            modelAndView.addObject("users", userService.getAll());
+            modelAndView.addObject("admins", adminService.getAll());
+            modelAndView.addObject("scores", scoreService.getAll());
+            modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
+            modelAndView.addObject("maxId", accountTransactionService.getNumber());
+            modelAndView.addObject("fromDate", Date.valueOf(LocalDate.now()));
+        } else {
+            accountTransactionOutDTO.setSum("-" + accountTransactionOutDTO.getSum());
+            accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
+            modelAndView.setViewName("redirect:/admin/account-transaction/index/1");
+        }
+
+        return modelAndView;
+    }
+    /////////////////
     @GetMapping("/update/out/{id}")
-    public String updateOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") Long id,  Model model){
-        model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForOut(accountTransactionService.getById(id)));
-        model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
-        model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-        return "admin/account-transaction/update-out";
+    public ModelAndView updateOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-out");
+
+        modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForOut(accountTransactionService.getById(id)));
+        modelAndView.addObject("admins", adminService.getAll());
+        modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
+        modelAndView.addObject("fromDate", Date.valueOf(LocalDate.now()));
+
+        return modelAndView;
     }
 
     @PostMapping("/update/out/{id}")
-    public String updateOut(@ModelAttribute("accountTransactionOutDTO") @Valid AccountTransactionOutDTO accountTransactionOutDTO, BindingResult bindingResult, @PathVariable("id") Long id, Model model){
-        if (bindingResult.hasErrors()){
-            model.addAttribute("accountTransaction", accountTransactionOutDTO);
-            model.addAttribute("admins", adminService.getAll());
-            model.addAttribute("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
-            return "admin/account-transaction/update-out";
+    public ModelAndView updateOut(@ModelAttribute("accountTransactionOutDTO") @Valid AccountTransactionOutDTO accountTransactionOutDTO, BindingResult bindingResult, @PathVariable("id") Long id) {
+        ModelAndView modelAndView = new ModelAndView();
+
+        if (bindingResult.hasErrors()) {
+            modelAndView.setViewName("admin/account-transaction/update-out");
+            modelAndView.addObject("accountTransaction", accountTransactionOutDTO);
+            modelAndView.addObject("admins", adminService.getAll());
+            modelAndView.addObject("transactionPurposes", transactionPurposeService.getAllIncomeFalse());
+        } else {
+            accountTransactionOutDTO.setSum(accountTransactionOutDTO.getSum());
+            accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
+            modelAndView.setViewName("redirect:/admin/account-transaction/index/1");
         }
-        accountTransactionOutDTO.setSum(accountTransactionOutDTO.getSum());
-        accountTransactionService.save(accountTransactionMapper.toEntityForOut(accountTransactionOutDTO));
-        return "redirect:/admin/account-transaction/index/1";
+
+        return modelAndView;
     }
+
     @GetMapping("/delete/{id}")
-    public String deleteById(@PathVariable("id")long id){
+    public String deleteById(@PathVariable("id") long id) {
         accountTransactionService.deleteById(id);
         return "redirect:/admin/account-transaction/index/1";
     }
+
     @GetMapping("/{id}")
-    public String getAccountTransaction(@PathVariable("id")long id, Model model){
-        model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForView(accountTransactionService.getById(id)));
-        return "admin/account-transaction/index";
+    public ModelAndView getAccountTransaction(@PathVariable("id") long id) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/index");
+
+        modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForView(accountTransactionService.getById(id)));
+
+        return modelAndView;
     }
 
-    @GetMapping("copy/in/{id}")
-    public String copyIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, @PathVariable("id") long id, Model model) {
+    @GetMapping("/copy/in/{id}")
+    public ModelAndView copyIn(@ModelAttribute("accountTransactionInDTO") AccountTransactionInDTO accountTransactionInDTO, @PathVariable("id") long id) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-in");
+
         AccountTransaction accountTransaction = accountTransactionService.getById(id);
         accountTransaction.setId(accountTransactionService.getMaxId());
-        model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForIn(accountTransaction));
-        model.addAttribute("users", userService.getAll());
-        model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("scores", scoreService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
-        return "admin/account-transaction/update-in";
+        modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForIn(accountTransaction));
+        modelAndView.addObject("users", userService.getAll());
+        modelAndView.addObject("admins", adminService.getAll());
+        modelAndView.addObject("scores", scoreService.getAll());
+        modelAndView.addObject("transactionPurposes", transactionPurposeService.getAll());
+
+        return modelAndView;
     }
+
     @GetMapping("/copy/out/{id}")
-    public String copyOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") long id,  Model model){
+    public ModelAndView copyOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") long id) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-out");
+
         AccountTransaction accountTransaction = accountTransactionService.getById(id);
         accountTransaction.setId(accountTransactionService.getMaxId());
-        model.addAttribute("accountTransaction", accountTransactionMapper.toDtoForOut(accountTransaction));
-        model.addAttribute("admins", adminService.getAll());
-        model.addAttribute("transactionPurposes", transactionPurposeService.getAll());
-        model.addAttribute("maxId", accountTransactionService.getNumber());
-        model.addAttribute("fromDate", Date.valueOf(LocalDate.now()));
-        return "admin/account-transaction/update-out";
+        modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForOut(accountTransaction));
+        modelAndView.addObject("admins", adminService.getAll());
+        modelAndView.addObject("transactionPurposes", transactionPurposeService.getAll());
+        modelAndView.addObject("maxId", accountTransactionService.getNumber());
+        modelAndView.addObject("fromDate", Date.valueOf(LocalDate.now()));
+
+        return modelAndView;
     }
+
     @GetMapping("/filter/{number}")
-    public String filter(@ModelAttribute AccountTransactionForViewDTO accountTransactionForViewDTO, @PathVariable("number")int number, Model model){
-        List<AccountTransactionForViewDTO> accountTransactions = accountTransactionMapper.toDtoForViewList(accountTransactionService.getAll());
-
-        if (accountTransactionForViewDTO.getId() != null) {
-            accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getId() != null && dto.getId().toString().contains(accountTransactionForViewDTO.getId().toString()))
-                    .collect(Collectors.toList());
-        }
-        if (!accountTransactionForViewDTO.getDate().isBlank()) {
-            accountTransactions = accountTransactionService.filterByDateRange(accountTransactions, accountTransactionForViewDTO.getDate());
-        }
-        if (accountTransactionForViewDTO.getScoreNumber() != null) {
-            accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getScoreNumber() != null && dto.getScoreNumber().contains(accountTransactionForViewDTO.getScoreNumber()))
-                    .collect(Collectors.toList());
-        }
-        if (!accountTransactionForViewDTO.getTransactionPurposeName().isBlank()) {
-            accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getTransactionPurposeName() != null && dto.getTransactionPurposeName().contains(accountTransactionForViewDTO.getTransactionPurposeName()))
-                    .collect(Collectors.toList());
-        }
-        if (accountTransactionForViewDTO.getAdminName() != null) {
-            accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getAdminName() != null && dto.getAdminName().contains(accountTransactionForViewDTO.getAdminName()))
-                    .collect(Collectors.toList());
-        }
-        if(accountTransactionForViewDTO.getIsIncome() != null){
-            accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getIsIncome() != null && dto.getIsIncome() == accountTransactionForViewDTO.getIsIncome())
-                    .collect(Collectors.toList());
-        }
-        if(accountTransactionForViewDTO.getAddToStats() != null){
-            accountTransactions = accountTransactions.stream()
-                    .filter(dto -> dto.getAddToStats() != null && dto.getAddToStats() == accountTransactionForViewDTO.getAddToStats())
-                    .collect(Collectors.toList());
-        }
-        model.addAttribute("accountTransaction", accountTransactionForViewDTO);
-        model.addAttribute("accountTransactionList", accountTransactions);
-        model.addAttribute("transactionPurposeList", transactionPurposeService.getAll());
-        model.addAttribute("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
-        model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
-        return "admin/account-transaction/get-all";
+    public ModelAndView filter(@ModelAttribute AccountTransactionForViewDTO accountTransactionForViewDTO, @PathVariable("number") int number) {
+        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/get-all");
+        modelAndView.addObject("accountTransaction", accountTransactionForViewDTO);
+        modelAndView.addObject("accountTransactionList", accountTransactionService.getPage(number, modelAndView, accountTransactionService.filter(accountTransactionForViewDTO, accountTransactionMapper.toDtoForViewList(accountTransactionService.getAll()))));
+        modelAndView.addObject("transactionPurposeList", transactionPurposeService.getAll());
+        modelAndView.addObject("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
+        modelAndView.addObject("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
+        return modelAndView;
     }
 
-
+    @GetMapping("/excel")
+    public ResponseEntity<byte[]> excel(HttpServletResponse response) throws IOException {
+        accountTransactionService.excel(response);
+        return ResponseEntity.ok().build();
+    }
 }

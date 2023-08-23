@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class FlatServiceImpl implements FlatService {
@@ -75,5 +77,47 @@ public class FlatServiceImpl implements FlatService {
     @Override
     public int getMaxId() {
         return Math.toIntExact(flatRepository.findMaxId());
+    }
+    public List<FlatDTO> filter(FlatDTO flatDTO, List<FlatDTO> flatDTOS, Boolean rest){
+        if(flatDTO.getNumber() != null){
+            flatDTOS = flatDTOS.stream()
+                    .filter(dto -> dto.getNumber() != null && dto.getNumber().toString().contains(flatDTO.getNumber().toString()))
+                    .collect(Collectors.toList());
+        }
+        if(flatDTO.getHouse() != null){
+            flatDTOS = flatDTOS.stream()
+                    .filter(dto -> dto.getHouse() != null && dto.getHouse().equals(flatDTO.getHouse()))
+                    .collect(Collectors.toList());
+        }
+        if(flatDTO.getSection() != null){
+            flatDTOS = flatDTOS.stream()
+                    .filter(dto -> dto.getSection() != null && dto.getSection().equals(flatDTO.getSection()))
+                    .collect(Collectors.toList());
+        }
+        if(flatDTO.getFloor() != null){
+            flatDTOS = flatDTOS.stream()
+                    .filter(dto -> dto.getFloor() != null && dto.getFloor().equals(flatDTO.getFloor()))
+                    .collect(Collectors.toList());
+        }
+        if(flatDTO.getUser() != null){
+            flatDTOS = flatDTOS.stream()
+                    .filter(dto -> dto.getUser() != null && dto.getUser().equals(flatDTO.getUser()))
+                    .collect(Collectors.toList());
+        }
+        if(rest != null){
+            if(rest){
+                flatDTOS = flatDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && Math.toIntExact(dto.getBalance()) < 0)
+                        .collect(Collectors.toList());
+
+            }
+            else {
+                flatDTOS = flatDTOS.stream()
+                        .filter(dto -> dto.getBalance() != null && Math.toIntExact(dto.getBalance()) >= 0)
+                        .collect(Collectors.toList());
+
+            }
+        }
+        return flatDTOS;
     }
 }

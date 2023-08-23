@@ -15,19 +15,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Новая квартира
+                <span th:text="#{Новая_квартира}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Квартири</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Квартиры}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Новая квартира
+                    <span th:text="#{Новая_квартира}"></span>
+
                 </li>
             </ol>
         </div>
@@ -37,29 +42,31 @@
                 <div class="card-body">
                         <div class="row" style="font-weight: bold">
                             <div class="col">
-                                Номер квартиры
+                                <span th:text="#{Номер_квартиры}"></span>
+
                                 <input type="number" class="form-control" th:field="*{number}">
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
-                                Площадь (кв.м.)
+                                <span th:text="#{Площадь}"></span>
                                 <input type="number" class="form-control" th:field="*{area}">
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('area')}" th:errors="*{area}"></div>
-                                Дом
+                                <span th:text="#{Дом}"></span>
                                 <select class="form-select" name="house" id="houseSelect">
                                     <option value="">Вибрати...</option>
                                     <option th:each="house:${houses}" th:value="${house.getId()}" th:text="${house.name}"></option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('house')}" th:errors="*{house}"></div>
-                                Этаж
+                                <span th:text="#{Этаж}"></span>
+
                                 <select class="form-select" name="floor">
                                     <option value="">Вибрати...</option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('floor')}" th:errors="*{floor}"></div>
-                                Секция
+                                <span th:text="#{Секция}"></span>
                                 <select class="form-select" name="section">
                                     <option value="">Вибрати...</option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('section')}" th:errors="*{section}"></div>
-                                Владелец
+                                <span th:text="#{Владелец}"></span>
                                 <select class="form-select" name="user"
                                         aria-label="Default select example">
                                     <option value="">Вибрати...</option>
@@ -67,7 +74,7 @@
                                     </option>
                                 </select>
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('user')}" th:errors="*{user}"></div>
-                                Тариф
+                                <span th:text="#{Тариф}"></span>
                                 <select class="form-select" name="tariff"
                                         aria-label="Default select example">
                                     <option value="">Вибрати...</option>
@@ -76,7 +83,8 @@
                                 <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('tariff')}" th:errors="*{tariff}"></div>
                             </div>
                             <div class="col">
-                                Лицевой счет
+                                <span th:text="#{Лицевой_счет}"></span>
+
                                 <input type="number" class="form-control" th:field="*{scoreNumber}">
                                 <select class="form-select" name="scoreNumber"
                                         aria-label="Default select example">
@@ -90,9 +98,11 @@
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success float-right" formaction="/admin/flat/copy">Сохранить и добавить новую</button>
-                    <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px" formaction="/admin/flat/add">Сохранить</button>
+                    <button type="submit" class="btn btn-success float-right" style="background-color: #089a08;margin-right: 10px" formaction="/admin/flat/add">
+                        <span th:text="#{Сохранить}"></span>
+                        </button>
                     <a href="/admin/flat/index/1" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
-                        Отменить
+                        <span th:text="#{Отменить}"></span>
                     </a>
                 </div>
                 </form>

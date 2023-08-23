@@ -15,19 +15,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Лицевой счет
+                <span th:text="#{Лицевой_счет}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/account/index/1" class="text-for-breadcrumb">Лицевые счета</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a href="/admin/account/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Лицевые_счета}"></span>
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Лицевой счет №[[${scoreDto.number}]]
+                    <span th:text="#{Лицевой_счет}"></span>
+                     №[[${scoreDto.number}]]
                 </li>
             </ol>
         </div>
@@ -38,26 +43,29 @@
             </div>
             <div class="card">
                 <div class="card-body" style="font-weight: bold">
-                    Просмотр лицевого счета
+                    <span th:text="#{Просмотр_лицевого_счета}"></span>
                     <div class="float-right">
                         <a class="btn btn-outline-secondary" href="">
-                            <i class="fa fa-dollar-sign"></i>   Принять платеж
+                            <i class="fa fa-dollar-sign"></i>
+                            <span th:text="#{Принять_платеж}"></span>
                         </a>
                         <a class="btn btn-outline-secondary" href="">
-                            <i class="fa fa-file"></i>   Оформить квитанцию
+                            <i class="fa fa-file"></i>
+                            <span th:text="#{Оформить_квитанцию}"></span>
                         </a>
                         <a class="btn btn-primary" th:href="@{/admin/account/edit/{id}(id=${scoreDto.getId()})}">
-                            Редактировать счет
+                            <span th:text="#{Редактировать_счет}"></span>
+
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-striped table-view"
+                    <table class="table table-bordered table-striped table-view"  th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                             <tr>
                                 <td>
-                                    Статус
+                                    <span th:text="#{Статус}"></span>
                                 </td>
                                 <td>
                                     <span th:switch="${scoreDto.getStatus()}">
@@ -68,7 +76,8 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Дом
+                                    <span th:text="#{Дом}"></span>
+
                                 </td>
                                 <td>
                                     <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${scoreDto.flat.house.getId()})}">[[${scoreDto.flat.house.name}]]</a><br/>
@@ -76,7 +85,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Секция
+                                    <span th:text="#{Секция}"></span>
                                 </td>
                                 <td>
                                     [[${scoreDto.flat.section.name}]]
@@ -84,7 +93,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Квартира
+                                    <span th:text="#{Квартира}"></span>
                                 </td>
                                 <td>
                                     <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${scoreDto.flat.id})}">[[${scoreDto.flat.number}]]</a><br/>
@@ -92,7 +101,8 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Владелец
+                                    <span th:text="#{Владелец}"></span>
+
                                 </td>
                                 <td>
                                     <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${scoreDto.flat.user.id})}">[[${scoreDto.flat.user.firstName}]]</a><br/>
@@ -101,7 +111,7 @@
                             </tr>
                             <tr>
                                 <td>
-                                    Остаток, грн.
+                                    <span th:text="#{Остаток_грн}"></span>
                                 </td>
                                 <td>
                                     [[${scoreDto.balance}]]
@@ -111,9 +121,9 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть показания счетчиков</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть приходы</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть квитанции</a>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/counter-data/counter-list/{id}(id=${scoreDto.flat.id})}">Посмотреть показания счетчиков</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account-transaction/filter/1?id=&date=&addToStats=&transactionPurposeName=&userName=&scoreNumber={id}&isIncome=(id=${scoreDto.id})}">Посмотреть приходы</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/invoice/filter/1?number=&status=&dateExample=&months=&flatNumber={id}&addToStats=(id=${scoreDto.flat.number})}">Посмотреть квитанции</a>
                 </div>
             </div>
         </section>

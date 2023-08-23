@@ -12,19 +12,26 @@
     <link rel="stylesheet" href="/style.css">
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Профиль владельца</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Профиль_владельца}"></span>
+                </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Владельцы
-                    квартир</a>
+                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">
+                    <span th:text="#{Владельцы_квартир}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Профиль владельца</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Профиль_владельца}"></span>
+                    </li>
             </ol>
         </div>
         <section class="content">
@@ -33,20 +40,22 @@
                     <div class="float-right">
                         <a class="btn btn-outline-secondary" th:href="@{/cabinet/{id}(id=${user.getId()})}">
                             <i class="fa fa-external-link-alt"></i>
+                            <span th:text="#{Перейти_в_кабинет}"></span>
                             Перейти в кабинет
                         </a>
                         <a class="btn btn-primary" th:href="@{/admin/user/edit/{id}(id=${user.getId()})}">
-                            Редактировать профиль
+                            <span th:text="#{Редактирование_профиль}"></span>
                         </a>
                     </div>
                 </div>
                 <div class="card-body">
-                    <table class="table table-bordered table-striped table-view"
+                    <table class="table table-bordered table-striped table-view" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                         <tr>
                             <td style="width: 50%">
-                                Статус
+                                <span th:text="#{Статус}"></span>
+
                             </td>
                             <td style="width: 50%">
                                 <span th:switch="${user.getStatus()}">
@@ -66,7 +75,8 @@
                         </tr>
                         <tr>
                             <td>
-                                Фамилия
+                                <span th:text="#{Фамилия}"></span>
+
                             </td>
                             <td th:text="${user.getLastName()}">
 
@@ -74,7 +84,8 @@
                         </tr>
                         <tr>
                             <td>
-                                Имя
+                                <span th:text="#{Имя}"></span>
+
                             </td>
                             <td th:text="${user.getFirstName()}">
 
@@ -82,7 +93,8 @@
                         </tr>
                         <tr>
                             <td>
-                                Отчество
+                                <span th:text="#{Отчество}"></span>
+
                             </td>
                             <td th:text="${user.getFathersName()}">
 
@@ -90,7 +102,8 @@
                         </tr>
                         <tr>
                             <td>
-                                Дата рождения
+                                <span th:text="#{Дата_рождения}"></span>
+
                             </td>
                             <td th:text="${user.getBirthday()}">
 
@@ -98,7 +111,7 @@
                         </tr>
                         <tr>
                             <td>
-                                О владельце(заметки)
+                                <span th:text="#{О_владельце}"></span>
                             </td>
                             <td th:text="${user.getDescription()}">
 
@@ -106,7 +119,7 @@
                         </tr>
                         <tr>
                             <td>
-                                Телефон
+                                <span th:text="#{Телефон}"></span>
                             </td>
                             <td th:text="${user.getPhone()}">
 
@@ -138,16 +151,26 @@
                         </tr>
                         </tbody>
                     </table>
-                    <p style="margin-top: 25px;">Квартиры</p>
-                    <table class="table table-bordered table-striped table-view"
+                    <p style="margin-top: 25px;">
+                        <span th:text="#{Квартиры}"></span>
+                        </p>
+                    <table class="table table-bordered table-striped table-view" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <thead>
                         <tr>
                             <th>№</th>
-                            <th>Дом</th>
-                            <th>Секция</th>
-                            <th>Квартира</th>
-                            <th>Лицевой счет</th>
+                            <th>
+                                <span th:text="#{Дом}"></span>
+                                </th>
+                            <th>
+                                <span th:text="#{Секция}"></span>
+                                </th>
+                            <th>
+                                <span th:text="#{Квартира}"></span>
+                                </th>
+                            <th>
+                                <span th:text="#{Лицевой_счет}"></span>
+                                </th>
                         </tr>
                         </thead>
                         <tbody>

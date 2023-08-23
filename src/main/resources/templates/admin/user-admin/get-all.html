@@ -29,18 +29,22 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Пользователи
+                <span th:text="#{Пользователи}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Пользователи
+                    <span th:text="#{Пользователи}"></span>
+
                 </li>
             </ol>
         </div>
@@ -53,7 +57,7 @@
                         <a href="/admin/user-admin/create" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px"
                            aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
-                            Создать пользователя
+                            <span th:text="#{Создать_пользователя}"></span>
                         </a>
                     </div>
                 </div>
@@ -61,21 +65,31 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/user-admin/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                        </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <form id="formSend" method="get" action="/admin/user-admin/filter/1" onsubmit="event.preventDefault()">
-                            <table class="table table-bordered table-hover table-striped table-sm"
+                            <table class="table table-bordered table-hover table-striped table-sm" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                                    style="font-size: 14px">
                                 <thead>
                                 <tr>
                                     <th>№</th>
-                                    <th>Пользователи</th>
-                                    <th>Роль</th>
-                                    <th>Телефон</th>
+                                    <th>
+                                        <span th:text="#{Пользователи}"></span>
+                                        </th>
+                                    <th>
+                                        <span th:text="#{Роль}"></span>
+                                        </th>
+                                    <th>
+                                        <span th:text="#{Телефон}"></span>
+                                        </th>
                                     <th>Email (логін)</th>
-                                    <th>Статус</th>
+                                    <th>
+                                        <span th:text="#{Статус}"></span>
+                                        </th>
                                     <th></th>
                                 </tr>
                                 <tr>
@@ -98,8 +112,10 @@
                                                 aria-label="Default select example">
                                             <option >
                                             </option>
-                                            <option th:each="status: ${allStatus}" th:value="${status.toString()}"  th:selected="${filter.getStatus() == status.toString()}"
-                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                            <option th:each="status: ${allStatus}"
+                                                    th:value="${status}"
+                                                    th:selected="${filter.getStatus() != null  &&  filter.getStatus().toString() == status.toString()}"
+                                                    th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'INACTIVE' ? 'Не активний' : #strings.toString(status) == 'DISABLED' ? 'Вимкнений' : ''}">
                                             </option>
                                         </select>
                                     </th>
@@ -115,7 +131,7 @@
                                     <td th:text="${admin.getPhone()}"></td>
                                     <td th:text="${admin.getEmail()}"></td>
                                     <td>
-                                        <span th:switch="${admin.getStatus()}">
+                                        <span th:switch="${admin.getStatus().toString()}">
                                             <span th:case="NEW" class="status status-new">Новий</span>
                                             <span th:case="ACTIVE" class="status status-active">Активний</span>
                                             <span th:case="DISABLED" class="status status-disabled">Відключений</span>
@@ -147,7 +163,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="card-footer" th:if="${max} > 0">
+                <div class="card-footer" th:if="${max} != null and ${max} > 0">
                     <ul class="pagination pagination-sm m-0 float-right">
                         <script>
                             var pageNumber = [[${current}]] - 1;

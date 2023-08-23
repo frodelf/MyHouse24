@@ -15,13 +15,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Платежные реквизиты
+                <span th:text="#{Платежные_реквизиты}"></span>
             </h4>
         </div>
         <section class="content">
@@ -29,21 +29,24 @@
                 <div class="card">
                     <div class="card-body">
                         <b>
+                            <span th:text="#{Название_компании}"></span>
                             Название компании
                             <input name="name" type="text" class="form-control"
                                    style="min-width: 60%; max-width: 60%;">
                             <br/>
-                            Информация
+                            <span th:text="#{Информация}"></span>
                             <input name="name" type="text" class="form-control"
                                    style="min-width: 60%; max-width: 60%; ">
                         </b>
                     </div>
                     <div class="card-footer">
                         <center>
-                            <button type="submit" class="btn btn-success">Сохранить</button>
+                            <button type="submit" class="btn btn-success">
+                                <span th:text="#{Сохранить}"></span>
+                                </button>
                             <a href="/admin/pay-company/index" class="btn btn-outline-secondary"
                                style="margin-right: 3px">
-                                Отменить
+                                <span th:text="#{Отменить}"></span>
                             </a>
                         </center>
                     </div>

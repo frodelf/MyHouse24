@@ -31,18 +31,21 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Владельцы квартир
+                <span th:text="#{Владельцы_квартир}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Владельцы квартир
+                    <span th:text="#{Владельцы_квартир}"></span>
                 </li>
             </ol>
         </div>
@@ -55,18 +58,22 @@
                         <button type="button" class="btn btn-success dropdown-toggle"
                                 style="width: 220px; margin-bottom: 20px"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" fdprocessedid="729zhf">
-                            Выберите действие
+                            <span th:text="#{Выберите_действие}"></span>
+
                         </button>
                         <ul class="dropdown-menu" style="width: 260px; font-size: 14px; margin-right: 15px">
                             <li><a class="text-secondary" href="/admin/user/add"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Добавить
-                                владельца кваартиры</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Добавить_владельца_кваартиры}"></span>
+                                </a></li>
                             <li><a class="text-secondary" href="/admin/account-transaction/create/out"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Отправить
-                                сообщение должникам</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Отправить_сообщение_должникам}"></span>
+                                </a></li>
                             <li><a class="text-secondary" href="/admin/user/invite"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">Отправить
-                                приглашение</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">
+                                <span th:text="#{Отправить_приглашение}"></span>
+                                </a></li>
                         </ul>
                     </div>
                 </div>
@@ -74,25 +81,42 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/user/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                        Очистить</a>
                 </div>
                 <div class="card-body">
                     <form id="formSend" method="get" action="/admin/user/filter/1"
                           onsubmit="event.preventDefault()">
                         <div class="table-responsive">
-                        <table class="table table-hover table-striped table-sm"
+                        <table class="table table-hover table-striped table-sm" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"v
                                style="font-size: 14px">
                             <thead>
                             <tr>
                                 <th style="min-width: 120px;">Id</th>
-                                <th style="min-width: 150px;">ФИО</th>
-                                <th style="min-width: 150px;">Телефон</th>
-                                <th style="min-width: 200px;">Email</th>
-                                <th style="min-width: 180px;">Дом</th>
-                                <th style="min-width: 180px;">Квартира</th>
-                                <th style="min-width: 130px;">Добавлен</th>
-                                <th style="min-width: 140px;">Статус</th>
-                                <th style="min-width: 140px;">Есть долг</th>
+                                <th style="min-width: 150px;">
+                                    <span th:text="#{ФИО}"></span>
+                                    </th>
+                                <th style="min-width: 150px;">
+                                    <span th:text="#{Телефон}"></span>
+                                    </th>
+                                <th style="min-width: 200px;">
+                                    Email</th>
+                                <th style="min-width: 180px;">
+                                    <span th:text="#{Дом}"></span>
+                                    </th>
+                                <th style="min-width: 180px;">
+                                    <span th:text="#{Квартира}"></span>
+                                    </th>
+                                <th style="min-width: 130px;">
+                                    <span th:text="#{Добавлен}"></span>
+                                    </th>
+                                <th style="min-width: 140px;">
+                                    <span th:text="#{Статус}"></span>
+                                    </th>
+                                <th style="min-width: 140px;">
+                                    <span th:text="#{Есть_долг}"></span>
+                                    </th>
                                 <th style="min-width: 100px;"></th>
                             </tr>
                             <tr>
@@ -109,16 +133,16 @@
                                             aria-label="Default select example">
                                         <option th:value="${house}" th:text="${house}">
                                         </option>
-                                        <option th:each="house:${houses}" th:value="${house}" th:text="${house}">
+                                        <option th:each="house:${houses}" th:value="${house.toString()}" th:text="${house}">
                                         </option>
                                     </select>
                                 </th>
                                 <th>
-                                    <select class="form-select" name="house" onchange="submitForm()"
+                                    <select class="form-select" name="flat" onchange="submitForm()"
                                             aria-label="Default select example">
                                         <option th:value="${flat}" th:text="${flat}">
                                         </option>
-                                        <option th:each="flat:${flats}" th:value="${flat}" th:text="${flat}">
+                                        <option th:each="flat:${flats}" th:value="${flat.number}" th:text="${flat.number}">
                                         </option>
                                     </select>
                                 </th>
@@ -207,7 +231,8 @@
                     <div class="row">
                         <div class="col">
                             <p>
-                                <b>Количество владельцев: <span th:text="${userCount}"></span></b>
+                                <b>
+                                    <span th:text="#{Количество_владельцев}"></span>: <span th:text="${userCount}"></span></b>
                             </p>
                         </div>
                         <div th:if="${max}>0">

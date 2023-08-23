@@ -31,18 +31,22 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Квартиры
+                <span th:text="#{Квартиры}"></span>
+
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Квартиры
+                    <span th:text="#{Квартиры}"></span>
+
                 </li>
             </ol>
         </div>
@@ -54,7 +58,7 @@
                     <div class="btn-group margin-bottom float-right">
                         <a href="/admin/flat/add" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px">
-                            Добавить квартиру
+                            <span th:text="#{Добавить_квартиру}"></span>
                         </a>
                     </div>
                 </div>
@@ -62,32 +66,40 @@
             <div class="card">
                 <div class="card-header">
                     <a href="/admin/flat/index/1"
-                       class="btn btn-outline-secondary float-right">Очистить</a>
+                       class="btn btn-outline-secondary float-right">
+                        <span th:text="#{Очистить}"></span>
+                        </a>
                 </div>
                 <div class="card-body">
                     <form id="formSend" method="get" action="/admin/flat/filter/1"  onsubmit="event.preventDefault()">
                     <div class="table-responsive">
-                        <table class="table table-hover"
+                        <table class="table table-hover table-striped" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                                style="font-size: 14px">
                             <thead>
                             <tr>
                                 <th style="min-width: 150px">
-                                    № Квартири
+                                    № <span th:text="#{Квартиры}"></span>
+
                                 </th>
                                 <th style="min-width: 190px">
-                                    Дом
+                                    <span th:text="#{Дом}"></span>
+
                                 </th>
                                 <th style="min-width: 190px">
-                                    Секция
+                                    <span th:text="#{Секция}"></span>
+
                                 </th>
                                 <th style="min-width: 190px">
-                                    Этаж
+                                    <span th:text="#{Этаж}"></span>
+
                                 </th>
                                 <th style="min-width: 190px">
-                                    Владелец
+                                    <span th:text="#{Владелец}"></span>
+
                                 </th>
                                 <th style="min-width: 190px">
-                                    Остаток (грн)
+                                    <span th:text="#{Остаток_грн}"></span>
+
                                 </th>
                                 <th style="min-width: 150px">
 
@@ -199,7 +211,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="col">
-                                Количество домов: <b th:text="${flatCount}"></b>
+                                <span th:text="#{Количество_домов}"></span>: <b th:text="${flatCount}"></b>
                             </div>
                             <div class="col">
                                 <div th:if="${max}>0">

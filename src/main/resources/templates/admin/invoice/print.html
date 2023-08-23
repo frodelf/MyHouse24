@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Печатная_форма_документа}"></span>
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a th:href="@{/admin/invoice/{id}(id = ${invoice.id})}"
+                                               class="text-for-breadcrumb">
+                    <span th:text="#{Квитанция}"></span>
+                     [[${invoice.number}]]</a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Печатная_форма_документа}"></span>
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="card">
+                <div class="card-header">
+                    <div class="text-for-breadcrumb">
+                        <h5>
+                            <span th:text="#{Список_шаблонов}"></span>
+
+                            <a href="/admin/invoice/template"
+                               class="btn btn-outline-secondary float-right">
+                                <span th:text="#{Настройка_шаблонов}"></span>
+                                </a>
+                        </h5>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div th:each="template : ${templates}">
+                        <div class="form-check">
+                            <input class="form-check-input" th:value="${template.id}" type="radio" name="selectTemplate" id="flexRadioDefault1" th:checked="${template.isMain == true}">
+                            <label class="form-check-label" for="flexRadioDefault1">
+                                <span th:text="${template.name}"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-outline-secondary float-right" style="margin-right: 10px">
+                        <span th:text="#{Отправить_на_e-mail}"></span>
+                    </a>
+                    <button onclick="downloadTemplate()" class="btn btn-success float-right" style="margin-right: 10px">
+                        <span th:text="#{Скачать}"></span>
+                        </button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script>
+    function downloadTemplate(){
+        var selectedTemplateId = document.querySelector('input[name="selectTemplate"]:checked').value;
+        console.log(selectedTemplateId);
+        $.ajax({
+            url: '/admin/invoice/download/' + selectedTemplateId,
+            method: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (data) {
+                var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var link = document.createElement('a');
+                link.href = window.URL.createObjectURL(blob);
+                link.download = 'template.xlsx';
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+            },
+        });
+    }
+</script>
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

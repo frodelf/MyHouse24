@@ -2,10 +2,12 @@ package com.avada.myHouse24.model;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class AccountTransactionForViewDTO {
     private Long id;
-    private String date;
+    private LocalDate date;
     private String userName;
     private String scoreNumber;
     private String transactionPurposeName;

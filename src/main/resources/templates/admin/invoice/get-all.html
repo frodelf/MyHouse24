@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
+    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('formSend');
+            var inputs = form.querySelectorAll('input');
+            for (var i = 0; i < inputs.length; i++) {
+                var input = inputs[i];
+                if (input.name !== 'selectedIntegers') {
+                    input.addEventListener('input', function () {
+                        this.form.isFormDirty = true;
+                    });
+                }
+            }
+            document.addEventListener('click', function (event) {
+                if (form.isFormDirty) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Квитанции_на_оплату}"></span>
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Квитанции_на_оплату}"></span>
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <form id="formSend" method="get" th:object="${filter}"
+                  action="/admin/invoice/filter/1"
+                  onsubmit="event.preventDefault()">
+                <div class="row">
+                    <div class="col-xs-12 col-lg-9">
+                        <div class="row">
+                            <div class="col-xs-12 col-md-4">
+                                <div class="small-box bg-green overflow-hidden">
+                                    <div class="inner">
+                                        <h3 id="cashboxBalance">0.00 грн</h3>
+                                        <p>
+                                            <span th:text="#{Состояние_кассы}"></span>
+                                            </p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-dollar-sign"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-4">
+                                <div class="small-box bg-blue overflow-hidden">
+                                    <div class="inner">
+                                        <h3 id="accountBalance">0.00 грн</h3>
+                                        <p>
+                                            <span th:text="#{Баланс_по_счетам}"></span>
+                                            </p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-md-4">
+                                <div class="small-box bg-red overflow-hidden">
+                                    <div class="inner">
+                                        <h3 id="accountDebts">0.00 грн</h3>
+                                        <p>
+                                            <span th:text="#{Задолженность_по_счетам}"></span>
+                                            </p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fa fa-dollar-sign" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-xs-12 col-lg-3">
+                        <div class="btn-group margin-bottom float-right ">
+                            <button type="button" class="btn btn-success dropdown-toggle" style="width: 230px;"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                    fdprocessedid="729zhf">
+                                <span th:text="#{Выберите_действие}"></span>
+                            </button>
+                            <ul class="dropdown-menu" style="width: 250px;">
+                                <li><a class="text-secondary" href="/admin/invoice/add"
+                                       style="padding-inline: 15px; display: block; text-decoration: none;">
+                                    <span th:text="#{Создать_общую_квитанцию}"></span>
+                                    </a></li>
+                                <li>
+                                    <a id="deleteLink" class="text-secondary" href="#"
+                                       style="padding-inline: 15px; display: block; text-decoration: none;">
+                                        <span th:text="#{Удалить}"></span>
+                                        </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <a href="/admin/invoice/index/1"
+                           class="btn btn-outline-secondary float-right">
+                            <span th:text="#{Очистить}"></span>
+                            </a>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}">
+                                <thead>
+                                <tr style="font-weight: bold">
+                                    <th style="min-width: 80px"></th>
+                                    <th style="min-width: 120px">№
+                                        <span th:text="#{квитанции}"></span>
+                                        </th>
+                                    <th style="min-width: 130px">
+                                        <span th:text="#{Статус}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Дата}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Месяц}"></span>
+                                        </th>
+                                    <th style="min-width: 200px">
+                                        <span th:text="#{Квартира}"></span>
+                                        </th>
+                                    <th style="min-width: 180px">
+                                        <span th:text="#{Владелец}"></span>
+                                        </th>
+                                    <th style="min-width: 160px">
+                                        <span th:text="#{Проведена}"></span>
+                                        </th>
+                                    <th style="min-width: 100px">
+                                        <span th:text="#{Сумма_грн}"></span>
+                                        </th>
+                                    <th style="min-width: 140px"></th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <input type="checkbox" name="selectedIntegers" id="selectAll"/>
+                                    </td>
+                                    <td><input type="number" class="form-control" th:field="*{number}"></td>
+                                    <td>
+                                        <select class="form-select" onchange="submitForm()" th:field="*{status}"
+                                                aria-label="Default select example" style="width: 90%">
+                                            <option value=""></option>
+                                            <option value="Оплачена">
+                                                <span th:text="#{Оплачена}"></span>
+                                                </option>
+                                            <option value="Частково оплачена">
+                                                <span th:text="#{Частково_оплачена}"></span>
+                                                </option>
+                                            <option value="Неоплачена">
+                                                <span th:text="#{Неоплачена}"></span>
+                                                </option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input type="date" class="form-control" name="dateExample" th:value="${dateExample}">
+                                    </td>
+                                    <td>
+                                        <input type="month" class="form-control" th:field="*{months}">
+                                    </td>
+                                    <td>
+                                        <input type="number" class="form-control" name="flatNumber" th:value="${flatNumber}">
+                                    </td>
+                                    <td>
+                                        <div th:if="${filter.user == null}">
+                                            <select id="mySelect2ForUsers" style="width: 90%;" onchange="submitForm()"
+                                                    th:field="*{user}">
+                                            </select>
+                                        </div>
+                                        <div th:if="${filter.user != null}">
+                                            <select id="mySelect2ForUsers" style="width: 90%;" onchange="submitForm()"
+                                                    th:field="*{user}">
+                                                <option th:text="${filter.user.firstName}" th:value="${filter.user.id}"></option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <select class="form-select" onchange="submitForm()" th:field="*{addToStats}"
+                                                aria-label="Default select example" style="width: 90%">
+                                            <option value=""></option>
+                                            <option value="true">Проведена</option>
+                                            <option value="false">Не проведена</option>
+                                        </select>
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                    <td>
+
+                                    </td>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="invoice : ${invoices}" class="clickable-row"
+                                    th:data-action="@{/admin/invoice/{id}(id=${invoice.getId()})}">
+                                    <td>
+                                        <input type="checkbox" name="selectedIntegers" th:value="${invoice.getId()}"
+                                               class="single-checkbox checkboxx"/>
+                                    </td>
+                                    <td th:text="${invoice.number}"></td>
+                                    <td>
+                                        <span th:switch="${invoice.status}">
+                                    <span th:case="'Оплачено'" class="status status-new">Оплачено</span>
+                                    <span th:case="'Частично оплачено'"
+                                          class="status status-active">Частично оплачено</span>
+                                    <span th:case="'Не оплачено'" class="status status-disabled">Не оплачено</span>
+                                </span>
+                                    </td>
+                                    <td th:text="${invoice.date}"></td>
+                                    <td th:text="${invoice.months}"></td>
+                                    <td>[[${invoice.flat.number}]] [[${invoice.flat.house.name}]]</td>
+                                    <td th:text="${invoice.flat.user.firstName}"></td>
+                                    <td>
+                                        <span th:switch="${invoice.addToStats}">
+                                            <span th:case="true" class="status status-new">Проведена</span>
+                                            <span th:case="false" class="status status-disabled">Не проведена</span>
+                                        </span>
+                                    </td>
+                                    <td th:text="${invoice.sum}"></td>
+                                    <td>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/invoice/copy/{id}(id=${invoice.getId()})}"
+                                           title="Копировать">
+                                            <i class="fa fa-clone"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/invoice/edit/{id}(id=${invoice.getId()})}"
+                                           title="Редактировать">
+                                            <i class="fa fa-pencil-alt"></i>
+                                        </a>
+                                        <a class="btn btn-default btn-sm"
+                                           th:href="@{/admin/invoice/delete/{id}(id=${invoice.getId()})}"
+                                           title="Удалить">
+                                            <i class="fa fa-trash"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col">
+                            </div>
+                            <div class="col">
+                                <div th:if="${max}>0">
+                                    <div class="col">
+                                        <ul class="pagination pagination-sm m-0 float-right">
+                                            <script>
+                                                var pageNumber = [[${current}]] - 1;
+                                                var afterQuestionMark = '';
+                                                if (window.location.href.includes('filter')) {
+                                                    var parts = window.location.href.split('?');
+                                                    afterQuestionMark = '?' + parts[1];
+                                                    var baseUrl = '/admin/invoice/filter/';
+                                                } else {
+                                                    var baseUrl = '/admin/invoice/index/';
+                                                }
+
+                                                if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                            </script>
+                                            <ul class="pagination pagination-sm m-0 float-right"
+                                                id="pagination-example">
+                                                <script src="/pagination.js" data-url="admin/invoice/index/"
+                                                        th:current="${current}"
+                                                        th:max="${max+1}"></script>
+                                            </ul>
+                                            <script>
+                                                var pageNumber = [[${current}]] + 1;
+                                                var afterQuestionMark = '';
+                                                if (window.location.href.includes('filter')) {
+                                                    var parts = window.location.href.split('?');
+                                                    afterQuestionMark = '?' + parts[1];
+                                                    var baseUrl = '/admin/invoice/filter/';
+                                                } else {
+                                                    var baseUrl = '/admin/invoice/index/';
+                                                }
+                                                console.log([[${current}]])
+                                                if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                            </script>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script>
+    var checkboxes = document.querySelectorAll('.checkboxx');
+
+    checkboxes.forEach(function (checkbox) {
+        checkbox.onclick = function (event) {
+            event.stopPropagation();
+        };
+    });
+    document.getElementById('deleteLink').addEventListener('click', function (event) {
+        event.preventDefault();
+
+        var selectedCheckboxes = document.querySelectorAll('input[name="selectedIntegers"]:checked');
+        var selectedValues = Array.from(selectedCheckboxes).map(function (checkbox) {
+            return parseInt(checkbox.value);
+        });
+
+        // Перевірте, чи є вибрані пункти
+        if (selectedValues.length > 0) {
+            // Створюємо форму
+            var form = document.createElement('form');
+            form.method = 'GET';
+            form.action = '/admin/invoice/deleteAllByCheckBox'; // Задайте правильний URL контролера
+
+            // Додаємо вибрані значення у вигляді параметрів до форми
+            selectedValues.forEach(function (value) {
+                var input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'selectedIntegers';
+                input.value = value;
+                form.appendChild(input);
+            });
+            var checkboxes = form.querySelectorAll('input[name="selectedIntegers"]');
+            for (var i = 0; i < checkboxes.length; i++) {
+                var checkbox = checkboxes[i];
+                if (checkbox.value === 'NaN') {
+                    checkbox.parentNode.removeChild(checkbox);
+                }
+            }
+            document.body.appendChild(form);
+            form.submit();
+        } else {
+            alert("Будь ласка, виберіть хоча б один чекбокс.");
+        }
+    });
+</script>
+<script>
+    $('#mySelect2ForUsers').select2({
+        ajax: {
+            url: '/admin/user/get-users',
+            data: function (params) {
+                var query = {
+                    _search: params.term || '',
+                    _page: params.page || 1
+                };
+                return query;
+            }
+        }
+    }).trigger('select2:open');
+</script>
+<script th:inline="javascript">
+    document.querySelector("#selectAll").addEventListener("click", function () {
+        var checkboxes = document.querySelectorAll(".single-checkbox");
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = document.querySelector("#selectAll").checked;
+        });
+    });
+</script>
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

@@ -1,6 +1,7 @@
 package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.AdminMapper;
 import com.avada.myHouse24.model.AdminForAddDTO;
@@ -79,7 +80,9 @@ public class AdminController {
     public String edit(@ModelAttribute("adminModel") @Valid AdminForAddDTO admin, BindingResult bindingResult, @PathVariable("id")long id, Model model){
         if(bindingResult.hasErrors()){
             model.addAttribute("admin", adminMapper.toDtoForAdd(adminService.getById(id)));
-            if(!admin.getPassword().isBlank() && !admin.getPassword().equals(admin.getPasswordAgain()))model.addAttribute("passwordAgainError", "Паролі не співпадають");
+            if(!admin.getPassword().isBlank()
+                    && !admin.getPassword().equals(admin.getPasswordAgain())
+            )model.addAttribute("passwordAgainError", "Паролі не співпадають");
             return "admin/user-admin/edit";
         }
         Admin result = adminService.getById(id);
@@ -91,36 +94,21 @@ public class AdminController {
     }
     @GetMapping("/filter/{id}")
     public String filter(@ModelAttribute AdminForViewDTO adminForViewDto, @PathVariable("id")int id, Model model){
-        List<AdminForViewDTO> admins = adminMapper.toDtoListForView(adminService.getAll());
-        if(!adminForViewDto.getFullName().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(adminForViewDto.getFullName()))
-                    .collect(Collectors.toList());
-        }
-        if(!adminForViewDto.getRole().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getRole() != null && dto.getRole().contains(adminForViewDto.getRole()))
-                    .collect(Collectors.toList());
-        }
-        if(!adminForViewDto.getPhone().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(adminForViewDto.getPhone()))
-                    .collect(Collectors.toList());
-        }
-        if(!adminForViewDto.getEmail().isBlank()){
-            admins = admins.stream()
-                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(adminForViewDto.getEmail()))
-                    .collect(Collectors.toList());
-        }
-        if (adminForViewDto.getStatus() != null) {
-            admins = admins.stream()
-                    .filter(dto -> dto.getStatus() != null && dto.getStatus() == adminForViewDto.getStatus())
-                    .collect(Collectors.toList());
-        }
         model.addAttribute("allStatus", UserStatus.values());
         model.addAttribute("roles", roleService.getAll());
         model.addAttribute("filter", adminForViewDto);
-        model.addAttribute("admins", adminService.getPage(id, model, admins).getContent());
+        model.addAttribute("admins", adminService.getPage(id, model, adminService.filter(adminForViewDto, adminMapper.toDtoListForView(adminService.getAll()))).getContent());
         return "admin/user-admin/get-all";
+    }
+    @GetMapping("/change/theme/{theme}")
+    @ResponseBody
+    public void changeTheme(@PathVariable("theme")String theme){
+        Admin admin = adminService.getAuthAdmin();
+        if(theme.equals("light")){
+            admin.setTheme(Theme.LIGHT);
+        } else if (theme.equals("dark")) {
+            admin.setTheme(Theme.DARK);
+        }
+        adminService.save(admin);
     }
 }

@@ -1,5 +1,6 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.Tariff;
 import com.avada.myHouse24.mapper.AdditionalServiceMapper;
 import com.avada.myHouse24.mapper.TariffMapper;
 import com.avada.myHouse24.model.TariffDTO;
@@ -95,5 +96,10 @@ public class TariffController {
         }
         tariffService.save(tariffDTO);
         return "redirect:/admin/tariff/index";
+    }
+    @GetMapping("/getTariffById/{id}")
+    @ResponseBody
+    public Tariff getTariffById(@PathVariable("id")long id){
+        return tariffService.getById(id);
     }
 }

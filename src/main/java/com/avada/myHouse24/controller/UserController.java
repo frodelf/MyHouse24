@@ -1,11 +1,14 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.FlatMapper;
 import com.avada.myHouse24.mapper.UserMapper;
+import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.model.UserForAddDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
+import com.avada.myHouse24.services.impl.AmazonS3Service;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
@@ -14,6 +17,7 @@ import com.avada.myHouse24.util.ImageUtil;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +27,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -33,6 +40,7 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
+    private final AmazonS3Service amazonS3Service;
     private final HouseServiceImpl houseService;
     private final UserMapper userMapper;
     private final EmailService emailService;
@@ -81,7 +89,7 @@ public class UserController {
         user.setStatus(UserStatus.NEW);
         user.setFromDate(Date.valueOf(LocalDate.now()));
         user.setRoles(roleService.getById(1));
-        user.setImage(ImageUtil.imageForUser(user, image));
+        user.setImage(amazonS3Service.uploadFile(image));
         userService.save(user);
         return "redirect:/admin/user/index/1";
     }
@@ -101,7 +109,6 @@ public class UserController {
             model.addAttribute("user", userMapper.toDtoForAdd(userService.getById(id)));
             return "admin/user/edit";
         }
-        User user = userService.getById(id);
         User userResult = userMapper.toEntityForAdd(userDTO);
         if (!userDTO.getPassword().equals("")) {
             if (!userDTO.getPassword().equals(userDTO.getPasswordAgain())) {
@@ -109,10 +116,10 @@ public class UserController {
                 model.addAttribute("passwordAgainError", "Паролі не співпадають");
                 return "admin/user/add";
             }
-            user.setPassword(userDTO.getPassword());
+            userResult.setPassword(userDTO.getPassword());
         }
-        userResult.setPassword(user.getPassword());
-        userResult.setImage(ImageUtil.imageForUser(user, image));
+        amazonS3Service.deleteFile(userService.getById(userResult.getId()).getImage());
+        userResult.setImage(amazonS3Service.uploadFile(image));
         userService.save(userResult);
         return "redirect:/admin/user/index/1";
     }
@@ -148,69 +155,10 @@ public class UserController {
     }
 
     @GetMapping("/filter/{page}")
-    public String filter(@ModelAttribute UserForViewDTO userForViewDTO, @RequestParam(value = "dateTest", required = false, defaultValue = "1000-01-01") Date date, @RequestParam(value = "houses", defaultValue = "")String house,
+    public String filter(@ModelAttribute UserForViewDTO userForViewDTO, @RequestParam(value = "dateTest", required = false, defaultValue = "1000-01-01") Date date, @RequestParam(value = "house", defaultValue = "")String house,
                          @RequestParam(value = "flat", defaultValue = "")String flat, @PathVariable("page")int page, Model model) {
-        if (date.equals(new Date(2023, 01, 01)))
-            userForViewDTO.setDate(date);
-
-        List<UserForViewDTO> users = userMapper.toDtoListForView(userService.getAll());
-        if(date != null && date.getYear() != -900){
-            userForViewDTO.setDate(date);
-        }
-        if (!userForViewDTO.getId().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getId() != null && dto.getId().contains(userForViewDTO.getId()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getFullName().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(userForViewDTO.getFullName()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getPhone().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(userForViewDTO.getPhone()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getEmail().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(userForViewDTO.getEmail()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!house.isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getHouses().containsAll(userForViewDTO.getHouses()))
-                    .collect(Collectors.toList());
-        }
-
-        if (!flat.isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getFlats().containsAll(userForViewDTO.getFlats()))
-                    .collect(Collectors.toList());
-        }
-        if (userForViewDTO.getDate() != null) {
-            users = users.stream()
-                    .filter(dto -> dto.getDate() != null && dto.getDate().equals(date))
-                    .collect(Collectors.toList());
-        }
-
-        if (!userForViewDTO.getStatus().isBlank()) {
-            users = users.stream()
-                    .filter(dto -> dto.getStatus() != null && dto.getStatus().equals(userForViewDTO.getStatus()))
-                    .collect(Collectors.toList());
-        }
-
-        if (userForViewDTO.getIsDebt() != null) {
-            users = users.stream()
-                    .filter(dto -> dto.getIsDebt() != null && dto.getIsDebt().equals(userForViewDTO.getIsDebt()))
-                    .collect(Collectors.toList());
-        }
         model.addAttribute("filter", userForViewDTO);
-        model.addAttribute("users", userService.getPage(page, model, users));
+        model.addAttribute("users", userService.getPage(page, model, userService.filter(userForViewDTO, userMapper.toDtoListForView(userService.getAll()), date, flat, house)));
         model.addAttribute("userCount", userService.getAll().size());
         model.addAttribute("houses", houseService.getAllName());
         if(!house.isBlank())model.addAttribute("flats", houseService.getByName(house).getFlats());
@@ -218,5 +166,20 @@ public class UserController {
         model.addAttribute("flat", flat);
         model.addAttribute("allStatus", UserStatus.values());
         return "admin/user/get-all";
+    }
+    @GetMapping("/get-users")
+    public ResponseEntity<Map<String, Object>> getAllUsers(@RequestParam("_page") int page,
+                                                            @RequestParam("_search") String search){
+        int pageSize = 10;
+        List<User> users = userService.forSelect(page, pageSize, search);
+        List<Select2Option> select2Options = new ArrayList<>();
+        for (User user : users) {
+            select2Options.add(new Select2Option(user.getId(), user.getFirstName()));
+        }
+        int totalResults = 10;
+        Map<String, Object> response = new HashMap<>();
+        response.put("results", select2Options);
+        response.put("pagination", Map.of("more", (page * pageSize) < totalResults));
+        return ResponseEntity.ok(response);
     }
 }
