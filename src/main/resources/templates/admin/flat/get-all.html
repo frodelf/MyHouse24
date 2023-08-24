@@ -214,7 +214,7 @@
                                 <span th:text="#{Количество_домов}"></span>: <b th:text="${flatCount}"></b>
                             </div>
                             <div class="col">
-                                <div th:if="${max}>0">
+                                <div th:if="${max}!=null and ${max}>0">
                                     <div class="col">
                                         <ul class="pagination pagination-sm m-0 float-right">
                                             <script>

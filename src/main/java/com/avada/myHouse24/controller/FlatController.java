@@ -147,8 +147,7 @@ public class FlatController {
     @GetMapping("/getFlatByScore/{id}")
     @ResponseBody
     public Flat getFlatByScore(@PathVariable("id")long id){
-        Flat flat = scoreService.getById(id).getFlat();
-        return flat;
+        return scoreService.getById(id).getFlat();
     }
     @GetMapping("/getFlatsByFlat/{id}")
     @ResponseBody
