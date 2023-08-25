@@ -86,7 +86,6 @@ public class TariffController {
     @PostMapping("/copy")
     public String cloneById(@ModelAttribute("tariffDTO") @Valid TariffDTO tariffDTO, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
-            model.addAttribute("tariffDTO", tariffDTO);
             model.addAttribute("services", additionalServiceMapper.toDtoList(additionalService.getAll()));
             model.addAttribute("index", tariffDTO.getAdditionalServiceForTariffDTOS().size());
             return "admin/tariff/edit";
