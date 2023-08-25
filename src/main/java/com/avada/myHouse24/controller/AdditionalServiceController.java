@@ -11,6 +11,7 @@ import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.model.UnitOfMeasurementDTO;
 import com.avada.myHouse24.services.impl.AdditionalServiceImpl;
 import com.avada.myHouse24.services.impl.UnitOfMeasurementServiceImpl;
+import com.avada.myHouse24.validator.AdditionalServiceValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -43,24 +44,8 @@ public class AdditionalServiceController {
     }
     @PostMapping("/add")
     public String add(@ModelAttribute("additionalServiceListDTO")AdditionalServiceListDTO additionalServiceListDTO, Model model){
-        boolean valid = false;
-        if(additionalServiceListDTO.getServices() != null)for (AdditionalServiceDTO service : additionalServiceListDTO.getServices()) {
-            if(service.getName() == null || service.getName().isBlank()){
-                service.setError("Ім'я повино бути вказано");
-                valid = true;
-            }
-            if(service.getUnitOfMeasurementName() == null || service.getUnitOfMeasurementName().equals("Вибрати") || service.getUnitOfMeasurementName().isBlank()){
-                service.setError("Одиниці вимірювання повинні бути вказані");
-                valid = true;
-            }
-        }
-        if(additionalServiceListDTO.getUnitOfMeasurementNames() != null)for (UnitOfMeasurementDTO unitOfMeasurementName : additionalServiceListDTO.getUnitOfMeasurementNames()) {
-            if(unitOfMeasurementName.getName() == null  ||  unitOfMeasurementName.getName().isBlank()){
-                unitOfMeasurementName.setError("Назва повина бути вказано");
-                valid = true;
-            }
-        }
-        if (valid){
+        AdditionalServiceValidator additionalServiceValidator = new AdditionalServiceValidator();
+        if (additionalServiceValidator.valid(additionalServiceListDTO)){
             model.addAttribute("services", additionalServiceListDTO.getServices());
             model.addAttribute("units", additionalServiceListDTO.getUnitOfMeasurementNames());
             return "admin/service/get-all";

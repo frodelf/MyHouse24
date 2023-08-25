@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -68,6 +69,8 @@ class AdditionalServiceControllerTest {
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void add() throws Exception {
         AdditionalServiceListDTO additionalServiceListDTO = new AdditionalServiceListDTO();
+        additionalServiceListDTO.setServices(new ArrayList<>());
+        additionalServiceListDTO.setUnitOfMeasurementNames(new ArrayList<>());
         when(unitOfMeasurementMapper.toEntityList(anyList())).thenReturn(new ArrayList<>());
         when(additionalServiceMapper.toEntityList(anyList())).thenReturn(new ArrayList<>());
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/service/add")
@@ -75,6 +78,24 @@ class AdditionalServiceControllerTest {
                         .flashAttr("additionalServiceListDTO", additionalServiceListDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/service/index"));
+
+        AdditionalServiceDTO additionalServiceDTO = new AdditionalServiceDTO();
+        additionalServiceDTO.setId("1");
+        additionalServiceDTO.setShowInCounter(true);
+        additionalServiceDTO.setName("additional service's name");
+        additionalServiceListDTO.setServices(Arrays.asList(additionalServiceDTO));
+
+        additionalServiceDTO.setUnitOfMeasurementName("asdf");
+
+        UnitOfMeasurementDTO unitOfMeasurementDTO = new UnitOfMeasurementDTO();
+        unitOfMeasurementDTO.setId("1");
+        additionalServiceListDTO.setUnitOfMeasurementNames(Arrays.asList(unitOfMeasurementDTO));
+
+//        mockMvc.perform(MockMvcRequestBuilders.post("/admin/service/add")
+//                        .with(csrf())
+//                        .flashAttr("additionalServiceListDTO", additionalServiceListDTO))
+//                .andExpect(status().is3xxRedirection())
+//                .andExpect(redirectedUrl("/admin/service/index"));
 
         verify(unitOfMeasurementService, times(1)).saveList(anyList());
         verify(additionalService, times(1)).saveList(anyList());
