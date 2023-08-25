@@ -165,8 +165,8 @@
 </div>
 <script th:inline="javascript">
     var units = [[${units}]]
-    var unitsCounter = [[${units.size == null ? 0 : units.size}]]
-    var blockCounter = [[${services.size == null ? 0 : services.size}]]
+    var unitsCounter = [[${units == null || units.size == null ? 0 : units.size}]]
+    var blockCounter = [[${services == null || services.size == null ? 0 : services.size}]]
 </script>
 
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
