@@ -1,6 +1,7 @@
 package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.AdminMapper;
 import com.avada.myHouse24.model.AdminForAddDTO;
@@ -222,5 +223,19 @@ class AdminControllerTest {
         verify(adminService, times(1)).filter(any(), any());
         verify(adminMapper, times(1)).toDtoListForView(anyList());
         verify(roleService, times(1)).getAll();
+    }
+    @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
+    void changeTheme() throws Exception {
+        Admin admin = new Admin();
+        when(adminService.getAuthAdmin()).thenReturn(admin);
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/user-admin/change/theme/light"))
+                .andExpect(status().isOk());
+        assertEquals(Theme.LIGHT, admin.getTheme());
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/user-admin/change/theme/dark"))
+                .andExpect(status().isOk());
+        assertEquals(Theme.DARK, admin.getTheme());
+
     }
 }
