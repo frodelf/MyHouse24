@@ -19,15 +19,11 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -68,18 +64,27 @@ class CounterDataControllerTest {
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void filter() throws Exception {
-        CounterDataFilterDto filterDto = new CounterDataFilterDto();
+        CounterDataFilterDto filter = new CounterDataFilterDto();
+        filter.setHouse(1L);
+        filter.setHouseName("house name");
+        filter.setSection(2L);
+        filter.setSectionName("section name");
+        House house = new House();
+        house.setSections(new ArrayList<>());
+        house.setFlats(new ArrayList<>());
+        when(houseService.getById(anyLong())).thenReturn(house);
+
         when(counterDataService.filter(any())).thenReturn(new ArrayList<>());
         when(counterDataService.getPage(eq(1), any(Model.class), anyList()))
                 .thenReturn(new PageImpl<>(Collections.emptyList()));
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/filter/{page}", 1)
-                        .flashAttr("filter", filterDto))
+                        .flashAttr("filter", filter))
                 .andExpect(status().isOk())
                 .andExpect(view().name("/admin/counter-data/get-all"))
                 .andExpect(model().attributeExists("counters", "filter", "houses"));
 
-        verify(counterDataService, times(1)).filter(eq(filterDto));
+        verify(counterDataService, times(1)).filter(eq(filter));
     }
 
     @Test
@@ -180,10 +185,21 @@ class CounterDataControllerTest {
         counterData.setFlat(new Flat());
         List<CounterDataDTO> counterDataList = new ArrayList<>();
 
+        CounterDataFilterDto filter = new CounterDataFilterDto();
+        filter.setHouse(1L);
+        filter.setHouseName("house name");
+        filter.setSection(2L);
+        filter.setSectionName("section name");
+        House house = new House();
+        house.setSections(new ArrayList<>());
+        house.setFlats(new ArrayList<>());
+        when(houseService.getById(anyLong())).thenReturn(house);
+
         when(counterDataService.getById(anyLong())).thenReturn(counterData);
         when(counterDataService.filter(any(), anyString(), anyString(), any(), anyList())).thenReturn(counterDataList);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/counter-list/filter/{id}", 1)
+                        .flashAttr("filter", filter)
                         .param("number", "123")
                         .param("date", "1000-01-02")
                         .param("status", "ACTIVE"))
