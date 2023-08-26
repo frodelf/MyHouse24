@@ -15,6 +15,7 @@ import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.ScoreServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
 import com.avada.myHouse24.validator.ScoreValidator;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -127,5 +129,10 @@ public class ScoreController {
     @ResponseBody
     public Score getScoreByFlat(@PathVariable("id")long id){
         return flatService.getById(id).getScore();
+    }
+    @GetMapping("/excel")
+    public ResponseEntity<byte[]> excel(HttpServletResponse response) throws IOException {
+        scoreService.excel(response);
+        return ResponseEntity.ok().build();
     }
 }
