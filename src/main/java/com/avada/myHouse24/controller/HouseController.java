@@ -34,7 +34,6 @@ public class HouseController {
     private final FlatServiceImpl flatService;
     private final AdminServiceImpl adminService;
     private final HouseMapper houseMapper;
-    private final AmazonS3Service amazonS3Service;
 
     @GetMapping("/index/{page}")
     public String getAll(@PathVariable("page") int page, Model model) {

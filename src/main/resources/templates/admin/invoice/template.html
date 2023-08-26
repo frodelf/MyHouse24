@@ -15,7 +15,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}"
+      style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -26,11 +27,11 @@
             <ol class="breadcrumb" style="margin-right: 1%">
                 <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
-                    </a></li>
+                </a></li>
                 <li class="breadcrumb-item"><a href="/admin/invoice/index/1"
                                                class="text-for-breadcrumb">
                     <span th:text="#{Квитанции}"></span>
-                    </a></li>
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                     <span th:text="#{Настройка_шаблонов}"></span>
 
@@ -47,7 +48,9 @@
                         </h5>
                     </div>
                 </div>
-                <form method="post" action="/admin/invoice/template/add" enctype="multipart/form-data" th:object="${template}">
+                <form method="post" action="/admin/invoice/template/add" enctype="multipart/form-data"
+                      th:object="${template}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <div class="card-body">
                         <div class="col-xs-12 col-lg-12">
                             <div th:each="template : ${templates}">
@@ -60,38 +63,43 @@
                                                         <span th:text="#{Завантажити_шаблон}"></span>
 </span>
                                 </button>
-                                <a th:href="@{/admin/invoice/doDefault/{id}(id=${template.id})}" class="btn text-success"
-                                        style="text-decoration: none;margin-right: 10px; margin-left: 10px">
+                                <a th:href="@{/admin/invoice/doDefault/{id}(id=${template.id})}"
+                                   class="btn text-success"
+                                   style="text-decoration: none;margin-right: 10px; margin-left: 10px">
                                     <span>
                                                         <span th:text="#{Назначити_шаблоном_за_замовчуванням}"></span>
 </span>
                                 </a>
-                                <a class="btn text-danger" th:href="@{/admin/invoice/remove/{id}(id=${template.id})}"                                    style="text-decoration: none;">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                    <span>
+                                    <a class="btn text-danger"
+                                       th:href="@{/admin/invoice/remove/{id}(id=${template.id})}"
+                                       style="text-decoration: none;">
+                                        <span th:if="${template.isMain != true}">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
                                         <span th:text="#{Видалити_шаблон}"></span>
                                     </span>
-                                </a>
+                                    </a>
                                 <br/>
                                 <br/>
                             </div>
                         </div>
                         <b>
                             <span th:text="#{Загрузить_пользовательский_шаблон}"></span>
-                            </b>
-                        <input th:field="*{fileTemplate}" type="file" class="form-control" style="width: 35%;" accept=".xlsx">
+                        </b>
+                        <input th:field="*{fileTemplate}" type="file" class="form-control" style="width: 35%;"
+                               accept=".xlsx">
                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                              th:if="${#fields.hasErrors('fileTemplate')}" th:errors="*{fileTemplate}"></div>
                         <b>
                             <span th:text="#{Название}"></span>
-                            </b>
+                        </b>
                         <input type="text" class="form-control" th:field="*{name}" style="width: 35%;">
                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                              th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                     </div>
                     <div class="card-footer">
                         <center>
-                            <a href="/admin/invoice/template" class="btn btn-outline-secondary" style="margin-right: 10px">
+                            <a href="/admin/invoice/template" class="btn btn-outline-secondary"
+                               style="margin-right: 10px">
                                 <span th:text="#{Отменить}"></span>
 
                             </a>
@@ -112,7 +120,7 @@
     </footer>
 </div>
 <script>
-    function downloadTemplate(id){
+    function downloadTemplate(id) {
         $.ajax({
             url: '/admin/invoice/download/' + id,
             method: 'GET',
@@ -120,7 +128,7 @@
                 responseType: 'blob'
             },
             success: function (data) {
-                var blob = new Blob([data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+                var blob = new Blob([data], {type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
                 link.download = 'template.xlsx';

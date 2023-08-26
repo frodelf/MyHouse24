@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class HouseServiceImpl implements HouseService {
     private final HouseRepository houseRepository;
     private final AdminServiceImpl adminService;
-    private final AmazonS3Service amazonS3Service;
     @Override
     public House getByName(String name) {
         return houseRepository.findByName(name).get();
@@ -107,24 +106,24 @@ public class HouseServiceImpl implements HouseService {
         house.setName(houseDto.getName());
         house.setAddress(houseDto.getAddress());
         if(!houseDto.getImage().getOriginalFilename().isBlank() && houseDto.getImage().getOriginalFilename() != null && !houseDto.getImage().getOriginalFilename().isEmpty()){
-            if(houseExample.getImage() != null)amazonS3Service.deleteFile(houseExample.getImage());
-            house.setImage(amazonS3Service.uploadFile(houseDto.getImage()));
+            if(houseExample.getImage() != null)ImageUtil.deleteFile(houseExample.getImage());
+            house.setImage(ImageUtil.imageForHouse(houseDto.getImage()));
         }
         if(!houseDto.getImage1().getOriginalFilename().isBlank() && houseDto.getImage1().getOriginalFilename() != null && !houseDto.getImage1().getOriginalFilename().isEmpty()){
-            if(houseExample.getImage1() != null)amazonS3Service.deleteFile(houseExample.getImage1());
-            house.setImage1(amazonS3Service.uploadFile(houseDto.getImage1()));
+            if(houseExample.getImage1() != null)ImageUtil.deleteFile(houseExample.getImage1());
+            house.setImage1(ImageUtil.imageForHouse(houseDto.getImage1()));
         }
         if(!houseDto.getImage2().getOriginalFilename().isBlank() && houseDto.getImage2().getOriginalFilename() != null && !houseDto.getImage2().getOriginalFilename().isEmpty()){
-            if(houseExample.getImage2() != null)amazonS3Service.deleteFile(houseExample.getImage2());
-            house.setImage2(amazonS3Service.uploadFile(houseDto.getImage2()));
+            if(houseExample.getImage2() != null)ImageUtil.deleteFile(houseExample.getImage2());
+            house.setImage2(ImageUtil.imageForHouse(houseDto.getImage2()));
         }
         if(!houseDto.getImage3().getOriginalFilename().isBlank() && houseDto.getImage3().getOriginalFilename() != null && !houseDto.getImage3().getOriginalFilename().isEmpty()){
-            if(houseExample.getImage3() != null)amazonS3Service.deleteFile(houseExample.getImage3());
-            house.setImage3(amazonS3Service.uploadFile(houseDto.getImage3()));
+            if(houseExample.getImage3() != null)ImageUtil.deleteFile(houseExample.getImage3());
+            house.setImage3(ImageUtil.imageForHouse(houseDto.getImage3()));
         }
         if(!houseDto.getImage4().getOriginalFilename().isBlank() && houseDto.getImage4().getOriginalFilename() != null && !houseDto.getImage4().getOriginalFilename().isEmpty()){
-            if(houseExample.getImage4() != null)amazonS3Service.deleteFile(houseExample.getImage4());
-            house.setImage4(amazonS3Service.uploadFile(houseDto.getImage4()));
+            if(houseExample.getImage4() != null)ImageUtil.deleteFile(houseExample.getImage4());
+            house.setImage4(ImageUtil.imageForHouse(houseDto.getImage4()));
         }
         houseRepository.save(house);
     }

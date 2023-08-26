@@ -7,6 +7,7 @@ import com.avada.myHouse24.mapper.TemplateForInvoiceMapper;
 import com.avada.myHouse24.model.InvoiceDto;
 import com.avada.myHouse24.model.TemplateForInvoiceDTO;
 import com.avada.myHouse24.services.impl.*;
+import com.avada.myHouse24.util.ImageUtil;
 import com.avada.myHouse24.util.NumberUtil;
 import com.avada.myHouse24.validator.InvoiceValidator;
 import com.avada.myHouse24.validator.TemplateForInvoiceValidator;
@@ -17,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
@@ -28,7 +30,6 @@ import java.util.Objects;
 public class InvoiceController {
 
     private final InvoiceMapper invoiceMapper;
-    private final AmazonS3Service amazonS3Service;
     private final TariffServiceImpl tariffService;
     private final InvoiceServiceImpl invoiceService;
     private final InvoiceValidator invoiceValidator;
@@ -139,8 +140,8 @@ public class InvoiceController {
     }
     @GetMapping("/download/{id}")
     @ResponseBody
-    public byte[] download(@PathVariable("id")long id){
-        return amazonS3Service.downloadFile(templateForInvoiceService.getById(id).getFileName());
+    public byte[] download(@PathVariable("id")long id) throws IOException {
+        return ImageUtil.convertFileToBytes(templateForInvoiceService.getById(id).getFileName());
     }
     @GetMapping("/doDefault/{id}")
     public String doDefault(@PathVariable("id")long id){

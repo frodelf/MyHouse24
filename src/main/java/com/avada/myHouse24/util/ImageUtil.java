@@ -1,8 +1,6 @@
 package com.avada.myHouse24.util;
 
-import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.User;
-import com.avada.myHouse24.model.HouseForAddDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 //import org.springframework.mock.web.MockMultipartFile;
@@ -18,24 +16,37 @@ import java.util.Random;
 @Log4j2
 @RequiredArgsConstructor
 public class ImageUtil {
-    public static String imageForUser(User user, MultipartFile image) throws IOException {
+    private static final String pathToFolder = "E:/MyHouse24";
+    public static String imageForUser(User user, MultipartFile image) {
         String nameImage ="";
         try {
-            Path uploadPath = Paths.get("uploads/user");
+            Path uploadPath = Paths.get(pathToFolder+"/avatar");
             String originalFilename = image.getOriginalFilename();
             String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             nameImage = generateName() + format;
             Files.copy(image.getInputStream(), uploadPath.resolve(nameImage));
-            deleteImage(String.valueOf(uploadPath.resolve(user.getImage())));
         } catch (Exception e) {
             log.warn(e);
         }
-        return nameImage;
+        return "/uploads/avatar/"+nameImage;
     }
-    public static String imageForHouseForAdd(MultipartFile file) throws IOException {
+    public static String fileForTemplate(MultipartFile image) {
         String nameImage ="";
         try {
-            Path uploadPath = Paths.get("uploads/house");
+            Path uploadPath = Paths.get(pathToFolder+"/template");
+            String originalFilename = image.getOriginalFilename();
+            String format = originalFilename.substring(originalFilename.lastIndexOf("."));
+            nameImage = generateName() + format;
+            Files.copy(image.getInputStream(), uploadPath.resolve(nameImage));
+        } catch (Exception e) {
+            log.warn(e);
+        }
+        return "/uploads/template/"+nameImage;
+    }
+    public static String imageForHouse(MultipartFile file) {
+        String nameImage ="";
+        try {
+            Path uploadPath = Paths.get(pathToFolder+"/house");
             String originalFilename = file.getOriginalFilename();
             String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             nameImage = generateName() + format;
@@ -43,22 +54,9 @@ public class ImageUtil {
         } catch (Exception e) {
             log.warn(e);
         }
-        return nameImage;
+        return "/uploads/house/"+nameImage;
     }
-    public static String imageForHouseForEdit(MultipartFile file, String previousImageName) throws IOException {
-        String nameImage ="";
-        try {
-            Path uploadPath = Paths.get("uploads/house");
-            String originalFilename = file.getOriginalFilename();
-            String format = originalFilename.substring(originalFilename.lastIndexOf("."));
-            nameImage = generateName() + format;
-            Files.copy(file.getInputStream(), uploadPath.resolve(nameImage));
-            deleteImage(String.valueOf(uploadPath.resolve(previousImageName)));
-        } catch (Exception e) {
-            log.warn(e);
-        }
-        return nameImage;
-    }
+
 
     public static String generateName() {
         String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890";
@@ -70,9 +68,13 @@ public class ImageUtil {
         }
         return sb.toString();
     }
-
-    public static void deleteImage(String name) {
-        new File(name).delete();
+    public static byte[] convertFileToBytes(String filePath) throws IOException {
+        Path path = Paths.get(filePath.replace("/uploads", pathToFolder));
+        return Files.readAllBytes(path);
+    }
+    public static void deleteFile(String name) {
+        log.info(name.replace("/uploads", pathToFolder));
+        new File(name.replace("/uploads", pathToFolder)).delete();
     }
 
 //    public MultipartFile convertToMultipartFile(String filePath) throws IOException {

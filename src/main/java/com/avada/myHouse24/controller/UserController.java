@@ -1,6 +1,5 @@
 package com.avada.myHouse24.controller;
 
-import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.mapper.FlatMapper;
@@ -8,7 +7,6 @@ import com.avada.myHouse24.mapper.UserMapper;
 import com.avada.myHouse24.model.Select2Option;
 import com.avada.myHouse24.model.UserForAddDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
-import com.avada.myHouse24.services.impl.AmazonS3Service;
 import com.avada.myHouse24.services.impl.HouseServiceImpl;
 import com.avada.myHouse24.services.impl.RoleServiceImpl;
 import com.avada.myHouse24.services.impl.UserServiceImpl;
@@ -31,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Log4j2
 @Controller
@@ -40,7 +37,6 @@ import java.util.stream.Collectors;
 public class UserController {
     private final UserServiceImpl userService;
     private final RoleServiceImpl roleService;
-    private final AmazonS3Service amazonS3Service;
     private final HouseServiceImpl houseService;
     private final UserMapper userMapper;
     private final EmailService emailService;
@@ -89,7 +85,7 @@ public class UserController {
         user.setStatus(UserStatus.NEW);
         user.setFromDate(Date.valueOf(LocalDate.now()));
         user.setRoles(roleService.getById(1));
-        user.setImage(amazonS3Service.uploadFile(image));
+        user.setImage(ImageUtil.imageForUser(user, image));
         userService.save(user);
         return "redirect:/admin/user/index/1";
     }
@@ -118,8 +114,9 @@ public class UserController {
             }
             userResult.setPassword(userDTO.getPassword());
         }
-//        amazonS3Service.deleteFile(userService.getById(userResult.getId()).getImage());
-//        userResult.setImage(amazonS3Service.uploadFile(image));
+        String imageName = userService.getById(Long.parseLong(userDTO.getId())).getImage();
+        userResult.setImage(ImageUtil.imageForUser(userResult, image));
+        ImageUtil.deleteFile(imageName);
         userService.save(userResult);
         return "redirect:/admin/user/index/1";
     }

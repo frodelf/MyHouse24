@@ -44,12 +44,12 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col">
-                                            <div th:if="${user.getImageName()} == ''">
+                                            <div th:if="${user.getImageName()} != ''">
                                                 <img class="img-circle pull-left img-responsive" id="previewImage1"
-                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg&amp;w=160&amp;h=160&amp;fit=crop"
+                                                     th:src="${user.getImageName()}"
                                                      style="width: 160px; height: 160px">
                                             </div>
-                                            <div th:if="${user.getImageName()} != ''">
+                                            <div th:if="${user.getImageName()} == ''">
                                                 <img class="img-circle pull-left img-responsive" id="previewImage1"
                                                      th:src="'https://awss3bucketforavadatest.s3.eu-north-1.amazonaws.com/'+${user.getImageName()}"
                                                      style="width: 160px; height: 160px">
