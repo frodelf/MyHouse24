@@ -6,6 +6,7 @@ import com.avada.myHouse24.model.InvoiceDto;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface InvoiceService {
@@ -16,4 +17,5 @@ public interface InvoiceService {
     Page<Invoice> getPage(int pageNumber, Model model);
     Page<InvoiceDto> getPage(int pageNumber, Model model, List<InvoiceDto> InvoiceDto);
     List<Invoice> forSelect(int page, int pageSize, String search);
+    List<InvoiceDto> filter(InvoiceDto filter, String flatNumber, Date dateExample);
 }
