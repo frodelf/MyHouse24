@@ -16,4 +16,5 @@ public interface FlatService {
     void save(Flat flat);
     List<Flat> getAll();
     int getMaxId();
+    List<FlatDTO> filter(FlatDTO flatDTO, List<FlatDTO> flatDTOS, Boolean rest);
 }
