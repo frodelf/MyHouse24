@@ -4,10 +4,7 @@ import com.avada.myHouse24.entity.*;
 import com.avada.myHouse24.mapper.FlatMapper;
 import com.avada.myHouse24.mapper.ScoreMapper;
 import com.avada.myHouse24.model.ScoreDTO;
-import com.avada.myHouse24.services.impl.FlatServiceImpl;
-import com.avada.myHouse24.services.impl.HouseServiceImpl;
-import com.avada.myHouse24.services.impl.ScoreServiceImpl;
-import com.avada.myHouse24.services.impl.UserServiceImpl;
+import com.avada.myHouse24.services.impl.*;
 import com.avada.myHouse24.validator.ScoreValidator;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -226,5 +223,13 @@ class ScoreControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/getScoreByFlat/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$").exists());
+    }
+    @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
+    void excel() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/excel"))
+                .andExpect(status().isOk());
+
+        verify(scoreService, times(1)).excel(any());
     }
 }

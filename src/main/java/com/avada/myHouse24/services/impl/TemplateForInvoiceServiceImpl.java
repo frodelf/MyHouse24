@@ -2,6 +2,7 @@ package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.TemplateForInvoice;
 import com.avada.myHouse24.repo.TemplateForInvoiceRepository;
+import com.avada.myHouse24.services.TemplateForInvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TemplateForInvoiceServiceImpl {
+public class TemplateForInvoiceServiceImpl implements TemplateForInvoiceService {
     private final TemplateForInvoiceRepository templateForInvoiceRepository;
     public void save(TemplateForInvoice templateForInvoice){
         templateForInvoiceRepository.save(templateForInvoice);

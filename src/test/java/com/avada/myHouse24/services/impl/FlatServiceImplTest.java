@@ -78,6 +78,30 @@ class FlatServiceImplTest {
         assertEquals(1, mockModel.getAttribute("current"));
         verify(flatRepository, times(1)).findAll(any(PageRequest.class));
     }
+    @Test
+    void getPageWithList() {
+        List<FlatDTO> mockFlatDtoList = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            mockFlatDtoList.add(new FlatDTO());
+        }
+        int page = 0;
+        int pageSize = 10;
+
+        int startIndex = page * pageSize;
+        int endIndex = Math.min(startIndex + pageSize, mockFlatDtoList.size());
+
+        List<FlatDTO> currentPageItems = mockFlatDtoList.subList(startIndex, endIndex);
+
+        Page<FlatDTO> mockPage = new PageImpl<>(currentPageItems, PageRequest.of(page, pageSize), mockFlatDtoList.size());
+
+        Model mockModel = new ExtendedModelMap();
+
+        Page<FlatDTO> result = flatService.getPage(0, mockModel, mockFlatDtoList);
+
+        assertEquals(mockPage, result);
+        assertEquals(1, mockModel.getAttribute("max"));
+        assertEquals(1, mockModel.getAttribute("current"));
+    }
 
     @Test
     void deleteById() {

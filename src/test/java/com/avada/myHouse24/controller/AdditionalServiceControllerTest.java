@@ -67,35 +67,18 @@ class AdditionalServiceControllerTest {
 
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
-    void add() throws Exception {
+    void addDateIsValid() throws Exception {
         AdditionalServiceListDTO additionalServiceListDTO = new AdditionalServiceListDTO();
         additionalServiceListDTO.setServices(new ArrayList<>());
         additionalServiceListDTO.setUnitOfMeasurementNames(new ArrayList<>());
         when(unitOfMeasurementMapper.toEntityList(anyList())).thenReturn(new ArrayList<>());
         when(additionalServiceMapper.toEntityList(anyList())).thenReturn(new ArrayList<>());
+
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/service/add")
                         .with(csrf())
                         .flashAttr("additionalServiceListDTO", additionalServiceListDTO))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/service/index"));
-
-        AdditionalServiceDTO additionalServiceDTO = new AdditionalServiceDTO();
-        additionalServiceDTO.setId("1");
-        additionalServiceDTO.setShowInCounter(true);
-        additionalServiceDTO.setName("additional service's name");
-        additionalServiceListDTO.setServices(Arrays.asList(additionalServiceDTO));
-
-        additionalServiceDTO.setUnitOfMeasurementName("asdf");
-
-        UnitOfMeasurementDTO unitOfMeasurementDTO = new UnitOfMeasurementDTO();
-        unitOfMeasurementDTO.setId("1");
-        additionalServiceListDTO.setUnitOfMeasurementNames(Arrays.asList(unitOfMeasurementDTO));
-
-//        mockMvc.perform(MockMvcRequestBuilders.post("/admin/service/add")
-//                        .with(csrf())
-//                        .flashAttr("additionalServiceListDTO", additionalServiceListDTO))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/admin/service/index"));
 
         verify(unitOfMeasurementService, times(1)).saveList(anyList());
         verify(additionalService, times(1)).saveList(anyList());
@@ -103,12 +86,38 @@ class AdditionalServiceControllerTest {
 
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
-    void delete() throws Exception {
+    void addDateIsNotValid() throws Exception {
+        AdditionalServiceListDTO additionalServiceListDTO = new AdditionalServiceListDTO();
+        List<AdditionalServiceDTO> additionalServiceDTOList = new ArrayList<>();
+        AdditionalServiceDTO additionalServiceDTO = new AdditionalServiceDTO();
+
+        additionalServiceListDTO.setServices(Arrays.asList(additionalServiceDTO));
+        additionalServiceListDTO.setUnitOfMeasurementNames(new ArrayList<>());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/service/add")
+                        .with(csrf())
+                        .flashAttr("additionalServiceListDTO", additionalServiceListDTO))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("services", "units"));
+    }
+
+    @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
+    void deleteService() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/service/delete/service/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl("/admin/service/index"));
 
         verify(additionalService, times(1)).deleteById(1L);
+    }
+    @Test
+    @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
+    void deleteUnit() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/service/delete/unit/1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/service/index"));
+
+        verify(unitOfMeasurementService, times(1)).deleteById(1L);
     }
 
     @Test

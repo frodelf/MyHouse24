@@ -98,13 +98,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isDebt(User user) {
-        ArrayList<Flat> flats = new ArrayList<>();
-        ArrayList<Score> scores = new ArrayList<>();
+        List<Flat> flats = user.getFlats();
         for (Flat flat : flats) {
-            scores.add(flat.getScore());
-        }
-        for (Score score : scores) {
-            if(score.getBalance() < 0){
+            if(flat.getScore().getBalance() < 0){
                 return true;
             }
         }
@@ -165,8 +161,7 @@ public class UserServiceImpl implements UserService {
         return userPage.getContent();
     }
     public List<UserForViewDTO> filter(UserForViewDTO userForViewDTO, List<UserForViewDTO> users, Date date, String flat, String house){
-        if (date.equals(new Date(2023, 01, 01)))
-            userForViewDTO.setDate(date);
+        if (date.equals(new Date(2023, 01, 01))) userForViewDTO.setDate(date);
         if(date != null && date.getYear() != -900){
             userForViewDTO.setDate(date);
         }

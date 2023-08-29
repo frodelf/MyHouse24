@@ -9,4 +9,5 @@ public interface SectionService {
     void save(Section section);
     List<Section> getAll();
     long getMaxId();
+    Section getById(Long id);
 }

@@ -132,10 +132,13 @@ class InvoiceServiceImplTest {
     void forSelect() {
         Page<Invoice> mockPage = new PageImpl<>(new ArrayList<>());
         when(invoiceRepository.findAll(any(PageRequest.class))).thenReturn(mockPage);
-        List<Invoice> result = invoiceService.forSelect(1, 10, "");
+        List<Invoice> result1 = invoiceService.forSelect(1, 10, "");
+        assertEquals(mockPage.getContent(), result1);
         when(invoiceRepository.findByNumberContainingIgnoreCase(anyString(), any())).thenReturn(mockPage);
-        assertEquals(mockPage.getContent(), result);
+        List<Invoice> result2 = invoiceService.forSelect(1, 10, "qwerty");
+        assertEquals(mockPage.getContent(), result2);
         verify(invoiceRepository, times(1)).findAll(any(PageRequest.class));
+        verify(invoiceRepository, times(1)).findByNumberContainingIgnoreCase(anyString(), any());
     }
 
     @Test
