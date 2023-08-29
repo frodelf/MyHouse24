@@ -2,8 +2,15 @@ package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.AccountTransaction;
 import com.avada.myHouse24.entity.Score;
+import com.avada.myHouse24.entity.TransactionPurpose;
+import com.avada.myHouse24.entity.User;
 import com.avada.myHouse24.model.AccountTransactionForViewDTO;
 import com.avada.myHouse24.repo.AccountTransactionRepository;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -11,13 +18,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -263,6 +271,71 @@ class AccountTransactionServiceImplTest {
     }
 
     @Test
-    void excel() {
+    void excelWhereUserIsNull() throws IOException {
+        AccountTransaction accountTransaction = new AccountTransaction();
+        accountTransaction.setNumber("account transaction number");
+        accountTransaction.setFromDate(new Date(1,1,1));
+        accountTransaction.setAddToStats(true);
+        TransactionPurpose transactionPurpose = new TransactionPurpose();
+        transactionPurpose.setName("transaction purpose name");
+        accountTransaction.setIncome(true);
+        accountTransaction.setSum(12.0);
+        accountTransaction.setTransactionPurpose(transactionPurpose);
+        when(accountTransactionRepository.findAll()).thenReturn(Arrays.asList(accountTransaction));
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        accountTransactionService.excel(response);
+        byte[] content = response.getContentAsByteArray();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(content);
+        Workbook workbook = new HSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        Row row = sheet.getRow(1);
+        Iterator<Cell> cellIterator = row.cellIterator();
+        String[] expectResult = new String[]{"account transaction number", "398.0", "Проведен", "transaction purpose name", "Не указан", "Не указан", "Приход", "12.0"};
+        int index = 0;
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            String cellValue = String.valueOf(cell);
+            assertEquals(cellValue, expectResult[index++]);
+        }
+        assertEquals(8, index);
+        assertEquals("application/vnd.ms-excel", response.getContentType());
+        assertEquals("attachment; filename=example.xls", response.getHeader("Content-Disposition"));
+    }
+    @Test
+    void excelWhereUserIsNotNull() throws IOException {
+        AccountTransaction accountTransaction = new AccountTransaction();
+        accountTransaction.setNumber("account transaction number");
+        accountTransaction.setFromDate(new Date(1,1,1));
+        accountTransaction.setAddToStats(true);
+        TransactionPurpose transactionPurpose = new TransactionPurpose();
+        transactionPurpose.setName("transaction purpose name");
+        accountTransaction.setIncome(true);
+        accountTransaction.setSum(12.0);
+        accountTransaction.setTransactionPurpose(transactionPurpose);
+        User user = new User();
+        user.setFirstName("user name");
+        Score score = new Score();
+        score.setNumber("score number");
+        accountTransaction.setUser(user);
+        accountTransaction.setScore(score);
+        when(accountTransactionRepository.findAll()).thenReturn(Arrays.asList(accountTransaction));
+        MockHttpServletResponse response = new MockHttpServletResponse();
+        accountTransactionService.excel(response);
+        byte[] content = response.getContentAsByteArray();
+        ByteArrayInputStream inputStream = new ByteArrayInputStream(content);
+        Workbook workbook = new HSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        Row row = sheet.getRow(1);
+        Iterator<Cell> cellIterator = row.cellIterator();
+        String[] expectResult = new String[]{"account transaction number", "398.0", "Проведен", "transaction purpose name", "user name", "score number", "Приход", "12.0"};
+        int index = 0;
+        while (cellIterator.hasNext()) {
+            Cell cell = cellIterator.next();
+            String cellValue = String.valueOf(cell);
+            assertEquals(cellValue, expectResult[index++]);
+        }
+        assertEquals(8, index);
+        assertEquals("application/vnd.ms-excel", response.getContentType());
+        assertEquals("attachment; filename=example.xls", response.getHeader("Content-Disposition"));
     }
 }
