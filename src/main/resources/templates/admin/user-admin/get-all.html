@@ -148,11 +148,10 @@
                                                title="Редактировать" data-toggle="tooltip">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="@{{context_path}/admin/user-admin/delete/{id}(id=${admin.getId()}, context_path = ${context_path})}"
-                                               title="Удалить" data-toggle="tooltip"
-                                               data-pjax="0" data-method="post"
-                                               onclick="return confirmDelete();"><i class="fa fa-trash"></i>
+                                            <a class="btn btn-default btn-sm modal1"
+                                               th:data-redirect="@{{context_path}/admin/user-admin/delete/{id}(id=${admin.getId()}, context_path = ${context_path})}"
+                                               title="Удалить" data-toggle="modal" data-target="#myModal">
+                                                <i class="fa fa-trash"></i>
                                             </a>
                                         </div>
                                     </td>
@@ -160,6 +159,26 @@
                                 </tbody>
                             </table>
                         </form>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Підтвердіть видалення</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Ви впевнені, що хочете видалити цей елемент?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати
+                                        </button>
+                                        <button type="button" class="btn btn-danger confirm">Видалити</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer" th:if="${max} != null and ${max} > 0">
@@ -220,7 +239,32 @@
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
         crossorigin="anonymous">
 </script>
+<script>
+    const modalButtons = document.querySelectorAll(".modal1");
+    const modal = document.getElementById("myModal");
+    const confirmButtons = document.querySelectorAll(".confirm");
+    const cancelButtons = document.querySelectorAll(".cancel");
 
+    modalButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            modal.style.display = "flex";
+            const redirectUrl = button.getAttribute("data-redirect");
+
+            confirmButtons.forEach(confirmButton => {
+                confirmButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                    window.location.href = redirectUrl;
+                });
+            });
+
+            cancelButtons.forEach(cancelButton => {
+                cancelButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                });
+            });
+        });
+    });
+</script>
 
 </body>
 

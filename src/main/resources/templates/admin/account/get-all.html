@@ -372,6 +372,8 @@
     const confirmButtons = document.querySelectorAll(".confirm");
     const cancelButtons = document.querySelectorAll(".cancel");
 
+    console.log(modalButtons)
+
     modalButtons.forEach(button => {
         button.addEventListener("click", () => {
             modal.style.display = "flex";

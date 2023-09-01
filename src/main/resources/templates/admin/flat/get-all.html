@@ -195,11 +195,11 @@
                                        title="Редактировать">
                                         <i class="fa fa-pencil-alt"></i>
                                     </a>
-                                    <a class="btn btn-default btn-sm"
+                                    <button type="button" class="btn btn-default btn-sm modal1"
                                        th:data-redirect="@{{context_path}/admin/flat/delete/{id}(id=${flat.getId()}, context_path = ${context_path})}"
                                        title="Удалить" data-toggle="modal" data-target="#myModal">
                                         <i class="fa fa-trash"></i>
-                                    </a>
+                                    </button>
                                 </td>
                             </tr>
                             </tbody>
@@ -305,9 +305,7 @@
     const cancelButtons = document.querySelectorAll(".cancel");
 
     modalButtons.forEach(button => {
-        console.log("qwerty")
         button.addEventListener("click", () => {
-            console.log("qwerty")
             modal.style.display = "flex";
             const redirectUrl = button.getAttribute("data-redirect");
 
