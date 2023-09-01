@@ -30,10 +30,10 @@
 
     <!--  sidebar  -->
     <aside class="main-sidebar elevation-4" th:classappend="${theme == 'LIGHT' ? 'sidebar-light-primary' : 'sidebar-dark-primary'}">
-        <a href="/admin/" id="aside-for-theme" class="brand-link" style="height: 56.67px;padding: 3px;">
-            <img src="/images/logo.png" alt="AdminLTE Logo" class="logo-image"
+        <a th:href="@{{context_path}/admin/(context_path = ${context_path})}" id="aside-for-theme" class="brand-link" style="height: 56.67px;padding: 3px;">
+            <img th:src="@{{context_path}/images/logo.png(context_path = ${context_path})}" alt="AdminLTE Logo" class="logo-image"
                  style="opacity: .8; width:75%; margin:auto;">
-            <img src="/images/logo-mini.png" alt="AdminLTE Logo Mini" class="mini-logo-image"
+            <img th:src="@{{context_path}/images/logo-mini.png(context_path = ${context_path})}" alt="AdminLTE Logo Mini" class="mini-logo-image"
                  style="opacity: .8; width:50px; height: 48px; margin:auto;">
         </a>
         <div class="sidebar os-host os-theme-black os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition">
@@ -43,7 +43,7 @@
                         <nav class="mt-2">
                             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                                 <li class="nav-item">
-                                    <a href="/admin" style="width:100%" class="nav-link selected">
+                                    <a th:href="@{{context_path}/admin(context_path = ${context_path})}" style="width:100%" class="nav-link selected">
                                         <i class="fa fa-chart-line"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Статистика}"></span>
@@ -51,7 +51,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/account-transaction/index/1" style="width:100%; " class="nav-link">
+                                    <a th:href="@{{context_path}/admin/account-transaction/index/1(context_path = ${context_path})}" style="width:100%; " class="nav-link">
                                         <i class="fa fa-dollar-sign" aria-hidden="true" style="width:16px"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Касса}"></span>
@@ -59,7 +59,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/invoice/index/1" style="width:100%; " class="nav-link">
+                                    <a th:href="@{{context_path}/admin/invoice/index/1(context_path = ${context_path})}" style="width:100%; " class="nav-link">
                                         <i class="fa fa-file" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Квитанции_на_оплату}"></span>
@@ -67,7 +67,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/account/index/1" style="width:100%; " class="nav-link">
+                                    <a th:href="@{{context_path}/admin/account/index/1(context_path = ${context_path})}" style="width:100%; " class="nav-link">
                                         <i class="fa fa-credit-card" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Лицевые_счета}"></span>
@@ -75,7 +75,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/flat/index/1" style="width:100%;" class="nav-link">
+                                    <a th:href="@{{context_path}/admin/flat/index/1(context_path = ${context_path})}" style="width:100%;" class="nav-link">
                                         <i class="fa fa-key" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Квартиры}"></span>
@@ -83,7 +83,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/user/index/1" style="width:100%; " class="nav-link">
+                                    <a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}" style="width:100%; " class="nav-link">
                                         <i class="fa fa-users" aria-hidden="true" style="font-size: 14px"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Владельцы_квартир}"></span>
@@ -91,7 +91,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/house/index/1" style="width:100%; " class="nav-link">
+                                    <a th:href="@{{context_path}/admin/house/index/1(context_path = ${context_path})}" style="width:100%; " class="nav-link">
                                         <i class="fa fa-building" aria-hidden="true" style="width:16px"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Дома}"></span>
@@ -99,7 +99,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/message/index/1" style="width:100%;" class="nav-link">
+                                    <a th:href="@{{context_path}/admin/message/index/1(context_path = ${context_path})}" style="width:100%;" class="nav-link">
                                         <i class="fa fa-envelope" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Сообщения}"></span>
@@ -107,7 +107,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/master-request/index/1" style="width:100%; " class="nav-link">
+                                    <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}" style="width:100%; " class="nav-link">
                                         <i class="fa fa-wrench" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Заявки_вызова_мастера}"></span>
@@ -115,7 +115,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="/admin/counter-data/index/1" style="width:100%;" class="nav-link">
+                                    <a th:href="@{{context_path}/admin/counter-data/index/1(context_path = ${context_path})}" style="width:100%;" class="nav-link">
                                         <i class="fa fa-weight" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Показания_счетчиков}"></span>
@@ -132,7 +132,7 @@
                                     </a>
                                     <ul class="nav nav-treeview">
                                         <li class="nav-item">
-                                            <a href="/index" class="nav-link" >
+                                            <a th:href="@{{context_path}/index(context_path = ${context_path})}" class="nav-link" >
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     <span th:text="#{Главная_страница}"></span>
@@ -140,7 +140,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/about" class="nav-link" >
+                                            <a th:href="@{{context_path}/about(context_path = ${context_path})}" class="nav-link" >
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     <span th:text="#{О_нас}"></span>
@@ -148,7 +148,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/services" class="nav-link" style="width:100%;">
+                                            <a th:href="@{{context_path}/services(context_path = ${context_path})}" class="nav-link" style="width:100%;">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     <span th:text="#{Услуги}"></span>
@@ -156,7 +156,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="/contacts" class="nav-link" style="width:100%;">
+                                            <a th:href="@{{context_path}/contacts(context_path = ${context_path})}" class="nav-link" style="width:100%;">
                                                 <i class="far fa-circle nav-icon"></i>
                                                 <p>
                                                     <span th:text="#{Контакты}"></span>
@@ -175,7 +175,7 @@
                                     </a>
                                     <ul class="nav nav-treeview" style="font-weight: 400">
                                         <li class="nav-item dropdown-items">
-                                            <a href="/admin/service/index" class="nav-link dropdown-links" style="margin:0; width:100%;">
+                                            <a th:href="@{{context_path}/admin/service/index(context_path = ${context_path})}" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-briefcase nav-icon" aria-hidden="true"></i>
                                                 <p>
                                                     <span th:text="#{Услуги}"></span>
@@ -183,7 +183,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
-                                            <a href="/admin/tariff/index" class="nav-link dropdown-links" style="margin:0; width:100%; ">
+                                            <a th:href="@{{context_path}/admin/tariff/index(context_path = ${context_path})}" class="nav-link dropdown-links" style="margin:0; width:100%; ">
                                                 <i style="font-size: 12px;" class="fa fa-money-bill nav-icon" aria-hidden="true"></i>
                                                 <p>
                                                     <span th:text="#{Тарифы}"></span>
@@ -191,7 +191,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
-                                            <a href="/admin/user-admin/index/1" class="nav-link dropdown-links" style="margin:0; width:100%;">
+                                            <a th:href="@{{context_path}/admin/user-admin/index/1(context_path = ${context_path})}" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-user-plus nav-icon" aria-hidden="true"></i>
                                                 <p>
                                                     <span th:text="#{Пользователи}"></span>
@@ -199,7 +199,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
-                                            <a href="/admin/role-form" class="nav-link dropdown-links" style="margin:0; width:100%;">
+                                            <a th:href="@{{context_path}/admin/role-form(context_path = ${context_path})}" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-users nav-icon" aria-hidden="true"></i>
                                                 <p>
                                                     <span th:text="#{Пользователи}"></span>
@@ -207,7 +207,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
-                                            <a href="/admin/pay-company/index" class="nav-link dropdown-links" style="margin:0; width:100%;">
+                                            <a th:href="@{{context_path}/admin/pay-company/index(context_path = ${context_path})}" class="nav-link dropdown-links" style="margin:0; width:100%;">
                                                 <i style="font-size: 12px;" class="fa fa-credit-card nav-icon" aria-hidden="true"></i>
                                                 <p>
                                                     <span th:text="#{Платежные_реквизиты}"></span>
@@ -215,7 +215,7 @@
                                             </a>
                                         </li>
                                         <li class="nav-item dropdown-items">
-                                            <a href="/admin/transaction-purpose/index" class="nav-link dropdown-links" style="width:100%;  margin: 0 0 50px;">
+                                            <a th:href="@{{context_path}/admin/transaction-purpose/index(context_path = ${context_path})}" class="nav-link dropdown-links" style="width:100%;  margin: 0 0 50px;">
                                                 <i style="font-size: 12px;" class="fa fa-list-ol nav-icon" aria-hidden="true"></i>
                                                 <p>
                                                     <span th:text="#{Статьи_платежей}"></span>
@@ -313,7 +313,7 @@
                     setCookie("theme", "☀")
                     themeSwitchButton.textContent = "☀";
                     $.ajax({
-                        url: '/admin/user-admin/change/theme/light',
+                        url: '/myHouse24/admin/user-admin/change/theme/light',
                         method: 'GET',
                         success: function(response) {
                         },
@@ -324,7 +324,7 @@
                     setCookie("theme", "☁")
                     themeSwitchButton.textContent = "☁";
                     $.ajax({
-                        url: '/admin/user-admin/change/theme/dark',
+                        url: '/myHouse24/admin/user-admin/change/theme/dark',
                         method: 'GET',
                         success: function(response) {
                         },

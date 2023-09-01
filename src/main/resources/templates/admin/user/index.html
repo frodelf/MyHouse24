@@ -4,12 +4,12 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
@@ -21,11 +21,11 @@
                 <span th:text="#{Профиль_владельца}"></span>
                 </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Владельцы_квартир}"></span>
                     </a>
                 </li>
@@ -38,12 +38,12 @@
             <div class="card">
                 <div class="card-header">
                     <div class="float-right">
-                        <a class="btn btn-outline-secondary" th:href="@{/cabinet/{id}(id=${user.getId()})}">
+                        <a class="btn btn-outline-secondary" th:href="@{{context_path}/cabinet/{id}(id=${user.getId()}, context_path = ${context_path})}">
                             <i class="fa fa-external-link-alt"></i>
                             <span th:text="#{Перейти_в_кабинет}"></span>
                             Перейти в кабинет
                         </a>
-                        <a class="btn btn-primary" th:href="@{/admin/user/edit/{id}(id=${user.getId()})}">
+                        <a class="btn btn-primary" th:href="@{{context_path}/admin/user/edit/{id}(id=${user.getId()}, context_path = ${context_path})}">
                             <span th:text="#{Редактирование_профиль}"></span>
                         </a>
                     </div>
@@ -178,12 +178,12 @@
                             <td th:text="${index.index}">
                             </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${flat.house.id})}">[[${flat.house.name}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/house/{id}(id = ${flat.house.id}, context_path = ${context_path})}">[[${flat.house.name}]]</a><br/>
                             </td>
                             <td>[[${flat.section.id}]]<br/>
                             </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${flat.id})}">[[${flat.number}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/flat/{id}(id = ${flat.id}, context_path = ${context_path})}">[[${flat.number}]]</a><br/>
                             </td>
                             <td th:text="${flat.scoreNumber}">
 
@@ -203,9 +203,11 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 </body>
 </html>

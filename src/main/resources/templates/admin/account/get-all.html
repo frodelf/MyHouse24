@@ -4,15 +4,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
     <script>
         window.addEventListener('DOMContentLoaded', function () {
             var form = document.getElementById('formSend');
@@ -31,7 +31,8 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse"  th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}"
+      style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -41,9 +42,9 @@
 
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
-                    </a></li>
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                     <span th:text="#{Лицевые_счета}"></span>
                 </li>
@@ -59,7 +60,7 @@
                                     <h3 id="cashboxBalance">0.00 грн</h3>
                                     <p>
                                         <span th:text="#{Состояние_кассы}"></span>
-                                        </p>
+                                    </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign"></i>
@@ -72,7 +73,7 @@
                                     <h3 id="accountBalance">0.00 грн</h3>
                                     <p>
                                         <span th:text="#{Баланс_по_счетам}"></span>
-                                        </p>
+                                    </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -85,7 +86,7 @@
                                     <h3 id="accountDebts">0.00 грн</h3>
                                     <p>
                                         <span th:text="#{Задолженность_по_счетам}"></span>
-                                        </p>
+                                    </p>
                                 </div>
                                 <div class="icon">
                                     <i class="fa fa-dollar-sign" aria-hidden="true"></i>
@@ -102,28 +103,30 @@
 
                         </button>
                         <ul class="dropdown-menu" style="width: 230px;">
-                            <li><a class="text-secondary" href="/admin/account/add"
+                            <li><a class="text-secondary" th:href="@{{context_path}/admin/account/add(context_path = ${context_path})}"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">
                                 <span th:text="#{Добавить_лицевой_счет}"></span>
                             </a></li>
                             <li><a class="text-secondary" id="downloadExcelButton"
-                                   style="padding-inline: 15px; display: block; text-decoration: none;">[[#{Выгрузить_в_Excel}]]</a></li>
+                                   style="padding-inline: 15px; display: block; text-decoration: none;">[[#{Выгрузить_в_Excel}]]</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/account/index/1"
+                    <a th:href="@{{context_path}/admin/account/index/1(context_path = ${context_path})}"
                        class="btn btn-outline-secondary float-right">
                         <span th:text="#{Очистить}"></span>
                     </a>
                 </div>
                 <div class="card-body">
-                    <form id="formSend" method="get" action="/admin/account/filter/1" th:object="${filter}"
+                    <form id="formSend" method="get" th:action="@{{context_path}/admin/account/filter/1(context_path = ${context_path})}" th:object="${filter}"
                           onsubmit="event.preventDefault()">
                         <div class="table-responsive">
-                            <table class="table table-hover table-striped"  th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}">
+                            <table class="table table-hover table-striped"
+                                   th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}">
                                 <thead>
                                 <tr style="font-weight: bold">
                                     <td style="min-width: 150px">№</td>
@@ -138,13 +141,13 @@
                                     </td>
                                     <td style="min-width: 150px">
                                         <span th:text="#{Секции}"></span>
-                                        </td>
+                                    </td>
                                     <td style="min-width: 190px">
                                         <span th:text="#{Владелец}"></span>
-                                        </td>
+                                    </td>
                                     <td style="min-width: 120px">
                                         <span th:text="#{Остаток_грн}"></span>
-                                        </td>
+                                    </td>
                                     <td style="min-width: 150px"></td>
                                 </tr>
                                 <tr style="font-weight: bold">
@@ -217,49 +220,68 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="clickable-row" th:each="score : ${scores}"
-                                    th:data-action="@{/admin/account/{id}(id=${score.getId()})}">
-                                    <td>
+                                <tr class="clickable-row" th:each="score : ${scores}">
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         [[${score.number}]]
                                     </td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         <span th:switch="${score.status}">
                                             <span th:case="Активен" class="status status-new">Активен</span>
                                             <span th:case="Неактивен" class="status status-disabled">Неактивен</span>
                                         </span>
                                     </td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         [[${score.flat == null ? '(Не задано)' : score.flat.number}]]
                                     </td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         [[${score.flat == null ? '(Не задано)' : score.flat.house.name}]]
                                     </td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         [[${score.flat == null ? '(Не задано)' : score.flat.section.name}]]
                                     </td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         [[${score.flat == null ? '(Не задано)' : score.flat.user.firstName}]]
                                     </td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account/{score}(context_path = ${context_path}, score=${score.id})}'|">
                                         [[${score.balance}]]
                                     </td>
-                                    <td class="float-right">
+                                    <th class="float-right">
                                         <a class="btn btn-default btn-sm"
                                            th:href="@{/admin/account/edit/{id}(id=${score.getId()})}"
                                            title="Редактировать">
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
-                                        <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/account/delete/{id}(id=${score.getId()})}"
-                                           title="Удалить">
+                                        <button type="button" class="btn btn-default btn-sm modal1"
+                                                th:data-redirect="@{/admin/account/delete/{id}(id=${score.getId()})}"
+                                                title="Удалить" data-toggle="modal" data-target="#myModal">
                                             <i class="fa fa-trash"></i>
-                                        </a>
-                                    </td>
+                                        </button>
+                                    </th>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </form>
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="myModalLabel">Підтвердіть видалення</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Ви впевнені, що хочете видалити цей елемент?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати
+                                    </button>
+                                    <button type="button" class="btn btn-danger confirm">Видалити</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -272,16 +294,16 @@
                                         if (window.location.href.includes('filter')) {
                                             var parts = window.location.href.split('?');
                                             afterQuestionMark = '?' + parts[1];
-                                            var baseUrl = '/admin/account/filter/';
+                                            var baseUrl = '[[${context_path}]]/admin/account/filter/';
                                         } else {
-                                            var baseUrl = '/admin/account/index/';
+                                            var baseUrl = '[[${context_path}]]/admin/account/index/';
                                         }
 
                                         if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                     </script>
                                     <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
-                                        <script src="/pagination.js" data-url="admin/account/index/"
+                                        <script src="/pagination.js" th:data-url="@{{context_path}admin/account/index/(context_path = ${context_path})}"
                                                 th:current="${current}"
                                                 th:max="${max+1}"></script>
                                     </ul>
@@ -291,13 +313,13 @@
                                         if (window.location.href.includes('filter')) {
                                             var parts = window.location.href.split('?');
                                             afterQuestionMark = '?' + parts[1];
-                                            var baseUrl = '/admin/account/filter/';
+                                            var baseUrl = '[[${context_path}]]/admin/account/filter/';
                                         } else {
-                                            var baseUrl = '/admin/account/index/';
+                                            var baseUrl = '[[${context_path}]]/admin/account/index/';
                                         }
                                         console.log([[${current}]])
                                         if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                     </script>
                                 </ul>
                             </div>
@@ -307,45 +329,70 @@
             </div>
         </section>
     </div>
-    <footer class="main-footer">
-        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
-            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
-        Документация API доступна <a href="/doc">по ссылке</a>.
-    </footer>
+
+</div>
+<footer class="main-footer">
+    Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+        href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+    Документация API доступна <a href="/doc">по ссылке</a>.
+</footer>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
-    $("#downloadExcelButton").click(function() {
+    $("#downloadExcelButton").click(function () {
         $.ajax({
-            url: '/admin/account/excel',
+            url: '[[${context_path}]]/admin/account/excel',
             method: 'GET',
             xhrFields: {
                 responseType: 'blob'
             },
-            success: function(data) {
-                var blob = new Blob([data], { type: 'application/vnd.ms-excel' });
+            success: function (data) {
+                var blob = new Blob([data], {type: 'application/vnd.ms-excel'});
                 var link = document.createElement('a');
                 link.href = window.URL.createObjectURL(blob);
                 link.download = 'accoun.xls';
                 link.click();
             },
-            error: function(xhr, status, error) {
+            error: function (xhr, status, error) {
                 console.error(error);
             }
         });
     });
+    const modalButtons = document.querySelectorAll(".modal1");
+    const modal = document.getElementById("myModal");
+    const confirmButtons = document.querySelectorAll(".confirm");
+    const cancelButtons = document.querySelectorAll(".cancel");
 
+    modalButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            modal.style.display = "flex";
+            const redirectUrl = button.getAttribute("data-redirect");
+
+            confirmButtons.forEach(confirmButton => {
+                confirmButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                    window.location.href = redirectUrl;
+                });
+            });
+
+            cancelButtons.forEach(cancelButton => {
+                cancelButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                });
+            });
+        });
+    });
 </script>
+
 </body>
 
 </html>

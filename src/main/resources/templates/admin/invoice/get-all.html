@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -44,7 +44,7 @@
                 <span th:text="#{Квитанции_на_оплату}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -54,7 +54,7 @@
         </div>
         <section class="content">
             <form id="formSend" method="get" th:object="${filter}"
-                  action="/admin/invoice/filter/1"
+                  th:action="@{{context_path}/admin/invoice/filter/1(context_path = ${context_path})}"
                   onsubmit="event.preventDefault()">
                 <div class="row">
                     <div class="col-xs-12 col-lg-9">
@@ -109,7 +109,7 @@
                                 <span th:text="#{Выберите_действие}"></span>
                             </button>
                             <ul class="dropdown-menu" style="width: 250px;">
-                                <li><a class="text-secondary" href="/admin/invoice/add"
+                                <li><a class="text-secondary" th:href="@{{context_path}/admin/invoice/add(context_path = ${context_path})}"
                                        style="padding-inline: 15px; display: block; text-decoration: none;">
                                     <span th:text="#{Создать_общую_квитанцию}"></span>
                                     </a></li>
@@ -125,7 +125,7 @@
                 </div>
                 <div class="card">
                     <div class="card-header">
-                        <a href="/admin/invoice/index/1"
+                        <a th:href="@{{context_path}/admin/invoice/index/1"
                            class="btn btn-outline-secondary float-right">
                             <span th:text="#{Очистить}"></span>
                             </a>
@@ -221,14 +221,13 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="invoice : ${invoices}" class="clickable-row"
-                                    th:data-action="@{/admin/invoice/{id}(id=${invoice.getId()})}">
-                                    <td>
+                                <tr th:each="invoice : ${invoices}">
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|">
                                         <input type="checkbox" name="selectedIntegers" th:value="${invoice.getId()}"
                                                class="single-checkbox checkboxx"/>
                                     </td>
-                                    <td th:text="${invoice.number}"></td>
-                                    <td>
+                                    <td th:text="${invoice.number}" th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|">
                                         <span th:switch="${invoice.status}">
                                     <span th:case="'Оплачено'" class="status status-new">Оплачено</span>
                                     <span th:case="'Частично оплачено'"
@@ -236,17 +235,17 @@
                                     <span th:case="'Не оплачено'" class="status status-disabled">Не оплачено</span>
                                 </span>
                                     </td>
-                                    <td th:text="${invoice.date}"></td>
-                                    <td th:text="${invoice.months}"></td>
-                                    <td>[[${invoice.flat.number}]] [[${invoice.flat.house.name}]]</td>
-                                    <td th:text="${invoice.flat.user.firstName}"></td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|" th:text="${invoice.date}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|" th:text="${invoice.months}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|">[[${invoice.flat.number}]] [[${invoice.flat.house.name}]]</td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|" th:text="${invoice.flat.user.firstName}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|">
                                         <span th:switch="${invoice.addToStats}">
                                             <span th:case="true" class="status status-new">Проведена</span>
                                             <span th:case="false" class="status status-disabled">Не проведена</span>
                                         </span>
                                     </td>
-                                    <td th:text="${invoice.sum}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|" th:text="${invoice.sum}"></td>
                                     <td>
                                         <a class="btn btn-default btn-sm"
                                            th:href="@{/admin/invoice/copy/{id}(id=${invoice.getId()})}"
@@ -283,17 +282,17 @@
                                                 if (window.location.href.includes('filter')) {
                                                     var parts = window.location.href.split('?');
                                                     afterQuestionMark = '?' + parts[1];
-                                                    var baseUrl = '/admin/invoice/filter/';
+                                                    var baseUrl = '[[${context_path}]]/admin/invoice/filter/';
                                                 } else {
-                                                    var baseUrl = '/admin/invoice/index/';
+                                                    var baseUrl = '[[${context_path}]]/admin/invoice/index/';
                                                 }
 
                                                 if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                             </script>
                                             <ul class="pagination pagination-sm m-0 float-right"
                                                 id="pagination-example">
-                                                <script src="/pagination.js" data-url="admin/invoice/index/"
+                                                <script src="/pagination.js" th:data-url="@{{context_path}admin/invoice/index/(context_path = ${context_path})}"
                                                         th:current="${current}"
                                                         th:max="${max+1}"></script>
                                             </ul>
@@ -303,13 +302,13 @@
                                                 if (window.location.href.includes('filter')) {
                                                     var parts = window.location.href.split('?');
                                                     afterQuestionMark = '?' + parts[1];
-                                                    var baseUrl = '/admin/invoice/filter/';
+                                                    var baseUrl = '[[${context_path}]]/admin/invoice/filter/';
                                                 } else {
-                                                    var baseUrl = '/admin/invoice/index/';
+                                                    var baseUrl = '[[${context_path}]]/admin/invoice/index/';
                                                 }
                                                 console.log([[${current}]])
                                                 if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                             </script>
                                         </ul>
                                     </div>
@@ -342,15 +341,11 @@
         var selectedValues = Array.from(selectedCheckboxes).map(function (checkbox) {
             return parseInt(checkbox.value);
         });
-
-        // Перевірте, чи є вибрані пункти
         if (selectedValues.length > 0) {
-            // Створюємо форму
             var form = document.createElement('form');
             form.method = 'GET';
-            form.action = '/admin/invoice/deleteAllByCheckBox'; // Задайте правильний URL контролера
+            form.action = '[[${context_path}]]/admin/invoice/deleteAllByCheckBox';
 
-            // Додаємо вибрані значення у вигляді параметрів до форми
             selectedValues.forEach(function (value) {
                 var input = document.createElement('input');
                 input.type = 'hidden';
@@ -375,7 +370,7 @@
 <script>
     $('#mySelect2ForUsers').select2({
         ajax: {
-            url: '/admin/user/get-users',
+            url: '[[${context_path}]]/admin/user/get-users',
             data: function (params) {
                 var query = {
                     _search: params.term || '',
@@ -394,12 +389,12 @@
         });
     });
 </script>
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

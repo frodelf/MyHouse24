@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -41,7 +41,7 @@
 
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                 </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -62,15 +62,15 @@
 
                         </button>
                         <ul class="dropdown-menu" style="width: 260px; font-size: 14px; margin-right: 15px">
-                            <li><a class="text-secondary" href="/admin/user/add"
+                            <li><a class="text-secondary" th:href="@{{context_path}/admin/user/add(context_path = ${context_path})}"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">
                                 <span th:text="#{Добавить_владельца_кваартиры}"></span>
                                 </a></li>
-                            <li><a class="text-secondary" href="/admin/account-transaction/create/out"
+                            <li><a class="text-secondary" th:href="@{{context_path}/admin/account-transaction/create/out(context_path = ${context_path})}"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">
                                 <span th:text="#{Отправить_сообщение_должникам}"></span>
                                 </a></li>
-                            <li><a class="text-secondary" href="/admin/user/invite"
+                            <li><a class="text-secondary" th:href="@{{context_path}/admin/user/invite(context_path = ${context_path})}"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">
                                 <span th:text="#{Отправить_приглашение}"></span>
                                 </a></li>
@@ -80,13 +80,13 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/user/index/1"
+                    <a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}"
                        class="btn btn-outline-secondary float-right">
                         <span th:text="#{Очистить}"></span>
                         Очистить</a>
                 </div>
                 <div class="card-body">
-                    <form id="formSend" method="get" action="/admin/user/filter/1"
+                    <form id="formSend" method="get" th:action="@{{context_path}/admin/user/filter/1(context_path = ${context_path})}"
                           onsubmit="event.preventDefault()">
                         <div class="table-responsive">
                         <table class="table table-hover table-striped table-sm" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"v
@@ -172,32 +172,30 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr class="clickable-row" th:each="user:${users}"
-                                th:data-action="@{/admin/user/{id}(id=${user.getId()})}">
-                                <td th:text="${user.getId()}"></td>
-                                <td th:text="${user.getFullName()}"></td>
-                                <td th:text="${user.getPhone()}"></td>
-                                <td th:text="${user.getEmail()}"></td>
-                                <td>
+                            <tr th:each="user:${users}">
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|" th:text="${user.getId()}"></td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|" th:text="${user.getFullName()}"></td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|" th:text="${user.getPhone()}"></td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|" th:text="${user.getEmail()}"></td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|">
                                     <div th:each="house:${user.getHouses()}">
                                         <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/name/{name}(name = ${house})}">[[${house}]]</a><br/>
                                     </div>
                                 </td>
-                                <td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|">
                                     <div th:each="flat:${user.getFlats()}">
                                         <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/name/{number}(number = ${flat})}">[[${flat}]]</a><br/>
                                     </div>
                                 </td>
-                                <td th:text="${user.getDate()}"></td>
-                                <td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|" th:text="${user.getDate()}"></td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|">
                                         <span th:switch="${user.getStatus()}">
                                             <span th:case="NEW" class="status status-new">Новий</span>
                                             <span th:case="ACTIVE" class="status status-active">Активний</span>
                                             <span th:case="DISABLED" class="status status-disabled">Відключений</span>
                                         </span>
                                 </td>
-
-                                <td th:text="${user.getIsDebt() == true ? 'Да' : 'Нет'}"></td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/user/{user}(user = ${user.id}, context_path = ${context_path})}'|" th:text="${user.getIsDebt() == true ? 'Да' : 'Нет'}"></td>
                                 <td>
                                     <div class="btn-group pull-right">
                                         <a class="btn btn-default btn-sm"
@@ -206,12 +204,12 @@
                                             <i class="fa fa-envelope"></i>
                                         </a>
                                         <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/user/edit/{id}(id=${user.getId()})}"
+                                           th:href="@{{context_path}/admin/user/edit/{id}(id=${user.getId()}, context_path = ${context_path})}"
                                            title="Редактировать" data-toggle="tooltip">
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
                                         <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/user/delete/{id}(id=${user.getId()})}"
+                                           th:href="@{{context_path}/admin/user/delete/{id}(id=${user.getId()}, context_path = ${context_path})}"
                                            title="Удалить" data-toggle="tooltip"
                                            data-pjax="0" data-method="post"
                                            onclick="return confirmDelete();"><i class="fa fa-trash"></i>
@@ -223,9 +221,6 @@
                         </table>
                         </div>
                     </form>
-                    <div class="table-responsive">
-
-                    </div>
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -244,16 +239,16 @@
                                         if (window.location.href.includes('filter')) {
                                             var parts = window.location.href.split('?');
                                             afterQuestionMark = '?' + parts[1];
-                                            var baseUrl = '/admin/user/filter/';
+                                            var baseUrl = '[[${context_path}]]/admin/user/filter/';
                                         } else {
-                                            var baseUrl = '/admin/user/index/';
+                                            var baseUrl = '[[${context_path}]]/admin/user/index/';
                                         }
 
                                         if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                     </script>
                                     <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
-                                        <script src="/pagination.js" data-url="admin/user/index/"
+                                        <script src="/pagination.js" th:data-url="@{{context_path}admin/user/index/(context_path = ${context_path})}"
                                                 th:current="${current}"
                                                 th:max="${max+1}"></script>
                                     </ul>
@@ -263,13 +258,13 @@
                                         if (window.location.href.includes('filter')) {
                                             var parts = window.location.href.split('?');
                                             afterQuestionMark = '?' + parts[1];
-                                            var baseUrl = '/admin/user/filter/';
+                                            var baseUrl = '[[${context_path}]]/admin/user/filter/';
                                         } else {
-                                            var baseUrl = '/admin/user/index/';
+                                            var baseUrl = '[[${context_path}]]/admin/user/index/';
                                         }
                                         console.log([[${current}]])
                                         if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                     </script>
                                 </ul>
                             </div>
@@ -286,12 +281,12 @@
     </footer>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

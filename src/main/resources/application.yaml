@@ -45,7 +45,9 @@ cloud:
       static: eu-north-1
     stack:
       auto: false
-
 application:
   bucket:
     name: awss3bucketforavadatest
+server:
+  servlet:
+    context-path: /myHouse24

@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -24,10 +24,10 @@
                 <span th:text="#{Лицевой_счет}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a></li>
-                <li class="breadcrumb-item"><a href="/admin/account/index/1" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/account/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Лицевые_счета}"></span>
                 </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -53,7 +53,7 @@
                             <i class="fa fa-file"></i>
                             <span th:text="#{Оформить_квитанцию}"></span>
                         </a>
-                        <a class="btn btn-primary" th:href="@{/admin/account/edit/{id}(id=${scoreDto.getId()})}">
+                        <a class="btn btn-primary" th:href="@{{context_path}/admin/account/edit/{id}(id=${scoreDto.getId()}, context_path = ${context_path})}">
                             <span th:text="#{Редактировать_счет}"></span>
 
                         </a>
@@ -80,7 +80,7 @@
 
                                 </td>
                                 <td>
-                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${scoreDto.flat.house.getId()})}">[[${scoreDto.flat.house.name}]]</a><br/>
+                                        <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/house/{id}(id = ${scoreDto.flat.house.getId()}, context_path = ${context_path})}">[[${scoreDto.flat.house.name}]]</a><br/>
                                 </td>
                             </tr>
                             <tr>
@@ -96,7 +96,7 @@
                                     <span th:text="#{Квартира}"></span>
                                 </td>
                                 <td>
-                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${scoreDto.flat.id})}">[[${scoreDto.flat.number}]]</a><br/>
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/flat/{id}(id = ${scoreDto.flat.id}, context_path = ${context_path})}">[[${scoreDto.flat.number}]]</a><br/>
                                 </td>
                             </tr>
                             <tr>
@@ -105,7 +105,7 @@
 
                                 </td>
                                 <td>
-                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${scoreDto.flat.user.id})}">[[${scoreDto.flat.user.firstName}]]</a><br/>
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/user/{id}(id = ${scoreDto.flat.user.id}, context_path = ${context_path})}">[[${scoreDto.flat.user.firstName}]]</a><br/>
 
                                 </td>
                             </tr>
@@ -121,9 +121,9 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/counter-data/counter-list/{id}(id=${scoreDto.flat.id})}">Посмотреть показания счетчиков</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account-transaction/filter/1?id=&date=&addToStats=&transactionPurposeName=&userName=&scoreNumber={id}&isIncome=(id=${scoreDto.id})}">Посмотреть приходы</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/invoice/filter/1?number=&status=&dateExample=&months=&flatNumber={id}&addToStats=(id=${scoreDto.flat.number})}">Посмотреть квитанции</a>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/counter-data/counter-list/{id}(id=${scoreDto.flat.id}, context_path = ${context_path})}">Посмотреть показания счетчиков</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/account-transaction/filter/1?id=&date=&addToStats=&transactionPurposeName=&userName=&scoreNumber={id}&isIncome=(id=${scoreDto.id}, context_path = ${context_path})}">Посмотреть приходы</a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/invoice/filter/1?number=&status=&dateExample=&months=&flatNumber={id}&addToStats=(id=${scoreDto.flat.number}, context_path = ${context_path})}">Посмотреть квитанции</a>
                 </div>
             </div>
         </section>
@@ -135,12 +135,12 @@
     </footer>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

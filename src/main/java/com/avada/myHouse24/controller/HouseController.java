@@ -119,4 +119,14 @@ public class HouseController {
         House house = flatService.getById(id).getHouse();
         return new Select2Option(house.getId(), house.getName());
     }
+    @GetMapping("/getAll/{page}")
+    @ResponseBody
+    public List<HouseForViewDto> getPage (@PathVariable("page")int id, Model model){
+        return houseMapper.toDtoForViewList(houseService.getPage(id, model).getContent());
+    }
+    @PostMapping("/filterGet/{page}")
+    @ResponseBody
+    public List<HouseForViewDto> filterPage (@PathVariable("page")int id, Model model, @ModelAttribute("house1") HouseForViewDto house){
+        return houseService.getPage(id, model, houseService.filter(house, houseService.filter(house, houseMapper.toDtoForViewList(houseService.getAll())))).getContent();
+    }
 }

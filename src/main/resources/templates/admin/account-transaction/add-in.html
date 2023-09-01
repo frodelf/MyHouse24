@@ -4,17 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
 
 </head>
 
 <body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
-<form method="post" action="/admin/account-transaction/create/in" th:object="${accountTransactionInDTO}">
+<form method="post" th:action="@{{context_path}/admin/account-transaction/create/in(context_path = ${context_path})}" th:object="${accountTransactionInDTO}">
     <div class="wrapper">
         <div th:replace="blocks/menu :: menu"></div>
         <div class="content-wrapper">
@@ -23,11 +23,11 @@
                     <span th:text="#{Новая_приходная_ведомость}"></span>
                     </h4>
                 <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                    <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                         <span th:text="#{Главная}"></span>
                         </a>
                     </li>
-                    <li class="breadcrumb-item"><a href="/admin/account-transaction/index/1" class="text-for-breadcrumb">
+                    <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/account-transaction/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
                         <span th:text="#{Платежи}"></span>
                         </a>
                     </li>
@@ -120,7 +120,7 @@
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: flex-end;">
-                                <a href="/admin/account-transaction/index/1" class="btn btn-outline-secondary"
+                                <a th:href="@{{context_path}/admin/account-transaction/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary"
                                    style="margin-right: 3px">
                                     <span th:text="#{Отменить}"></span>
                                 </a>
@@ -150,10 +150,12 @@
 </form>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 
 </body>
 

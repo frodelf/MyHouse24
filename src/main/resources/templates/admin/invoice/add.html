@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -24,10 +24,10 @@
                 <span th:text="#{Новая_квитанция}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a></li>
-                <li class="breadcrumb-item"><a href="/admin/invoice/1" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/invoice/1(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Квитанции}"></span>
                     </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -37,7 +37,7 @@
             </ol>
         </div>
         <section class="content">
-            <form id="myForm" method="post" action="/admin/invoice/add" th:object="${invoiceDto}">
+            <form id="myForm" method="post" th:action="@{{context_path}/admin/invoice/add(context_path = ${context_path})}" th:object="${invoiceDto}">
                 <div class="input-group mb-3" style="width: 50%">
                     <span class="input-group-text">№</span>
                     <input type="number" class="form-control" th:field="*{number}">
@@ -210,7 +210,7 @@
                             <span th:text="#{Сохранить}"></span>
 
                         </button>
-                        <a href="/admin/invoice/index/1" class="btn btn-outline-secondary float-right"
+                        <a th:href="@{{context_path}/admin/invoice/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary float-right"
                            style="margin-right: 10px">
                             <span th:text="#{Отменить}"></span>
 
@@ -226,7 +226,6 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
-////
 <script th:inline="javascript">
     var services = [[${services}]];
     var tariff = [[${invoiceDto.tariff}]]
@@ -288,7 +287,7 @@
         var selectElement = document.getElementById("tariff");
         var selectedValue = selectElement.value;
         $.ajax({
-            url: '/admin/tariff/getTariffById/' + selectedValue,
+            url: '[[${context_path}]]/admin/tariff/getTariffById/' + selectedValue,
             method: 'GET',
             success: function (response) {
                 for (var i = 0; i < response.tariffAdditionalService.length; i++) {
@@ -540,7 +539,7 @@
     $(document).ready(function () {
         $('#mySelect2ForHouses').select2({
             ajax: {
-                url: '/admin/house/get-houses',
+                url: '[[${context_path}]]/admin/house/get-houses',
                 data: function (params) {
                     var query = {
                         _search: params.term || '',
@@ -555,7 +554,7 @@
             var flatSelect = $('select[name="flat"]');
             var sectionSelect = $('select[name="section"]');
             $.ajax({
-                url: '/admin/account/getFlats/' + houseId,
+                url: '[[${context_path}]]/admin/account/getFlats/' + houseId,
                 method: 'GET',
                 success: function (response) {
                     flatSelect.empty();
@@ -569,7 +568,7 @@
                 }
             });
             $.ajax({
-                url: '/admin/flat/getSections/' + houseId,
+                url: '[[${context_path}]]/admin/flat/getSections/' + houseId,
                 method: 'GET',
                 success: function (response) {
                     sectionSelect.empty();
@@ -589,7 +588,7 @@
     $(document).ready(function () {
         $('#mySelect2ForScore').select2({
             ajax: {
-                url: '/admin/account/get-scores',
+                url: '[[${context_path}]]/admin/account/get-scores',
                 data: function (params) {
                     var query = {
                         _search: params.term || '',
@@ -605,13 +604,13 @@
             var sectionSelect = $('select[name="section"]');
 
             $.ajax({
-                url: '/admin/flat/getFlatByScore/' + scoreId,
+                url: '[[${context_path}]]/admin/flat/getFlatByScore/' + scoreId,
                 method: 'GET',
                 success: async function (response) {
                     var flat = response;
                     try {
                         var houseResponse = await $.ajax({
-                            url: '/admin/house/getHouseByFlat/' + flat.id,
+                            url: '[[${context_path}]]/admin/house/getHouseByFlat/' + flat.id,
                             method: 'GET'
                         });
                         var house = houseResponse;
@@ -625,7 +624,7 @@
                         flatSelect.append('<option value="' + flat.id + '">' + flat.number + '</option>');
 
                         var flatsResponse = await $.ajax({
-                            url: '/admin/flat/getFlatsByFlat/' + flat.id,
+                            url: '[[${context_path}]]/admin/flat/getFlatsByFlat/' + flat.id,
                             method: 'GET'
                         });
                         var flats = flatsResponse;
@@ -634,7 +633,7 @@
                         });
 
                         var sectionsResponse = await $.ajax({
-                            url: '/admin/flat/getSectionsByFlat/' + flat.id,
+                            url: '[[${context_path}]]/admin/flat/getSectionsByFlat/' + flat.id,
                             method: 'GET'
                         });
                         var sections = sectionsResponse;
@@ -657,7 +656,7 @@
         $('select[name="flat"]').on('change', function () {
             var flat = $(this).val();
             $.ajax({
-                url: '/admin/account/getScoreByFlat/' + flat,
+                url: '[[${context_path}]]/admin/account/getScoreByFlat/' + flat,
                 method: 'GET',
                 success: async function (response) {
                     var score = response;
@@ -668,12 +667,12 @@
         });
     });
 </script>
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

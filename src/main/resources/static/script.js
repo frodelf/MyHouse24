@@ -56,7 +56,6 @@ $(document).ready(function () {
         });
         $('#pagination').append(prevButton);
 
-        // Додаємо номеровані кнопки пагінації
         for (var i = startPage; i <= endPage; i++) {
             var pageButton = $('<li class="page-item"><a class="page-link" href="#">' + (i + 1) + '</a></li>');
             if (i === currentPage) {
@@ -72,7 +71,6 @@ $(document).ready(function () {
             $('#pagination').append(pageButton);
         }
 
-        // Додаємо кнопку "Наступна"
         var nextButton = $('<li class="page-item"><a id="nextPage" class="page-link" href="#">»</a></li>');
         if ((currentPage + 1) === totalPages) {
             nextButton.addClass('disabled');
@@ -121,14 +119,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-document.querySelector('#fileInput').addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-        document.querySelector('#selectedImage').setAttribute('src', reader.result);
-    };
-    reader.readAsDataURL(file);
-});
+// document.querySelector('#fileInput').addEventListener('change', (event) => {
+//     const file = event.target.files[0];
+//     const reader = new FileReader();
+//     reader.onload = () => {
+//         document.querySelector('#selectedImage').setAttribute('src', reader.result);
+//     };
+//     reader.readAsDataURL(file);
+// });
 
 function generatePassword() {
     var passwordLength = 8;
@@ -353,6 +351,7 @@ function addBlock() {
     var newRow = document.createElement("div");
     newRow.classList.add("row");
     newRow.style.marginTop = "20px";
+    console.log("qwerty")
     newRow.innerHTML = `
             <div class="col-3">
                 Услуга
@@ -372,3 +371,4 @@ function addBlock() {
         `;
     container.appendChild(newRow);
 }
+

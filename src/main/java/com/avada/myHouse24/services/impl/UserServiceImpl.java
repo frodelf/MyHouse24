@@ -99,8 +99,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean isDebt(User user) {
         List<Flat> flats = user.getFlats();
-        for (Flat flat : flats) {
-            if(flat.getScore().getBalance() < 0){
+        if(flats != null)for (Flat flat : flats) {
+            if(flat.getScore() != null  &&  flat.getScore().getBalance() < 0){
                 return true;
             }
         }

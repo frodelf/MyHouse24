@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -24,7 +24,7 @@
                 <span th:text="#{Статьи_приходов_расходов}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -39,7 +39,7 @@
                 </div>
                 <div class="col-xs-12 col-lg-3">
                     <div class="btn-group margin-bottom float-right">
-                        <a href="/admin/transaction-purpose/create" type="button" class="btn btn-success"
+                        <a th:href="@{{context_path}/admin/transaction-purpose/create(context_path = ${context_path})}" type="button" class="btn btn-success"
                                 style="width: 220px; margin-bottom: 20px">
                             <span th:text="#{Добавить_статью}"></span>
                         </a>
@@ -62,24 +62,23 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="purpose : ${purposes}" class="clickable-row"
-                                th:data-action="@{/admin/transaction-purpose/edit/{id}(id=${purpose.getId()})}">
-                                <td>
+                            <tr th:each="purpose : ${purposes}">
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/transaction-purpose/edit/{transaction}(transaction = ${purpose.id}, context_path = ${context_path})}'|">
                                     <span th:text="${purpose.getName()}"></span>
                                 </td>
-                                <td>
+                                <td th:onclick="|window.location.href='@{{context_path}/admin/transaction-purpose/edit/{transaction}(transaction = ${purpose.id}, context_path = ${context_path})}'|">
                                     <span th:if="${purpose.getIsIncome() == true}" style="color: green">Приход</span>
                                     <span th:if="${purpose.getIsIncome() == false}" style="color: red">Расход</span>
                                 </td>
                                 <td>
                                     <div class="btn-group float-right">
                                         <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/transaction-purpose/edit/{id}(id=${purpose.getId()})}"
+                                           th:href="@{{context_path}/admin/transaction-purpose/edit/{id}(id=${purpose.getId()}, context_path = ${context_path})}"
                                            title="Редактировать" data-toggle="tooltip">
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
                                         <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/transaction-purpose/delete/{id}(id=${purpose.getId()})}"
+                                           th:href="@{{context_path}/admin/transaction-purpose/delete/{id}(id=${purpose.getId()}, context_path = ${context_path})}"
                                            title="Удалить" data-toggle="tooltip"><i class="fa fa-trash"></i>
                                         </a>
                                     </div>
@@ -89,9 +88,6 @@
                     </table>
                 </div>
                 </form>
-                <div class="table-responsive">
-
-                </div>
             </div>
         </section>
     </div>
@@ -101,13 +97,12 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
-
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

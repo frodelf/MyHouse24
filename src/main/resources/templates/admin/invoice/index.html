@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -25,10 +25,10 @@
 
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a></li>
-                <li class="breadcrumb-item"><a href="/admin/invoice/index/1" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/invoice/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Квитанции}"></span>
                     </a>
                 </li>
@@ -50,15 +50,15 @@
                 <div class="card-header">
                     <span th:text="#{Просмотр_Квитанции}"></span>
                     <div class="float-right">
-                        <a class="btn btn-outline-secondary" th:href="@{/admin/invoice/print/{id}(id=${invoiceDto.id})}">
+                        <a class="btn btn-outline-secondary" th:href="@{{context_path}/admin/invoice/print/{id}(id=${invoiceDto.id}, context_path = ${context_path})}">
                             <span th:text="#{Печать}"></span>
 
                         </a>
-                        <a class="btn btn-outline-secondary" th:href="@{/admin/invoice/print/{id}(id=${invoiceDto.id})}">
+                        <a class="btn btn-outline-secondary" th:href="@{{context_path}/admin/invoice/print/{id}(id=${invoiceDto.id}, context_path = ${context_path})}">
                             <span th:text="#{Отправить_на_e-mail}"></span>
 
                         </a>
-                        <a class="btn btn-primary" th:href="@{/admin/invoice/edit/{id}(id=${invoiceDto.getId()})}">
+                        <a class="btn btn-primary" th:href="@{{context_path}/admin/invoice/edit/{id}(id=${invoiceDto.getId()}, context_path = ${context_path})}">
                             <span th:text="#{Редактировать_счет}"></span>
                         </a>
                     </div>
@@ -113,7 +113,7 @@
                                 <span th:text="#{Владелец}"></span>
                                 </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${invoiceDto.flat.user.id})}">[[${invoiceDto.user.firstName}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/user/{id}(id = ${invoiceDto.flat.user.id}, context_path = ${context_path})}">[[${invoiceDto.user.firstName}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -121,7 +121,7 @@
                                 <span th:text="#{Лицевой_счет}"></span>
                                 </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account/{id}(id = ${invoiceDto.flat.score.id})}">[[${invoiceDto.score.number}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/account/{id}(id = ${invoiceDto.flat.score.id}, context_path = ${context_path})}">[[${invoiceDto.score.number}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -135,7 +135,7 @@
                                 <span th:text="#{Дом}"></span>
                                 </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${invoiceDto.flat.house.id})}">[[${invoiceDto.flat.house.name}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/house/{id}(id = ${invoiceDto.flat.house.id}, context_path = ${context_path})}">[[${invoiceDto.flat.house.name}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -143,7 +143,7 @@
                                 <span th:text="#{Квартира}"></span>
                                 </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/flat/{id}(id = ${invoiceDto.flat.id})}">[[${invoiceDto.flat.number}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/flat/{id}(id = ${invoiceDto.flat.id}, context_path = ${context_path})}">[[${invoiceDto.flat.number}]]</a><br/>
                             </td>
                         </tr>
                         <tr>
@@ -157,7 +157,7 @@
                                 <span th:text="#{Тариф}"></span>
                                 </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/tariff/{id}(id = ${invoiceDto.tariff.id})}">[[${invoiceDto.tariff.name}]]</a><br/>
+                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/tariff/{id}(id = ${invoiceDto.tariff.id}, context_path = ${context_path})}">[[${invoiceDto.tariff.name}]]</a><br/>
                             </td>
                         </tr>
                         </tbody>
@@ -214,13 +214,12 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
-
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

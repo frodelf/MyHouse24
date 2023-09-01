@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script>
@@ -37,7 +37,7 @@
                 <span th:text="#{Касса}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                 </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
@@ -97,11 +97,11 @@
                             <span th:text="#{Выберите_действие}"></span>
                         </button>
                         <ul class="dropdown-menu" style="width: 230px;">
-                            <li><a class="text-secondary" href="/admin/account-transaction/create/in"
+                            <li><a class="text-secondary" th:href="@{{context_path}/admin/account-transaction/create/in(context_path = ${context_path})}"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">
                                 <span th:text="#{Создать_приход}"></span>
                                 </a></li>
-                            <li><a class="text-secondary" href="/admin/account-transaction/create/out"
+                            <li><a class="text-secondary" th:href="@{{context_path}/admin/account-transaction/create/out(context_path = ${context_path})}"
                                    style="padding-inline: 15px; display: block; text-decoration: none;">
                                 <span th:text="#{Создать_расход}"></span>
                             </a></li>
@@ -115,14 +115,14 @@
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a href="/admin/account-transaction/index/1"
+                    <a th:href="@{{context_path}/admin/account-transaction/index/1(context_path = ${context_path})}"
                        class="btn btn-outline-secondary float-right">
                         <span th:text="#{Очистить}"></span>
                     </a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <form id="formSend" method="get" action="/admin/account-transaction/filter/1"
+                        <form id="formSend" method="get" th:action="@{{context_path}/admin/account-transaction/filter/1(context_path = ${context_path})}"
                               onsubmit="event.preventDefault()">
                             <table class="table table-bordered table-hover table-striped table-sm">
                                 <thead>
@@ -200,41 +200,56 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr class="clickable-row" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="height: auto;" th:each="transaction:${accountTransactionList}"
-                                    th:data-action="@{/admin/account-transaction/{id}(id=${transaction.getId()})}">
-                                    <td th:text="${transaction.getId()}"></td>
-                                    <td th:text="${transaction.getDate()}"></td>
-                                    <td>
+                                <tr class="clickable-row" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="height: auto;" th:each="transaction:${accountTransactionList}">
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|" th:text="${transaction.getId()}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|"  th:text="${transaction.getDate()}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|">
                                         <span th:text="${transaction.getAddToStats() == true ? 'Проведен' : 'Не проведен'}"></span>
                                     </td>
-                                    <td th:text="${transaction.getTransactionPurposeName()}"></td>
-                                    <td th:text="${transaction.getUserName()}"></td>
-                                    <td th:text="${transaction.getScoreNumber()}"></td>
-                                    <td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|" th:text="${transaction.getTransactionPurposeName()}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|" th:text="${transaction.getUserName()}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|" th:text="${transaction.getScoreNumber()}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|" >
                                         <span th:text="${transaction.getIsIncome() == true ? 'Приход' : 'Разход'}"></span>
                                     </td>
-                                    <td th:text="${transaction.getSum()}"></td>
+                                    <td th:onclick="|window.location.href='@{{context_path}/admin/account-transaction/{transaction}(transaction = ${transaction.id}, context_path = ${context_path})}'|" th:text="${transaction.getSum()}"></td>
 
                                     <td>
                                         <div class="btn-group pull-right">
                                             <a class="btn btn-default btn-sm"
-                                               th:href="${transaction.getIsIncome() ?
-                                                '/admin/account-transaction/update/in/' + transaction.getId() :
-                                                '/admin/account-transaction/update/out/' + transaction.getId()}"
+                                               th:href="@{${transaction.getIsIncome() ? '/admin/account-transaction/update/in/' + transaction.getId() : '/admin/account-transaction/update/out/' + transaction.getId()}}"
                                                title="Редактировать" data-toggle="tooltip">
                                                 <i class="fa fa-pencil-alt"></i>
                                             </a>
-                                            <a class="btn btn-default btn-sm"
-                                               th:href="@{/admin/account-transaction/delete/{id}(id = ${transaction.getId()})}"
-                                               title="Удалить" data-toggle="tooltip"
-                                               data-pjax="0" data-method="post"
-                                               data-confirm="Вы уверены, что хотите удалить этот элемент?"><i
-                                                    class="fa fa-trash"></i></a></div>
+                                            <button type="button" class="btn btn-default btn-sm model1"
+                                               th:data-redirect="@{{context_path}/admin/account-transaction/delete/{id}(id = ${transaction.getId()}, context_path = ${context_path})}"
+                                               title="Удалить" data-toggle="modal" data-target="#myModal">
+                                                <i class="fa fa-trash"></i></button></div>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
                         </form>
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="myModalLabel">Підтвердіть видалення</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        Ви впевнені, що хочете видалити цей елемент?
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати
+                                        </button>
+                                        <button type="button" class="btn btn-danger confirm">Видалити</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="card-footer">
@@ -259,16 +274,16 @@
                                         if (window.location.href.includes('filter')) {
                                             var parts = window.location.href.split('?');
                                             afterQuestionMark = '?' + parts[1];
-                                            var baseUrl = '/admin/account-transaction/filter/';
+                                            var baseUrl = '[[${context_path}]]/admin/account-transaction/filter/';
                                         } else {
-                                            var baseUrl = '/admin/account-transaction/index/';
+                                            var baseUrl = '[[${context_path}]]/admin/account-transaction/index/';
                                         }
 
                                         if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                     </script>
                                     <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
-                                        <script src="/pagination.js" data-url="admin/account-transaction/index/"
+                                        <script src="/pagination.js" th:data-url="@{{context_path}admin/account-transaction/index/(context_path = ${context_path})}"
                                                 th:current="${current}"
                                                 th:max="${max+1}"></script>
                                     </ul>
@@ -278,13 +293,13 @@
                                         if (window.location.href.includes('filter')) {
                                             var parts = window.location.href.split('?');
                                             afterQuestionMark = '?' + parts[1];
-                                            var baseUrl = '/admin/account-transaction/filter/';
+                                            var baseUrl = '[[${context_path}]]/admin/account-transaction/filter/';
                                         } else {
-                                            var baseUrl = '/admin/account-transaction/index/';
+                                            var baseUrl = '[[${context_path}]]/admin/account-transaction/index/';
                                         }
                                         console.log([[${current}]])
                                         if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
-                                        else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                        else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                     </script>
                                 </ul>
                             </div>
@@ -301,12 +316,12 @@
     </footer>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
@@ -314,7 +329,7 @@
 <script>
     $("#downloadExcelButton").click(function() {
         $.ajax({
-            url: '/admin/account-transaction/excel',
+            url: '[[${context_path}]]/admin/account-transaction/excel',
             method: 'GET',
             xhrFields: {
                 responseType: 'blob'
@@ -331,7 +346,30 @@
             }
         });
     });
+    const modalButtons = document.querySelectorAll(".modal1");
+    const modal = document.getElementById("myModal");
+    const confirmButtons = document.querySelectorAll(".confirm");
+    const cancelButtons = document.querySelectorAll(".cancel");
+    modalButtons.forEach(button => {
+        console.log("qwerty")
+        button.addEventListener("click", () => {
+            modal.style.display = "flex";
+            const redirectUrl = button.getAttribute("data-redirect");
 
+            confirmButtons.forEach(confirmButton => {
+                confirmButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                    window.location.href = redirectUrl;
+                });
+            });
+
+            cancelButtons.forEach(cancelButton => {
+                cancelButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                });
+            });
+        });
+    });
 </script>
 </body>
 
