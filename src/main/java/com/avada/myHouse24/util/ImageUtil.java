@@ -4,6 +4,7 @@ import com.avada.myHouse24.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 //import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,6 +18,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class ImageUtil {
     private static final String pathToFolder = "E:/MyHouse24";
+    private static String contextPath = "/myHouse24DA";
     public static String imageForUser(User user, MultipartFile image) {
         String nameImage ="";
         try {
@@ -28,7 +30,7 @@ public class ImageUtil {
         } catch (Exception e) {
             log.warn(e);
         }
-        return "/uploads/avatar/"+nameImage;
+        return contextPath+"/uploads/avatar/"+nameImage;
     }
     public static String fileForTemplate(MultipartFile image) {
         String nameImage ="";
@@ -41,7 +43,7 @@ public class ImageUtil {
         } catch (Exception e) {
             log.warn(e);
         }
-        return "/uploads/template/"+nameImage;
+        return contextPath+"/uploads/template/"+nameImage;
     }
     public static String imageForHouse(MultipartFile file) {
         String nameImage ="";
@@ -54,7 +56,7 @@ public class ImageUtil {
         } catch (Exception e) {
             log.warn(e);
         }
-        return "/uploads/house/"+nameImage;
+        return contextPath+"/uploads/house/"+nameImage;
     }
 
 
@@ -76,15 +78,4 @@ public class ImageUtil {
         log.info(name.replace("/uploads", pathToFolder));
         new File(name.replace("/uploads", pathToFolder)).delete();
     }
-
-//    public MultipartFile convertToMultipartFile(String filePath) throws IOException {
-//        File file = new File(filePath);
-//        Path path = Paths.get(file.getAbsolutePath());
-//        String name = file.getName();
-//        String originalFileName = file.getName();
-//        String contentType = Files.probeContentType(path);
-//        byte[] content = Files.readAllBytes(path);
-//
-//        return new MockMultipartFile(name, originalFileName, contentType, content);
-//    }
 }

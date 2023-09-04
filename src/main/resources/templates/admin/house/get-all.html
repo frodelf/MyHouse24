@@ -158,6 +158,26 @@
                 </div>
             </div>
         </section>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="myModalLabel">Підтвердіть видалення</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Ви впевнені, що хочете видалити цей елемент?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати
+                        </button>
+                        <button type="button" class="btn btn-danger confirm">Видалити</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
     <footer class="main-footer">
         Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
@@ -177,20 +197,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
-<script th:inline="javascript">
+<script>
     $(document).ready(function() {
         var name =  $("#filterName").val();
         var address =  $("#filterAddress").val()
+        console.log(address);
+        console.log(name);
         if(name === "" && address === "") {
-            $.get("[[${context_path}]]/admin/house/getAll/1", function (data) {
+            $.get('[[${context_path}]]/admin/house/getAll/1', function (data) {
                 var tableBody = $("#table-house");
                 $.each(data, function (index, house) {
-                    var row = $("<tr class='clickable-row' data-action='/admin/house/" + house.id + "'></tr>");
-                    row.append("<td>" + house.id + "</td><td>" + house.name + "</td><td>" + house.address + "</td>" +
-                        "<td> <a class='btn btn-default btn-sm float-right' href='/admin/house/delete/" + house.id + "' title='Удалить'><i class='fa fa-trash'></i></a>" +
-                        "<a class='btn btn-default btn-sm float-right' href='/admin/house/edit/" + house.id + "' title='Редактировать'><i class='fa fa-pencil-alt'></i></a> </td>");
+                    var row = $("<tr></tr>");
+                    row.append(
+                        "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.id + "</td>" +
+                        "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.name + "</td>" +
+                        "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.address + "</td>" +
+                        "<td> <a class='btn btn-default btn-sm float-right modal1' href='[[${context_path}]]/admin/house/delete/" + house.id + "' title='Удалить' data-toggle='modal' data-target='#myModal'><i class='fa fa-trash'></i></a>" +
+                        "<a class='btn btn-default btn-sm float-right' href='[[${context_path}]]/admin/house/edit/" + house.id + "' title='Редактировать'><i class='fa fa-pencil-alt'></i></a> </td>");
 
-                    row.click(function () {
+                    row.find('.clickable-cell').click(function () {
                         var url = $(this).data("action");
                         window.location.href = url;
                     });
@@ -200,32 +225,38 @@
             });
         }
         else{
-            var house1 = {
-                name: $("#filterName").val(),
-                address: $("#filterAddress").val()
-            };
             $.ajax({
                 type: "POST",
-                url: "[[${context_path}]]/admin/house/filterGet/1",
+                url: "[[${context_path}]]/admin/house/filterGet/1?name="+name+"&address="+address,
                 contentType: "application/json",
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("[[${_csrf.headerName}]]", "[[${_csrf.token}]]");
+                },
                 success: function(data) {
+                    console.log("l2")
                     var tableBody = $("#table-house");
                     $.each(data, function (index, house) {
-                        var row = $("<tr class='clickable-row' data-action='/admin/house/" + house.id + "'></tr>");
-                        row.append("<td>" + house.id + "</td><td>" + house.name + "</td><td>" + house.address + "</td>" +
-                            "<td> <a class='btn btn-default btn-sm float-right' href='/admin/house/delete/" + house.id + "' title='Удалить'><i class='fa fa-trash'></i></a>" +
-                            "<a class='btn btn-default btn-sm float-right' href='/admin/house/edit/" + house.id + "' title='Редактировать'><i class='fa fa-pencil-alt'></i></a> </td>");
+                        var row = $("<tr></tr>");
 
-                        row.click(function () {
+                        row.append(
+                            "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.id + "</td>" +
+                            "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.name + "</td>" +
+                            "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.address + "</td>" +
+                            "<td> <a class='btn btn-default btn-sm float-right modal1' href='[[${context_path}]]/admin/house/delete/" + house.id + "' title='Удалить' data-toggle='modal' data-target='#myModal'><i class='fa fa-trash'></i></a>" +
+                            "<a class='btn btn-default btn-sm float-right' href='[[${context_path}]]/admin/house/edit/" + house.id + "' title='Редактировать'><i class='fa fa-pencil-alt'></i></a> </td>");
+
+                        row.find('.clickable-cell').click(function () {
                             var url = $(this).data("action");
                             window.location.href = url;
                         });
-
                         tableBody.append(row);
                     });
                 },
-                error: function() {
+                error: function(jqXHR, textStatus, errorThrown) {
                     console.log("AJAX request failed");
+                    console.log("Status: " + textStatus);
+                    console.log("Error thrown: " + errorThrown);
+                    console.log("Response Text: " + jqXHR.responseText);
                 }
             });
 

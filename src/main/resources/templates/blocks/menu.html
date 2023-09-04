@@ -259,9 +259,9 @@
                     tables.forEach(table =>{
                        table.classList.add("table-dark")
                     });
-                    tableRows.forEach(row => {
-                        row.classList.add("table-dark");
-                    });
+                    // tableRows.forEach(row => {
+                    //     row.classList.add("table-dark");
+                    // });
                     $(".text-for-breadcrumb").css("color", "#fff");
                 } else {
                     setCookie("theme", "☀")
@@ -276,10 +276,10 @@
                     tables.forEach(table =>{
                         table.classList.remove("table-dark")
                     });
-                    tableRows.forEach(row => {
-                        console.log(row.classList)
-                        row.classList.remove("table-dark");
-                    });
+                    // tableRows.forEach(row => {
+                    //     console.log(row.classList)
+                    //     row.classList.remove("table-dark");
+                    // });
                     $(".text-for-breadcrumb").css("color", "#212529BF");
                 }
             }

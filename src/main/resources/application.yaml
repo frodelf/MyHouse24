@@ -50,4 +50,4 @@ application:
     name: awss3bucketforavadatest
 server:
   servlet:
-    context-path: /myHouse24
+    context-path: /myHouse24DA

@@ -127,6 +127,7 @@ public class HouseController {
     @PostMapping("/filterGet/{page}")
     @ResponseBody
     public List<HouseForViewDto> filterPage (@PathVariable("page")int id, Model model, @ModelAttribute("house1") HouseForViewDto house){
-        return houseService.getPage(id, model, houseService.filter(house, houseService.filter(house, houseMapper.toDtoForViewList(houseService.getAll())))).getContent();
+        List<HouseForViewDto> result = houseService.getPage(id, model, houseService.filter(house, houseService.filter(house, houseMapper.toDtoForViewList(houseService.getAll())))).getContent();
+        return result;
     }
 }
