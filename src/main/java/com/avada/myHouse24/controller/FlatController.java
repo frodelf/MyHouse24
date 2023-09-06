@@ -70,7 +70,7 @@ public class FlatController {
             model.addAttribute("tariffs", tariffService.getAll());
             return "/admin/flat/add";
         }
-        flatDTO.setScoreNumber(flatDTO.getScoreNumber().replace(",",""));
+        flatDTO.setScoreNumber(flatDTO.getScoreNumber());
         flatService.save(flatMapper.toEntity(flatDTO));
         return "redirect:/admin/flat/index/1";
     }
@@ -118,9 +118,17 @@ public class FlatController {
         return "redirect:/admin/flat/index/1";
     }
     @PostMapping("/copy")
-    public String copy(@ModelAttribute("flatDTO") FlatDTO flatDTO){
+    public String copy(@ModelAttribute("flatDTO")@Valid FlatDTO flatDTO, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("houses", houseService.getAll());
+            model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
+            model.addAttribute("users", userService.getAll());
+            model.addAttribute("tariffs", tariffService.getAll());
+            return "/admin/flat/add";
+        }
         if(!scoreService.existNumber(flatDTO.getScoreNumber())){
             Score score = new Score();
+            score.setStatus("Активен");
             score.setNumber(flatDTO.getScoreNumber());
             scoreService.save(score);
         }
@@ -131,7 +139,7 @@ public class FlatController {
     }
     @GetMapping("/copy/{id}")
     public String copy(@PathVariable("id") long id, Model model){
-        model.addAttribute("flat", flatMapper.toDto(flatService.getById(id+1)));
+        model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("floors", floorService.getAll());
         model.addAttribute("sections", sectionService.getAll());

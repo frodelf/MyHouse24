@@ -10,10 +10,7 @@ import com.avada.myHouse24.model.FlatDTO;
 import com.avada.myHouse24.model.ScoreDTO;
 import com.avada.myHouse24.model.ScoreForFilterDTO;
 import com.avada.myHouse24.model.Select2Option;
-import com.avada.myHouse24.services.impl.FlatServiceImpl;
-import com.avada.myHouse24.services.impl.HouseServiceImpl;
-import com.avada.myHouse24.services.impl.ScoreServiceImpl;
-import com.avada.myHouse24.services.impl.UserServiceImpl;
+import com.avada.myHouse24.services.impl.*;
 import com.avada.myHouse24.validator.ScoreValidator;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -42,10 +39,16 @@ public class ScoreController {
     private final UserServiceImpl userService;
     private final ScoreServiceImpl scoreService;
     private final ScoreMapper scoreMapper;
+    private final AccountTransactionServiceImpl accountTransactionService;
 
     @GetMapping("/index/{page}")
     public String getAll(@PathVariable("page") int page, Model model) {
         model.addAttribute("houses", houseService.getAll());
+
+        model.addAttribute("sumAccountTransactionForStats", accountTransactionService.getAllSum());
+        model.addAttribute("balanceScoreForStats", scoreService.getAllBalance());
+        model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
+
         model.addAttribute("scores", scoreService.getPage(page, model));
         model.addAttribute("sections", new ArrayList<>());
         model.addAttribute("users", userService.getAll());

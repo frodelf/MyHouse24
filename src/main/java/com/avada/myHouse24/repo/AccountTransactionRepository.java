@@ -14,4 +14,6 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
     @Query(value = "SELECT SUM(a.sum) FROM AccountTransaction a WHERE a.isIncome = false")
     Long sumWhereIsIncomeIsFalse();
 
+    @Query(value = "SELECT SUM(a.sum) FROM AccountTransaction a")
+    Double findAllSum();
 }

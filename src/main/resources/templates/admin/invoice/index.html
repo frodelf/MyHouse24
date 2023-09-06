@@ -121,7 +121,9 @@
                                 <span th:text="#{Лицевой_счет}"></span>
                                 </td>
                             <td>
-                                <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/account/{id}(id = ${invoiceDto.flat.score.id}, context_path = ${context_path})}">[[${invoiceDto.score.number}]]</a><br/>
+                                <div th:if="${invoiceDto.flat != null  &&  invoiceDto.flat.score != null}">
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{{context_path}/admin/account/{id}(id = ${invoiceDto.flat.score.id}, context_path = ${context_path})}">[[${invoiceDto.score.number}]]</a><br/>
+                                </div>
                             </td>
                         </tr>
                         <tr>

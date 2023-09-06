@@ -23,12 +23,24 @@ public class AccountTransactionMapper {
     private final AdminServiceImpl adminService;
     private final TransactionPurposeServiceImpl transactionPurposeService;
 
-    public AccountTransactionInDTO toDtoForIn(AccountTransaction accountTransaction){
-        return new AccountTransactionInDTO(accountTransaction.getId(), accountTransaction.getFromDate(),
-                accountTransaction.getTransactionPurpose().getName(),
-                accountTransaction.getUser().getFirstName(), accountTransaction.getScore().getId().toString(),
-                accountTransaction.isIncome(), String.valueOf(accountTransaction.getSum()), accountTransaction.getAdmin().getFirstName(), accountTransaction.getComment(), accountTransaction.isAddToStats(), accountTransaction.getNumber());
+    public AccountTransactionInDTO toDtoForIn(AccountTransaction accountTransaction) {
+        AccountTransactionInDTO dto = new AccountTransactionInDTO();
+
+        dto.setId(accountTransaction.getId());
+        dto.setDate(accountTransaction.getFromDate());
+        dto.setTransactionPurposeName(accountTransaction.getTransactionPurpose().getName());
+        dto.setUserName(accountTransaction.getUser().getFirstName());
+        if(accountTransaction.getScore()!=null)dto.setScoreId(accountTransaction.getScore().getId().toString());
+        dto.setIncome(accountTransaction.isIncome());
+        dto.setSum(String.valueOf(accountTransaction.getSum()));
+        dto.setAdminName(accountTransaction.getAdmin().getFirstName());
+        dto.setComment(accountTransaction.getComment());
+        dto.setAddToStats(accountTransaction.isAddToStats());
+        dto.setNumber(accountTransaction.getNumber());
+
+        return dto;
     }
+
 
     public AccountTransaction toEntityForIn(AccountTransactionInDTO accountTransactionDTOIn){
         AccountTransaction accountTransaction = new AccountTransaction();

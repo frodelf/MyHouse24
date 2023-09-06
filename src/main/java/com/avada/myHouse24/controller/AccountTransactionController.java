@@ -43,12 +43,16 @@ public class AccountTransactionController {
     @GetMapping("/index/{id}")
     public ModelAndView index(@PathVariable("id") int id) {
         ModelAndView modelAndView = new ModelAndView("admin/account-transaction/get-all");
+        modelAndView.addObject("accountTransaction", new AccountTransactionForViewDTO());
+
+        modelAndView.addObject("sumAccountTransactionForStats", accountTransactionService.getAllSum());
+        modelAndView.addObject("balanceScoreForStats", scoreService.getAllBalance());
+        modelAndView.addObject("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
 
         modelAndView.addObject("accountTransaction", new AccountTransactionForViewDTO());
         modelAndView.addObject("accountTransactionList", accountTransactionMapper.toDtoForViewList(accountTransactionService.getPage(id, modelAndView).getContent()));
         modelAndView.addObject("transactionPurposeList", transactionPurposeService.getAll());
         modelAndView.addObject("sumWhereIsIncomeIsTrue", accountTransactionService.getSumWhereIsIncomeIsTrue());
-        modelAndView.addObject("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
 
         return modelAndView;
     }

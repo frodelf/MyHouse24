@@ -88,6 +88,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
         return invoices.getContent();
     }
+    public Long getMaxId(){
+        return invoiceRepository.findMaxId()+1;
+    }
     public List<InvoiceDto> filter(InvoiceDto filter, String flatNumber, Date dateExample){
         List<InvoiceDto> invoiceDtos = invoiceMapper.toDtoList(invoiceRepository.findAll());
         if(filter.getNumber() != null){

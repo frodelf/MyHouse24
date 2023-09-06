@@ -62,6 +62,7 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
     public void save(AccountTransaction accountTransaction) {
         accountTransactionRepository.save(accountTransaction);
     }
+    public Double getAllSum(){return accountTransactionRepository.findAllSum();}
     @Override
     public AccountTransaction getById(long id) {
         return accountTransactionRepository.findById(id).get();

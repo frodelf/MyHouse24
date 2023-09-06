@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
-    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
-    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -15,7 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}"
+      style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -24,12 +28,15 @@
                 <span th:text="#{Новая_квитанция}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}"
+                                               class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
-                    </a></li>
-                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/invoice/1(context_path = ${context_path})}" class="text-for-breadcrumb">
+                </a></li>
+                <li class="breadcrumb-item"><a
+                        th:href="@{{context_path}/admin/invoice/1(context_path = ${context_path})}"
+                        class="text-for-breadcrumb">
                     <span th:text="#{Квитанции}"></span>
-                    </a></li>
+                </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
                     <span th:text="#{Новая_квитанция}"></span>
 
@@ -37,7 +44,9 @@
             </ol>
         </div>
         <section class="content">
-            <form id="myForm" method="post" th:action="@{{context_path}/admin/invoice/add(context_path = ${context_path})}" th:object="${invoiceDto}">
+            <form id="myForm" method="post"
+                  th:action="@{{context_path}/admin/invoice/add(context_path = ${context_path})}"
+                  th:object="${invoiceDto}">
                 <div class="input-group mb-3" style="width: 50%">
                     <span class="input-group-text">№</span>
                     <input type="number" class="form-control" th:field="*{number}">
@@ -114,10 +123,17 @@
                                         <br/>
                                         <span th:text="#{Лицевой_счет}"></span>
 
-                                        <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
-                                            <option th:value="${invoiceDto.flat.score.id}"
-                                                    th:text="${invoiceDto.flat.score.number}"></option>
-                                        </select>
+                                        <div th:if="${invoiceDto.flat != null  &&  invoiceDto.flat.score != null}">
+                                            <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
+                                                <option th:value="${invoiceDto.flat.score.id}"
+                                                        th:text="${invoiceDto.flat.score.number}"></option>
+                                            </select>
+                                        </div>
+                                        <div th:if="${invoiceDto.flat == null ||  invoiceDto.flat.score == null}">
+                                            <select id="mySelect2ForScore" style="width: 100%;" th:field="*{score}">
+                                                <option value=""></option>
+                                            </select>
+                                        </div>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('score')}" th:errors="*{score}"></div>
                                     </div>
@@ -161,24 +177,27 @@
                                     </div>
                                 </div>
                             </div>
-                            <table id="myTable" class="table" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="margin-top: 20px;">
+                            <table id="myTable" class="table" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
+                                   style="margin-top: 20px;">
                                 <thead>
                                 <tr>
                                     <th style="width: 30%">
                                         <span th:text="#{Услуга}"></span>
-                                        </th>
+                                    </th>
                                     <th style="width: 20%">
                                         <span th:text="#{Расход}"></span>
-                                        </th>
+                                    </th>
                                     <th style="width: 15%">
                                         <span th:text="#{Ед.изм.}"></span>
-                                        Ед. изм.</th>
+                                        Ед. изм.
+                                    </th>
                                     <th style="width: 10%">
                                         <span th:text="#{Цена_за_ед}"></span>
-                                        </th>
+                                    </th>
                                     <th style="width: 20%">
                                         <span th:text="#{Стоимость_грн}"></span>
-                                        Стоимость, грн.</th>
+                                        Стоимость, грн.
+                                    </th>
                                     <th style="width: 5%"></th>
                                 </tr>
                                 </thead>
@@ -189,7 +208,7 @@
                                 <div class="col-9">
                                     <button type="button" onclick="addRow()"
                                             class="btn btn-outline-secondary">
-                                    <span th:text="#{Добавить_услугу}"></span>
+                                        <span th:text="#{Добавить_услугу}"></span>
 
                                     </button>
                                     <button type="button" onclick="addRowsByTariff()"
@@ -210,7 +229,8 @@
                             <span th:text="#{Сохранить}"></span>
 
                         </button>
-                        <a th:href="@{{context_path}/admin/invoice/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary float-right"
+                        <a th:href="@{{context_path}/admin/invoice/index/1(context_path = ${context_path})}"
+                           class="btn btn-outline-secondary float-right"
                            style="margin-right: 10px">
                             <span th:text="#{Отменить}"></span>
 
@@ -305,6 +325,7 @@
     }
 
     document.addEventListener("DOMContentLoaded", onLoadFunction);
+
     function addRows(response) {
         calculateProduct();
         updateTotal();
@@ -344,7 +365,7 @@
         inputConsumption.classList.add("form-control");
         inputConsumption.setAttribute("type", "number");
         inputConsumption.setAttribute("name", "invoiceAdditionalServices[" + rowCount + "].consumption");
-        if(response.consumption != null)        inputConsumption.setAttribute("value", response.consumption);
+        if (response.consumption != null) inputConsumption.setAttribute("value", response.consumption);
         inputConsumption.oninput = calculateProduct;
         cell.appendChild(inputConsumption);
         newRow.appendChild(cell);
@@ -390,6 +411,7 @@
         tableBody.appendChild(newRow);
         calculateProduct();
         updateTotal();
+
         function calculateProduct() {
             var rows = document.querySelectorAll("#myTable tbody tr");
             rows.forEach(function (row) {
@@ -419,7 +441,8 @@
             outputDiv.textContent = "Итого: " + total;
         }
     }
-    $(document).ready(function() {
+
+    $(document).ready(function () {
 
     });
 </script>

@@ -87,10 +87,9 @@
                                     </p>
                                     <select class="mySelect form-select" name="scoreId"
                                             aria-label="Default select example">
-                                        <option th:value="${accountTransaction.getScoreId()}"
-                                                th:text="${accountTransaction.getScoreId()}"></option>
-                                        <option th:each="score:${scores}" th:value="${score.id}" th:field="*{scoreId}"
-                                                th:text="${score.id}"></option>
+                                        <option></option>
+                                        <option th:each="score:${scores}" th:value="${score.id}"
+                                                th:text="${score.number}" th:selected="${accountTransaction.getScoreId() == score.id.toString()}"></option>
                                     </select>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('scoreId')}" th:errors="*{scoreId}"></div>
@@ -113,7 +112,7 @@
 
                                     <p style="margin-top: 20px;">
                                         <span th:text="#{Сумма}"></span>
-                                        <input class="form-control" type="text" name="sum"
+                                        <input class="form-control" type="number" name="sum"
                                                th:value="${accountTransaction.sum}" aria-label="default input example">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                          th:if="${#fields.hasErrors('sum')}" th:errors="*{sum}"></div>
@@ -135,7 +134,7 @@
                                 </div>
                             </div>
                             <div style="display: flex; justify-content: flex-end;">
-                                <a href="/admin/account-transaction/index/1" class="btn btn-outline-secondary"
+                                <a th:href="@{{context_path}/admin/account-transaction/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary"
                                    style="margin-right: 3px">
                                     <span th:text="#{Отменить}"></span>
 

@@ -83,7 +83,7 @@
                                     <p style="margin-top: 20px;">
                                         <span th:text="#{Сумма}"></span>
                                     </p>
-                                    <input class="form-control" type="text" name="sum"
+                                    <input class="form-control" type="number" name="sum"
                                            aria-label="default input example">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('sum')}" th:errors="*{sum}"></div>
                                 </div>

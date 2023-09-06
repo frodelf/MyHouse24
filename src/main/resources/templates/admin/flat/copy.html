@@ -20,17 +20,6 @@
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">
-                Новая квартира
-            </h4>
-            <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/flat/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">Квартиры</a></li>
-                <li class="breadcrumb-item active" aria-current="page">
-                    Новая квартира
-                </li>
-            </ol>
-        </div><div class="content-header" style="display: flex; align-items: center;">
         <h4 style="margin-left: 10px; margin-right: auto;">
             <span th:text="#{Новая_квартира}"></span>
         </h4>
@@ -50,6 +39,7 @@
         <section class="content">
             <div class="card">
                 <form method="post" th:object="${flat}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                     <div class="card-body">
                         <div class="row" style="font-weight: bold">
                             <div class="col">
@@ -96,7 +86,7 @@
                             <div class="col">
                                 <span th:text="#{Лицевой_счет}"></span>
                                 <input type="number" class="form-control" th:field="*{scoreNumber}">
-                                <select class="form-select" name="scoreNumber"
+                                <select class="form-select"
                                         aria-label="Default select example">
                                     <option value="" hidden >или выбрате из списка...</option>
                                     <option th:each="score:${scores}" th:value="${score.getNumber()}" th:text="${score.number}">

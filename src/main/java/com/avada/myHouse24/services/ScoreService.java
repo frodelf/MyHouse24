@@ -25,4 +25,5 @@ public interface ScoreService {
     List<Score> forSelect(int page, int pageSize, String search);
     List<ScoreDTO> filter(ScoreForFilterDTO scoreForFilterDTO, List<ScoreDTO> scoreDTOS);
     void excel(HttpServletResponse response) throws IOException;
+    List<Score> getAllEmpty();
 }

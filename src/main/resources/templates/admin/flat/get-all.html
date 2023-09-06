@@ -31,7 +31,7 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? 'light' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -249,11 +249,11 @@
                                                 }
 
                                                 if ([[${current}]] <= 1) document.write('<li class="page-item"><button class="page-link" disabled="disabled"><</button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' + (baseUrl + pageNumber + afterQuestionMark) + '"><</a></li>');
                                             </script>
                                             <ul class="pagination pagination-sm m-0 float-right"
                                                 id="pagination-example">
-                                                <script src="/pagination.js" th:data-url="@{{context_path}admin/flat/index/(context_path = ${context_path})}"
+                                                <script th:src="@{{context_path}/pagination.js(context_path = ${context_path})}" th:data-url="@{{context_path}/admin/flat/index/(context_path = ${context_path})}"
                                                         th:current="${current}"
                                                         th:max="${max+1}"></script>
                                             </ul>
@@ -269,7 +269,7 @@
                                                 }
                                                 console.log([[${current}]])
                                                 if ([[${current}]] > [[${max}]]) document.write('<li class="page-item"><button class="page-link" disabled="disabled">></button></li>');
-                                                else document.write('<li class="page-item"><a class="page-link" href="'[[${context_path}]] + (baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
+                                                else document.write('<li class="page-item"><a class="page-link" href="' +(baseUrl + pageNumber + afterQuestionMark) + '">></a></li>');
                                             </script>
                                         </ul>
                                     </div>

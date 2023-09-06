@@ -233,6 +233,7 @@
     </aside>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            var contextPath = '[[${context_path}]]'
             var select2Elements = document.querySelectorAll('.select2');
             const themeToggle = $("#themeToggle");
             const body = $("body");
@@ -313,7 +314,7 @@
                     setCookie("theme", "☀")
                     themeSwitchButton.textContent = "☀";
                     $.ajax({
-                        url: '/myHouse24/admin/user-admin/change/theme/light',
+                        url: contextPath+'/admin/user-admin/change/theme/light',
                         method: 'GET',
                         success: function(response) {
                         },
@@ -324,7 +325,7 @@
                     setCookie("theme", "☁")
                     themeSwitchButton.textContent = "☁";
                     $.ajax({
-                        url: '/myHouse24/admin/user-admin/change/theme/dark',
+                        url: contextPath+'/admin/user-admin/change/theme/dark',
                         method: 'GET',
                         success: function(response) {
                         },

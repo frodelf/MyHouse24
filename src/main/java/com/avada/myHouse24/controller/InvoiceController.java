@@ -37,10 +37,17 @@ public class InvoiceController {
     private final TemplateForInvoiceServiceImpl templateForInvoiceService;
     private final TemplateForInvoiceMapper templateForInvoiceMapper;
     private final TemplateForInvoiceValidator templateForInvoiceValidator;
+    private final AccountTransactionServiceImpl accountTransactionService;
+    private final ScoreServiceImpl scoreService;
 
 
     @GetMapping("/index/{id}")
     public String getAll(@PathVariable("id") int id, Model model) {
+
+        model.addAttribute("sumAccountTransactionForStats", accountTransactionService.getAllSum());
+        model.addAttribute("balanceScoreForStats", scoreService.getAllBalance());
+        model.addAttribute("sumWhereIsIncomeIsFalse", accountTransactionService.getSumWhereIsIncomeIsFalse());
+
         model.addAttribute("invoices", invoiceMapper.toDtoList(invoiceService.getPage(id, model).getContent()));
         model.addAttribute("filter", new InvoiceDto());
         return "/admin/invoice/get-all";
@@ -108,7 +115,7 @@ public class InvoiceController {
     @GetMapping("/copy/{id}")
     public String copy(@PathVariable("id") long id, Model model) {
         InvoiceDto invoiceDto = invoiceMapper.toDto(invoiceService.getById(id));
-        invoiceDto.setId(null);
+        invoiceDto.setId(invoiceService.getMaxId());
         model.addAttribute("invoiceDto", invoiceDto);
         model.addAttribute("statuses", InvoiceStatus.getAll());
         model.addAttribute("tariffs", tariffService.getAll());

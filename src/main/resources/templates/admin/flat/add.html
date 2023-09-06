@@ -39,7 +39,8 @@
         <section class="content">
             <div class="card">
                 <form method="post" th:object="${flatDTO}">
-                <div class="card-body">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <div class="card-body">
                         <div class="row" style="font-weight: bold">
                             <div class="col">
                                 <span th:text="#{Номер_квартиры}"></span>
@@ -86,7 +87,7 @@
                                 <span th:text="#{Лицевой_счет}"></span>
 
                                 <input type="number" class="form-control" th:field="*{scoreNumber}">
-                                <select class="form-select" name="scoreNumber"
+                                <select class="form-select"
                                         aria-label="Default select example">
                                     <option value="" hidden >или выберите из списка...</option>
                                     <option th:each="score:${scores}" th:value="${score.getNumber()}" th:text="${score.number}">

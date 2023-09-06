@@ -39,10 +39,14 @@ public class ScoreServiceImpl implements ScoreService {
     public Score getById(long id) {
         return scoreRepository.findById(id).get();
     }
-
+    public Double getAllBalance(){return scoreRepository.findAllBalance();}
     @Override
     public List<Score> getAll() {
         return scoreRepository.findAll();
+    }
+    @Override
+    public List<Score> getAllEmpty() {
+        return scoreRepository.findAllByFlatIsNull();
     }
 
     @Override

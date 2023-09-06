@@ -149,5 +149,4 @@ public class CounterDataController {
         model.addAttribute("counter", counterDataService.getById(id));
         return "/admin/counter-data/index";
     }
-
 }
