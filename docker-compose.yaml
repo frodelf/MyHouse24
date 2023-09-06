@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: myhouse24
+    ports:
+      - "3307:3306"
+  admin:
+    build:
+      context: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+  user:
+    build:
+      context: C:\Users\Xiaomi\IdeaProjects\MyHouse24User\
+    ports:
+      - "8082:8081"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://localhost:3307/myhouse24?autoReconnect=true&useSSL=false

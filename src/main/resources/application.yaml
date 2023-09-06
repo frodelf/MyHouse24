@@ -8,10 +8,12 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
   datasource:
+#    url: jdbc:mysql://localhost:3307/myhouse24
     url: jdbc:mysql://localhost:3306/house24
     username: root
     password: 1234
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
     show-sql: true
@@ -20,13 +22,13 @@ spring:
       client:
         registration:
           github:
-            clientId: ${GITHUB_CLIENT_ID}
-            clientSecret: ${GITHUB_CLIENT_SECRET}
+            clientId: 971647332c46fff334ce
+            clientSecret: b50eb4e1c6c2c273c796ef55fc39325f0da824a9
   mail:
     host: smtp.gmail.com
     port: 587
     username: kripword@gmail.com
-    password: ${SMTP_PASSWORD}
+    password: Bet_228_
     properties:
       mail:
         smtp:
