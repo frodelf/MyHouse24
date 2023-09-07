@@ -2,6 +2,9 @@ package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.repo.AdditionalServiceRepository;
+import com.avada.myHouse24.repo.CounterDataRepository;
+import com.avada.myHouse24.repo.InvoiceAdditionalServiceRepository;
+import com.avada.myHouse24.repo.TariffAdditionalServiceRepository;
 import com.avada.myHouse24.services.AdditionalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,6 +18,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class AdditionalServiceImpl implements AdditionalService {
     private final AdditionalServiceRepository additionalServiceRepository;
+    private final InvoiceAdditionalServiceRepository invoiceAdditionalServiceRepository;
+    private final TariffAdditionalServiceRepository tariffAdditionalServiceRepository;
+    private final CounterDataRepository counterDataRepository;
     @Override
     public List<com.avada.myHouse24.entity.AdditionalService> getAll() {
         return additionalServiceRepository.findAll();
@@ -34,6 +40,7 @@ public class AdditionalServiceImpl implements AdditionalService {
 
     @Override
     public void deleteById(long id) {
+        if(isUses(id))return;
         additionalServiceRepository.deleteById(id);
     }
 
@@ -57,5 +64,9 @@ public class AdditionalServiceImpl implements AdditionalService {
         }
 
         return additionalPage.getContent();
+    }
+    public Boolean isUses(long id){
+        if(counterDataRepository.existsByAdditionalService_Id(id) || tariffAdditionalServiceRepository.existsByAdditionalService_Id(id) || invoiceAdditionalServiceRepository.existsByAdditionalService_Id(id)) return true;
+        return false;
     }
 }

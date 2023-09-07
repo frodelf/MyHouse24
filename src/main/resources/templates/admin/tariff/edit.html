@@ -24,7 +24,7 @@
                 <span th:text="#{Основной_тариф}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a th:th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
                     <span th:text="#{Главная}"></span>
                     </a></li>
                 <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/tariff/index(context_path = ${context_path})}" class="text-for-breadcrumb">
@@ -38,6 +38,7 @@
         </div>
         <section class="content">
             <form method="post" th:action="@{{context_path}/admin/tariff/copy(context_path = ${context_path})}" th:object="${tariffDTO}">
+                <input type="text" th:field="*{id}" class="form-control" style="width: 100%" hidden>
                 <div class="card">
                     <div class="card-body">
                         <div class="row">

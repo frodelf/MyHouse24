@@ -73,11 +73,13 @@
             <div class="card">
                 <div class="card-body">
                     <div class="float-right">
-                        <a class="btn btn-outline-secondary" href="">
+                        <a class="btn btn-outline-secondary"
+                           th:href="@{{context_path}/admin/account-transaction/create/in(context_path = ${context_path})}">
                             <i class="fa fa-dollar-sign"></i>
                             <span th:text="#{Принять_платеж}"></span>
                         </a>
-                        <a class="btn btn-outline-secondary" href="">
+                        <a class="btn btn-outline-secondary"
+                           th:href="@{{context_path}/admin/invoice/add(context_path = ${context_path})}">
                             <i class="fa fa-file"></i>
                             <span th:text="#{Оформить_квитанцию}"></span>
                         </a>

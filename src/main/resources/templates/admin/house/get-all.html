@@ -212,7 +212,7 @@
                         "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.id + "</td>" +
                         "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.name + "</td>" +
                         "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.address + "</td>" +
-                        "<td> <a class='btn btn-default btn-sm float-right modal1' href='[[${context_path}]]/admin/house/delete/" + house.id + "' title='Удалить' data-toggle='modal' data-target='#myModal'><i class='fa fa-trash'></i></a>" +
+                        "<td> <a class='btn btn-default btn-sm float-right modal1' data-redirect='[[${context_path}]]/admin/house/delete/" + house.id + "' title='Удалить' data-toggle='modal' data-target='#myModal'><i class='fa fa-trash'></i></a>" +
                         "<a class='btn btn-default btn-sm float-right' href='[[${context_path}]]/admin/house/edit/" + house.id + "' title='Редактировать'><i class='fa fa-pencil-alt'></i></a> </td>");
 
                     row.find('.clickable-cell').click(function () {
@@ -222,6 +222,8 @@
 
                     tableBody.append(row);
                 });
+
+                initializeModalButtons();
             });
         }
         else{
@@ -242,7 +244,7 @@
                             "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.id + "</td>" +
                             "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.name + "</td>" +
                             "<td class='clickable-cell' data-action='[[${context_path}]]/admin/house/"+house.id+"'>" + house.address + "</td>" +
-                            "<td> <a class='btn btn-default btn-sm float-right modal1' href='[[${context_path}]]/admin/house/delete/" + house.id + "' title='Удалить' data-toggle='modal' data-target='#myModal'><i class='fa fa-trash'></i></a>" +
+                            "<td> <a class='btn btn-default btn-sm float-right modal1' data-redirect='[[${context_path}]]/admin/house/delete/" + house.id + "' title='Удалить' data-toggle='modal' data-target='#myModal'><i class='fa fa-trash'></i></a>" +
                             "<a class='btn btn-default btn-sm float-right' href='[[${context_path}]]/admin/house/edit/" + house.id + "' title='Редактировать'><i class='fa fa-pencil-alt'></i></a> </td>");
 
                         row.find('.clickable-cell').click(function () {
@@ -251,6 +253,7 @@
                         });
                         tableBody.append(row);
                     });
+                    initializeModalButtons();
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.log("AJAX request failed");
@@ -259,9 +262,37 @@
                     console.log("Response Text: " + jqXHR.responseText);
                 }
             });
-
         }
     });
+
+    function initializeModalButtons() {
+        const modalButtons = document.querySelectorAll(".modal1");
+        const modal = document.getElementById("myModal");
+        const confirmButtons = document.querySelectorAll(".confirm");
+        const cancelButtons = document.querySelectorAll(".cancel");
+
+        console.log(modalButtons)
+
+        modalButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                modal.style.display = "flex";
+                const redirectUrl = button.getAttribute("data-redirect");
+
+                confirmButtons.forEach(confirmButton => {
+                    confirmButton.addEventListener("click", () => {
+                        modal.style.display = "none";
+                        window.location.href = redirectUrl;
+                    });
+                });
+
+                cancelButtons.forEach(cancelButton => {
+                    cancelButton.addEventListener("click", () => {
+                        modal.style.display = "none";
+                    });
+                });
+            });
+        });
+    }
 </script>
 </body>
 

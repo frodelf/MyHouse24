@@ -28,7 +28,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: kripword@gmail.com
-    password: Bet_228_
+    password: kriptwordgmail1com
     properties:
       mail:
         smtp:

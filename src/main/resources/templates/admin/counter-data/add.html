@@ -39,6 +39,7 @@
         </div>
         <section class="content">
             <form method="post" th:object="${counterDataDTO}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="input-group mb-3" style="width: 50%">
                     <span class="input-group-text">№</span>
                     <input type="number" class="form-control" name="number" th:field="*{number}">
@@ -138,17 +139,17 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right" formaction="/admin/counter-data/copy">
+                        <button type="submit" class="btn btn-success float-right" th:formaction="@{{context_path}/admin/counter-data/copy(context_path = ${context_path})}">
                             <span th:text="#{Сохранить_и_добавить_новую}"></span>
 
                         </button>
                         <button type="submit" class="btn btn-success float-right"
                                 style="background-color: #089a08;margin-right: 10px"
-                                formaction="/admin/counter-data/add">
+                                th:formaction="@{{context_path}/admin/counter-data/add(context_path = ${context_path})}">
                             <span th:text="#{Сохранить}"></span>
 
                         </button>
-                        <a href="/admin/counter-data/index/1" class="btn btn-outline-secondary float-right"
+                        <a th:href="@{{context_path}/admin/counter-data/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary float-right"
                            style="margin-right: 10px">
                             <span th:text="#{Отменить}"></span>
 

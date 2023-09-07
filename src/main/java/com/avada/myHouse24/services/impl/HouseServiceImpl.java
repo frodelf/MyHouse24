@@ -83,7 +83,9 @@ public class HouseServiceImpl implements HouseService {
 
     @Override
     public void add(HouseForAddDto houseDto) throws IOException {
-        House houseExample = houseRepository.findById(houseDto.getId()).get();
+        House houseExample;
+        if(houseDto.getId()!=null)houseExample = houseRepository.findById(houseDto.getId()).get();
+        else houseExample = new House();
         House house = new House();
         if(houseDto.getId() != null){
             house = getById(houseDto.getId());

@@ -83,7 +83,7 @@
                     <a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}"
                        class="btn btn-outline-secondary float-right">
                         <span th:text="#{Очистить}"></span>
-                        Очистить</a>
+                    </a>
                 </div>
                 <div class="card-body">
                     <form id="formSend" method="get" th:action="@{{context_path}/admin/user/filter/1(context_path = ${context_path})}"
@@ -151,11 +151,9 @@
                                 <th>
                                     <select class="form-select" name="status" onchange="submitForm()"
                                             aria-label="Default select example">
-                                        <option th:value="${filter.getStatus()}"
-                                                th:text="${#strings.toString(filter.getStatus()) == 'NEW' ? 'Новий' : #strings.toString(filter.getStatus()) == 'ACTIVE' ? 'Активний' : #strings.toString(filter.getStatus()) == 'DISABLED' ? 'Відключений' : ''}">
-                                        </option>
-                                        <option th:each="status: ${allStatus}" th:value="${status}"
-                                                th:text="${#strings.toString(status) == 'NEW' ? 'Новий' : #strings.toString(status) == 'ACTIVE' ? 'Активний' : #strings.toString(status) == 'DISABLED' ? 'Відключений' : ''}">
+                                        <option value=""></option>
+                                        <option th:each="status: ${allStatus}" th:value="${status}" th:text="#{${status}}" th:selected="${filter.status.toString() == status.toString()}">
+
                                         </option>
                                     </select>
                                 </th>

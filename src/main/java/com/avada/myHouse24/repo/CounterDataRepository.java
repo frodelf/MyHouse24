@@ -8,4 +8,5 @@ public interface CounterDataRepository extends JpaRepository<CounterData, Long> 
     boolean existsByNumber(String number);
     @Query(value = "SELECT MAX(id) FROM CounterData")
     Long findMaxId();
+    boolean existsByAdditionalService_Id(Long id);
 }

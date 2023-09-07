@@ -115,8 +115,11 @@ public class UserController {
             userResult.setPassword(userDTO.getPassword());
         }
         String imageName = userService.getById(Long.parseLong(userDTO.getId())).getImage();
-        userResult.setImage(ImageUtil.imageForUser(userResult, image));
-        ImageUtil.deleteFile(imageName);
+        if(!image.getOriginalFilename().isBlank()){
+            userResult.setImage(ImageUtil.imageForUser(userResult, image));
+            ImageUtil.deleteFile(imageName);
+        }
+        else userResult.setImage(imageName);
         userService.save(userResult);
         return "redirect:/admin/user/index/1";
     }
