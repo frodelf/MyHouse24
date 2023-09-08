@@ -18,4 +18,6 @@ public interface HouseService {
     Page<HouseForViewDto> getPage(int pageNumber, Model model, List<HouseForViewDto> houseForViewDtos);
     void deleteById(long id);
     void add(HouseForAddDto house) throws IOException;
+    List<House> forSelect(int page, int pageSize, String search);
+    List<HouseForViewDto> filter(HouseForViewDto house, List<HouseForViewDto> houses);
 }

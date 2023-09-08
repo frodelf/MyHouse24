@@ -139,6 +139,7 @@ public class HouseServiceImpl implements HouseService {
             housePage = houseRepository.findAll(pageable);
         }
 
+
         return housePage.getContent();
     }
     public List<HouseForViewDto> filter(HouseForViewDto house, List<HouseForViewDto> houses){
