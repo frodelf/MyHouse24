@@ -145,7 +145,7 @@ public class UserController {
     }
 
     @PostMapping("/invite")
-    public String inviteMessage(@RequestParam("phone") String phone, @RequestParam("email") String email, Model model) {
+    public String inviteMessage(@RequestParam("email") String email, Model model) {
         if (email.isBlank()) {
             model.addAttribute("error", "Електрона адреса повина бути вказана");
             return "admin/user/invite";

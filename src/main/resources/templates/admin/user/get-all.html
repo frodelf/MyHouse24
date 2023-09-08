@@ -153,7 +153,6 @@
                                             aria-label="Default select example">
                                         <option value=""></option>
                                         <option th:each="status: ${allStatus}" th:value="${status}" th:text="#{${status}}" th:selected="${filter.status.toString() == status.toString()}">
-
                                         </option>
                                     </select>
                                 </th>
@@ -247,7 +246,7 @@
                                     <span th:text="#{Количество_владельцев}"></span>: <span th:text="${userCount}"></span></b>
                             </p>
                         </div>
-                        <div th:if="${max}>0">
+                        <div th:if="${max}!=null  and  ${max}>0">
                             <div class="col">
                                 <ul class="pagination pagination-sm m-0 float-right">
                                     <script>
