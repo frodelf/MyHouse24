@@ -147,6 +147,7 @@ class ScoreControllerTest {
         score.setBalance(12.2);
         score.setFlat(flat);
         when(scoreService.getById(anyLong())).thenReturn(score);
+        flat.setCounterData(new ArrayList<>());
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/1"))
                 .andExpect(status().isOk())

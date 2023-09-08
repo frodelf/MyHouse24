@@ -26,4 +26,5 @@ public interface ScoreService {
     List<ScoreDTO> filter(ScoreForFilterDTO scoreForFilterDTO, List<ScoreDTO> scoreDTOS);
     void excel(HttpServletResponse response) throws IOException;
     List<Score> getAllEmpty();
+    Double getAllBalance();
 }

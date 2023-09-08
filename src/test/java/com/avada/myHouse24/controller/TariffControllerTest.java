@@ -102,48 +102,48 @@ class TariffControllerTest {
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void edit() throws Exception {
-//        TariffDTO tariffDTO = new TariffDTO();
-//        tariffDTO.setAdditionalServiceForTariffDTOS(new ArrayList<>());
-//        when(additionalServiceMapper.toDtoList(anyList())).thenReturn(new ArrayList<>());
-//        when(tariffMapper.toDto(any())).thenReturn(tariffDTO);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/admin/tariff/edit/1"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("admin/tariff/edit"))
-//                .andExpect(model().attributeExists("services", "tariffDTO", "index"));
-//
-//        verify(additionalService, times(1)).getAll();
-//        verify(tariffService, times(2)).getById(anyLong());
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setAdditionalServiceForTariffDTOS(new ArrayList<>());
+        when(additionalServiceMapper.toDtoList(anyList())).thenReturn(new ArrayList<>());
+        when(tariffMapper.toDto(any())).thenReturn(tariffDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/tariff/edit/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("admin/tariff/edit"))
+                .andExpect(model().attributeExists("services", "tariffDTO", "index"));
+
+        verify(additionalService, times(1)).getAll();
+        verify(tariffService, times(2)).getById(anyLong());
     }
 
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testEdit() throws Exception {
-//        when(additionalService.getByName(anyString())).thenReturn(new AdditionalService());
-//        when(tariffService.getById(anyLong())).thenReturn(new Tariff());
-//        when(tariffMapper.toDto(any())).thenReturn(new TariffDTO());
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/edit/1")
-//                        .with(csrf()))
-//                .andExpect(status().isOk())
-//                .andExpect(model().attributeExists("tariffDTO"));
-//
-//        TariffDTO tariffDTO = new TariffDTO();
-//        tariffDTO.setName("name");
-//        tariffDTO.setDescription("description");
-//        tariffDTO.setNames(Arrays.asList("asdf"));
-//        AdditionalServiceForTariffDTO additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
-//        additionalServiceForTariffDTO.setPrice(12L);
-//        additionalServiceForTariffDTO.setAdditionalService(new AdditionalService());
-//        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
-//        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/edit/1")
-//                        .flashAttr("tariffDTO", tariffDTO)
-//                        .with(csrf()))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/admin/tariff/index"));
-//
-//        verify(additionalService, times(1)).getByName(anyString());
-//        verify(tariffService, times(1)).save(any());
+        when(additionalService.getByName(anyString())).thenReturn(new AdditionalService());
+        when(tariffService.getById(anyLong())).thenReturn(new Tariff());
+        when(tariffMapper.toDto(any())).thenReturn(new TariffDTO());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/edit/1")
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("tariffDTO"));
+
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setName("name");
+        tariffDTO.setDescription("description");
+        tariffDTO.setNames(Arrays.asList("asdf"));
+        AdditionalServiceForTariffDTO additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
+        additionalServiceForTariffDTO.setPrice(12L);
+        additionalServiceForTariffDTO.setAdditionalService(new AdditionalService());
+        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/edit/1")
+                        .flashAttr("tariffDTO", tariffDTO)
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/tariff/index"));
+
+        verify(additionalService, times(1)).getByName(anyString());
+        verify(tariffService, times(1)).save(any());
     }
 
     @Test
@@ -173,70 +173,70 @@ class TariffControllerTest {
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void cloneById() throws Exception {
-//        TariffDTO tariffDTO = new TariffDTO();
-//        tariffDTO.setName("name");
-//        tariffDTO.setDescription("description");
-//        tariffDTO.setNames(Arrays.asList("asdf"));
-//        AdditionalServiceForTariffDTO additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
-//        additionalServiceForTariffDTO.setPrice(12L);
-//        AdditionalService additionalService1 = new AdditionalService();
-//        UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
-//        unitOfMeasurement.setName("unit name");
-//        additionalService1.setUnitOfMeasurement(unitOfMeasurement);
-//        additionalServiceForTariffDTO.setAdditionalService(additionalService1);
-//        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
-//        when(additionalServiceMapper.toDtoList(anyList())).thenReturn(new ArrayList<>());
-//        when(tariffMapper.toDto(any())).thenReturn(tariffDTO);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/admin/tariff/clone/1"))
-//                .andExpect(status().isOk())
-//                .andExpect(view().name("/admin/tariff/edit"))
-//                .andExpect(model().attributeExists("services", "tariffDTO", "index"));
-//
-//        verify(additionalService, times(1)).getAll();
-//        verify(tariffService, times(2)).getById(anyLong());
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setName("name");
+        tariffDTO.setDescription("description");
+        tariffDTO.setNames(Arrays.asList("asdf"));
+        AdditionalServiceForTariffDTO additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
+        additionalServiceForTariffDTO.setPrice(12L);
+        AdditionalService additionalService1 = new AdditionalService();
+        UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
+        unitOfMeasurement.setName("unit name");
+        additionalService1.setUnitOfMeasurement(unitOfMeasurement);
+        additionalServiceForTariffDTO.setAdditionalService(additionalService1);
+        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
+        when(additionalServiceMapper.toDtoList(anyList())).thenReturn(new ArrayList<>());
+        when(tariffMapper.toDto(any())).thenReturn(tariffDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/admin/tariff/clone/1"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/admin/tariff/edit"))
+                .andExpect(model().attributeExists("services", "tariffDTO", "index"));
+
+        verify(additionalService, times(1)).getAll();
+        verify(tariffService, times(2)).getById(anyLong());
     }
 
     @Test
     @WithMockUser(username = "admin@gmail.com", roles = {"ADMIN"})
     void testCloneById() throws Exception {
-//        TariffDTO tariffDTO = new TariffDTO();
-//        tariffDTO.setName("name");
-//        tariffDTO.setDescription("description");
-//        tariffDTO.setNames(Arrays.asList("asdf"));
-//        AdditionalServiceForTariffDTO additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
-//        additionalServiceForTariffDTO.setPrice(12L);
-//        AdditionalService additionalService1 = new AdditionalService();
-//        UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
-//        unitOfMeasurement.setName("unit name");
-//        additionalService1.setUnitOfMeasurement(unitOfMeasurement);
-//        additionalServiceForTariffDTO.setAdditionalService(additionalService1);
-//        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
-//
-//        when(additionalService.getByName(anyString())).thenReturn(new AdditionalService());
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/copy")
-//                        .flashAttr("tariffDTO", tariffDTO)
-//                        .with(csrf()))
-//                .andExpect(status().is3xxRedirection())
-//                .andExpect(redirectedUrl("/admin/tariff/index"));
-//        additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
-//        additionalServiceForTariffDTO.setPrice(12L);
-//        additionalService1 = new AdditionalService();
-//        unitOfMeasurement = new UnitOfMeasurement();
-//        unitOfMeasurement.setName("unit name");
-//        additionalService1.setUnitOfMeasurement(unitOfMeasurement);
-//        additionalServiceForTariffDTO.setAdditionalService(additionalService1);
-//        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
-//        tariffDTO.setDescription(null);
-//        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/copy")
-//                        .flashAttr("tariffDTO", tariffDTO)
-//                        .with(csrf()))
-//                .andExpect(status().isOk())
-//                .andExpect(model().attributeExists("tariffDTO", "services", "index"));
-//
-//        verify(additionalService, times(1)).getByName(anyString());
-//        verify(tariffService, times(1)).save(any());
+        TariffDTO tariffDTO = new TariffDTO();
+        tariffDTO.setName("name");
+        tariffDTO.setDescription("description");
+        tariffDTO.setNames(Arrays.asList("asdf"));
+        AdditionalServiceForTariffDTO additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
+        additionalServiceForTariffDTO.setPrice(12L);
+        AdditionalService additionalService1 = new AdditionalService();
+        UnitOfMeasurement unitOfMeasurement = new UnitOfMeasurement();
+        unitOfMeasurement.setName("unit name");
+        additionalService1.setUnitOfMeasurement(unitOfMeasurement);
+        additionalServiceForTariffDTO.setAdditionalService(additionalService1);
+        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
+
+        when(additionalService.getByName(anyString())).thenReturn(new AdditionalService());
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/copy")
+                        .flashAttr("tariffDTO", tariffDTO)
+                        .with(csrf()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/admin/tariff/index"));
+        additionalServiceForTariffDTO = new AdditionalServiceForTariffDTO();
+        additionalServiceForTariffDTO.setPrice(12L);
+        additionalService1 = new AdditionalService();
+        unitOfMeasurement = new UnitOfMeasurement();
+        unitOfMeasurement.setName("unit name");
+        additionalService1.setUnitOfMeasurement(unitOfMeasurement);
+        additionalServiceForTariffDTO.setAdditionalService(additionalService1);
+        tariffDTO.setAdditionalServiceForTariffDTOS(Arrays.asList(additionalServiceForTariffDTO));
+        tariffDTO.setDescription(null);
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/tariff/copy")
+                        .flashAttr("tariffDTO", tariffDTO)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("tariffDTO", "services", "index"));
+
+        verify(additionalService, times(1)).getByName(anyString());
+        verify(tariffService, times(1)).save(any());
     }
 
     @Test

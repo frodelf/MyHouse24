@@ -2,6 +2,9 @@ package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.AdditionalService;
 import com.avada.myHouse24.repo.AdditionalServiceRepository;
+import com.avada.myHouse24.repo.CounterDataRepository;
+import com.avada.myHouse24.repo.InvoiceAdditionalServiceRepository;
+import com.avada.myHouse24.repo.TariffAdditionalServiceRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -23,6 +26,13 @@ class AdditionalServiceImplTest {
     private AdditionalServiceImpl additionalService;
     @Mock
     private AdditionalServiceRepository additionalServiceRepository;
+    @Mock
+    private CounterDataRepository counterDataRepository;
+    @Mock
+    private TariffAdditionalServiceRepository tariffAdditionalServiceRepository;
+    @Mock
+    private InvoiceAdditionalServiceRepository invoiceAdditionalServiceRepository;
+
     @Test
     void getAll() {
         List<AdditionalService> mockServices = new ArrayList<>();
@@ -54,6 +64,7 @@ class AdditionalServiceImplTest {
 
     @Test
     void deleteById() {
+        when(additionalService.isUses(anyLong())).thenReturn(false);
         additionalService.deleteById(1L);
         verify(additionalServiceRepository, times(1)).deleteById(1L);
     }

@@ -256,8 +256,20 @@ class FlatControllerTest {
     void testCopy() throws Exception {
         when(scoreService.existNumber(anyString())).thenReturn(false);
         when(flatService.getMaxId()).thenReturn(2);
+        mockMvc.perform(MockMvcRequestBuilders.post("/admin/flat/copy")
+                .with(csrf()))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/admin/flat/add"))
+                .andExpect(model().attributeExists("houses", "scores", "users", "tariffs"));
         FlatDTO flatDTO = new FlatDTO();
-        flatDTO.setScoreNumber(",3456789");
+        flatDTO.setNumber(12L);
+        flatDTO.setArea(12.1);
+        flatDTO.setHouse(new House());
+        flatDTO.setSection(new Section());
+        flatDTO.setFloor(new Floor());
+        flatDTO.setUser(new User());
+        flatDTO.setTariff(new Tariff());
+        flatDTO.setScoreNumber("3456789");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/flat/copy")
                         .flashAttr("flatDTO", flatDTO)
                         .with(csrf())
