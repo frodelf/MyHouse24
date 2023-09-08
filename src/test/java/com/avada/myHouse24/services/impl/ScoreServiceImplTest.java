@@ -274,4 +274,19 @@ class ScoreServiceImplTest {
         assertEquals("application/vnd.ms-excel", response.getContentType());
         assertEquals("attachment; filename=example.xls", response.getHeader("Content-Disposition"));
     }
+    @Test
+    void getAllBalance(){
+        when(scoreRepository.findAllBalance()).thenReturn(100.0);
+        Double result = scoreService.getAllBalance();
+        verify(scoreRepository, times(1)).findAllBalance();
+        assertEquals(100.0, result);
+    }
+    @Test
+    void getAllEmpty(){
+        List<Score> expectedEmptyScores = new ArrayList<>();
+        when(scoreRepository.findAllByFlatIsNull()).thenReturn(expectedEmptyScores);
+        List<Score> result = scoreService.getAllEmpty();
+        verify(scoreRepository, times(1)).findAllByFlatIsNull();
+        assertEquals(expectedEmptyScores, result);
+    }
 }

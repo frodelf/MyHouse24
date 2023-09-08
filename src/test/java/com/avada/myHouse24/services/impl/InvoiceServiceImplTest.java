@@ -173,4 +173,11 @@ class InvoiceServiceImplTest {
         List<InvoiceDto> result = invoiceService.filter(invoiceDto, "1", new Date(1,1,1));
         assertEquals(0, result.size());
     }
+    @Test
+    void getMaxId(){
+        when(invoiceRepository.findMaxId()).thenReturn(10L);
+        Long result = invoiceService.getMaxId();
+        verify(invoiceRepository, times(1)).findMaxId();
+        assertEquals(11L, result);
+    }
 }
