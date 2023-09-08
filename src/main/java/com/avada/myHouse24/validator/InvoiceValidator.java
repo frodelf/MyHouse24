@@ -29,12 +29,10 @@ public class InvoiceValidator implements Validator {
 
         BindingResult bindingResult = (BindingResult) errors;
         if (bindingResult.hasFieldErrors("toDate")) {
-            // Додавання своєї помилки про пусте поле для toDate
             bindingResult.rejectValue("toDate", "field.required", "Поле не може бути пустим");
         }
 
         if (bindingResult.hasFieldErrors("fromDate")) {
-            // Додавання своєї помилки про пусте поле для fromDate
             bindingResult.rejectValue("fromDate", "field.required", "Поле не може бути пустим");
         }
 

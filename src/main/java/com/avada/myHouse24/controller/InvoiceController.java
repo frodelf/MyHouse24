@@ -152,7 +152,7 @@ public class InvoiceController {
     }
     @GetMapping("/doDefault/{id}")
     public String doDefault(@PathVariable("id")long id){
-        TemplateForInvoice templateForInvoice = new TemplateForInvoice();
+        TemplateForInvoice templateForInvoice;
         if(templateForInvoiceService.getTemplateWhereIsMainIsTrue() != null) {
             templateForInvoice = templateForInvoiceService.getTemplateWhereIsMainIsTrue();
             templateForInvoice.setIsMain(false);
