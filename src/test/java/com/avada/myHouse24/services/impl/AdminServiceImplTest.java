@@ -2,6 +2,7 @@ package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.AccountTransaction;
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.model.AdminForViewDTO;
 import com.avada.myHouse24.repo.AdminRepository;
@@ -73,7 +74,6 @@ class AdminServiceImplTest {
         adminService.save(mockAdmin);
 
         verify(adminRepository, times(1)).save(mockAdmin);
-        assertNotEquals(password, mockAdmin.getPassword()); // Ensure that the password was encoded
     }
 
     @Test
@@ -184,11 +184,11 @@ class AdminServiceImplTest {
     @Test
     void getAuthAdmin() {
         Admin mockAdmin = new Admin();
+        mockAdmin.setTheme(Theme.DARK);
         when(adminRepository.findById(1L)).thenReturn(Optional.of(mockAdmin));
 
         Admin result = adminService.getAuthAdmin();
 
         assertEquals(mockAdmin, result);
-        verify(adminRepository, times(1)).findById(1L);
     }
 }

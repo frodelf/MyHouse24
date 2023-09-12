@@ -12,8 +12,10 @@ public class PermissionService {
     public PermissionService(PermissionRepository permissionRepository) {
         this.permissionRepository = permissionRepository;
     }
-
     public List<Permission> getAllPermissions() {
         return permissionRepository.findAll();
+    }
+    public Boolean existByPage(String page){
+        return permissionRepository.existsByPage(page);
     }
 }

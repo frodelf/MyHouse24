@@ -144,8 +144,8 @@
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForSection()">
                                             <span th:text="#{Добавить}"></span>
-
                                         </button>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('sections')}" th:errors="*{sections}"></div>
                                     </div>
                                     <div class="tab-pane clearfix" id="tab_floors">
 
@@ -153,16 +153,16 @@
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForFloor()">
                                             <span th:text="#{Добавить}"></span>
-
                                         </button>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('floors')}" th:errors="*{floors}"></div>
                                     </div>
                                     <div class="tab-pane clearfix" id="tab_users">
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForUsers()">
                                             <span th:text="#{Добавить}"></span>
-
                                         </button>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('users')}" th:errors="*{users}"></div>
                                     </div>
                                 </div>
                             </form>

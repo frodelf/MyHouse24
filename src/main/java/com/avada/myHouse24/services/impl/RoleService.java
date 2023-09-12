@@ -23,4 +23,13 @@ public class RoleService {
     public List<Role> getAllRoles() {
         return roleRepository.findAll();
     }
+    public Boolean existByName(String name){
+        return roleRepository.existsByName(name);
+    }
+    public void save(Role role){
+        roleRepository.save(role);
+    }
+    public Role getById(long id){
+        return roleRepository.findById(id).get();
+    }
 }

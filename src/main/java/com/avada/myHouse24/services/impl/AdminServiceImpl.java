@@ -1,6 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.model.AdminForViewDTO;
 import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.repo.AdminRepository;
@@ -39,8 +40,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void save(Admin admin) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        admin.setPassword(encoder.encode(admin.getPassword()));
         adminRepository.save(admin);
     }
 
@@ -111,6 +110,11 @@ public class AdminServiceImpl implements AdminService {
         return admins;
     }
     public Admin getAuthAdmin(){
-        return adminRepository.findById(1L).get();
+        Admin admin = new Admin();
+        admin.setTheme(Theme.DARK);
+        return admin;
+    }
+    public Boolean existByEmail(String email){
+        return adminRepository.existsByEmail(email);
     }
 }

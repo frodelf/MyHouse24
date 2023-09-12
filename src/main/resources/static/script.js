@@ -256,21 +256,21 @@ function addBlockForUsers() {
         console.log(user.firstName);
         selectOptions += `<option value="${user.firstName}">${user.firstName}</option>`;
     }
-    indexForUsers++;
     newBlock.innerHTML = `
     <div class="col-4">
-      <select class="form-select" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
+      <select name="users[${indexForUsers}]"  class="form-select" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
         <option></option>
         ${selectOptions}
       </select>
     </div>
     <div class="col-8">
       <div class="form-row" style="width: 100%; margin-bottom: 20px;">
-        <input name="users[${indexForUsers}]" type="text" class="form-control" style="width: 30%" readonly>
+        <input type="text" class="form-control" style="width: 30%" readonly>
         <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this.parentNode)"><i class="fa fa-trash"></i></a>
       </div>
     </div>
   `;
+    indexForUsers++;
     var addButton = document.querySelector('#tab_users .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
 }

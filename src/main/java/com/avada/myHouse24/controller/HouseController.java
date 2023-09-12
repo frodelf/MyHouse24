@@ -2,6 +2,8 @@ package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.House;
+import com.avada.myHouse24.entity.Role;
+import com.avada.myHouse24.enums.Roles;
 import com.avada.myHouse24.mapper.HouseMapper;
 import com.avada.myHouse24.model.HouseForAddDto;
 import com.avada.myHouse24.model.HouseForViewDto;
@@ -40,6 +42,11 @@ public class HouseController {
         model.addAttribute("houses", houseMapper.toDtoForViewList(houseService.getPage(page - 1, model).getContent()));
         model.addAttribute("filter", new HouseForViewDto());
         model.addAttribute("housesCount", houseService.getAll().size());
+        System.out.println(Roles.ROLE_ACCOUNTANT.name());
+        Roles[] roles = Roles.values();
+        for (Roles role : roles) {
+            System.out.println(role.name());
+        }
         return "admin/house/get-all";
     }
 

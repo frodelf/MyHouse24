@@ -3,8 +3,6 @@ package com.avada.myHouse24.util;
 import com.avada.myHouse24.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-//import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -17,18 +15,21 @@ import java.util.Random;
 @Log4j2
 @RequiredArgsConstructor
 public class ImageUtil {
-    private static final String pathToFolder = "E:/MyHouse24";
+    private static final String pathToFolder = "/var/photos";
     private static String contextPath = "/myHouse24DA";
     public static String imageForUser(User user, MultipartFile image) {
         String nameImage ="";
         try {
             Path uploadPath = Paths.get(pathToFolder+"/avatar");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
             String originalFilename = image.getOriginalFilename();
             String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             nameImage = generateName() + format;
             Files.copy(image.getInputStream(), uploadPath.resolve(nameImage));
         } catch (Exception e) {
-            log.warn(e);
+            log.warn("Error in method imageForUser: "+e);
         }
         return contextPath+"/uploads/avatar/"+nameImage;
     }
@@ -36,12 +37,15 @@ public class ImageUtil {
         String nameImage ="";
         try {
             Path uploadPath = Paths.get(pathToFolder+"/template");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
             String originalFilename = image.getOriginalFilename();
             String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             nameImage = generateName() + format;
             Files.copy(image.getInputStream(), uploadPath.resolve(nameImage));
         } catch (Exception e) {
-            log.warn(e);
+            log.warn("Error in method fileForTemplate: "+e);
         }
         return contextPath+"/uploads/template/"+nameImage;
     }
@@ -49,12 +53,15 @@ public class ImageUtil {
         String nameImage ="";
         try {
             Path uploadPath = Paths.get(pathToFolder+"/house");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
             String originalFilename = file.getOriginalFilename();
             String format = originalFilename.substring(originalFilename.lastIndexOf("."));
             nameImage = generateName() + format;
             Files.copy(file.getInputStream(), uploadPath.resolve(nameImage));
         } catch (Exception e) {
-            log.warn(e);
+            log.warn("Error in method imageForHouse: "+e);
         }
         return contextPath+"/uploads/house/"+nameImage;
     }
