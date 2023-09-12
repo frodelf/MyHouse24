@@ -18,6 +18,6 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t your-docker-image:latest .
+          docker build -t myhouse24-admin:latest .
           docker-compose down
           docker-compose up -d
