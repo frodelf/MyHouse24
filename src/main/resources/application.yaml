@@ -8,8 +8,7 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
   datasource:
-#    url: jdbc:mysql://localhost:3307/myhouse24
-    url: jdbc:mysql://localhost:3306/house24
+    url: jdbc:mysql://localhost:3307/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 1234
   jpa:
