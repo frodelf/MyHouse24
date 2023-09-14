@@ -28,7 +28,7 @@ services:
   user:
     container_name: user
     build:
-      context: ${{ github.workspace }}/C:\Users\Xiaomi\IdeaProjects\MyHouse24User\
+      context: C:\Users\Xiaomi\IdeaProjects\MyHouse24User\
     ports:
       - "8082:8081"
     depends_on:
