@@ -50,7 +50,7 @@ public class InvoiceController {
 
         model.addAttribute("invoices", invoiceMapper.toDtoList(invoiceService.getPage(id, model).getContent()));
         model.addAttribute("filter", new InvoiceDto());
-        return "/admin/invoice/get-all";
+        return "admin/invoice/get-all";
     }
 
     @GetMapping("/filter/{page}")
@@ -61,7 +61,7 @@ public class InvoiceController {
             model.addAttribute("dateExample", dateExample);
         if(flatNumber != null)
             model.addAttribute("flatNumber", flatNumber);
-        return "/admin/invoice/get-all";
+        return "admin/invoice/get-all";
     }
 
     @GetMapping("/add")
@@ -73,7 +73,7 @@ public class InvoiceController {
         model.addAttribute("statuses", InvoiceStatus.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         model.addAttribute("services", additionalService.getAll());
-        return "/admin/invoice/add";
+        return "admin/invoice/add";
     }
 
     @PostMapping("/add")
@@ -84,7 +84,7 @@ public class InvoiceController {
             model.addAttribute("statuses", InvoiceStatus.getAll());
             model.addAttribute("tariffs", tariffService.getAll());
             model.addAttribute("services", additionalService.getAll());
-            return "/admin/invoice/add";
+            return "admin/invoice/add";
         }
         invoiceService.save(invoiceMapper.toEntity(invoiceDto));
         return "redirect:/admin/invoice/index/1";
@@ -110,7 +110,7 @@ public class InvoiceController {
         model.addAttribute("statuses", InvoiceStatus.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         model.addAttribute("services", additionalService.getAll());
-        return "/admin/invoice/add";
+        return "admin/invoice/add";
     }
     @GetMapping("/copy/{id}")
     public String copy(@PathVariable("id") long id, Model model) {
@@ -120,26 +120,26 @@ public class InvoiceController {
         model.addAttribute("statuses", InvoiceStatus.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
         model.addAttribute("services", additionalService.getAll());
-        return "/admin/invoice/add";
+        return "admin/invoice/add";
     }
     @GetMapping("/{id}")
     public String getById(@PathVariable("id")long id, Model model){
         model.addAttribute("invoiceDto", invoiceMapper.toDto(invoiceService.getById(id)));
-        return "/admin/invoice/index";
+        return "admin/invoice/index";
     }
 
     @GetMapping("/template")
     public String template(@ModelAttribute("template") TemplateForInvoiceDTO template, Model model){
         model.addAttribute("templates", templateForInvoiceService.getAll());
         System.out.println(templateForInvoiceService.getTemplateWhereIsMainIsTrue());
-        return "/admin/invoice/template";
+        return "admin/invoice/template";
     }
     @PostMapping("/template/add")
     public String templateAdd(@ModelAttribute("template") @Valid TemplateForInvoiceDTO template, BindingResult bindingResult, Model model){
         templateForInvoiceValidator.validate(template, bindingResult);
         if(bindingResult.hasErrors()){
             model.addAttribute("templates", templateForInvoiceService.getAll());
-            return "/admin/invoice/template";
+            return "admin/invoice/template";
         }
         template.setIsMain(false);
         templateForInvoiceService.save(templateForInvoiceMapper.toEntity(template));
@@ -173,6 +173,6 @@ public class InvoiceController {
     public String print(@PathVariable("id")long id, Model model){
         model.addAttribute("invoice", invoiceService.getById(id));
         model.addAttribute("templates", templateForInvoiceService.getAll());
-        return "/admin/invoice/print";
+        return "admin/invoice/print";
     }
 }

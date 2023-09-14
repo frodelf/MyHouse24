@@ -44,7 +44,7 @@ public class RoleController {
         model.addAttribute("roleForm", roleForm);
         model.addAttribute("permissions", permissions);
 
-        return "/settings/roles";
+        return "settings/roles";
     }
     @GetMapping("/reset-form")
     public String resetForm(Model model) {
@@ -54,7 +54,7 @@ public class RoleController {
         roleForm.setRoles(roles);
         model.addAttribute("roleForm", roleForm);
         model.addAttribute("permissions", permissions);
-        return "/settings/roles :: #roleForm";
+        return "settings/roles :: #roleForm";
     }
 
 }

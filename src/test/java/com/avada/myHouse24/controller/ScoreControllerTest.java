@@ -61,7 +61,7 @@ class ScoreControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/index/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/account/get-all"))
+                .andExpect(view().name("admin/account/get-all"))
                 .andExpect(model().attributeExists("houses", "sections", "users", "filter"));
 
         verify(scoreService, times(1)).getPage(eq(1), any());
@@ -97,7 +97,7 @@ class ScoreControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/add"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/account/add"))
+                .andExpect(view().name("admin/account/add"))
                 .andExpect(model().attributeExists("houses", "sections", "flats"));
     }
 
@@ -151,7 +151,7 @@ class ScoreControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/account/index"))
+                .andExpect(view().name("admin/account/index"))
                 .andExpect(model().attributeExists("scoreDto"));
     }
 
@@ -172,7 +172,7 @@ class ScoreControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/edit/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/account/add"))
+                .andExpect(view().name("admin/account/add"))
                 .andExpect(model().attributeExists("houses", "scoreDto", "flats"));
     }
 
@@ -184,7 +184,7 @@ class ScoreControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/account/filter/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/account/get-all"))
+                .andExpect(view().name("admin/account/get-all"))
                 .andExpect(model().attributeExists("houses", "sections", "users", "filter"));
     }
 

@@ -62,7 +62,7 @@ class FlatControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/flat/index/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/flat/get-all"))
+                .andExpect(view().name("admin/flat/get-all"))
                 .andExpect(model().attributeExists("flats", "filter", "houses", "users", "sections", "floors", "flatCount"));
 
         verify(flatService, times(1)).getPage(eq(1), any());
@@ -78,7 +78,7 @@ class FlatControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/flat/add"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/flat/add"))
+                .andExpect(view().name("admin/flat/add"))
                 .andExpect(model().attributeExists("houses", "scores", "users", "tariffs"));
 
         verify(houseService, times(1)).getAll();
@@ -139,7 +139,7 @@ class FlatControllerTest {
                         .with(csrf())
                 )
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/flat/add"))
+                .andExpect(view().name("admin/flat/add"))
                 .andExpect(model().attributeExists("houses", "scores", "users", "tariffs"));
 
         verify(flatService, times(1)).save(any());
@@ -208,7 +208,7 @@ class FlatControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/flat/edit/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/flat/edit"))
+                .andExpect(view().name("admin/flat/edit"))
                 .andExpect(model().attributeExists("flat", "houses", "floors", "sections", "scores", "users", "tariffs"));
 
     }
@@ -247,7 +247,7 @@ class FlatControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/flat/copy/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/flat/copy"))
+                .andExpect(view().name("admin/flat/copy"))
                 .andExpect(model().attributeExists("flat", "houses", "floors", "sections", "scores", "users", "tariffs"));
     }
 
@@ -259,7 +259,7 @@ class FlatControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/flat/copy")
                 .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/flat/add"))
+                .andExpect(view().name("admin/flat/add"))
                 .andExpect(model().attributeExists("houses", "scores", "users", "tariffs"));
         FlatDTO flatDTO = new FlatDTO();
         flatDTO.setNumber(12L);

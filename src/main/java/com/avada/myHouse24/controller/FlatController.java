@@ -41,7 +41,7 @@ public class FlatController {
         model.addAttribute("sections", new ArrayList<Section>());
         model.addAttribute("floors", new ArrayList<Floor>());
         model.addAttribute("flatCount", flatService.getAll().size());
-        return "/admin/flat/get-all";
+        return "admin/flat/get-all";
     }
     @GetMapping("/add")
     public String add(@ModelAttribute("flatDTO") FlatDTO flatDTO, Model model){
@@ -49,7 +49,7 @@ public class FlatController {
         model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
-        return "/admin/flat/add";
+        return "admin/flat/add";
     }
     @GetMapping("/getFloors/{id}")
     @ResponseBody
@@ -68,7 +68,7 @@ public class FlatController {
             model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
             model.addAttribute("users", userService.getAll());
             model.addAttribute("tariffs", tariffService.getAll());
-            return "/admin/flat/add";
+            return "admin/flat/add";
         }
         flatDTO.setScoreNumber(flatDTO.getScoreNumber());
         flatService.save(flatMapper.toEntity(flatDTO));
@@ -89,14 +89,14 @@ public class FlatController {
         else model.addAttribute("floors", new ArrayList<Floor>());
         model.addAttribute("flatCount", flatDTOS.size());
 
-        return "/admin/flat/get-all";
+        return "admin/flat/get-all";
     }
 
     @GetMapping("/{id}")
     public String getById(@PathVariable("id") long id, Model model){
         model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
         model.addAttribute("scoreId", flatService.getById(id).getScore() == null ? null : flatService.getById(id).getScore().getId());
-        return "/admin/flat/index";
+        return "admin/flat/index";
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") long id, Model model){
@@ -107,7 +107,7 @@ public class FlatController {
         model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
-        return "/admin/flat/edit";
+        return "admin/flat/edit";
     }
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable("id") long id){
@@ -124,7 +124,7 @@ public class FlatController {
             model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
             model.addAttribute("users", userService.getAll());
             model.addAttribute("tariffs", tariffService.getAll());
-            return "/admin/flat/add";
+            return "admin/flat/add";
         }
         if(!scoreService.existNumber(flatDTO.getScoreNumber())){
             Score score = new Score();
@@ -146,13 +146,13 @@ public class FlatController {
         model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
-        return "/admin/flat/copy";
+        return "admin/flat/copy";
     }
     @GetMapping("/name/{name}")
     public String getByName(@PathVariable("name") int number){
         return "redirect:/admin/flat/"+flatService.getByNumber(number).getId();
     }
-    @GetMapping("/getFlatByScore/{id}")
+    @GetMapping("getFlatByScore/{id}")
     @ResponseBody
     public Flat getFlatByScore(@PathVariable("id")long id){
         return scoreService.getById(id).getFlat();

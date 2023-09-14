@@ -55,7 +55,7 @@ class CounterDataControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/index/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/get-all"))
+                .andExpect(view().name("admin/counter-data/get-all"))
                 .andExpect(model().attributeExists("counters", "filter"));
 
         verify(counterDataService, times(1)).getPage(eq(1), any());
@@ -81,7 +81,7 @@ class CounterDataControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/filter/{page}", 1)
                         .flashAttr("filter", filter))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/get-all"))
+                .andExpect(view().name("admin/counter-data/get-all"))
                 .andExpect(model().attributeExists("counters", "filter", "houses"));
 
         verify(counterDataService, times(1)).filter(eq(filter));
@@ -92,7 +92,7 @@ class CounterDataControllerTest {
     void add() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/add"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/add"))
+                .andExpect(view().name("admin/counter-data/add"))
                 .andExpect(model().attributeExists("statuses", "counterDataDTO"));
     }
 
@@ -106,7 +106,7 @@ class CounterDataControllerTest {
                         .with(csrf())
                         .flashAttr("counterDataDTO", counterDataDTO))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/add"));
+                .andExpect(view().name("admin/counter-data/add"));
         counterDataDTO.setNumber("qewf");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/counter-data/add")
                         .with(csrf())
@@ -126,7 +126,7 @@ class CounterDataControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/copy/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/add"))
+                .andExpect(view().name("admin/counter-data/add"))
                 .andExpect(model().attributeExists("statuses", "counterDataDTO"));
 
         verify(counterDataMapper, times(1)).toDto(any());
@@ -145,7 +145,7 @@ class CounterDataControllerTest {
                         .flashAttr("counterDataDTO", counterDataDTO))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("statuses"))
-                .andExpect(view().name("/admin/counter-data/add"));
+                .andExpect(view().name("admin/counter-data/add"));
 
         counterDataDTO.setNumber("qwerty");
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/counter-data/copy")
@@ -169,7 +169,7 @@ class CounterDataControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/counter-list/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/counter-list"))
+                .andExpect(view().name("admin/counter-data/counter-list"))
                 .andExpect(model().attributeExists("statuses", "filter", "counters", "id"));
 
         verify(counterDataService, times(1)).getById(eq(1L));
@@ -204,7 +204,7 @@ class CounterDataControllerTest {
                         .param("date", "1000-01-02")
                         .param("status", "ACTIVE"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/counter-list"))
+                .andExpect(view().name("admin/counter-data/counter-list"))
                 .andExpect(model().attributeExists("statuses", "filter", "counters", "id"));
 
         verify(counterDataService, times(1)).getById(eq(1L));
@@ -221,7 +221,7 @@ class CounterDataControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/edit/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/add"))
+                .andExpect(view().name("admin/counter-data/add"))
                 .andExpect(model().attributeExists("statuses", "counterDataDTO"));
 
         verify(counterDataService, times(1)).getById(eq(1L));
@@ -262,7 +262,7 @@ class CounterDataControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/counter-data/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/counter-data/index"))
+                .andExpect(view().name("admin/counter-data/index"))
                 .andExpect(model().attributeExists("counter"));
 
         verify(counterDataService, times(1)).getById(eq(1L));

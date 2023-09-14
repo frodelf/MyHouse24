@@ -38,7 +38,7 @@ public class CounterDataController {
     public String getAll(@PathVariable("id") int id, Model model) {
         model.addAttribute("counters", counterDataService.getPage(id, model));
         model.addAttribute("filter", new CounterDataFilterDto());
-        return "/admin/counter-data/get-all";
+        return "admin/counter-data/get-all";
     }
 
     @GetMapping("/filter/{page}")
@@ -50,7 +50,7 @@ public class CounterDataController {
         if (filter.getHouse() != null) model.addAttribute("flats", houseService.getById(filter.getHouse()).getFlats());
         model.addAttribute("counters", counterDataService.getPage(page, model, counterDataService.filter(filter)));
         model.addAttribute("houses", houseService.getAll());
-        return "/admin/counter-data/get-all";
+        return "admin/counter-data/get-all";
     }
 
     @GetMapping("/add")
@@ -60,7 +60,7 @@ public class CounterDataController {
         counterDataDTO.setNumber(NumberUtil.generateRandomNumber());
         model.addAttribute("statuses", CounterDataStatus.getAll());
         model.addAttribute("counterDataDTO", counterDataDTO);
-        return "/admin/counter-data/add";
+        return "admin/counter-data/add";
     }
 
     @PostMapping("/add")
@@ -68,7 +68,7 @@ public class CounterDataController {
         counterDataValidator.validate(counterDataDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("statuses", CounterDataStatus.getAll());
-            return "/admin/counter-data/add";
+            return "admin/counter-data/add";
         }
         counterDataService.save(counterDataMapper.toEntity(counterDataDTO));
         return "redirect:/admin/counter-data/index/1";
@@ -85,7 +85,7 @@ public class CounterDataController {
         counterDataDTO.setNumber(NumberUtil.generateRandomNumber());
         model.addAttribute("statuses", CounterDataStatus.getAll());
         model.addAttribute("counterDataDTO", counterDataDTO);
-        return "/admin/counter-data/add";
+        return "admin/counter-data/add";
     }
 
     @PostMapping("/copy")
@@ -93,7 +93,7 @@ public class CounterDataController {
         counterDataValidator.validate(counterDataDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             model.addAttribute("statuses", CounterDataStatus.getAll());
-            return "/admin/counter-data/add";
+            return "admin/counter-data/add";
         }
         counterDataService.save(counterDataMapper.toEntity(counterDataDTO));
         return "redirect:/admin/counter-data/copy/" + counterDataService.getMaxId();
@@ -106,7 +106,7 @@ public class CounterDataController {
         model.addAttribute("filter", new CounterDataFilterDto());
         model.addAttribute("counters", counterDataMapper.toDtoList(counterData.getFlat().getCounterData()));
         model.addAttribute("id", id);
-        return "/admin/counter-data/counter-list";
+        return "admin/counter-data/counter-list";
     }
 
     @GetMapping("/counter-list/filter/{id}")
@@ -127,7 +127,7 @@ public class CounterDataController {
         model.addAttribute("filter", filter);
         model.addAttribute("counters", counterDataService.filter(filter, status, number, date, counterData.getFlat().getCounterData()));
         model.addAttribute("id", id);
-        return "/admin/counter-data/counter-list";
+        return "admin/counter-data/counter-list";
     }
 
     @GetMapping("/edit/{id}")
@@ -136,7 +136,7 @@ public class CounterDataController {
         counterDataDTO.setFromDate(Date.valueOf(LocalDate.now()));
         model.addAttribute("statuses", CounterDataStatus.getAll());
         model.addAttribute("counterDataDTO", counterDataDTO);
-        return "/admin/counter-data/add";
+        return "admin/counter-data/add";
     }
 
     @GetMapping("/delete/{id}")
@@ -147,6 +147,6 @@ public class CounterDataController {
     @GetMapping("/{id}")
     public String index(@PathVariable("id")long id, Model model){
         model.addAttribute("counter", counterDataService.getById(id));
-        return "/admin/counter-data/index";
+        return "admin/counter-data/index";
     }
 }

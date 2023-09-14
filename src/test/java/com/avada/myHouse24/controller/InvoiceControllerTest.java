@@ -90,7 +90,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/index/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/get-all"))
+                .andExpect(view().name("admin/invoice/get-all"))
                 .andExpect(model().attributeExists("invoices", "filter", "sumAccountTransactionForStats", "balanceScoreForStats", "sumWhereIsIncomeIsFalse"));
 
         verify(invoiceService, times(1)).getPage(eq(1), any());
@@ -111,7 +111,7 @@ class InvoiceControllerTest {
                         .param("flatNumber", "123")
                         .param("dateExample", "2023-09-10"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/get-all"))
+                .andExpect(view().name("admin/invoice/get-all"))
                 .andExpect(model().attributeExists("invoices", "filter", "dateExample", "flatNumber"));
 
         verify(invoiceService, times(1)).filter(any(), eq("123"), eq(Date.valueOf("2023-09-10")));
@@ -125,7 +125,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/add"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/add"))
+                .andExpect(view().name("admin/invoice/add"))
                 .andExpect(model().attributeExists("invoiceDto", "statuses", "tariffs", "services"));
 
         verify(tariffService, times(1)).getAll();
@@ -139,7 +139,7 @@ class InvoiceControllerTest {
                         .flashAttr("invoiceDto", new InvoiceDto())
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/add"))
+                .andExpect(view().name("admin/invoice/add"))
                 .andExpect(model().attributeExists("invoiceDto", "statuses", "tariffs", "services"));
 
         InvoiceDto invoiceDto = new InvoiceDto();
@@ -205,7 +205,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/edit/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/add"))
+                .andExpect(view().name("admin/invoice/add"))
                 .andExpect(model().attributeExists("invoiceDto", "statuses", "tariffs", "services"));
 
         verify(invoiceMapper, times(1)).toDto(any());
@@ -222,7 +222,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/copy/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/add"))
+                .andExpect(view().name("admin/invoice/add"))
                 .andExpect(model().attributeExists("invoiceDto", "statuses", "tariffs", "services"));
 
         verify(invoiceMapper, times(1)).toDto(any());
@@ -255,7 +255,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/index"))
+                .andExpect(view().name("admin/invoice/index"))
                 .andExpect(model().attributeExists("invoiceDto"));
 
         verify(invoiceMapper, times(1)).toDto(any());
@@ -269,7 +269,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/template"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/template"))
+                .andExpect(view().name("admin/invoice/template"))
                 .andExpect(model().attributeExists("templates"));
 
         verify(templateForInvoiceService, times(1)).getAll();
@@ -284,7 +284,7 @@ class InvoiceControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/invoice/template/add")
                         .with(csrf()))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/template"))
+                .andExpect(view().name("admin/invoice/template"))
                 .andExpect(model().attributeExists("templates"));
 
         TemplateForInvoiceDTO template = new TemplateForInvoiceDTO();
@@ -351,7 +351,7 @@ class InvoiceControllerTest {
 
         mockMvc.perform(MockMvcRequestBuilders.get("/admin/invoice/print/1"))
                 .andExpect(status().isOk())
-                .andExpect(view().name("/admin/invoice/print"))
+                .andExpect(view().name("admin/invoice/print"))
                 .andExpect(model().attributeExists("invoice", "templates"));
 
         verify(invoiceService, times(1)).getById(1L);
