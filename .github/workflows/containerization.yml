@@ -16,6 +16,9 @@ jobs:
         with:
           java-version: '17'
           distribution: 'adopt'
+      - name: Build the project
+        run: |
+          mvn package -DskipTests=true
       - name: Login to DockerHub
         uses: docker/login-action@v2
         with:
