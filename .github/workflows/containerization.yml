@@ -23,10 +23,10 @@ jobs:
 
       - name: Tag Docker images
         run: |
-          docker tag admin:latest ${{ secrets.DOCKERHUB_USERNAME }}/admin:latest
-          docker tag user:latest ${{ secrets.DOCKERHUB_USERNAME }}/user:latest
+          docker tag myhouse24-admin:latest ${{ secrets.DOCKERHUB_USERNAME }}/myhouse24-admin:latest
+          docker tag myhouse24-user:latest ${{ secrets.DOCKERHUB_USERNAME }}/myhouse24-user:latest
 
       - name: Push Docker images to Docker Hub
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/admin:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/user:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myhouse24-admin:latest
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myhouse24-user:latest
