@@ -8,7 +8,7 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
   datasource:
-    url: jdbc:mysql://slj.avada-media-dev1.od.ua:3307/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
+    url: jdbc:mysql://db:3307/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
     username: root
     password: 1234
   jpa:
