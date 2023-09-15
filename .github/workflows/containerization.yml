@@ -41,4 +41,4 @@ jobs:
             sudo docker login
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
             sudo docker pull denistp12/myhouse24-admin:latest
-            sudo docker run -d --name myhouse24-admin-container --network myhouse24da denistp12/myhouse24-admin
+            sudo docker run -d --name myhouse24-admin-container --network myhouse24da denistp12/myhouse24-admin --db-host slj.avada-media-dev1.od.ua --db-port 3307 --db-name myhouse24 --db-user root --db-password 1234
