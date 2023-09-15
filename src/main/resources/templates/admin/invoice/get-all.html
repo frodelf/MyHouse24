@@ -248,17 +248,17 @@
                                     <td th:onclick="|window.location.href='@{{context_path}/admin/invoice/{invoice}(invoice = ${invoice.id}, context_path = ${context_path})}'|" th:text="${invoice.sum}"></td>
                                     <td>
                                         <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/invoice/copy/{id}(id=${invoice.getId()})}"
+                                           th:href="@{{context_path}/admin/invoice/copy/{id}(context_path=${context_path}, id=${invoice.getId()})}"
                                            title="Копировать">
                                             <i class="fa fa-clone"></i>
                                         </a>
                                         <a class="btn btn-default btn-sm"
-                                           th:href="@{/admin/invoice/edit/{id}(id=${invoice.getId()})}"
+                                           th:href="@{{context_path}/admin/invoice/edit/{id}(context_path=${context_path}, id=${invoice.getId()})}"
                                            title="Редактировать">
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
                                         <a class="btn btn-default btn-sm modal1"
-                                           th:data-redirect="@{/admin/invoice/delete/{id}(id=${invoice.getId()})}"
+                                           th:data-redirect="@{{context_path}/admin/invoice/delete/{id}(context_path=${context_path}id=${invoice.getId()})}"
                                            title="Удалить" data-toggle="modal" data-target="#myModal">
                                             <i class="fa fa-trash"></i>
                                         </a>

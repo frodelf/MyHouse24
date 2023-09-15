@@ -36,6 +36,10 @@
     background-color: red;
 }
 
+.status-blue {
+    background-color: blue;
+}
+
 .content-header{
     width: 100%;
     padding-left: 0px;

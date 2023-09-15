@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse"
+      th:classappend="${theme == 'LIGHT' ? 'light' : 'dark-mode'}" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Новая_заява}"></span>
+
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}"
+                                               class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a></li>
+                <li class="breadcrumb-item"><a
+                        th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}"
+                        class="text-for-breadcrumb">
+                    <span th:text="#{Визов_мастера}"></span>
+                </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Новая_заява}"></span>
+
+                </li>
+            </ol>
+        </div>
+
+        <section class="content">
+            <form id="serviceForm" method="post" th:action="@{{context_path}/admin/master-request/add(context_path = ${context_path})}" th:object="${master}">
+            <input th:field="*{id}" hidden>
+                <div class="card">
+                <div class="card-body">
+                    <div class="card-body">
+                        <span th:text="#{Тип_мастера}"></span>
+                        <select class="form-control" th:field="*{role}">
+                            <option value="Любой специалист">
+                                <span th:text="#{Любой_специалист}"></span>
+                            </option>
+                            <option value="Сантехник">
+
+                                <span th:text="#{Сантехник}"></span>
+                            </option>
+                            <option value="Сантехник">
+
+                                <span th:text="#{Электрик}"></span>
+                            </option>
+                            <option value="Сантехник">
+                                <span th:text="#{Слесарь}"></span>
+                            </option>
+                        </select>
+                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                        <br/>
+
+                        <span th:text="#{Квартира}"></span>
+                        <select class="form-control" th:field="*{flat}">
+                            <option value="">Виберите...</option>
+                            <option th:each="flat : ${flats}" th:value="${flat.id}"
+                                    th:text="${flat.number}"></option>
+                        </select>
+                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('flat')}" th:errors="*{flat}"></div>
+                        <br/>
+                        <div class="row">
+                            <div class="col">
+                                <span th:text="#{Дата_работ}"></span>
+                                <input class="form-control" type="date" th:field="*{date}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+                            </div>
+                            <div class="col" >
+                                <span th:text="#{Время_работ}"></span>
+                                <input class="form-control" type="time" th:field="*{time}">
+                                <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('time')}" th:errors="*{time}"></div>
+                            </div>
+                        </div>
+                        <br/>
+                        <span th:text="#{Описание}"></span>
+                        <br/>
+                        <textarea class="form-control"  th:field="*{description}"></textarea>
+                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-right">
+                        <span th:text="#{Отправить_заяву}"></span>
+                    </button>
+                </div>
+            </div>
+            </form>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+
+</body>
+
+</html>

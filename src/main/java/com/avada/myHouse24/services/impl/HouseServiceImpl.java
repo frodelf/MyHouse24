@@ -138,8 +138,6 @@ public class HouseServiceImpl implements HouseService {
         } else {
             housePage = houseRepository.findAll(pageable);
         }
-
-
         return housePage.getContent();
     }
     public List<HouseForViewDto> filter(HouseForViewDto house, List<HouseForViewDto> houses){

@@ -160,11 +160,6 @@ function togglePasswordVisibility() {
         toggleIcon.classList.add("fa-eye-slash");
     }
 }
-
-function confirmDelete() {
-    return confirm("Вы уверены, что хотите удалить этот элемент?");
-}
-
 function submitForm() {
     document.getElementById("formSend").submit();
 }
