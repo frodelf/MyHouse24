@@ -346,8 +346,9 @@
         var navLinks = document.querySelectorAll('.nav-item');
 
         links.forEach(function (link) {
-            if (link.href.includes(currentUrl)) {
-                // link.classList.add('active');
+
+
+            if (link.href.includes(currentUrl)  &&  currentUrl !== "/myHouse24DA/admin/") {
                 link.style.backgroundColor = '#336699';
                 link.style.color = '#fff';
             }

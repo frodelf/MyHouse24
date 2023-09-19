@@ -39,5 +39,9 @@ spring:
           ssl:
             trust: smtp.gmail.com
 server:
+  error:
+    whitelabel:
+      enabled: false
+
   servlet:
     context-path: /myHouse24DA
