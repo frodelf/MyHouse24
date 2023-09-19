@@ -42,7 +42,6 @@ public class UserController {
     private final EmailService emailService;
     private final FlatMapper flatMapper;
 
-
     @GetMapping("/index/{id}")
     public String getAll(@PathVariable("id")int id, Model model) {
         UserForViewDTO forFilter = userMapper.toDtoForView(new User());
@@ -181,5 +180,10 @@ public class UserController {
         response.put("results", select2Options);
         response.put("pagination", Map.of("more", (page * pageSize) < totalResults));
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/message/{id}")
+    @ResponseBody
+    public void message(@PathVariable("id")Long id){
+        emailService.send(userService.getById(id).getEmail(), "qwerty");
     }
 }

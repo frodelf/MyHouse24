@@ -258,7 +258,7 @@
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
                                         <a class="btn btn-default btn-sm modal1"
-                                           th:data-redirect="@{{context_path}/admin/invoice/delete/{id}(context_path=${context_path}id=${invoice.getId()})}"
+                                           th:data-redirect="@{{context_path}/admin/invoice/delete/{id}(context_path=${context_path}, id=${invoice.getId()})}"
                                            title="Удалить" data-toggle="modal" data-target="#myModal">
                                             <i class="fa fa-trash"></i>
                                         </a>

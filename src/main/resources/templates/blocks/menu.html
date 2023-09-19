@@ -3,7 +3,7 @@
     <nav class="main-header navbar navbar-expand" th:classappend="${theme == 'LIGHT' ? 'navbar-light' : 'navbar-dark'}">
         <ul class="navbar-nav" style="width: 100%">
             <li class="nav-item">
-                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                <a class="nav-link" data-widget="pushmenu" role="button"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
                 <div class="nav-link">
@@ -166,7 +166,7 @@
                                     </ul>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="#" style="width:100%" class="nav-link2 nav-link">
+                                    <a style="width:100%" class="nav-link2 nav-link">
                                         <i class="fa fa-cogs" aria-hidden="true"></i>
                                         <p class="pl-1">
                                             <span th:text="#{Настройка_системы}"></span>
@@ -339,5 +339,18 @@
             var selectedLanguage = document.getElementById("languageSelect").value;
             window.location.search = "?lang=" + selectedLanguage;
         }
+
+        var currentUrl = window.location.pathname;
+        var index = 0;
+        var links = document.querySelectorAll('a');
+        var navLinks = document.querySelectorAll('.nav-item');
+
+        links.forEach(function (link) {
+            if (link.href.includes(currentUrl)) {
+                // link.classList.add('active');
+                link.style.backgroundColor = '#336699';
+                link.style.color = '#fff';
+            }
+        });
     </script>
 </div>
