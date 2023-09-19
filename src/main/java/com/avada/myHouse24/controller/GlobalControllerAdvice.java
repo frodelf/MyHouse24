@@ -1,5 +1,6 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.Admin;
 import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ public class GlobalControllerAdvice {
 
     @ModelAttribute("theme")
     public String theme(){
-        if(adminService.getAuthAdmin().getTheme()==null)adminService.getAuthAdmin().setTheme(Theme.LIGHT);
+        if(adminService.getAuthAdmin().getTheme()==null)
+            return "LIGHT";
         return adminService.getAuthAdmin().getTheme().name();
     }
 }

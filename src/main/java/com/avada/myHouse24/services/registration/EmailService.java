@@ -22,8 +22,9 @@ public class EmailService {
     @Autowired
     Environment env;
 
-    @Value("")
+    @Value("${spring.mail.username}")
     private String EMAIL_SENDER;
+
 
     @Autowired
     private JavaMailSender mailSender;

@@ -159,7 +159,7 @@ public class AccountTransactionController {
 
         return modelAndView;
     }
-    /////////////////
+
     @GetMapping("/update/out/{id}")
     public ModelAndView updateOut(@ModelAttribute("accountTransactionOutDTO") AccountTransactionOutDTO accountTransactionOutDTO, @PathVariable("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-out");
@@ -210,6 +210,7 @@ public class AccountTransactionController {
         ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-in");
 
         AccountTransaction accountTransaction = accountTransactionService.getById(id);
+        accountTransaction.setNumber(String.valueOf(accountTransactionService.getNumber()));
         accountTransaction.setId(accountTransactionService.getMaxId());
         modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForIn(accountTransaction));
         modelAndView.addObject("users", userService.getAll());
@@ -225,6 +226,7 @@ public class AccountTransactionController {
         ModelAndView modelAndView = new ModelAndView("admin/account-transaction/update-out");
 
         AccountTransaction accountTransaction = accountTransactionService.getById(id);
+        accountTransaction.setNumber(String.valueOf(accountTransactionService.getNumber()));
         accountTransaction.setId(accountTransactionService.getMaxId());
         modelAndView.addObject("accountTransaction", accountTransactionMapper.toDtoForOut(accountTransaction));
         modelAndView.addObject("admins", adminService.getAll());

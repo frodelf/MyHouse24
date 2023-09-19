@@ -110,9 +110,7 @@ public class AdminServiceImpl implements AdminService {
         return admins;
     }
     public Admin getAuthAdmin(){
-        Admin admin = new Admin();
-        admin.setTheme(Theme.DARK);
-        return admin;
+        return getById(1L);
     }
     public Boolean existByEmail(String email){
         return adminRepository.existsByEmail(email);
