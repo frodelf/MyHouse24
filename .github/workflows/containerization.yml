@@ -37,6 +37,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           password: ${{ secrets.SSH_PASSWORD }}
           script: |
+            sudo docker stop myhouse24-admin-container
+            sudo docker rm myhouse24-admin-container
+            sudo docker rmi denistp12/myhouse24-admin
             sudo docker login
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
             sudo docker pull denistp12/myhouse24-admin:latest
