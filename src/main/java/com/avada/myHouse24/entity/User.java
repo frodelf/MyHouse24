@@ -1,5 +1,6 @@
 package com.avada.myHouse24.entity;
 
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.services.registration.RegistrationRequest;
 import jakarta.persistence.*;
@@ -46,6 +47,7 @@ public class User implements UserDetails {
     private UserStatus status;
     private String description;
     private String image;
+    private Theme theme;
     private boolean enabled = false;
     @OneToMany(mappedBy = "user")
     List<Flat> flats;
