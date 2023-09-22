@@ -65,7 +65,7 @@
                                                    class="btn btn-secondary" onchange="previewImage(event, 'previewImage1')">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> Додати фото
                                             </label>
-                                            <input id="fileIn" type="file" style="display:none;" name="image" onchange="previewImage(event, 'previewImage1')">
+                                            <input id="fileIn" type="file" style="display:none;" name="image" onchange="previewImage(event, 'previewImage1')" accept=".jpg, .jpeg, .png, .pdf">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                                  th:text="${error}"></div>
                                         </div>
@@ -206,7 +206,6 @@
 <script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
-<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script>
     function previewImage(event, imageId) {

@@ -60,7 +60,7 @@
                                                 <span th:text="#{Додати_фото}"></span>
 
                                             </label>
-                                            <input id="fileInput" type="file" style="display:none;" name="image">
+                                            <input id="fileInput" type="file" style="display:none;" name="image" accept=".jpg, .jpeg, .png, .pdf">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${error}"></div>
                                         </div>
                                     </div>
@@ -166,7 +166,6 @@
 <script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
-<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 </body>
 </html>

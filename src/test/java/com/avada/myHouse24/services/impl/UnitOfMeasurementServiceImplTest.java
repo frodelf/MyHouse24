@@ -1,6 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.UnitOfMeasurement;
+import com.avada.myHouse24.repo.AdditionalServiceRepository;
 import com.avada.myHouse24.repo.UnitOfMeasurementRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,8 @@ class UnitOfMeasurementServiceImplTest {
     private UnitOfMeasurementServiceImpl unitOfMeasurementService;
     @Mock
     private UnitOfMeasurementRepository unitOfMeasurementRepository;
+    @Mock
+    private AdditionalServiceRepository additionalServiceRepository;
     @Test
     void getAll() {
         List<UnitOfMeasurement> mockUnits = new ArrayList<>();
@@ -48,6 +51,7 @@ class UnitOfMeasurementServiceImplTest {
     void deleteById() {
         long mockId = 1L;
         when(unitOfMeasurementRepository.findById(mockId)).thenReturn(Optional.of(new UnitOfMeasurement()));
+        when(additionalServiceRepository.existsByUnitOfMeasurement(any())).thenReturn(false);
         unitOfMeasurementService.deleteById(mockId);
         verify(unitOfMeasurementRepository, times(1)).deleteById(mockId);
     }

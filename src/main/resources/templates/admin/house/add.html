@@ -56,31 +56,31 @@
                                     <span th:text="#{Изображение}"></span>
                                      #1. Размер: (522x350)
                                     <input th:field="*{image}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage1')">
+                                           onchange="previewImage(event, 'previewImage1')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
                                     <br/>
                                     <span th:text="#{Изображение}"></span>
                                      #2. Размер: (248x160)
                                     <input th:field="*{image1}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage2')">
+                                           onchange="previewImage(event, 'previewImage2')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image1')}" th:errors="*{image1}"></div>
                                     <br/>
                                     <span th:text="#{Изображение}"></span>
                                      #3. Размер: (248x160)
                                     <input th:field="*{image2}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage3')">
+                                           onchange="previewImage(event, 'previewImage3')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image2')}" th:errors="*{image2}"></div>
                                     <br/>
                                     <span th:text="#{Изображение}"></span>
                                      #4. Размер: (248x160)
                                     <input th:field="*{image3}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage4')">
+                                           onchange="previewImage(event, 'previewImage4')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image3')}" th:errors="*{image3}"></div>
                                     <br/>
                                     <span th:text="#{Изображение}"></span>
                                      #5. Размер: (248x160)
                                     <input th:field="*{image4}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage5')">
+                                           onchange="previewImage(event, 'previewImage5')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image4')}" th:errors="*{image4}"></div>
                                 </b>
                             </div>
@@ -199,7 +199,6 @@
 <script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
-<script th:src="@{{context_path}/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js(context_path = ${context_path})}"></script>
 <script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script>
     function previewImage(event, imageId) {
