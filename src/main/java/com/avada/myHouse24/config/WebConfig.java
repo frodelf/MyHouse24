@@ -25,7 +25,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceHandler("/files/**")
                 .addResourceLocations("classpath:/static/files/");
         registry
-                .addResourceHandler("/admi/**")
+                .addResourceHandler("/static/**")
                 .addResourceLocations("file:/var/photos/");
     }
     @Override
