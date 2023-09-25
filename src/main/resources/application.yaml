@@ -37,18 +37,6 @@ spring:
             required: true
           ssl:
             trust: smtp.gmail.com
-cloud:
-  aws:
-    credentials:
-      access-key: AKIAZ6GXNB7ZA2A7WE53
-      secret-key: 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
-    region:
-      static: eu-north-1
-    stack:
-      auto: false
-application:
-  bucket:
-    name: awss3bucketforavadatest
 server:
   servlet:
     context-path: /myHouse24DA
