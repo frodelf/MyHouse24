@@ -43,4 +43,4 @@ jobs:
             sudo docker login
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
             sudo docker pull denistp12/myhouse24-admin:latest
-            sudo docker run -d --name myhouse24-admin-container -p 8088:8080 --network myhouse24da -v myhouse24da:/var/photos denistp12/myhouse24-admin
+            sudo docker run -d --name myhouse24-admin-container -p 8088:80 --network myhouse24da -v myhouse24da:/var/photos denistp12/myhouse24-admin

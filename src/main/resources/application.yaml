@@ -52,3 +52,4 @@ application:
 server:
   servlet:
     context-path: /myHouse24DA
+  port: 80
