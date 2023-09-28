@@ -120,4 +120,7 @@ public class FlatServiceImpl implements FlatService {
         }
         return flatDTOS;
     }
+    public long count(){
+        return flatRepository.count();
+    }
 }

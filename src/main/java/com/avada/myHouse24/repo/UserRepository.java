@@ -19,4 +19,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByFirstName(String email);
     boolean existsById(long id);
     Page<User> findByFirstNameContainingIgnoreCase(String search, Pageable pageable);
+    long count();
 }

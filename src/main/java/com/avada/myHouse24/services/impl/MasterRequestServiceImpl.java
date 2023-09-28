@@ -33,4 +33,7 @@ public class MasterRequestServiceImpl {
     public MasterRequest getById(long id){
         return masterRequestRepository.findById(id).get();
     }
+    public long count(String status){
+        return masterRequestRepository.countByStatus(status);
+    }
 }

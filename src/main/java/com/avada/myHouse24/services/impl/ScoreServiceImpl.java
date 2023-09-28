@@ -208,4 +208,7 @@ public class ScoreServiceImpl implements ScoreService {
         workbook.write(response.getOutputStream());
         workbook.close();
     }
+    public long count(){
+        return scoreRepository.count();
+    }
 }

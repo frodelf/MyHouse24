@@ -22,10 +22,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -195,5 +198,18 @@ public class AccountTransactionServiceImpl implements AccountTransactionService 
 
         workbook.write(response.getOutputStream());
         workbook.close();
+    }
+    public List<String> getMonthForStats(){
+        List<Date> dates = accountTransactionRepository.findMonthForStats();
+        List<String> result = new ArrayList<>();
+        SimpleDateFormat formatter = new SimpleDateFormat("d MMMM yyyy", new Locale("uk"));
+        for (Date sqlDate : dates) {
+            String formattedDate = formatter.format(sqlDate);
+            result.add(formattedDate);
+        }
+        return result;
+    }
+    public List<Double> getValueForStats(){
+        return accountTransactionRepository.findValueForStats();
     }
 }

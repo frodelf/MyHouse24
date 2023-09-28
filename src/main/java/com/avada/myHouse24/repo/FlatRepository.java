@@ -10,4 +10,5 @@ public interface FlatRepository extends JpaRepository<Flat, Long> {
     @Query(value = "SELECT MAX(id) FROM Flat")
     Long findMaxId();
     Optional<Flat> findByNumber(int number);
+    long count();
 }

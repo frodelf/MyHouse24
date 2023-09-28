@@ -153,4 +153,7 @@ public class HouseServiceImpl implements HouseService {
         }
         return houses;
     }
+    public long count(){
+        return houseRepository.count();
+    }
 }

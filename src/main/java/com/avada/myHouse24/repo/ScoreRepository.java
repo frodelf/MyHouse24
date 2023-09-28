@@ -17,4 +17,5 @@ public interface ScoreRepository extends JpaRepository<Score, Long> {
     Page<Score> findByNumberContainingIgnoreCase(String search, Pageable pageable);
     @Query(value = "SELECT SUM(a.balance) FROM Score a")
     Double findAllBalance();
+    long count();
 }
