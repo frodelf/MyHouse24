@@ -16,9 +16,9 @@ public interface AccountTransactionRepository extends JpaRepository<AccountTrans
     Long sumWhereIsIncomeIsFalse();
     @Query(value = "SELECT SUM(a.sum) FROM AccountTransaction a")
     Double findAllSum();
-    @Query(value = "SELECT SUM(sum) as sum FROM house24.account_transaction GROUP BY from_date LIMIT 10", nativeQuery = true)
+    @Query(value = "SELECT SUM(sum) as sum FROM account_transaction GROUP BY from_date LIMIT 10", nativeQuery = true)
     List<Double> findValueForStats();
 
-    @Query(value = "SELECT from_date FROM house24.account_transaction GROUP BY from_date LIMIT 10", nativeQuery = true)
+    @Query(value = "SELECT from_date FROM account_transaction GROUP BY from_date LIMIT 10", nativeQuery = true)
     List<Date> findMonthForStats();
 }
