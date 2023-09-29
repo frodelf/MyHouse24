@@ -4,10 +4,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
-    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
-    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -15,7 +18,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}"
+      style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
@@ -25,138 +29,142 @@
             </h4>
         </div>
         <section class="content">
-            <span style="font-size: 16px" th:text="#{В_вашем_обслуживании}"></span>
-        </section>
-        <div class="container">
-            <div class="row">
-                <div class="col-xs-12 col-md-4">
-                    <div class="small-box bg-green overflow-hidden">
-                        <div class="inner">
-                            <h3>[[${houses}]]</h3>
-                            <p>
-                                <span th:text="#{Домов}"></span>
-                            </p>
+            <span style="font-size: 24px" th:text="#{В_вашем_обслуживании}"></span>
+                <div class="row">
+                    <div class="col-xs-12 col-md-4">
+                        <div class="small-box bg-green overflow-hidden">
+                            <div class="inner">
+                                <h3>[[${houses}]]</h3>
+                                <p>
+                                    <span th:text="#{Домов}"></span>
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-building"></i>
+                            </div>
+                            <a th:href="@{{context_path}/admin/house/index/1(context_path = ${context_path})}"
+                               class="small-box-footer">
+                                <span th:text="#{Перейти_к_домам}"></span> <i class="fa fa-arrow-circle-right"></i>
+                            </a>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-building"></i>
-                        </div>
-                        <a th:href="@{{context_path}/admin/house/index/1(context_path = ${context_path})}" class="small-box-footer">
-                            <span th:text="#{Перейти_к_домам}"></span> <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
 
 
-                    <div class="small-box bg-green overflow-hidden">
-                        <div class="inner">
-                            <h3>[[${flats}]]</h3>
-                            <p>
-                                <span th:text="#{Квартир}"></span>
-                            </p>
+                        <div class="small-box bg-green overflow-hidden">
+                            <div class="inner">
+                                <h3>[[${flats}]]</h3>
+                                <p>
+                                    <span th:text="#{Квартир}"></span>
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-key"></i>
+                            </div>
+                            <a th:href="@{{context_path}/admin/flat/index/1(context_path = ${context_path})}"
+                               class="small-box-footer">
+                                <span th:text="#{Перейти_к_квартирам}"></span> <i class="fa fa-arrow-circle-right"></i>
+                            </a>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-key"></i>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <div class="small-box bg-blue overflow-hidden">
+                            <div class="inner">
+                                <h3 id="accountBalance">[[${users}]]</h3>
+                                <p>
+                                    <span th:text="#{Активных_владельцев}"></span>
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                            </div>
+                            <a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}"
+                               class="small-box-footer">
+                                <span th:text="#{Перейти_к_владельцам}"></span> <i class="fa fa-arrow-circle-right"></i>
+                            </a>
                         </div>
-                        <a th:href="@{{context_path}/admin/flat/index/1(context_path = ${context_path})}" class="small-box-footer">
-                            <span th:text="#{Перейти_к_квартирам}"></span> <i class="fa fa-arrow-circle-right"></i>
-                        </a>
+                        <div class="small-box bg-blue overflow-hidden">
+                            <div class="inner">
+                                <h3>[[${scores}]]</h3>
+                                <p>
+                                    <span th:text="#{Лицевых_счетов}"></span>
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-child" aria-hidden="true"></i>
+                            </div>
+                            <a th:href="@{{context_path}/admin/account/index/1(context_path = ${context_path})}"
+                               class="small-box-footer">
+                                <span th:text="#{Перейти_к_счетам}"></span> <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-md-4">
+                        <div class="small-box bg-red overflow-hidden">
+                            <div class="inner">
+                                <h3>[[${masterInProgress}]]</h3>
+                                <p>
+                                    <span th:text="#{Заявок_мастера_в_работе}"></span>
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-wrench" aria-hidden="true"></i>
+                            </div>
+                            <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}"
+                               class="small-box-footer">
+                                <span th:text="#{Перейти_к_заявкам}"></span><i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
+                        <div class="small-box bg-red overflow-hidden">
+                            <div class="inner">
+                                <h3>[[${masterNew}]]</h3>
+                                <p>
+                                    <span th:text="#{Новых_заявок_мастера}"></span>
+                                </p>
+                            </div>
+                            <div class="icon">
+                                <i class="fa fa-user-plus" aria-hidden="true"></i>
+                            </div>
+                            <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}"
+                               class="small-box-footer">
+                                <span th:text="#{Перейти_к_заявкам}"></span> <i class="fa fa-arrow-circle-right"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-md-4">
-                    <div class="small-box bg-blue overflow-hidden">
-                        <div class="inner">
-                            <h3 id="accountBalance">[[${users}]]</h3>
-                            <p>
-                                <span th:text="#{Активных_владельцев}"></span>
-                            </p>
+                <div class="row">
+                    <div class="col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <div>
+                                    <canvas id="myChart"></canvas>
+                                </div>
+                            </div>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-users" aria-hidden="true"></i>
-                        </div>
-                        <a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}" class="small-box-footer">
-                            <span th:text="#{Перейти_к_владельцам}"></span> <i class="fa fa-arrow-circle-right"></i>
-                        </a>
                     </div>
-                    <div class="small-box bg-blue overflow-hidden">
-                        <div class="inner">
-                            <h3>[[${scores}]]</h3>
-                            <p>
-                                <span th:text="#{Лицевых_счетов}"></span>
-                            </p>
+                    <div class="col-4">
+                        <div class="info-box">
+                            <span class="info-box-icon bg-green"><i class="fa fa-money-bill"></i></span>
+                            <div class="info-box-content">
+                                <span th:text="#{Состояние_кассы}"></span>
+                                <h3>[[${sumAccountTransactionForStats}]]</h3>
+                            </div>
                         </div>
-                        <div class="icon">
-                            <i class="fa fa-child" aria-hidden="true"></i>
+                        <div class="info-box">
+                            <span class="info-box-icon bg-blue"><i class="fa fa-money-bill"></i></span>
+                            <div class="info-box-content">
+                                <span th:text="#{Баланс_по_счетам}"></span>
+                                <h3>[[${balanceScoreForStats}]]</h3>
+                            </div>
                         </div>
-                        <a th:href="@{{context_path}/admin/account/index/1(context_path = ${context_path})}" class="small-box-footer">
-                            <span th:text="#{Перейти_к_счетам}"></span> <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-md-4">
-                    <div class="small-box bg-red overflow-hidden">
-                        <div class="inner">
-                            <h3>[[${masterInProgress}]]</h3>
-                            <p>
-                                <span th:text="#{Заявок_мастера_в_работе}"></span>
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-wrench" aria-hidden="true"></i>
-                        </div>
-                        <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}" class="small-box-footer">
-                            <span th:text="#{Перейти_к_заявкам}"></span><i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                    <div class="small-box bg-red overflow-hidden">
-                        <div class="inner">
-                            <h3>[[${masterNew}]]</h3>
-                            <p>
-                                <span th:text="#{Новых_заявок_мастера}"></span>
-                            </p>
-                        </div>
-                        <div class="icon">
-                            <i class="fa fa-user-plus" aria-hidden="true"></i>
-                        </div>
-                        <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}" class="small-box-footer">
-                            <span th:text="#{Перейти_к_заявкам}"></span> <i class="fa fa-arrow-circle-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-8">
-                    <div class="card">
-                        <div class="card-header">
-                            <div>
-                                <canvas id="myChart"></canvas>
+                        <div class="info-box">
+                            <span class="info-box-icon bg-red"><i class="fa fa-money-bill"></i></span>
+                            <div class="info-box-content">
+                                <span th:text="#{Задолженность_по_счетам}"></span>
+                                <h3 id="accountDebts">[[${sumWhereIsIncomeIsFalse}]]</h3>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-4">
-                    <div class="info-box">
-                        <span class="info-box-icon bg-green"><i class="fa fa-money-bill"></i></span>
-                        <div class="info-box-content">
-                            <span th:text="#{Состояние_кассы}"></span>
-                            <h3>[[${sumAccountTransactionForStats}]]</h3>
-                        </div>
-                    </div>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-blue"><i class="fa fa-money-bill"></i></span>
-                        <div class="info-box-content">
-                            <span th:text="#{Баланс_по_счетам}"></span>
-                            <h3>[[${balanceScoreForStats}]]</h3>
-                        </div>
-                    </div>
-                    <div class="info-box">
-                        <span class="info-box-icon bg-red"><i class="fa fa-money-bill"></i></span>
-                        <div class="info-box-content">
-                            <span th:text="#{Задолженность_по_счетам}"></span>
-                            <h3 id="accountDebts">[[${sumWhereIsIncomeIsFalse}]]</h3>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
     <footer class="main-footer">
         Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a

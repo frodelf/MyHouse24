@@ -4,6 +4,7 @@ import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.entity.User;
+import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.repo.UserRepository;
 import com.avada.myHouse24.services.UserService;
@@ -221,5 +222,8 @@ public class UserServiceImpl implements UserService {
     }
     public long count(){
         return userRepository.count();
+    }
+    public List<User> getByStatus(UserStatus userStatus){
+        return userRepository.findAllByStatus(userStatus);
     }
 }

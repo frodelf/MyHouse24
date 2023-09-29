@@ -195,10 +195,12 @@ public class ScoreServiceImpl implements ScoreService {
 
             dataRow.createCell(0).setCellValue(score.getNumber());
             dataRow.createCell(1).setCellValue(score.getStatus());
-            dataRow.createCell(2).setCellValue(score.getFlat().getNumber());
-            dataRow.createCell(3).setCellValue(score.getFlat().getHouse().getName());
-            dataRow.createCell(4).setCellValue(score.getFlat().getSection().getName());
-            dataRow.createCell(5).setCellValue(score.getFlat().getUser().getFirstName());
+            if(score.getFlat()!=null) {
+                dataRow.createCell(2).setCellValue(score.getFlat().getNumber());
+                dataRow.createCell(3).setCellValue(score.getFlat().getHouse().getName());
+                dataRow.createCell(4).setCellValue(score.getFlat().getSection().getName());
+                dataRow.createCell(5).setCellValue(score.getFlat().getUser().getFirstName());
+            }
             dataRow.createCell(6).setCellValue(score.getBalance());
         }
 

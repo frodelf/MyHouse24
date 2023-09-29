@@ -186,4 +186,9 @@ public class UserController {
     public void message(@PathVariable("id")Long id){
         emailService.send(userService.getById(id).getEmail(), "qwerty");
     }
+    @GetMapping("/new/users")
+    @ResponseBody
+    public List<User> getNewUsers(){
+        return userService.getByStatus(UserStatus.NEW);
+    }
 }
