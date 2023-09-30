@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -136,5 +137,11 @@ public class HouseController {
     public List<HouseForViewDto> filterPage (@PathVariable("page")int id, Model model, @ModelAttribute("house1") HouseForViewDto house){
         List<HouseForViewDto> result = houseService.getPage(id, model, houseService.filter(house, houseService.filter(house, houseMapper.toDtoForViewList(houseService.getAll())))).getContent();
         return result;
+    }
+    @GetMapping("/message/{id}")
+    public ModelAndView message(@PathVariable("id")Long id){
+        ModelAndView modelAndView = new ModelAndView("admin/house/message");
+
+        return modelAndView;
     }
 }
