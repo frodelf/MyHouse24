@@ -304,7 +304,6 @@
                 url: "[[${context_path}]]/admin/user-admin/get/theme",
                 success: function(res) {
                     theme=res;
-                    console.log(theme)
                     toggleTheme()
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -317,14 +316,10 @@
 
             function toggleTheme() {
                 darkModeEnabled = !darkModeEnabled;
-                // const theme = getCookie("theme");
                 const tableRows = document.querySelectorAll("table tr");
                 const tables = document.querySelectorAll("table");
-                console.log("_______________"+theme)
                 if (theme === 'DARK') {
-                    console.log("_______________1"+theme)
                     themeSwitchButton.textContent = "☁";
-                    // setCookie("theme", "☁")
                     body.addClass("dark-mode");
                     nav.removeClass("navbar-light").addClass("navbar-dark");
                     aside.removeClass("sidebar-light-primary").addClass("sidebar-dark-primary");
@@ -339,7 +334,6 @@
                     $(".text-for-breadcrumb").css("color", "#fff");
                 } else {
                     themeSwitchButton.textContent = "☀";
-                    // setCookie("theme", "☀")
                     body.removeClass("dark-mode");
                     nav.removeClass("navbar-dark").addClass("navbar-light");
                     aside.removeClass("sidebar-dark-primary").addClass("sidebar-light-primary");
@@ -355,47 +349,22 @@
                 }
             }
 
-            // function setCookie(name, value) {
-            //     const date = new Date();
-            //     date.setTime(date.getTime() + (365 * 24 * 60 * 60 * 1000));
-            //     const expires = '; expires=' + date.toUTCString();
-            //     document.cookie = name + '=' + (value || '') + expires + '; path=/';
-            // }
-
-            // const cookieDisplayElement = document.getElementById('cookieDisplay');
-            // cookieDisplayElement.textContent = getCookie("theme")
-
-            // function getCookie(name) {
-            //     const nameEQ = name + '=';
-            //     const ca = document.cookie.split(';');
-            //     for (let i = 0; i < ca.length; i++) {
-            //         let c = ca[i];
-            //         while (c.charAt(0) === ' ') c = c.substring(1, c.length);
-            //         if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
-            //     }
-            //     return null;
-            // }
-
             themeToggle.click(toggleTheme);
 
             const themeSwitchButton = document.getElementById("themeSwitchButton");
             themeSwitchButton.type = 'button';
             themeSwitchButton.addEventListener("click", function () {
                 if (theme === 'DARK') {
-                    console.log('123123123123')
-                    // setCookie("theme", "☀")
                     $.ajax({
                         url: contextPath + '/admin/user-admin/change/theme/light',
                         method: 'GET',
                         success: function (response) {
                             theme='LIGHT';
-                            console.log(theme)
                             toggleTheme()
 
                         },
                     });
                 } else {
-                    // setCookie("theme", "☁")
                     $.ajax({
                         url: contextPath + '/admin/user-admin/change/theme/dark',
                         method: 'GET',
