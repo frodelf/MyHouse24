@@ -111,4 +111,9 @@ public class AdminController {
         }
         adminService.save(admin);
     }
+    @GetMapping("/get/theme")
+    @ResponseBody
+    public String getTheme(){
+        return adminService.getAuthAdmin().getTheme().name();
+    }
 }
