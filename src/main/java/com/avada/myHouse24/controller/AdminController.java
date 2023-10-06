@@ -116,4 +116,9 @@ public class AdminController {
     public String getTheme(){
         return adminService.getAuthAdmin().getTheme().name();
     }
+    @GetMapping("/get/auth/id")
+    @ResponseBody
+    public Long getAuthId(){
+        return adminService.getAuthAdmin().getId();
+    }
 }

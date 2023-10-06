@@ -33,4 +33,6 @@ public class House {
     private List<Floor> floors;
     @ManyToMany
     private List<Admin> admins;
+    @OneToMany
+    private List<Message> message;
 }
