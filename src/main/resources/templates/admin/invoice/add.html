@@ -279,11 +279,11 @@
                 input.classList.remove("is-invalid");
             }
         });
-        var errorMessageDiv = row.querySelector(".error-message");
+        var errorMessageDiv = row.querySelector(".error-chat");
         if (!errorMessageDiv) {
             errorMessageDiv = document.createElement("div");
             errorMessageDiv.classList.add("invalid-feedback");
-            errorMessageDiv.classList.add("error-message");
+            errorMessageDiv.classList.add("error-chat");
             row.appendChild(errorMessageDiv);
         }
 

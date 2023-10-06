@@ -44,7 +44,6 @@
             });
         });
         var stompClient = null;
-
         var socket = new SockJS('/myHouse24DA/ws');
         stompClient = Stomp.over(socket);
         stompClient.connect({}, function(frame) {
@@ -98,7 +97,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "[[${context_path}]]/message/getAll/"+page+"/"+getLastElementInCurrentURL(),
+                url: "[[${context_path}]]/chat/getAll/"+page+"/"+getLastElementInCurrentURL(),
                 success: function (messages) {
                     for (var i = messages.length - 1; i >= 0; i--) {
                         var message = messages[i];
@@ -142,12 +141,12 @@
             page++;
             $.ajax({
                 type: "GET",
-                url: "[[${context_path}]]/message/getAll/" + page + "/" + getLastElementInCurrentURL(),
+                url: "[[${context_path}]]/chat/getAll/" + page + "/" + getLastElementInCurrentURL(),
                 success: function (messages) {
                     for (var i = messages.length - 1; i >= 0; i--) {
                         var message = messages[i];
                         var p = document.createElement('p');
-                        p.innerHTML = message.fromName + ": " + message.text;
+                        p.innerHTML = message.fromName + ": " + chat.text;
 
                         if (message.fromId === adminId  &&  !message.isUser) {
                             p.classList.add("float-right");

@@ -218,7 +218,7 @@
                                         th:text="${user.getIsDebt() == true ? 'Да' : 'Нет'}"></td>
                                     <td>
                                         <div class="btn-group pull-right">
-                                            <a class="btn btn-default btn-sm for-message" th:data="${user.id}"
+                                            <a class="btn btn-default btn-sm for-chat" th:data="${user.id}"
                                                title="Повідомлення" data-toggle="tooltip">
                                                 <i class="fa fa-envelope"></i>
                                             </a>
@@ -332,13 +332,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <script>
     $(document).ready(function () {
-        var buttons = document.querySelectorAll('.for-message');
+        var buttons = document.querySelectorAll('.for-chat');
 
         buttons.forEach(function (button) {
             button.addEventListener('click', function() {
                 var userId = button.getAttribute('data');
                 $.ajax({
-                    url: '[[${context_path}]]/admin/user/message/' + userId,
+                    url: '[[${context_path}]]/admin/user/chat/' + userId,
                     method: 'GET',
                     success: function (response) {
 
