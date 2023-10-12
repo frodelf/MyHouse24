@@ -8,9 +8,9 @@ spring:
       max-file-size: 5MB
       max-request-size: 10MB
   datasource:
-    url: jdbc:mysql://db:3306/myhouse24
+    url: jdbc:mysql://localhost:3306/house24
     username: root
-    password: root
+    password: 1234
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -42,6 +42,11 @@ spring:
   web:
     resources:
       static-locations: classpath:/static/
+  rabbitmq:
+    host: rabbitmqda
+    port: 15777
+    username: guest
+    password: guest
 server:
   servlet:
     context-path: /myHouse24DA

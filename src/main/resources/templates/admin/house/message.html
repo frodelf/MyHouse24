@@ -34,7 +34,38 @@
                 type: "GET",
                 url: "[[${context_path}]]/admin/user-admin/get/auth/id",
                 success: function(id) {
-                    adminId = id
+                    adminId = id;
+                },
+                error: function(error) {
+                    console.log("AJAX request failed");
+                    console.log("Error: " + JSON.stringify(error));
+                }
+            });
+
+            var socket = new SockJS('/myHouse24DA/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                stompClient.subscribe('/all/messages/' + getLastElementInCurrentURL(), function(result) {
+                    console.log(result)
+                    console.log(result.body)
+                    show(JSON.parse(result.body));
+                });
+            });
+        });
+
+        function sendMessage() {
+            var text = document.getElementById('text').value;
+            if (text.trim() === "") return;
+            var messageObject = {
+                'text': text,
+                'fromId': getLastElementInCurrentURL()
+            };
+            // stompClient.send("/myHouse24DA/app/application", {},
+            //     JSON.stringify(messageObject));
+            $.ajax({
+                type: "Get",
+                url: "[[${context_path}]]/admin/rabbit/message?text=" + encodeURIComponent(text) + "&house=" + getLastElementInCurrentURL(),
+                success: function() {
                 },
                 error: function(error) {
                     console.log("AJAX request failed");
@@ -42,39 +73,21 @@
                     console.log("Error thrown: " + errorThrown);
                     console.log("Response Text: " + jqXHR.responseText);                }
             });
-        });
-        var stompClient = null;
-        var socket = new SockJS('/myHouse24DA/ws');
-        stompClient = Stomp.over(socket);
-        stompClient.connect({}, function(frame) {
-            stompClient.subscribe('/all/messages/'+getLastElementInCurrentURL(), function(result) {
-                show(JSON.parse(result.body));
-            });
-        });
-
-        function sendMessage() {
-            var text = document.getElementById('text').value;
-            if(text.trim()==="")return
-            var messageObject = {
-                'text': text,
-                'fromId': getLastElementInCurrentURL()
-            };
-            stompClient.send("/myHouse24DA/app/application", {},
-                JSON.stringify(messageObject));
         }
 
         function show(message) {
+            console.log(message)
             var chat = document.getElementById('chat');
             var p = document.createElement('p');
-            p.innerHTML= message.fromName + ": "  + message.text;
-            if (message.fromId === adminId  &&  !message.isUser) {
-                p.classList.add("float-right")
-                p.classList.add("ml-auto")
+            p.innerHTML = message.fromName + ": " + message.text;
+            if (message.fromId === adminId && !message.isUser) {
+                p.classList.add("float-right");
+                p.classList.add("ml-auto");
                 p.innerHTML = message.text;
             }
-            p.style.maxWidth = "40%"
+            p.style.maxWidth = "40%";
             chat.append(p);
-            chat.scrollTop = chat.scrollHeight
+            chat.scrollTop = chat.scrollHeight;
             var textInput = document.getElementById('text');
             textInput.value = "";
         }
