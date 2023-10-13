@@ -8,7 +8,7 @@ spring:
       max-file-size: 15MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://db:3307/myhouse24
+    url: jdbc:mysql://db:3306/myhouse24
     username: root
     password: root
   jpa:
