@@ -5,8 +5,8 @@ spring:
     multipart:
       enabled: true
       file-size-threshold: 2MB
-      max-file-size: 5MB
-      max-request-size: 10MB
+      max-file-size: 15MB
+      max-request-size: 20MB
   datasource:
     url: jdbc:mysql://db:3306/myhouse24
     username: root
@@ -47,6 +47,9 @@ spring:
     port: 15672
     username: guest
     password: guest
+  devtools:
+    restart:
+      enabled: true
 server:
   servlet:
     context-path: /myHouse24DA

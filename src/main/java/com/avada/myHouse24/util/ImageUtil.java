@@ -65,7 +65,22 @@ public class ImageUtil {
         }
         return contextPath+"/uploads/house/"+nameImage;
     }
-
+    public static String fileForMessage(MultipartFile image) {
+        String nameImage ="";
+        try {
+            Path uploadPath = Paths.get(pathToFolder+"/message");
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            String originalFilename = image.getOriginalFilename();
+            String format = originalFilename.substring(originalFilename.lastIndexOf("."));
+            nameImage = generateName() + format;
+            Files.copy(image.getInputStream(), uploadPath.resolve(nameImage));
+        } catch (Exception e) {
+            log.warn("Error in method fileForTemplate: "+e);
+        }
+        return contextPath+"/uploads/message/"+nameImage;
+    }
 
     public static String generateName() {
         String alphabet = "abcdefghijklmnopqrstuvwxyz1234567890";

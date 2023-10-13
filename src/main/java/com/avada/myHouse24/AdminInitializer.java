@@ -5,6 +5,7 @@ import com.avada.myHouse24.entity.Permission;
 import com.avada.myHouse24.entity.Role;
 import com.avada.myHouse24.enums.Permissions;
 import com.avada.myHouse24.enums.Roles;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.repo.PermissionRepository;
 import com.avada.myHouse24.services.impl.AdminServiceImpl;
@@ -50,6 +51,7 @@ public class AdminInitializer implements CommandLineRunner {
         admin.setEmail("admin@gmail.com");
         admin.setFirstName("admin");
         admin.setStatus(UserStatus.ACTIVE);
+        admin.setTheme(Theme.DARK);
         admin.setRole(roleService.getById(2));
         if(!adminService.existByEmail(admin.getEmail())){
             adminService.save(admin);

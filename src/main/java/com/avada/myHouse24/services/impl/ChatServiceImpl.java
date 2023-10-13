@@ -22,6 +22,9 @@ public class ChatServiceImpl {
         Pageable pageable = PageRequest.of(page, 10, Sort.by("id").descending());
         return chatRepository.findAllByHouse(houseService.getById(houseId), pageable).getContent();
     }
+    public void deleteById(long id){
+        chatRepository.deleteById(id);
+    }
 
 //    @GetMapping
 //    public Page<Product> getProducts(@RequestParam(defaultValue = "0") int page,

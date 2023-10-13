@@ -1,5 +1,6 @@
 package com.avada.myHouse24.entity;
 
+import com.avada.myHouse24.enums.MessageType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +24,7 @@ public class Chat {
     private Long fromId;
     private Boolean isUser;
     private LocalDate date;
+    private MessageType messageType;
     @ManyToOne
     private House house;
 }

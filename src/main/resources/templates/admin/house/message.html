@@ -11,7 +11,6 @@
     <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
     <link rel="stylesheet"
           th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
@@ -76,21 +75,76 @@
         }
 
         function show(message) {
-            console.log(message)
+            console.log(message);
             var chat = document.getElementById('chat');
-            var p = document.createElement('p');
-            p.innerHTML = message.fromName + ": " + message.text;
-            if (message.fromId === adminId && !message.isUser) {
-                p.classList.add("float-right");
-                p.classList.add("ml-auto");
-                p.innerHTML = message.text;
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = message.id;
+            checkbox.name = "messages";
+            checkbox.style.float = 'left';
+            checkbox.style.marginRight = "25px"
+
+            var container = document.createElement('div');
+            container.appendChild(checkbox);
+
+            if (message.messageType === "IMAGE") {
+                var image = document.createElement('img');
+                image.src = message.text;
+                image.style.width = "30%";
+                image.style.height = "200px";
+                image.style.marginBottom = "25px";
+
+                if (message.fromId === adminId && !message.isUser) {
+                    image.classList.add("float-right");
+                    image.classList.add("ml-auto");
+                    checkbox.style.marginRight = "0px"
+                    checkbox.style.marginLeft = "25px"
+                    checkbox.style.float = 'right';
+                }
+
+                container.appendChild(image);
+            } else if (message.messageType === "FILE") {
+                var file = document.createElement('img');
+                file.src = "[[${context_path}]]/images/file.png";
+                file.style.width = "20%";
+                file.style.height = "140px";
+
+                if (message.fromId === adminId && !message.isUser) {
+                    file.classList.add("float-right");
+                    file.classList.add("ml-auto");
+                    checkbox.style.marginRight = "0px"
+                    checkbox.style.marginLeft = "25px"
+                    checkbox.style.float = 'right';
+                }
+
+                container.appendChild(file);
+                file.addEventListener("click", function () {
+                    var downloadLink = document.createElement("a");
+                    downloadLink.href = message.text;
+                    downloadLink.click();
+                });
+            } else {
+                var p = document.createElement('p');
+                p.innerHTML = message.fromName + ": " + message.text;
+                if (message.fromId === adminId && !message.isUser) {
+                    p.classList.add("float-right");
+                    p.classList.add("ml-auto");
+                    p.innerHTML = message.text;
+                    checkbox.style.marginRight = "0px"
+                    checkbox.style.marginLeft = "25px"
+                    checkbox.style.float = 'right';
+                }
+                p.style.maxWidth = "40%";
+                container.appendChild(p);
+                container.style.clear = 'both';
             }
-            p.style.maxWidth = "40%";
-            chat.append(p);
+            chat.append(container);
             chat.scrollTop = chat.scrollHeight;
+
             var textInput = document.getElementById('text');
-            textInput.value = "";
+            if (textInput.value === message.text) textInput.value = '';
         }
+
 
         $(document).ready(function() {
             var chat = document.getElementById('chat');
@@ -112,20 +166,10 @@
                 type: "GET",
                 url: "[[${context_path}]]/chat/getAll/"+page+"/"+getLastElementInCurrentURL(),
                 success: function (messages) {
+                    var chat = document.getElementById('chat');
                     for (var i = messages.length - 1; i >= 0; i--) {
                         var message = messages[i];
-
-                        var p = document.createElement('p');
-                        p.innerHTML = message.fromName + ": " + message.text;
-
-                        if (message.fromId === adminId  &&  !message.isUser) {
-                            p.classList.add("float-right");
-                            p.classList.add("ml-auto");
-                            p.innerHTML = message.text;
-                        }
-
-                        p.style.maxWidth = "40%";
-                        chat.append(p);
+                        show(message)
                     }
                     chat.scrollTop = chat.scrollHeight
                 },
@@ -136,6 +180,8 @@
                     console.log("Response Text: " + jqXHR.responseText);
                 }
             });
+
+            chat.scrollTop = chat.scrollHeight
         })
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -156,18 +202,75 @@
                 type: "GET",
                 url: "[[${context_path}]]/chat/getAll/" + page + "/" + getLastElementInCurrentURL(),
                 success: function (messages) {
-                    for (var i = messages.length - 1; i >= 0; i--) {
+                    var chat = document.getElementById('chat');
+                    for (var i = 0; i < messages.length; i++) {
                         var message = messages[i];
-                        var p = document.createElement('p');
-                        p.innerHTML = message.fromName + ": " + chat.text;
+                        var checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = message.id;
+                        checkbox.name = "messages";
+                        checkbox.style.float = 'left';
+                        checkbox.style.marginRight = "25px"
 
-                        if (message.fromId === adminId  &&  !message.isUser) {
-                            p.classList.add("float-right");
-                            p.classList.add("ml-auto");
-                            p.innerHTML = message.text;
+                        var container = document.createElement('div');
+                        container.appendChild(checkbox);
+
+                        if (message.messageType === "IMAGE") {
+                            var image = document.createElement('img');
+                            image.src = message.text;
+                            image.style.width = "30%";
+                            image.style.height = "200px";
+                            image.style.marginBottom = "25px";
+
+                            if (message.fromId === adminId && !message.isUser) {
+                                image.classList.add("float-right");
+                                image.classList.add("ml-auto");
+                                checkbox.style.marginRight = "0px"
+                                checkbox.style.marginLeft = "25px"
+                                checkbox.style.float = 'right';
+
+                            }
+
+                            container.appendChild(image);
+                        } else if (message.messageType === "FILE") {
+                            var file = document.createElement('img');
+                            file.src = "[[${context_path}]]/images/file.png";
+                            file.style.width = "20%";
+                            file.style.height = "140px";
+
+                            if (message.fromId === adminId && !message.isUser) {
+                                file.classList.add("float-right");
+                                file.classList.add("ml-auto");
+                                checkbox.style.marginRight = "0px"
+                                checkbox.style.marginLeft = "25px"
+                                checkbox.style.float = 'right';
+
+                            }
+
+                            container.appendChild(file);
+                            file.addEventListener("click", function () {
+                                var downloadLink = document.createElement("a");
+                                downloadLink.href = message.text;
+                                downloadLink.click();
+                            });
+                        } else {
+                            var p = document.createElement('p');
+                            p.innerHTML = message.fromName + ": " + message.text;
+                            if (message.fromId === adminId && !message.isUser) {
+                                p.classList.add("float-right");
+                                p.classList.add("ml-auto");
+                                p.innerHTML = message.text;
+                                checkbox.style.marginRight = "0px"
+                                checkbox.style.marginLeft = "25px"
+                                checkbox.style.float = 'right';
+                            }
+                            p.style.maxWidth = "40%";
+                            container.appendChild(p);
+                            container.style.clear = 'both';
                         }
-                        p.style.maxWidth = "40%";
-                        chat.insertBefore(p, chat.firstChild);
+                        chat.insertBefore(container, chat.firstChild);
+                        var textInput = document.getElementById('text');
+                        if (textInput.value === message.text) textInput.value = '';
                     }
                     chat.scrollTop = chat.scrollHeight - scrollTop;
                 },
@@ -177,6 +280,58 @@
                     console.log("Error thrown: " + errorThrown);
                     console.log("Response Text: " + jqXHR.responseText);
                 }
+            });
+        }
+        function sendFile() {
+            var fileInput = $("<input type='file'>");
+            fileInput.click();
+            fileInput.change(function() {
+                var selectedFile = this.files[0];
+                var formData = new FormData();
+                formData.append("file", selectedFile);
+                $.ajax({
+                    url: "[[${context_path}]]/admin/rabbit/message/file?house="+ getLastElementInCurrentURL(),
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("[[${_csrf.headerName}]]", "[[${_csrf.token}]]");
+                    },
+                    success: function(response) {
+                        console.log("Файл завантажений і відправлений успішно.");
+                    },
+                    error: function (error) {
+                        console.log("AJAX request failed");
+                        console.log("Status: " + textStatus);
+                        console.log("Error thrown: " + errorThrown);
+                        console.log("Response Text: " + jqXHR.responseText);
+                    }
+                });
+            });
+        }
+        setTimeout(function() {
+            var chat = document.getElementById('chat');
+            chat.scrollTop = chat.scrollHeight
+        }, 600);
+        function deleteMesssages() {
+            var chat = document.getElementById('chat');
+            var checkboxes = chat.querySelectorAll('input[type="checkbox"][name="messages"]:checked');
+            checkboxes.forEach(function(checkbox) {
+                var messageContainer = checkbox.closest('div');
+                chat.removeChild(messageContainer);
+                $.ajax({
+                    url: "[[${context_path}]]/admin/message/delete/"+checkbox.value,
+                    type: "GET",
+                    success: function() {
+                    },
+                    error: function (error) {
+                        console.log("AJAX request failed");
+                        console.log("Status: " + textStatus);
+                        console.log("Error thrown: " + errorThrown);
+                        console.log("Response Text: " + jqXHR.responseText);
+                    }
+                });
             });
         }
     </script>
@@ -205,15 +360,18 @@
         <section class="content">
             <div class="card" id="chat" style="height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
             </div>
-            <div style="display: flex; align-items: center; width: 60%; margin-bottom: 30px" class="float-right">
-                <input type="text" id="text" placeholder="Text" class="form-control" style="flex: 1" name="password"  maxlength="1000">
-                <button id="sendMessage" onclick="sendMessage();" type="button"  class="btn btn-outline-secondary" style="width: 30%; height: 38px; font-size: 14px">
-                    <span>Відправити</span>
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
+                <input type="text" id="text" placeholder="Text" class="form-control" style="width: 300px;">
+                <button id="sendMessage" onclick="sendMessage();" type="button" class="btn btn-outline-secondary" style="width: 50px; height: 38px; font-size: 14px;">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+                <button id="sendFile" onclick="sendFile();" type="button" class="btn btn-outline-secondary" style="width: 50px; height: 38px; font-size: 14px;">
+                    <i class="fa fa-paperclip"></i>
+                </button>
+                <button id="deleteMesssages" onclick="deleteMesssages();" type="button" class="btn btn-outline-danger" style="width: 50px; height: 38px; font-size: 14px;">
+                    <i class="fa fa-trash"></i>
                 </button>
             </div>
-            </br>
-            </br>
-            </br>
         </section>
     </div>
 </div>
