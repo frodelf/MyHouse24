@@ -69,7 +69,10 @@ public class HouseController {
     }
 
     @GetMapping("/filter/{page}")
-    public String filter(@PathVariable("page") int page, @ModelAttribute("house") HouseForViewDto house, Model model) {
+    public String filter(@PathVariable("page") int page, @ModelAttribute("house") @Valid HouseForViewDto house, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors()){
+            return "redirect:/admin/house/index/1";
+        }
         model.addAttribute("houses", houseService.getPage(page, model, houseService.filter(house, houseMapper.toDtoForViewList(houseService.getAll()))));
         model.addAttribute("filter", house);
         model.addAttribute("housesCount", houseService.getAll().size());

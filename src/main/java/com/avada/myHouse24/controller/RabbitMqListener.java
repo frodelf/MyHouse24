@@ -31,7 +31,7 @@ public class RabbitMqListener {
         long houseId = chat.getFromId();
         chat.setFromId(adminService.getAuthAdmin().getId());
         chat.setDate(LocalDate.now());
-        messagingTemplate.convertAndSend("/all/messages/1", chat);
+        messagingTemplate.convertAndSend("/all/messages/"+houseId, chat);
         chat.setHouse(houseService.getById(houseId));
         chatService.save(chat);
     }

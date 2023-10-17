@@ -20,14 +20,35 @@
         window.addEventListener('DOMContentLoaded', function () {
             var form = document.getElementById('formSend');
             var inputs = form.querySelectorAll('input');
+            form.isFormDirty = false;
+
             for (var i = 0; i < inputs.length; i++) {
                 inputs[i].addEventListener('input', function () {
                     this.form.isFormDirty = true;
+
+                    if (this.type === 'text' && this.value.length > 50) {
+                        this.style.border = '5px solid red';
+                    } else if (this.type === 'text') {
+                        this.style.border = '';
+                    }
+
+                    if (this.type === 'number') {
+                        var numericValue = parseInt(this.value, 10);
+                        if (isNaN(numericValue) || numericValue.toString().length > 10) {
+                            this.style.border = '5px solid red';
+                        } else {
+                            this.style.border = '';
+                        }
+                    }
                 });
             }
-            document.addEventListener('click', function (event) {
+
+            document.addEventListener('click', function () {
                 if (form.isFormDirty) {
-                    form.submit();
+                    var invalidInputs = form.querySelectorAll('input[style="border: 5px solid red;"]');
+                    if (invalidInputs.length === 0) {
+                        form.submit();
+                    }
                 }
             });
         });

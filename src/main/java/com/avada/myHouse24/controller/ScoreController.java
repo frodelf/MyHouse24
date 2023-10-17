@@ -100,7 +100,10 @@ public class ScoreController {
         return "admin/account/add";
     }
     @GetMapping("/filter/{page}")
-    public String filter(@PathVariable("page")int page, @ModelAttribute("filter") ScoreForFilterDTO scoreForFilterDTO, Model model) {
+    public String filter(@PathVariable("page")int page, @ModelAttribute("filter") @Valid ScoreForFilterDTO scoreForFilterDTO, BindingResult bindingResult, Model model) {
+        if(bindingResult.hasErrors() || (scoreForFilterDTO.getFlatNumber() != null && scoreForFilterDTO.getFlatNumber().toString().length() > 10)){
+            return "redirect:/admin/account/index/1";
+        }
         model.addAttribute("scores", scoreService.getPage(page, model, scoreService.filter(scoreForFilterDTO, scoreMapper.toDtoList(scoreService.getAll()))));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("sections", new ArrayList<>());

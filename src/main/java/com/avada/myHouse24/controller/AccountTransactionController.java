@@ -238,8 +238,11 @@ public class AccountTransactionController {
     }
 
     @GetMapping("/filter/{number}")
-    public ModelAndView filter(@ModelAttribute AccountTransactionForViewDTO accountTransactionForViewDTO, @PathVariable("number") int number) {
-        ModelAndView modelAndView = new ModelAndView("admin/account-transaction/get-all");
+    public ModelAndView filter(@ModelAttribute @Valid AccountTransactionForViewDTO accountTransactionForViewDTO, BindingResult bindingResult, @PathVariable("number") int number) {
+        ModelAndView modelAndView = new ModelAndView("redirect:/admin/account-transaction/index/1");
+        if(bindingResult.hasErrors()){
+            return modelAndView;
+        }
         modelAndView.addObject("accountTransaction", accountTransactionForViewDTO);
         modelAndView.addObject("accountTransactionList", accountTransactionService.getPage(number, modelAndView, accountTransactionService.filter(accountTransactionForViewDTO, accountTransactionMapper.toDtoForViewList(accountTransactionService.getAll()))));
         modelAndView.addObject("transactionPurposeList", transactionPurposeService.getAll());

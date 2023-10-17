@@ -77,6 +77,8 @@ public class FlatController {
 
     @GetMapping("/filter/{page}")
     public String filter(@RequestParam(value = "rest", required = false) Boolean rest, @ModelAttribute("flatDTO") FlatDTO flatDTO, @PathVariable("page")int page,  Model model){
+        if(flatDTO.getNumber() != null || flatDTO.getNumber().toString().length() > 10) return "redirect:/admin/flat/index/1";
+
         List<FlatDTO> flatDTOS = flatMapper.toDtoList(flatService.getAll());
         model.addAttribute("flats", flatService.getPage(page, model, flatService.filter(flatDTO, flatDTOS, rest)));
         if(rest != null) model.addAttribute("rest", rest);

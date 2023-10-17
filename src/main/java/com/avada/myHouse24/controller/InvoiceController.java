@@ -54,7 +54,10 @@ public class InvoiceController {
     }
 
     @GetMapping("/filter/{page}")
-    public String filter(@PathVariable("page") int page, @ModelAttribute("filter") InvoiceDto filter, Model model, @RequestParam("flatNumber") String flatNumber, @RequestParam(value = "dateExample", defaultValue = "1000-01-01") Date dateExample) {
+    public String filter(@PathVariable("page") int page, @ModelAttribute("filter") @Valid InvoiceDto filter, BindingResult bindingResult, Model model, @RequestParam("flatNumber") String flatNumber, @RequestParam(value = "dateExample", defaultValue = "1000-01-01") Date dateExample) {
+        if(bindingResult.hasErrors() || flatNumber.length() > 10){
+            return "redirect:/admin/invoice/index/1";
+        }
         model.addAttribute("invoices", invoiceService.getPage(page, model, invoiceService.filter(filter, flatNumber, dateExample)).getContent());
         model.addAttribute("filter", filter);
         if (!Objects.equals(dateExample.toString(), "1000-01-01"))

@@ -93,7 +93,10 @@ public class AdminController {
         return "redirect:/admin/user-admin/index/1";
     }
     @GetMapping("/filter/{id}")
-    public String filter(@ModelAttribute AdminForViewDTO adminForViewDto, @PathVariable("id")int id, Model model){
+    public String filter(@ModelAttribute @Valid AdminForViewDTO adminForViewDto, BindingResult bindingResult, @PathVariable("id")int id, Model model){
+        if(bindingResult.hasErrors()){
+            return "redirect:/admin/user-admin/index/1";
+        }
         model.addAttribute("allStatus", UserStatus.values());
         model.addAttribute("roles", roleService.getAll());
         model.addAttribute("filter", adminForViewDto);
