@@ -22,7 +22,7 @@ public class Flat {
     private Long id;
     private int number;
     private double area;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "house_id")
     @JsonIgnore
     private House house;
@@ -37,11 +37,13 @@ public class Flat {
     @ManyToOne
     private Tariff tariff;
     @OneToOne(cascade = CascadeType.DETACH)
-    @JoinColumn(name = "score_id", nullable = false)
+    @JoinColumn(name = "score_id")
     @JsonIgnore
     private Score score;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flat",cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<CounterData> counterData;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "flat", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Invoice> invoices;
 }

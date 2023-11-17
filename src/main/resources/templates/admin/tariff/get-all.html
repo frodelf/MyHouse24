@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -15,43 +15,48 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Тарифы
+                <span th:text="#{Тарифы}"></span>
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Тарифы}"></span>
                     Тарифы
                 </li>
             </ol>
         </div>
         <section class="content">
-            <form method="post" action="/admin/pay-company/index">
+            <form method="post" th:action="@{{context_path}/admin/pay-company/index(context_path = ${context_path})}">
                 <div class="card">
                     <div class="card-header">
-                        <a href="/admin/tariff/add" type="button" class="float-right btn btn-success"
+                        <a th:href="@{{context_path}/admin/tariff/add(context_path = ${context_path})}" type="button" class="float-right btn btn-success"
                            style="width: 220px;">
-                            Добавить тариф
+                            <span th:text="#{Добавить_тариф}"></span>
                         </a>
                     </div>
                     <div class="card-body">
-                        <table class="table table-bordered table-hover table-striped table-sm" style="width: 100%">
+                        <table class="table table-bordered table-hover table-striped table-sm" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}" style="width: 100%">
                             <thead>
                                 <tr>
                                     <b>
                                         <th style="min-width: 20%">
-                                            Названия тарифа
+                                            <span th:text="#{Названия_тарифа}"></span>
+
                                         </th>
                                         <th style="min-width: 40%">
-                                            Описание тарифа
+                                            <span th:text="#{Описание_тарифа}"></span>
+
                                         </th>
                                         <th style="min-width: 20%">
-                                            Редактирование тарифа
+                                            <span th:text="#{Редактирование_тарифа}"></span>
                                         </th>
                                         <th style="min-width: 20%">
                                         </th>
@@ -59,29 +64,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="clickable-row" th:each="tariff : ${tariffs}" th:data-action="@{/admin/tariff/{id}(id=${tariff.getId()})}">
-                                        <td th:text="${tariff.name}">
+                                <tr th:each="tariff : ${tariffs}">
+                                        <td th:onclick="|window.location.href='@{{context_path}/admin/tariff/{tariff}(tariff = ${tariff.id}, context_path = ${context_path})}'|" th:text="${tariff.name}">
                                         </td>
-                                        <td th:text="${tariff.description}">
+                                        <td th:onclick="|window.location.href='@{{context_path}/admin/tariff/{tariff}(tariff = ${tariff.id}, context_path = ${context_path})}'|" th:text="${tariff.description}">
                                         </td>
-                                        <td th:text="${tariff.dateEdit}">
+                                        <td th:onclick="|window.location.href='@{{context_path}/admin/tariff/{tariff}(tariff = ${tariff.id}, context_path = ${context_path})}'|" th:text="${tariff.dateEdit}">
                                         </td>
                                         <td>
                                             <div class="btn-group pull-right">
                                                 <a class="btn btn-default btn-sm"
-                                                   th:href="@{/admin/tariff/clone/{id}(id=${tariff.getId()})}"
+                                                   th:href="@{{context_path}/admin/tariff/clone/{id}(id=${tariff.getId()}, context_path = ${context_path})}"
                                                    title="Копировать" data-toggle="tooltip">
                                                     <i class="fa fa-clone"></i>
                                                 </a>
                                                 <a class="btn btn-default btn-sm"
-                                                   th:href="@{/admin/tariff/edit/{id}(id=${tariff.getId()})}"
+                                                   th:href="@{{context_path}/admin/tariff/edit/{id}(id=${tariff.getId()}, context_path = ${context_path})}"
                                                    title="Редактировать" data-toggle="tooltip">
                                                     <i class="fa fa-pencil-alt"></i>
                                                 </a>
-                                                <a class="btn btn-default btn-sm"
-                                                   th:href="@{/admin/tariff/delete/{id}(id=${tariff.getId()})}"
-                                                   title="Удалить" data-toggle="tooltip"
-                                                   data-pjax="0" data-method="post">
+                                                <a class="btn btn-default btn-sm modal1"
+                                                   th:data-redirect="@{{context_path}/admin/tariff/delete/{id}(id=${tariff.getId()}, context_path = ${context_path})}"
+                                                   title="Удалить" data-toggle="modal" data-target="#myModal">
                                                     <i class="fa fa-trash"></i>
                                                 </a>
                                             </div>
@@ -92,6 +96,26 @@
                     </div>
                 </div>
             </form>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="myModalLabel">Підтвердіть видалення</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            Ви впевнені, що хочете видалити цей елемент?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Скасувати
+                            </button>
+                            <button type="button" class="btn btn-danger confirm">Видалити</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </section>
     </div>
     <footer class="main-footer">
@@ -101,17 +125,41 @@
     </footer>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    const modalButtons = document.querySelectorAll(".modal1");
+    const modal = document.getElementById("myModal");
+    const confirmButtons = document.querySelectorAll(".confirm");
+    const cancelButtons = document.querySelectorAll(".cancel");
 
+    modalButtons.forEach(button => {
+        button.addEventListener("click", () => {
+            modal.style.display = "flex";
+            const redirectUrl = button.getAttribute("data-redirect");
+
+            confirmButtons.forEach(confirmButton => {
+                confirmButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                    window.location.href = redirectUrl;
+                });
+            });
+
+            cancelButtons.forEach(cancelButton => {
+                cancelButton.addEventListener("click", () => {
+                    modal.style.display = "none";
+                });
+            });
+        });
+    });
+</script>
 </body>
 
 </html>

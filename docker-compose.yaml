@@ -1,0 +1,48 @@
+version: '3'
+services:
+  db:
+    image: mysql:latest
+    container_name: db
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: myhouse24
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./photos:/var/photos
+  admin:
+    container_name: admin
+    build:
+      context: .
+    ports:
+      - "8083:8080"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    volumes:
+      - ./photos:/var/photos
+    restart: always
+  user:
+    container_name: user
+    build:
+      context: C:\Users\Xiaomi\IdeaProjects\MyHouse24User\
+    ports:
+      - "8082:8081"
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+    volumes:
+      - ./photos:/var/photos
+    restart: always
+
+  localRabbitMQ:
+    image: rabbitmq:3-management-alpine
+    ports:
+      - 5672:5672
+      - 15672:15672

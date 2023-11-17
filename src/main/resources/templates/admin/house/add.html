@@ -4,67 +4,89 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Новый дом</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Новый_дом}"></span>
+                </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/house/index/1" class="text-for-breadcrumb">Дома</a>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/house/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Дома}"></span>
+                    </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Новый дом</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Новый_дом}"></span>
+                </li>
             </ol>
         </div>
         <section class="content">
-            <form method="post" action="/admin/house/add" enctype="multipart/form-data" th:object="${house}">
+            <form method="post" th:action="@{{context_path}/admin/house/add(context_path = ${context_path})}" enctype="multipart/form-data" th:object="${house}">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-4">
                                 <b>
-                                    Название
+                                    <span th:text="#{Название}"></span>
+
                                     <input th:field="*{name}" type="text" class="form-control">
                                     <input th:field="*{id}" type="text" class="form-control" hidden>
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
                                     <br/>
-                                    Адрес
+                                    <span th:text="#{Адрес}"></span>
+
                                     <input th:field="*{address}" type="text" class="form-control">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></div>
                                     <br/>
-                                    Изображение #1. Размер: (522x350)
+                                    <span th:text="#{Изображение}"></span>
+                                     #1. Размер: (522x350)
                                     <input th:field="*{image}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage1')">
+                                           onchange="previewImage(event, 'previewImage1')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></div>
                                     <br/>
-                                    Изображение #2. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #2. Размер: (248x160)
                                     <input th:field="*{image1}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage2')">
+                                           onchange="previewImage(event, 'previewImage2')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image1')}" th:errors="*{image1}"></div>
                                     <br/>
-                                    Изображение #3. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #3. Размер: (248x160)
                                     <input th:field="*{image2}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage3')">
+                                           onchange="previewImage(event, 'previewImage3')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image2')}" th:errors="*{image2}"></div>
                                     <br/>
-                                    Изображение #4. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #4. Размер: (248x160)
                                     <input th:field="*{image3}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage4')">
+                                           onchange="previewImage(event, 'previewImage4')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image3')}" th:errors="*{image3}"></div>
                                     <br/>
-                                    Изображение #5. Размер: (248x160)
+                                    <span th:text="#{Изображение}"></span>
+                                     #5. Размер: (248x160)
                                     <input th:field="*{image4}" type="file" class="form-control" value="null"
-                                           onchange="previewImage(event, 'previewImage5')">
+                                           onchange="previewImage(event, 'previewImage5')" accept=".jpg, .jpeg, .png, .pdf">
                                     <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('image4')}" th:errors="*{image4}"></div>
                                 </b>
                             </div>
@@ -104,50 +126,61 @@
                             <ul class="nav nav-tabs">
                                 <li class="active" id="service_tab" style="padding: 15px;">
                                     <a href="#tab_sections" data-toggle="tab" aria-expanded="true"
-                                       class="active text-for-breadcrumb">Секції</a>
+                                       class="active text-for-breadcrumb">
+                                        <span th:text="#{Секции}"></span>
+                                        </a>
                                 </li>
                                 <li id="service_unit_tab" style="padding: 15px;">
                                     <a href="#tab_floors" data-toggle="tab" aria-expanded="false"
-                                       class="text-for-breadcrumb">Етажи</a>
+                                       class="text-for-breadcrumb">
+                                        <span th:text="#{Этаж}"></span>
+                                        </a>
                                 </li>
                                 <li id="user_tab" style="padding: 15px;">
                                     <a href="#tab_users" data-toggle="tab" aria-expanded="false"
-                                       class="text-for-breadcrumb">Пользователи</a>
+                                       class="text-for-breadcrumb">
+                                        <span th:text="#{Пользователи}"></span>
+                                        </a>
                                 </li>
                             </ul>
-                            <form id="serviceForm" method="post" action="/admin/service/add">
+                            <form id="serviceForm" method="post" th:action="@{{context_path}/admin/service/add(context_path = ${context_path})}">
                                 <div class="tab-content">
                                     <div class="tab-pane clearfix active" id="tab_sections">
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForSection()">
-                                            Добавить
+                                            <span th:text="#{Добавить}"></span>
                                         </button>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('sections')}" th:errors="*{sections}"></div>
                                     </div>
                                     <div class="tab-pane clearfix" id="tab_floors">
 
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForFloor()">
-                                            Добавить
+                                            <span th:text="#{Добавить}"></span>
                                         </button>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('floors')}" th:errors="*{floors}"></div>
                                     </div>
                                     <div class="tab-pane clearfix" id="tab_users">
                                         <button type="button" class="btn btn-success"
                                                 style="margin-top: 10px; margin-left: 50%;"
                                                 onclick="addBlockForUsers()">
-                                            Добавить
+                                            <span th:text="#{Добавить}"></span>
                                         </button>
+                                        <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:if="${#fields.hasErrors('users')}" th:errors="*{users}"></div>
                                     </div>
                                 </div>
                             </form>
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
-                        <a href="/admin/house/index/1" class="btn btn-outline-secondary float-right"
+                        <button type="submit" class="btn btn-success float-right">
+                            <span th:text="#{Сохранить}"></span>
+                            </button>
+                        <a th:href="@{{context_path}/admin/house/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary float-right"
                            style="margin-right: 3px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
                         </a>
                     </div>
                 </div>
@@ -166,12 +199,17 @@
     var users = [[${users}]]
     var indexForUsers = 0;
 </script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     function previewImage(event, imageId) {
         var reader = new FileReader();

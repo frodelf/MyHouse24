@@ -2,7 +2,6 @@ package com.avada.myHouse24.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 
@@ -33,4 +32,6 @@ public class House {
     private List<Floor> floors;
     @ManyToMany
     private List<Admin> admins;
+    @OneToMany
+    private List<Chat> chat;
 }

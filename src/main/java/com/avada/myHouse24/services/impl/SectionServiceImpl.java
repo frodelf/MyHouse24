@@ -16,6 +16,9 @@ public class SectionServiceImpl implements SectionService {
     public Section getByName(String name) {
         return sectionRepository.findByName(name).get();
     }
+    public Section getById(Long id) {
+        return sectionRepository.findById(id).get();
+    }
 
     @Override
     public void save(Section section) {

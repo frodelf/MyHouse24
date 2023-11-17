@@ -9,4 +9,5 @@ import java.util.List;
 public interface TariffAdditionalServiceRepository extends JpaRepository<TariffAdditionalService, Long> {
     List<TariffAdditionalService> findAllByTariff(Tariff tariff);
     void deleteAllByTariff(Tariff tariff);
+    boolean existsByAdditionalService_Id(Long id);
 }

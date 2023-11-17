@@ -1,7 +1,9 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Admin;
+import com.avada.myHouse24.enums.Theme;
 import com.avada.myHouse24.model.AdminForViewDTO;
+import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.repo.AdminRepository;
 import com.avada.myHouse24.services.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +17,7 @@ import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,8 +40,6 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public void save(Admin admin) {
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        admin.setPassword(encoder.encode(admin.getPassword()));
         adminRepository.save(admin);
     }
 
@@ -79,5 +80,39 @@ public class AdminServiceImpl implements AdminService {
         model.addAttribute("max", max);
         model.addAttribute("current", pageNumber+1);
         return userPage;
+    }
+    public List<AdminForViewDTO> filter(AdminForViewDTO adminForViewDto, List<AdminForViewDTO> admins){
+        if(!adminForViewDto.getFullName().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(adminForViewDto.getFullName()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getRole().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getRole() != null && dto.getRole().contains(adminForViewDto.getRole()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getPhone().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(adminForViewDto.getPhone()))
+                    .collect(Collectors.toList());
+        }
+        if(!adminForViewDto.getEmail().isBlank()){
+            admins = admins.stream()
+                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(adminForViewDto.getEmail()))
+                    .collect(Collectors.toList());
+        }
+        if (adminForViewDto.getStatus() != null) {
+            admins = admins.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus() == adminForViewDto.getStatus())
+                    .collect(Collectors.toList());
+        }
+        return admins;
+    }
+    public Admin getAuthAdmin(){
+        return getById(1L);
+    }
+    public Boolean existByEmail(String email){
+        return adminRepository.existsByEmail(email);
     }
 }

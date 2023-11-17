@@ -1,5 +1,6 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.Tariff;
 import com.avada.myHouse24.mapper.AdditionalServiceMapper;
 import com.avada.myHouse24.mapper.TariffMapper;
 import com.avada.myHouse24.model.TariffDTO;
@@ -85,7 +86,6 @@ public class TariffController {
     @PostMapping("/copy")
     public String cloneById(@ModelAttribute("tariffDTO") @Valid TariffDTO tariffDTO, BindingResult bindingResult, Model model){
         if(bindingResult.hasErrors()){
-            model.addAttribute("tariffDTO", tariffDTO);
             model.addAttribute("services", additionalServiceMapper.toDtoList(additionalService.getAll()));
             model.addAttribute("index", tariffDTO.getAdditionalServiceForTariffDTOS().size());
             return "admin/tariff/edit";
@@ -95,5 +95,10 @@ public class TariffController {
         }
         tariffService.save(tariffDTO);
         return "redirect:/admin/tariff/index";
+    }
+    @GetMapping("/getTariffById/{id}")
+    @ResponseBody
+    public Tariff getTariffById(@PathVariable("id")long id){
+        return tariffService.getById(id);
     }
 }

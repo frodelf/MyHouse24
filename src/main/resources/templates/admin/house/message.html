@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.6.1/sockjs.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js"></script>
+    <script type="text/javascript">
+        var page = 0;
+        var adminId
+
+        function getLastElementInCurrentURL() {
+            var currentURL = window.location.href;
+            var urlParts = currentURL.split('/');
+            return urlParts[urlParts.length - 1];
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "[[${context_path}]]/admin/user-admin/get/auth/id",
+                success: function(id) {
+                    adminId = id;
+                },
+                error: function(error) {
+                    console.log("AJAX request failed");
+                    console.log("Error: " + JSON.stringify(error));
+                }
+            });
+
+            var socket = new SockJS('/myHouse24DA/ws');
+            stompClient = Stomp.over(socket);
+            stompClient.connect({}, function(frame) {
+                stompClient.subscribe('/all/messages/' + getLastElementInCurrentURL(), function(result) {
+                    console.log(result)
+                    console.log(result.body)
+                    show(JSON.parse(result.body));
+                });
+            });
+        });
+
+        function sendMessage() {
+            var text = document.getElementById('text').value;
+            if (text.trim() === "") return;
+            var messageObject = {
+                'text': text,
+                'fromId': getLastElementInCurrentURL()
+            };
+            // stompClient.send("/myHouse24DA/app/application", {},
+            //     JSON.stringify(messageObject));
+            $.ajax({
+                type: "Get",
+                url: "[[${context_path}]]/admin/rabbit/message?text=" + encodeURIComponent(text) + "&house=" + getLastElementInCurrentURL(),
+                success: function() {
+                },
+                error: function(error) {
+                    console.log("AJAX request failed");
+                    console.log("Status: " + textStatus);
+                    console.log("Error thrown: " + errorThrown);
+                    console.log("Response Text: " + jqXHR.responseText);                }
+            });
+        }
+
+        function show(message) {
+            console.log(message);
+            var chat = document.getElementById('chat');
+            var checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = message.id;
+            checkbox.name = "messages";
+            checkbox.style.float = 'left';
+            checkbox.style.marginRight = "25px"
+
+            var container = document.createElement('div');
+            container.appendChild(checkbox);
+
+            if (message.messageType === "IMAGE") {
+                var image = document.createElement('img');
+                image.src = message.text;
+                image.style.width = "30%";
+                image.style.height = "200px";
+                image.style.marginBottom = "25px";
+
+                if (message.fromId === adminId && !message.isUser) {
+                    image.classList.add("float-right");
+                    image.classList.add("ml-auto");
+                    checkbox.style.marginRight = "0px"
+                    checkbox.style.marginLeft = "25px"
+                    checkbox.style.float = 'right';
+                }
+
+                container.appendChild(image);
+            } else if (message.messageType === "FILE") {
+                var file = document.createElement('img');
+                file.src = "[[${context_path}]]/images/file.png";
+                file.style.width = "20%";
+                file.style.height = "140px";
+
+                if (message.fromId === adminId && !message.isUser) {
+                    file.classList.add("float-right");
+                    file.classList.add("ml-auto");
+                    checkbox.style.marginRight = "0px"
+                    checkbox.style.marginLeft = "25px"
+                    checkbox.style.float = 'right';
+                }
+
+                container.appendChild(file);
+                file.addEventListener("click", function () {
+                    var downloadLink = document.createElement("a");
+                    downloadLink.href = message.text;
+                    downloadLink.click();
+                });
+            } else {
+                var p = document.createElement('p');
+                p.innerHTML = message.fromName + ": " + message.text;
+                if (message.fromId === adminId && !message.isUser) {
+                    p.classList.add("float-right");
+                    p.classList.add("ml-auto");
+                    p.innerHTML = message.text;
+                    checkbox.style.marginRight = "0px"
+                    checkbox.style.marginLeft = "25px"
+                    checkbox.style.float = 'right';
+                }
+                p.style.maxWidth = "40%";
+                container.appendChild(p);
+                container.style.clear = 'both';
+            }
+            chat.append(container);
+            chat.scrollTop = chat.scrollHeight;
+
+            var textInput = document.getElementById('text');
+            if (textInput.value === message.text) textInput.value = '';
+        }
+
+
+        $(document).ready(function() {
+            var chat = document.getElementById('chat');
+            $.ajax({
+                type: "GET",
+                url: "[[${context_path}]]/admin/user-admin/get/auth/id",
+                success: function (id) {
+                    adminId = id
+                },
+                error: function (error) {
+                    console.log("AJAX request failed");
+                    console.log("Status: " + textStatus);
+                    console.log("Error thrown: " + errorThrown);
+                    console.log("Response Text: " + jqXHR.responseText);
+                }
+            });
+
+            $.ajax({
+                type: "GET",
+                url: "[[${context_path}]]/chat/getAll/"+page+"/"+getLastElementInCurrentURL(),
+                success: function (messages) {
+                    var chat = document.getElementById('chat');
+                    for (var i = messages.length - 1; i >= 0; i--) {
+                        var message = messages[i];
+                        show(message)
+                    }
+                    chat.scrollTop = chat.scrollHeight
+                },
+                error: function (error) {
+                    console.log("AJAX request failed");
+                    console.log("Status: " + textStatus);
+                    console.log("Error thrown: " + errorThrown);
+                    console.log("Response Text: " + jqXHR.responseText);
+                }
+            });
+
+            chat.scrollTop = chat.scrollHeight
+        })
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var chatDiv = document.getElementById('chat');
+
+            if (chatDiv) {
+                chatDiv.addEventListener('scroll', function() {
+                    if (chatDiv.scrollTop === 0) {
+                        addMessages(chatDiv.scrollHeight);
+                    }
+                });
+            }
+        });
+
+        function addMessages(scrollTop) {
+            page++;
+            $.ajax({
+                type: "GET",
+                url: "[[${context_path}]]/chat/getAll/" + page + "/" + getLastElementInCurrentURL(),
+                success: function (messages) {
+                    var chat = document.getElementById('chat');
+                    for (var i = 0; i < messages.length; i++) {
+                        var message = messages[i];
+                        var checkbox = document.createElement('input');
+                        checkbox.type = 'checkbox';
+                        checkbox.value = message.id;
+                        checkbox.name = "messages";
+                        checkbox.style.float = 'left';
+                        checkbox.style.marginRight = "25px"
+
+                        var container = document.createElement('div');
+                        container.appendChild(checkbox);
+
+                        if (message.messageType === "IMAGE") {
+                            var image = document.createElement('img');
+                            image.src = message.text;
+                            image.style.width = "30%";
+                            image.style.height = "200px";
+                            image.style.marginBottom = "25px";
+
+                            if (message.fromId === adminId && !message.isUser) {
+                                image.classList.add("float-right");
+                                image.classList.add("ml-auto");
+                                checkbox.style.marginRight = "0px"
+                                checkbox.style.marginLeft = "25px"
+                                checkbox.style.float = 'right';
+
+                            }
+
+                            container.appendChild(image);
+                        } else if (message.messageType === "FILE") {
+                            var file = document.createElement('img');
+                            file.src = "[[${context_path}]]/images/file.png";
+                            file.style.width = "20%";
+                            file.style.height = "140px";
+
+                            if (message.fromId === adminId && !message.isUser) {
+                                file.classList.add("float-right");
+                                file.classList.add("ml-auto");
+                                checkbox.style.marginRight = "0px"
+                                checkbox.style.marginLeft = "25px"
+                                checkbox.style.float = 'right';
+
+                            }
+
+                            container.appendChild(file);
+                            file.addEventListener("click", function () {
+                                var downloadLink = document.createElement("a");
+                                downloadLink.href = message.text;
+                                downloadLink.click();
+                            });
+                        } else {
+                            var p = document.createElement('p');
+                            p.innerHTML = message.fromName + ": " + message.text;
+                            if (message.fromId === adminId && !message.isUser) {
+                                p.classList.add("float-right");
+                                p.classList.add("ml-auto");
+                                p.innerHTML = message.text;
+                                checkbox.style.marginRight = "0px"
+                                checkbox.style.marginLeft = "25px"
+                                checkbox.style.float = 'right';
+                            }
+                            p.style.maxWidth = "40%";
+                            container.appendChild(p);
+                            container.style.clear = 'both';
+                        }
+                        chat.insertBefore(container, chat.firstChild);
+                        var textInput = document.getElementById('text');
+                        if (textInput.value === message.text) textInput.value = '';
+                    }
+                    chat.scrollTop = chat.scrollHeight - scrollTop;
+                },
+                error: function (error) {
+                    console.log("AJAX request failed");
+                    console.log("Status: " + textStatus);
+                    console.log("Error thrown: " + errorThrown);
+                    console.log("Response Text: " + jqXHR.responseText);
+                }
+            });
+        }
+        function sendFile() {
+            var fileInput = $("<input type='file'>");
+            fileInput.click();
+            fileInput.change(function() {
+                var selectedFile = this.files[0];
+                var formData = new FormData();
+                formData.append("file", selectedFile);
+                $.ajax({
+                    url: "[[${context_path}]]/admin/rabbit/message/file?house="+ getLastElementInCurrentURL(),
+                    type: "POST",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader("[[${_csrf.headerName}]]", "[[${_csrf.token}]]");
+                    },
+                    success: function(response) {
+                        console.log("Файл завантажений і відправлений успішно.");
+                    },
+                    error: function (error) {
+                        console.log("AJAX request failed");
+                        console.log("Status: " + textStatus);
+                        console.log("Error thrown: " + errorThrown);
+                        console.log("Response Text: " + jqXHR.responseText);
+                    }
+                });
+            });
+        }
+        setTimeout(function() {
+            var chat = document.getElementById('chat');
+            chat.scrollTop = chat.scrollHeight
+        }, 600);
+        function deleteMesssages() {
+            var chat = document.getElementById('chat');
+            var checkboxes = chat.querySelectorAll('input[type="checkbox"][name="messages"]:checked');
+            checkboxes.forEach(function(checkbox) {
+                var messageContainer = checkbox.closest('div');
+                chat.removeChild(messageContainer);
+                $.ajax({
+                    url: "[[${context_path}]]/admin/message/delete/"+checkbox.value,
+                    type: "GET",
+                    success: function() {
+                    },
+                    error: function (error) {
+                        console.log("AJAX request failed");
+                        console.log("Status: " + textStatus);
+                        console.log("Error thrown: " + errorThrown);
+                        console.log("Response Text: " + jqXHR.responseText);
+                    }
+                });
+            });
+        }
+    </script>
+</head>
+
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Дом}"></span>
+                qqqqqw</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a>
+                </li>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/house/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Дома}"></span>
+                </a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">asdf</li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="card" id="chat" style="height: 400px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+            </div>
+            <div style="display: flex; justify-content: flex-end; margin-bottom: 30px;">
+                <input type="text" id="text" placeholder="Text" class="form-control" style="width: 300px;">
+                <button id="sendMessage" onclick="sendMessage();" type="button" class="btn btn-outline-secondary" style="width: 50px; height: 38px; font-size: 14px;">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
+                <button id="sendFile" onclick="sendFile();" type="button" class="btn btn-outline-secondary" style="width: 50px; height: 38px; font-size: 14px;">
+                    <i class="fa fa-paperclip"></i>
+                </button>
+                <button id="deleteMesssages" onclick="deleteMesssages();" type="button" class="btn btn-outline-danger" style="width: 50px; height: 38px; font-size: 14px;">
+                    <i class="fa fa-trash"></i>
+                </button>
+            </div>
+        </section>
+    </div>
+</div>
+<footer class="main-footer">
+    Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+        href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+    Документация API доступна <a href="/doc">по ссылке</a>.
+</footer>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+
+</script>
+</body>
+</html>

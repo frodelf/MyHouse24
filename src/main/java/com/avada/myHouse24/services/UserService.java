@@ -5,6 +5,7 @@ import com.avada.myHouse24.model.UserForViewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
 
+import java.sql.Date;
 import java.util.List;
 
 public interface UserService {
@@ -23,4 +24,6 @@ public interface UserService {
     void deleteById(long id);
     Page<User> getPage(int pageNumber, Model model);
     Page<UserForViewDTO> getPage(int pageNumber, Model model, List<UserForViewDTO> userList);
+    List<User> forSelect(int page, int pageSize, String search);
+    List<UserForViewDTO> filter(UserForViewDTO userForViewDTO, List<UserForViewDTO> users, Date date, String flat, String house);
 }

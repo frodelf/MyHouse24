@@ -1,6 +1,7 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.UnitOfMeasurement;
+import com.avada.myHouse24.repo.AdditionalServiceRepository;
 import com.avada.myHouse24.repo.UnitOfMeasurementRepository;
 import com.avada.myHouse24.services.UnitOfMeasurementService;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +12,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UnitOfMeasurementServiceImpl implements UnitOfMeasurementService {
     private final UnitOfMeasurementRepository unitOfMeasurementRepository;
+    private final AdditionalServiceRepository additionalServiceRepository;
+
     @Override
     public List<UnitOfMeasurement> getAll() {
         return unitOfMeasurementRepository.findAll();
@@ -28,9 +31,13 @@ public class UnitOfMeasurementServiceImpl implements UnitOfMeasurementService {
     }
     @Override
     public void deleteById(long id) {
+        if(isUses(id))return;
         unitOfMeasurementRepository.deleteById(id);
     }
-
+    public boolean isUses(Long id){
+        if(additionalServiceRepository.existsByUnitOfMeasurement(unitOfMeasurementRepository.findById(id).get()))return true;
+        return false;
+    }
     @Override
     public UnitOfMeasurement getByName(String name) {
         return unitOfMeasurementRepository.findByName(name).get();

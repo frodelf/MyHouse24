@@ -33,10 +33,9 @@ public class FlatMapper {
             score = scoreService.getByNumber(flatDTO.getScoreNumber());
         }catch (NoSuchElementException e){
             score.setNumber(flatDTO.getScoreNumber());
+            score.setStatus("Активен");
             scoreService.save(score);
         }
-        score.setStatus("Активен");
-        scoreService.save(score);
         flat.setScore(score);
         return flat;
     }

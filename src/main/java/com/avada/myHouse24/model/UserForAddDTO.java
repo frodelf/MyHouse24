@@ -36,6 +36,7 @@ public class UserForAddDTO {
     private String telegram;
     @NotBlank(message = "Поле не може бути порожнім")
     @Size(max = 50, message = "Поле не може бути більше 50 символів")
+    @Email(message = "Електроний адрес не коректний")
     private String email;
     private String password;
     private String passwordAgain;

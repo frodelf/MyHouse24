@@ -9,4 +9,5 @@ public interface AdditionalService {
     void deleteById(long id);
     com.avada.myHouse24.entity.AdditionalService getById(Long id);
     com.avada.myHouse24.entity.AdditionalService getByName(String name);
+    List<com.avada.myHouse24.entity.AdditionalService> forSelect(int page, int pageSize, String search);
 }

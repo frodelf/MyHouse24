@@ -4,10 +4,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
@@ -31,19 +31,29 @@
     </script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed -collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed -collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]
+                <span th:text="#{Квартира}"></span>
+                 №[[${flat.number}]],
+                <span th:text="#{Дом}"></span>
+                 [[${flat.house.name}]]
             </h4>
             <ol class="breadcrumb" style="margin-right: 1%">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a></li>
-                <li class="breadcrumb-item"><a href="/admin/flat/index/1" class="text-for-breadcrumb">Квартиры</a></li>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                    </a></li>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/flat/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Квартиры}"></span>
+                    </a></li>
                 <li class="breadcrumb-item active" aria-current="page">
-                    Квартира №[[${flat.number}]], Дом [[${flat.house.name}]]
+                    <span th:text="#{Квартира}"></span>
+                     №[[${flat.number}]],
+                    <span th:text="#{Дом}"></span>
+                     [[${flat.house.name}]]
                 </li>
             </ol>
         </div>
@@ -53,9 +63,9 @@
                 </div>
                 <div class="col-xs-12 col-lg-3">
                     <div class="btn-group margin-bottom float-right">
-                        <a href="/admin/flat/add" type="button" class="btn btn-success"
+                        <a th:href="@{{context_path}/admin/flat/add(context_path = ${context_path})}" type="button" class="btn btn-success"
                            style="width: 220px; margin-bottom: 20px">
-                            Добавить квартиру
+                            <span th:text="#{Добавить_квартиру}"></span>
                         </a>
                     </div>
                 </div>
@@ -63,32 +73,41 @@
             <div class="card">
                 <div class="card-body">
                     <div class="float-right">
-                        <a class="btn btn-outline-secondary" href="">
-                            <i class="fa fa-dollar-sign"></i>   Принять платеж
+                        <a class="btn btn-outline-secondary"
+                           th:href="@{{context_path}/admin/account-transaction/create/in(context_path = ${context_path})}">
+                            <i class="fa fa-dollar-sign"></i>
+                            <span th:text="#{Принять_платеж}"></span>
                         </a>
-                        <a class="btn btn-outline-secondary" href="">
-                            <i class="fa fa-file"></i>   Оформить квитанцию
+                        <a class="btn btn-outline-secondary"
+                           th:href="@{{context_path}/admin/invoice/add(context_path = ${context_path})}">
+                            <i class="fa fa-file"></i>
+                            <span th:text="#{Оформить_квитанцию}"></span>
                         </a>
                         <a class="btn btn-primary" th:href="@{/admin/flat/edit/{id}(id=${flat.getId()})}">
-                            Редактировать квартиру
+                            <span th:text="#{Редактировать_квартиру}"></span>
                         </a>
                     </div>
                 </div>
                 <div class="card-body" style="padding-top: 0px">
-                    <table class="table table-bordered table-striped table-view"
+                    <table class="table table-bordered table-striped table-view" th:classappend="${theme == 'LIGHT' ? '' : 'table-dark'}"
                            style="font-size: 13px; font-weight: bold">
                         <tbody>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Лицевой счет
+                                <span th:text="#{Лицевой_счет}"></span>
                             </td>
                             <td style="width: 70%">
+                                <div th:if="${scoreId != null}">
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account/{id}(id = ${scoreId})}">[[${flat.scoreNumber}]]</a><br/>
+                                </div>
+                                <div th:if="${scoreId == null}">
+Не указан
+                                </div>
                             </td>
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Номер квартиры
+                                <span th:text="#{Номер_квартиры}"></span>
                             </td>
                             <td style="width: 70%">
                                 [[${flat.number}]]
@@ -96,7 +115,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Площадь
+                                <span th:text="#{Площадь}"></span>
                             </td>
                             <td style="width: 70%">
                                 [[${flat.area}]]м2
@@ -104,7 +123,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Дом
+                                <span th:text="#{Дом}"></span>
                             </td>
                             <td style="width: 70%">
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/house/{id}(id = ${flat.house.id})}">[[${flat.house.name}]]</a><br/>
@@ -112,7 +131,7 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Секция
+                                <span th:text="#{Секция}"></span>
                             </td>
                             <td style="width: 70%">
                                 [[${flat.section.name}]]
@@ -120,7 +139,8 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Этаж
+                                <span th:text="#{Этаж}"></span>
+
                             </td>
                             <td style="width: 70%">
                                 [[${flat.floor.name}]]
@@ -128,7 +148,8 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Владелец
+                                <span th:text="#{Владелец}"></span>
+
                             </td>
                             <td style="width: 70%">
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/user/{id}(id = ${flat.user.id})}">[[${flat.user.firstName}]]</a><br/>
@@ -136,7 +157,8 @@
                         </tr>
                         <tr>
                             <td style="font-weight: bold; font-size: 14px; width: 30%">
-                                Тариф
+                                <span th:text="#{Тариф}"></span>
+
                             </td>
                             <td style="width: 70%">
                                 <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/tariff/{id}(id = ${flat.tariff.id})}">[[${flat.tariff.name}]]</a><br/>
@@ -146,9 +168,15 @@
                     </table>
                 </div>
                 <div class="card-footer">
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть показания счетчиков</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть приходы</a><br/>
-                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" href="">Посмотреть квитанции</a>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/counter-data/counter-list/{id}(id=${flat.id})}">
+                        <span th:text="#{Посмотреть_показания_счетчиков}"></span>
+                        </a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/account-transaction/filter/1?id=&date=&addToStats=&transactionPurposeName=&userName=&scoreNumber={id}&isIncome=(id=${flat.scoreNumber})}">
+                        <span th:text="#{Посмотреть_приходы}"></span>
+                        </a><br/>
+                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover" th:href="@{/admin/invoice/filter/1?number=&status=&dateExample=&months=&flatNumber={id}&addToStats=(id=${flat.number})}">
+                        <span th:text="#{Посмотреть_квитанции}"></span>
+                        </a>
                 </div>
             </div>
         </section>
@@ -160,12 +188,11 @@
     </footer>
 </div>
 
-<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/dist/js/demo.js"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -1,8 +1,10 @@
 package com.avada.myHouse24.services.impl;
 
 import com.avada.myHouse24.entity.Flat;
+import com.avada.myHouse24.entity.House;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.entity.User;
+import com.avada.myHouse24.enums.UserStatus;
 import com.avada.myHouse24.model.UserForViewDTO;
 import com.avada.myHouse24.repo.UserRepository;
 import com.avada.myHouse24.services.UserService;
@@ -18,9 +20,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -95,13 +99,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean isDebt(User user) {
-        ArrayList<Flat> flats = new ArrayList<>();
-        ArrayList<Score> scores = new ArrayList<>();
-        for (Flat flat : flats) {
-            scores.add(flat.getScore());
-        }
-        for (Score score : scores) {
-            if(score.getBalance() < 0){
+        List<Flat> flats = user.getFlats();
+        if(flats != null)for (Flat flat : flats) {
+            if(flat.getScore() != null  &&  flat.getScore().getBalance() < 0){
                 return true;
             }
         }
@@ -149,5 +149,81 @@ public class UserServiceImpl implements UserService {
         userRepository.deleteById(id);
     }
 
+    public List<User> forSelect(int page, int pageSize, String search) {
+        Pageable pageable = PageRequest.of(page - 1, pageSize);
+        Page<User> userPage;
 
+        if (search != null && !search.isEmpty()) {
+            userPage = userRepository.findByFirstNameContainingIgnoreCase(search, pageable);
+        } else {
+            userPage = userRepository.findAll(pageable);
+        }
+
+        return userPage.getContent();
+    }
+    public List<UserForViewDTO> filter(UserForViewDTO userForViewDTO, List<UserForViewDTO> users, Date date, String flat, String house){
+        if (date.equals(new Date(2023, 01, 01))) userForViewDTO.setDate(date);
+        if(date != null && date.getYear() != -900){
+            userForViewDTO.setDate(date);
+        }
+        if (!userForViewDTO.getId().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getId() != null && dto.getId().contains(userForViewDTO.getId()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getFullName().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getFullName() != null && dto.getFullName().contains(userForViewDTO.getFullName()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getPhone().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getPhone() != null && dto.getPhone().contains(userForViewDTO.getPhone()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getEmail().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getEmail() != null && dto.getEmail().contains(userForViewDTO.getEmail()))
+                    .collect(Collectors.toList());
+        }
+
+        if (!house.isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getHouses().contains(house))
+                    .collect(Collectors.toList());
+        }
+
+        if (!flat.isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getFlats().contains(flat))
+                    .collect(Collectors.toList());
+        }
+        if (userForViewDTO.getDate() != null) {
+            users = users.stream()
+                    .filter(dto -> dto.getDate() != null && dto.getDate().equals(date))
+                    .collect(Collectors.toList());
+        }
+
+        if (!userForViewDTO.getStatus().isBlank()) {
+            users = users.stream()
+                    .filter(dto -> dto.getStatus() != null && dto.getStatus().equals(userForViewDTO.getStatus()))
+                    .collect(Collectors.toList());
+        }
+
+        if (userForViewDTO.getIsDebt() != null) {
+            users = users.stream()
+                    .filter(dto -> dto.getIsDebt() != null && dto.getIsDebt().equals(userForViewDTO.getIsDebt()))
+                    .collect(Collectors.toList());
+        }
+        return users;
+    }
+    public long count(){
+        return userRepository.count();
+    }
+    public List<User> getByStatus(UserStatus userStatus){
+        return userRepository.findAllByStatus(userStatus);
+    }
 }

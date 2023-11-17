@@ -24,6 +24,7 @@ public class MailConfig {
     @Bean("javaMailSender")
     public JavaMailSender javaMailSender() {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
+        sender.setDefaultEncoding("UTF-8");
         sender.setHost(environment.getProperty("spring.mail.host"));
         sender.setPort(Integer.parseInt(Objects.requireNonNull(environment.getProperty("spring.mail.port"))));
         sender.setUsername(environment.getProperty("spring.mail.username"));

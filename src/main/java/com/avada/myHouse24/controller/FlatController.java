@@ -1,5 +1,6 @@
 package com.avada.myHouse24.controller;
 
+import com.avada.myHouse24.entity.Flat;
 import com.avada.myHouse24.entity.Floor;
 import com.avada.myHouse24.entity.Score;
 import com.avada.myHouse24.entity.Section;
@@ -40,7 +41,7 @@ public class FlatController {
         model.addAttribute("sections", new ArrayList<Section>());
         model.addAttribute("floors", new ArrayList<Floor>());
         model.addAttribute("flatCount", flatService.getAll().size());
-        return "/admin/flat/get-all";
+        return "admin/flat/get-all";
     }
     @GetMapping("/add")
     public String add(@ModelAttribute("flatDTO") FlatDTO flatDTO, Model model){
@@ -48,7 +49,7 @@ public class FlatController {
         model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
-        return "/admin/flat/add";
+        return "admin/flat/add";
     }
     @GetMapping("/getFloors/{id}")
     @ResponseBody
@@ -67,56 +68,19 @@ public class FlatController {
             model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
             model.addAttribute("users", userService.getAll());
             model.addAttribute("tariffs", tariffService.getAll());
-            return "/admin/flat/add";
+            return "admin/flat/add";
         }
-        flatDTO.setScoreNumber(flatDTO.getScoreNumber().replace(",",""));
+        flatDTO.setScoreNumber(flatDTO.getScoreNumber());
         flatService.save(flatMapper.toEntity(flatDTO));
         return "redirect:/admin/flat/index/1";
     }
 
     @GetMapping("/filter/{page}")
     public String filter(@RequestParam(value = "rest", required = false) Boolean rest, @ModelAttribute("flatDTO") FlatDTO flatDTO, @PathVariable("page")int page,  Model model){
+        if(flatDTO.getNumber() != null || flatDTO.getNumber().toString().length() > 10) return "redirect:/admin/flat/index/1";
+
         List<FlatDTO> flatDTOS = flatMapper.toDtoList(flatService.getAll());
-        if(flatDTO.getNumber() != null){
-            flatDTOS = flatDTOS.stream()
-                    .filter(dto -> dto.getNumber() != null && dto.getNumber().toString().contains(flatDTO.getNumber().toString()))
-                    .collect(Collectors.toList());
-        }
-        if(flatDTO.getHouse() != null){
-            flatDTOS = flatDTOS.stream()
-                    .filter(dto -> dto.getHouse() != null && dto.getHouse().equals(flatDTO.getHouse()))
-                    .collect(Collectors.toList());
-        }
-        if(flatDTO.getSection() != null){
-            flatDTOS = flatDTOS.stream()
-                    .filter(dto -> dto.getSection() != null && dto.getSection().equals(flatDTO.getSection()))
-                    .collect(Collectors.toList());
-        }
-        if(flatDTO.getFloor() != null){
-            flatDTOS = flatDTOS.stream()
-                    .filter(dto -> dto.getFloor() != null && dto.getFloor().equals(flatDTO.getFloor()))
-                    .collect(Collectors.toList());
-        }
-        if(flatDTO.getUser() != null){
-            flatDTOS = flatDTOS.stream()
-                    .filter(dto -> dto.getUser() != null && dto.getUser().equals(flatDTO.getUser()))
-                    .collect(Collectors.toList());
-        }
-        if(rest != null){
-            if(rest){
-                flatDTOS = flatDTOS.stream()
-                        .filter(dto -> dto.getBalance() != null && Math.toIntExact(dto.getBalance()) < 0)
-                        .collect(Collectors.toList());
-
-            }
-            else {
-                flatDTOS = flatDTOS.stream()
-                        .filter(dto -> dto.getBalance() != null && Math.toIntExact(dto.getBalance()) >= 0)
-                        .collect(Collectors.toList());
-
-            }
-        }
-        model.addAttribute("flats", flatService.getPage(page, model, flatDTOS));
+        model.addAttribute("flats", flatService.getPage(page, model, flatService.filter(flatDTO, flatDTOS, rest)));
         if(rest != null) model.addAttribute("rest", rest);
         model.addAttribute("filter", flatDTO);
         model.addAttribute("houses", houseService.getAll());
@@ -127,14 +91,14 @@ public class FlatController {
         else model.addAttribute("floors", new ArrayList<Floor>());
         model.addAttribute("flatCount", flatDTOS.size());
 
-        return "/admin/flat/get-all";
+        return "admin/flat/get-all";
     }
 
     @GetMapping("/{id}")
     public String getById(@PathVariable("id") long id, Model model){
         model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
-        model.addAttribute("scoreId", flatService.getById(id).getScore().getId());
-        return "/admin/flat/index";
+        model.addAttribute("scoreId", flatService.getById(id).getScore() == null ? null : flatService.getById(id).getScore().getId());
+        return "admin/flat/index";
     }
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable("id") long id, Model model){
@@ -145,7 +109,7 @@ public class FlatController {
         model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
-        return "/admin/flat/edit";
+        return "admin/flat/edit";
     }
     @GetMapping("/delete/{id}")
     public String deleteById(@PathVariable("id") long id){
@@ -156,9 +120,17 @@ public class FlatController {
         return "redirect:/admin/flat/index/1";
     }
     @PostMapping("/copy")
-    public String copy(@ModelAttribute("flatDTO") FlatDTO flatDTO){
+    public String copy(@ModelAttribute("flatDTO")@Valid FlatDTO flatDTO, BindingResult bindingResult, Model model){
+        if(bindingResult.hasErrors()){
+            model.addAttribute("houses", houseService.getAll());
+            model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
+            model.addAttribute("users", userService.getAll());
+            model.addAttribute("tariffs", tariffService.getAll());
+            return "admin/flat/add";
+        }
         if(!scoreService.existNumber(flatDTO.getScoreNumber())){
             Score score = new Score();
+            score.setStatus("Активен");
             score.setNumber(flatDTO.getScoreNumber());
             scoreService.save(score);
         }
@@ -169,17 +141,32 @@ public class FlatController {
     }
     @GetMapping("/copy/{id}")
     public String copy(@PathVariable("id") long id, Model model){
-        model.addAttribute("flat", flatMapper.toDto(flatService.getById(id+1)));
+        model.addAttribute("flat", flatMapper.toDto(flatService.getById(id)));
         model.addAttribute("houses", houseService.getAll());
         model.addAttribute("floors", floorService.getAll());
         model.addAttribute("sections", sectionService.getAll());
         model.addAttribute("scores", scoreService.getAllByStatus("Неактивен"));
         model.addAttribute("users", userService.getAll());
         model.addAttribute("tariffs", tariffService.getAll());
-        return "/admin/flat/copy";
+        return "admin/flat/copy";
     }
     @GetMapping("/name/{name}")
     public String getByName(@PathVariable("name") int number){
         return "redirect:/admin/flat/"+flatService.getByNumber(number).getId();
+    }
+    @GetMapping("getFlatByScore/{id}")
+    @ResponseBody
+    public Flat getFlatByScore(@PathVariable("id")long id){
+        return scoreService.getById(id).getFlat();
+    }
+    @GetMapping("/getFlatsByFlat/{id}")
+    @ResponseBody
+    public List<Flat> getFlatsByFlat(@PathVariable("id")long id){
+        return flatService.getById(id).getHouse().getFlats();
+    }
+    @GetMapping("/getSectionsByFlat/{id}")
+    @ResponseBody
+    public List<Section> getSectionsByFlat(@PathVariable("id")long id){
+        return flatService.getById(id).getHouse().getSections();
     }
 }

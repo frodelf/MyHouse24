@@ -42,6 +42,18 @@ public class HouseValidator implements Validator {
         validateFile(houseDto.getImage2(), "image2", errors);
         validateFile(houseDto.getImage3(), "image3", errors);
         validateFile(houseDto.getImage4(), "image4", errors);
+
+        if (houseDto.getSections() == null || houseDto.getSections().isEmpty()) {
+            errors.rejectValue("sections", "sections.empty", "Будинок повинен містити як мінімум одну секцію");
+        }
+
+        if (houseDto.getFloors() == null || houseDto.getFloors().isEmpty()) {
+            errors.rejectValue("floors", "floors.empty", "Будинок повинен мітить як мінімум один поверх");
+        }
+
+        if (houseDto.getUsers() == null || houseDto.getUsers().isEmpty()) {
+            errors.rejectValue("users", "users.empty", "Хтось із амінів повинен бути вказаний");
+        }
     }
 
     private void validateFile(MultipartFile file, String fieldName, Errors errors) {

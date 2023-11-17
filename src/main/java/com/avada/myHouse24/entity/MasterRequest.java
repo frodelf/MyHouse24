@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Entity
 @Table(name = "master_request")
 @NoArgsConstructor
@@ -17,6 +19,7 @@ public class MasterRequest {
     private Long id;
     private String description;
     private String status;
+    private Date date;
     @Column(length = 1000)
     private String comment;
     @ManyToOne
@@ -25,4 +28,5 @@ public class MasterRequest {
     private User user;
     @ManyToOne
     private Flat flat;
+    private String role;
 }

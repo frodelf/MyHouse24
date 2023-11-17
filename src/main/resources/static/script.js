@@ -56,7 +56,6 @@ $(document).ready(function () {
         });
         $('#pagination').append(prevButton);
 
-        // Додаємо номеровані кнопки пагінації
         for (var i = startPage; i <= endPage; i++) {
             var pageButton = $('<li class="page-item"><a class="page-link" href="#">' + (i + 1) + '</a></li>');
             if (i === currentPage) {
@@ -72,7 +71,6 @@ $(document).ready(function () {
             $('#pagination').append(pageButton);
         }
 
-        // Додаємо кнопку "Наступна"
         var nextButton = $('<li class="page-item"><a id="nextPage" class="page-link" href="#">»</a></li>');
         if ((currentPage + 1) === totalPages) {
             nextButton.addClass('disabled');
@@ -121,14 +119,14 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
-document.querySelector('#fileInput').addEventListener('change', (event) => {
-    const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = () => {
-        document.querySelector('#selectedImage').setAttribute('src', reader.result);
-    };
-    reader.readAsDataURL(file);
-});
+// document.querySelector('#fileInput').addEventListener('change', (event) => {
+//     const file = event.target.files[0];
+//     const reader = new FileReader();
+//     reader.onload = () => {
+//         document.querySelector('#selectedImage').setAttribute('src', reader.result);
+//     };
+//     reader.readAsDataURL(file);
+// });
 
 function generatePassword() {
     var passwordLength = 8;
@@ -162,11 +160,6 @@ function togglePasswordVisibility() {
         toggleIcon.classList.add("fa-eye-slash");
     }
 }
-
-function confirmDelete() {
-    return confirm("Вы уверены, что хотите удалить этот элемент?");
-}
-
 function submitForm() {
     document.getElementById("formSend").submit();
 }
@@ -258,21 +251,21 @@ function addBlockForUsers() {
         console.log(user.firstName);
         selectOptions += `<option value="${user.firstName}">${user.firstName}</option>`;
     }
-    indexForUsers++;
     newBlock.innerHTML = `
     <div class="col-4">
-      <select class="form-select" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
+      <select name="users[${indexForUsers}]"  class="form-select" style="width: 100%" aria-label="Default select example" onchange="updateInputValue(this)">
         <option></option>
         ${selectOptions}
       </select>
     </div>
     <div class="col-8">
       <div class="form-row" style="width: 100%; margin-bottom: 20px;">
-        <input name="users[${indexForUsers}]" type="text" class="form-control" style="width: 30%" readonly>
+        <input type="text" class="form-control" style="width: 30%" readonly>
         <a type="button" class="btn btn-danger form-row-remove-btn" onclick="removeBlock(this.parentNode)"><i class="fa fa-trash"></i></a>
       </div>
     </div>
   `;
+    indexForUsers++;
     var addButton = document.querySelector('#tab_users .btn-success');
     addButton.parentNode.insertBefore(newBlock, addButton);
 }
@@ -348,3 +341,29 @@ function updateUnit(selectElement) {
     var unitInput = selectElement.parentNode.nextElementSibling.nextElementSibling.nextElementSibling.querySelector('input[type="text"]');
     unitInput.value = unitOfMeasurementName;
 }
+function addBlock() {
+    var container = document.getElementById("container");
+    var newRow = document.createElement("div");
+    newRow.classList.add("row");
+    newRow.style.marginTop = "20px";
+    console.log("qwerty")
+    newRow.innerHTML = `
+            <div class="col-3">
+                Услуга
+            </div>
+            <div class="col-2">
+                Расход
+            </div>
+            <div class="col-2">
+                Ед. изм.
+            </div>
+            <div class="col-2">
+                Цена за ед., грн.
+            </div>
+            <div class="col-3">
+                Стоимость, грн.
+            </div>
+        `;
+    container.appendChild(newRow);
+}
+

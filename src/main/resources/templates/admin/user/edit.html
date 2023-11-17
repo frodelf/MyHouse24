@@ -4,31 +4,44 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/dist/css/adminlte.min.css?v=3.2.0(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css(context_path = ${context_path})}">
+    <link rel="stylesheet" th:href="@{{context_path}/style.css(context_path = ${context_path})}">
+    <link rel="stylesheet"
+          th:href="@{{context_path}/adminlte/plugins/fontawesome-free/css/all.min.css(context_path = ${context_path})}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 </head>
 
-<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" th:classappend="${theme == 'LIGHT' ? '' : 'dark-mode'}" style="height: auto;">
 <div class="wrapper">
     <div th:replace="blocks/menu :: menu"></div>
     <div class="content-wrapper">
         <div class="content-header" style="display: flex; align-items: center;">
-            <h4 style="margin-left: 10px; margin-right: auto;">Новий владелец</h4>
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="#{Новый_владелец}"></span>
+            </h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Главная}"></span>
+                </a>
                 </li>
-                <li class="breadcrumb-item"><a href="/admin/user/index/1" class="text-for-breadcrumb">Владельцы
-                    квартир</a>
+                <li class="breadcrumb-item"><a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}" class="text-for-breadcrumb">
+                    <span th:text="#{Владелец_квартиры}"></span>
+                </a>
                 </li>
-                <li class="breadcrumb-item active" aria-current="page">Новый владелец</li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="#{Новый_владелец}"></span>
+                </li>
             </ol>
         </div>
         <section class="content">
-            <form method="post" th:action="@{/admin/user/edit/{id}(id=${user.getId()})}" th:object="${userDTO}"
+            <form method="post" th:action="@{{context_path}/admin/user/edit/{id}(id=${user.getId()}, context_path = ${context_path})}" th:object="${userDTO}"
                   enctype="multipart/form-data">
                 <div class="card">
                     <div class="card-body">
@@ -37,58 +50,63 @@
                                 <div class="col">
                                     <div class="row">
                                         <div class="col">
-                                            <div th:if="${user.getImageName()} == ''">
-                                                <img class="img-circle pull-left img-responsive" id="selectedImage1"
-                                                     src="http://myhouse24.avada-media.ua/site/glide?path=%2Fupload%2Fplaceholder.jpg&amp;w=160&amp;h=160&amp;fit=crop"
+                                            <div th:if="${user.getImageName()} != ''">
+                                                <img class="img-circle pull-left img-responsive" id="previewImage1"
+                                                     th:src="${user.getImageName()}"
                                                      style="width: 160px; height: 160px">
                                             </div>
-                                            <div th:if="${user.getImageName()} != ''">
-                                                <img class="img-circle pull-left img-responsive" id="selectedImage2"
-                                                     th:src="'/uploads/user/'+${user.getImageName()}"
+                                            <div th:if="${user.getImageName()} == ''">
+                                                <img class="img-circle pull-left img-responsive" id="previewImage1"
+                                                     th:src="'https://awss3bucketforavadatest.s3.eu-north-1.amazonaws.com/'+${user.getImageName()}"
                                                      style="width: 160px; height: 160px">
                                             </div>
                                         </div>
                                         <div class="col">
-                                            <b>Сменить изображение</b>
+                                            <b>
+                                                <span th:text="#{Сменить_изображение}"></span>
+                                                </b>
                                             </br>
-                                            <label for="fileInput"
+                                            <label for="fileIn"
                                                    style="cursor: pointer; margin-top: 10px; margin-bottom: 0px;"
-                                                   class="btn btn-secondary">
+                                                   class="btn btn-secondary" onchange="previewImage(event, 'previewImage1')">
                                                 <i class="fa fa-file-image-o" aria-hidden="true"></i> Додати фото
                                             </label>
-                                            <input id="fileInput" type="file" style="display:none;" name="image">
+                                            <input id="fileIn" type="file" style="display:none;" name="image" onchange="previewImage(event, 'previewImage1')" accept=".jpg, .jpeg, .png, .pdf">
                                             <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                                  th:text="${error}"></div>
                                         </div>
                                     </div>
                                     <b>
-                                        Фамилия
+                                        <span th:text="#{Фамилия}"></span>
+
                                         <input type="text" class="form-control" name="lastName"
                                                th:value="${user.getLastName()}">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
-                                        Имя
+                                        <span th:text="#{Имя}"></span>
+
                                         <input type="text" class="form-control" name="firstName"
                                                th:value="${user.getFirstName()}">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
-                                        Отчество
+                                        <span th:text="#{Отчество}"></span>
+
                                         <input type="text" class="form-control" name="fathersName"
                                                th:value="${user.getFathersName()}">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('fathersName')}"
                                              th:errors="*{fathersName}"></div>
-                                        Дата рождения
+                                        <span th:text="#{Дата_рождения}"></span>
                                         <input type="date" class="form-control" name="birthday"
                                                th:value="${user.getBirthday()}">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
                                     </b>
                                     <h3 style="margin-top: 20px; font-weight: 5">
-                                        Контактные данные
+                                        <span th:text="#{Контактные_данные}"></span>
                                     </h3>
                                     <b>
-                                        Телефон
+                                        <span th:text="#{Телефон}"></span>
                                         <input type="number" class="form-control" name="phone"
                                                th:value="${user.getPhone()}">
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
@@ -112,7 +130,8 @@
                                 </div>
                                 <div class="col">
                                     <b>
-                                        Статус
+                                        <span th:text="#{Статус}"></span>
+
                                         <select class="form-select" name="status" aria-label="Default select example">
                                             <option th:text="${user.getStatus()}"
                                                     th:value="${user.getStatus()}"></option>
@@ -127,7 +146,7 @@
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
                                              th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic" th:text="${idError}"></div>
-                                        О владельце (заметки)
+                                        <span th:text="#{О_владельце}"></span>
                                         <textarea type="text" class="form-control" style="height: 240px"
                                                   name="description">[[${user.description}]]</textarea>
                                         <div style="color: red; font-size: small; font-weight: bold; font-style: italic"
@@ -135,16 +154,18 @@
                                              th:errors="*{description}"></div>
                                     </b>
                                     <h3 style="margin-top: 20px; font-weight: 5">
-                                        Изменить пароль
+                                        <span th:text="#{Изменить_пароль}"></span>
                                     </h3>
                                     <b>
-                                        Пароль
+                                        <span th:text="#{Пароль}"></span>
                                         <div style="display: flex; align-items: center; width: 100%;">
                                             <input type="password" id="password-input" class="form-control"
                                                    style="flex: 1" name="password">
                                             <button type="button" id="generate-button" onclick="generatePassword()"
                                                     class="btn btn-outline-secondary"
-                                                    style="width: 30%; height: 38px; font-size: 14px">Сгенерировать
+                                                    style="width: 30%; height: 38px; font-size: 14px">
+                                                <span th:text="#{Сгенерировать}"></span>
+
                                             </button>
                                             <button type="button" id="toggle-button"
                                                     onclick="togglePasswordVisibility()" class="btn btn-primary"
@@ -152,11 +173,11 @@
                                                 <i id="toggle-icon" class="fas fa-eye-slash"></i>
                                             </button>
                                         </div>
-                                        Підтвердити пароль
+                                        <span th:text="#{Подтвердите_пароль}"></span>
                                         <input type="password" id="confirm-password-input" class="form-control"
                                                name="passwordAgain" style="margin-bottom: 20px;"
                                                oninput="checkPasswords()">
-                                        <div id="password-match-message"
+                                        <div id="password-match-chat"
                                              style="color: red; font-size: small; font-weight: bold; font-style: italic; display: none;">
                                             Паролі не співпадають
                                         </div>
@@ -166,10 +187,13 @@
                         </div>
                     </div>
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success float-right">Сохранить</button>
-                        <a href="/admin/user/index/1" class="btn btn-outline-secondary float-right"
+                        <button type="submit" class="btn btn-success float-right">
+                            <span th:text="#{Сохранить}"></span>
+                            </button>
+                        <a th:href="@{{context_path}/admin/user/index/1(context_path = ${context_path})}" class="btn btn-outline-secondary float-right"
                            style="margin-right: 3px">
-                            Отменить
+                            <span th:text="#{Отменить}"></span>
+
                         </a>
                     </div>
                 </div>
@@ -182,11 +206,26 @@
         Документация API доступна <a href="/doc">по ссылке</a>.
     </footer>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script th:src="@{{context_path}/adminlte/plugins/jquery/jquery.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/adminlte.js?v=3.2.0(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/adminlte/dist/js/demo.js(context_path = ${context_path})}"></script>
+<script th:src="@{{context_path}/script.js(context_path = ${context_path})}"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    function previewImage(event, imageId) {
+        var reader = new FileReader();
+        reader.onload = function () {
+            var output = document.getElementById(imageId);
+            output.src = reader.result;
+        };
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 </body>
 </html>

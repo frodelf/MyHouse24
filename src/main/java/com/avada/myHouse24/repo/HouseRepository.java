@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface HouseRepository extends JpaRepository<House, Long> {
     Optional<House> findByName(String name);
     Page<House> findByNameContainingIgnoreCase(String search, Pageable pageable);
+    long count();
 }
