@@ -31,4 +31,7 @@ public class SectionServiceImpl implements SectionService {
     public long getMaxId() {
         return sectionRepository.findMaxId();
     }
+    public Section getById(long id){
+        return sectionRepository.findById(id).get();
+    }
 }

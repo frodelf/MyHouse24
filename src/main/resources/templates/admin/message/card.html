@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Сообщения</title>
+    <link rel="stylesheet" th:href="@{/adminlte/dist/css/adminlte.min.css?v=3.2.0}">
+    <link rel="stylesheet" th:href="@{/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/adminlte/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap-wysihtml5.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/website.css}">
+    <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">Сообщение</h4>
+            <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
+                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                </li>
+                <li class="breadcrumb-item active" aria-current="page">Сообщения</li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="col-sm-12">
+                <div class="card">
+                    <div class="card-header">
+
+                    </div>
+                    <div class="card-body ">
+                        <div>
+                            <h5 id="topic"></h5>
+                        </div>
+                        <div style="display: flex; justify-content: space-between">
+                            <h6 id="From"></h6>
+                            <h6 id="sendDate"></h6>
+                        </div>
+                    </div>
+                    <div class="message-container">
+                        <div id="message"></div>
+                    </div>
+                    <a class="btn btn-default btn-sm float-right" id="deleteLink" title="Удалить"><i class="fa fa-trash"></i>
+                    </a>
+                    <div class="card-footer pt-0 pb-0" style="margin-bottom: 20px">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <footer class="main-footer">
+        Разработано <a href="https://avada-media.ua/">AVADA-MEDIA</a>. На базе системы управления <a
+            href="https://avada-media.ua/moydom24/">"МойДом24"</a>.
+        Документация API доступна <a href="/doc">по ссылке</a>.
+    </footer>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="/script.js"></script>
+<script>
+    $(document).ready(function () {
+        var id = [[${messageId}]];
+        var deleteLink = $("#deleteLink");
+        deleteLink.attr("href", "/admin/messages/delete/" + id);
+        $.ajax({
+            type: "GET",
+            url: "/admin/messages/" + id + "/getMessage",
+            dataType: "json",
+            success: function (data) {
+                $("#topic").text("Тема" + data.topic);
+                $("#From").text("От" + data.senderName);
+                $("#sendDate").text(data.date);
+                $("#message").html(data.text);
+            }
+        });
+    });
+</script>
+</body>
+</html>

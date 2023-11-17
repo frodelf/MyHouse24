@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="uk" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Сообщения</title>
+    <link rel="stylesheet" th:href="@{/adminlte/dist/css/adminlte.min.css?v=3.2.0}">
+    <link rel="stylesheet" th:href="@{/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/adminlte/plugins/fontawesome-free/css/all.min.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap-wysihtml5.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/website.css}">
+    <link rel="stylesheet" th:href="@{/summernote/summernote.min.css}">
+    <script src="https://cdn.jsdelivr.net/sockjs/1.0.2/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+    <style>
+        tbody:hover {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="sidebar-mini layout-fixed sidebar-closed sidebar-collapse" style="height: auto;">
+<div class="wrapper">
+    <div th:replace="blocks/menu :: menu"></div>
+    <div class="content-wrapper text-for-breadcrumb">
+        <div class="content-header" style="display: flex; align-items: center;">
+            <h4 style="margin-left: 10px; margin-right: auto;">
+                <span th:text="Сообщения"></span>
+
+            </h4>
+            <ol class="breadcrumb" style="margin-right: 1%">
+                <li class="breadcrumb-item"><a th:href="@{/admin}" class="text-for-breadcrumb">
+                    <span th:text="Главная"></span>
+                </a></li>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <span th:text="Сообщения"></span>
+                </li>
+            </ol>
+        </div>
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12 col-lg-9">
+                </div>
+                <div class="col-xs-12 col-lg-3">
+                    <div class="btn-group margin-bottom float-right">
+                        <a th:href="@{/admin/messages/new}" type="button" class="btn btn-success"
+                           style="width: 220px; margin-bottom: 10px; margin-top: 10px">Отправить сообщение
+                        </a>
+                    </div>
+                </div>
+                <div class="card card-primary card-outline" style="border-top-color: #999999">
+                    <div class="card-header">
+                        <h3 class="card-title"></h3>
+                        <div class="card-tools" style="margin-top: 3px">
+                            <div class="input-group input-group-sm row">
+                                <input id="search-input" type="text" class="form-control" name="search" placeholder="Search..."
+                                       th:value="${searchQuery}"/>
+                                <button id="search-button" class="btn btn-success" style="width: 50px; margin-bottom: 3px">Go!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table id="table-house" class="table table-hover"
+                       style="font-size: 14px">
+                    <thead>
+                    <tr>
+                        <th style="width: 5%"></th>
+                        <th style="width: 25%">
+                            <a href="#" class="sort-link" data-sort-field="recipientsName" data-sort-order="asc">Получатели</a>
+                        </th>
+                        <th style="width: 50%">
+                            <a href="#" class="sort-link" data-sort-field="text" data-sort-order="asc">Текст</a>
+                        </th>
+                        <th style="width: 20%">
+                            <a href="#" class="sort-link" data-sort-field="date" data-sort-order="asc">Дата</a>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <span>Кол-во сообщений</span>
+                            : <b id="messageCount"></b>
+                        </div>
+                        <div class="col">
+
+                            <div class="col">
+                                <ul class="pagination pagination-sm m-0 float-right" id="pagination-example">
+                                </ul>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
+<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
+<script src="/adminlte/dist/js/demo.js"></script>
+<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var currentPage = 1;
+        var apiURL = "/admin/messages/api";
+        var pagination = $("#pagination-example");
+        var sortField = $(".sort-link").data("sort-field");
+        var sortOrder = $(".sort-link").data("sort-order");
+        var searchQuery = "";
+        function updateTable(page) {
+            console.log("Поиск:", searchQuery);
+            console.log("URL:", apiURL + "?page=" + page + "&sortField=" + sortField + "&sortOrder=" + sortOrder + "&searchQuery=" + searchQuery);
+            $.ajax({
+                url: apiURL + "?page=" + page + "&sortField=" + sortField + "&sortOrder=" + sortOrder + "&searchQuery=" + searchQuery,
+                method: "GET",
+                dataType: "json",
+                success: function (data) {
+                    console.log("Успешно получены данные:", data);
+                    var messages = data.messages;
+                    var totalPagesCount = data.totalPagesCount;
+                    var messageCount = data.messageCount;
+
+                    $("tbody").empty();
+
+                    messages.forEach(function (message) {
+                        var row = "<tr data-id='" + message.id + "'>" +
+                            "<td></td>" +
+                            "<td>" + message.recipientsName + "</td>" +
+                            "<td style=\"width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;\"> <b>" + message.topic + "</b> - <span class=\"message-text\">" + message.text + "</span></td>" +
+                            "<td>" + message.date + "</td>" +
+                            "</tr>";
+                        $("tbody").append(row);
+                    });
+                    $("td .message-text").each(function () {
+                        var maxTextLength = 45;
+                        var text = $(this).text();
+                        if (text.length > maxTextLength) {
+                            text = text.substring(0, maxTextLength) + "...";
+                        }
+                        $(this).text(text);
+                    });
+                    currentPage = page;
+                    $("#messageCount").text(messageCount);
+
+                    createPagination(totalPagesCount, page);
+                },
+                error: function () {
+                    console.error("Ошибка при получении данных");
+                }
+            });
+        }
+        $("#search-button").click(function (e) {
+            e.preventDefault();
+            currentPage = 1;
+            searchQuery = $("#search-input").val();
+            updateTable(currentPage);
+        });
+        $("tbody").on("click", "tr", function () {
+            var messageId = $(this).data("id");
+            window.location.href = "/admin/messages/" + messageId;
+        });
+        $("td .message-text").each(function () {
+            var maxTextLength = 27;
+            var text = $(this).text();
+            if (text.length > maxTextLength) {
+                text = text.substring(0, maxTextLength) + "...";
+            }
+            $(this).text(text);
+        });
+
+        function createPagination(totalPages, currentPage) {
+            pagination.empty();
+
+            if (totalPages > 1) {
+                var prevClass = (currentPage === 1) ? "disabled" : "";
+                var nextClass = (currentPage === totalPages) ? "disabled" : "";
+
+                var firstPage = '<li class="page-item ' + prevClass + '"><a class="page-link" href="#" data-page="1"> << </a></li>';
+                pagination.append(firstPage);
+
+                var prevPage = '<li class="page-item ' + prevClass + '"><a class="page-link" href="#" data-page="' + (currentPage - 1) + '"><</a></li>';
+                pagination.append(prevPage);
+
+                var maxVisiblePages = 5;
+                var halfMaxVisiblePages = Math.floor(maxVisiblePages / 2);
+
+                var startPage = Math.max(1, currentPage - halfMaxVisiblePages);
+                var endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+                if (startPage > 1) {
+                    pagination.append('<li class="page-item disabled"><span class="page-link">&hellip;</span></li>');
+                }
+
+                for (var i = startPage; i <= endPage; i++) {
+                    var liClass = (i === currentPage) ? "active" : "";
+                    var li = '<li class="page-item ' + liClass + '"><a class="page-link" href="#" data-page="' + i + '">' + i + '</a></li>';
+                    pagination.append(li);
+                }
+
+                if (endPage < totalPages) {
+                    pagination.append('<li class="page-item disabled"><span class="page-link">&hellip;</span></li>');
+                }
+
+                var nextPage = '<li class="page-item ' + nextClass + '"><a class="page-link" href="#" data-page="' + (currentPage + 1) + '"> ></a></li>';
+                pagination.append(nextPage);
+
+                var lastPage = '<li class="page-item ' + nextClass + '"><a class="page-link" href="#" data-page="' + totalPages + '">>></a></li>';
+                pagination.append(lastPage);
+
+                pagination.find("a").click(function (e) {
+                    e.preventDefault();
+                    var newPage = $(this).data("page");
+                    if (newPage !== currentPage) {
+                        currentPage = newPage;
+                        console.log("Переход на страницу:", currentPage);
+                        updateTable(currentPage);
+                    }
+                });
+            }
+        }
+
+        $("#table-house th a.sort-link").click(function (e) {
+            e.preventDefault();
+
+            var clickedSortField = $(this).data("sort-field");
+            var currentSortOrder = $(this).data("sort-order");
+            var newSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+            console.log("Сортировка изменена на: поле - " + clickedSortField + ", порядок - " + newSortOrder);
+
+            sortField = clickedSortField;
+            sortOrder = newSortOrder;
+
+            $("#table-house th a.sort-link").data("sort-order", "asc");
+            $(this).data("sort-order", newSortOrder);
+
+            updateTable(currentPage);
+        });
+
+        updateTable(currentPage);
+    });
+</script>
+<script>
+    var stompClient = null;
+
+    function connect() {
+        var socket = new SockJS('/websocket');
+        stompClient = Stomp.over(socket);
+        stompClient.connect({}, function (frame) {
+
+            console.log('Connected: ' + frame);
+            stompClient.subscribe('/topic/new-message', function (message) {
+                console.log("Received a new message: " + message.body);
+            });
+        });
+    }
+
+    connect();
+</script>
+
+</body>
+</html>

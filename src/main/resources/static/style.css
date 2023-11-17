@@ -5,7 +5,11 @@
 .sidebar-dark-primary .nav-sidebar .nav-treeview>.nav-item>.nav-link {
     color: #fff;
 }
-
+.message-container {
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    padding: 10px 5%;
+}
 .sidebar-dark-primary .brand-link {
     background-color: #fff;
     color: #000;
