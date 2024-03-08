@@ -10,9 +10,9 @@ spring:
       max-file-size: 15MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://localhost:3306/house24
+    url: jdbc:mysql://mysql-container24DA:3306/house24
     username: root
-    password: Uragan2012SomePassword
+    password: 1234
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
@@ -20,8 +20,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: kripword@gmail.com
-    password: kriptwordgmail1com
+    username: freeideamonthly1@gmail.com
+    password: kxmtyqlqbqcjaoyc
     properties:
       mail:
         smtp:
