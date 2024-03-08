@@ -4,15 +4,15 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>МойДом24</title>
-    <link rel="stylesheet" href="/adminlte/dist/css/adminlte.min.css?v=3.2.0">
-    <link rel="stylesheet" href="/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/adminlte/dist/css/adminlte.min.css?v=3.2.0}">
+    <link rel="stylesheet" th:href="@{/adminlte/plugins/overlayScrollbars/css/OverlayScrollbars.min.css}">
+    <link rel="stylesheet" th:href="@{/adminlte/plugins/fontawesome-free/css/all.min.css}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/style.css">
-    <link rel="stylesheet" href="/dist/css/bootstrap-wysihtml5.css">
-    <link rel="stylesheet" href="/dist/css/website.css">
-    <link rel="stylesheet" href="/summernote/summernote.min.css">
+    <link rel="stylesheet" th:href="@{/style.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/bootstrap-wysihtml5.css}">
+    <link rel="stylesheet" th:href="@{/dist/css/website.css}" >
+    <link rel="stylesheet" th:href="@{/summernote/summernote.min.css}">
 </head>
 <body class="hold-transition light-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -264,12 +264,12 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
-<script src="/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="/adminlte/dist/js/adminlte.js?v=3.2.0"></script>
-<script src="/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="/script.js"></script>
-<script src="/summernote/summernote.js"></script>
-<script src="/summernote/lang/summernote-ru-RU.js"></script>
+<script th:src="@{/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/adminlte/dist/js/adminlte.js?v=3.2.0}"></script>
+<script th:src="@{/adminlte/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js}"></script>
+<script th:src="@{/script.js}"></script>
+<script th:src="@{/summernote/summernote.js}"></script>
+<script th:src="@{/summernote/lang/summernote-ru-RU.js}"></script>
 <!--<script src="/bootstrap-wysihtml5.js"></script>-->
 <!--<script src="/bootstrap-wysihtml5.ru-RU.js"></script>-->
 <script>

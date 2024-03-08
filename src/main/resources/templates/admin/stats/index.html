@@ -25,7 +25,7 @@
     <div class="content-wrapper text-for-breadcrumb">
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">
-                <span th:text="#{Статистика}"></span>
+                <span th:text="#{Charts}"></span>
             </h4>
         </div>
         <section class="content">
@@ -102,7 +102,7 @@
                             <div class="inner">
                                 <h3>[[${masterInProgress}]]</h3>
                                 <p>
-                                    <span th:text="#{Заявок_мастера_в_работе}"></span>
+                                    <span th:text="#{Master_app_in_progress}"></span>
                                 </p>
                             </div>
                             <div class="icon">
@@ -110,14 +110,14 @@
                             </div>
                             <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}"
                                class="small-box-footer">
-                                <span th:text="#{Перейти_к_заявкам}"></span><i class="fa fa-arrow-circle-right"></i>
+                                <span th:text="#{Go_to_master_applications}"></span><i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>
                         <div class="small-box bg-red overflow-hidden">
                             <div class="inner">
                                 <h3>[[${masterNew}]]</h3>
                                 <p>
-                                    <span th:text="#{Новых_заявок_мастера}"></span>
+                                    <span th:text="#{New_master}"></span>
                                 </p>
                             </div>
                             <div class="icon">
@@ -125,7 +125,7 @@
                             </div>
                             <a th:href="@{{context_path}/admin/master-request/index/1(context_path = ${context_path})}"
                                class="small-box-footer">
-                                <span th:text="#{Перейти_к_заявкам}"></span> <i class="fa fa-arrow-circle-right"></i>
+                                <span th:text="#{Go_to_master_applications}"></span> <i class="fa fa-arrow-circle-right"></i>
                             </a>
                         </div>
                     </div>

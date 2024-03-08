@@ -17,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
-import org.springframework.ui.Model;
 
 import java.util.List;
 
@@ -56,6 +55,7 @@ public class MessagesServiceImpl implements MessagesService {
         messageRepository.deleteById(id);
     }
 
+    @Override
     public Page<MessageDTO> getPage(int pageNumber, int pageSize, String searchQuery, String sortField, String sortOrder) {
         Sort.Direction direction = Sort.Direction.ASC;
 
@@ -84,22 +84,25 @@ public class MessagesServiceImpl implements MessagesService {
         return messagesPage.map(messageMapper::toDto);
     }
 
-
+    @Override
     public List<FlatForMessageDTO> findFlatDTOsWithDebt() {
         log.info("Finding flats with debt.");
         return flatMapper.toDtoForMsgList(flatRepository.findByScoreBalanceLessThan(0));
     }
 
+    @Override
     public List<FlatForMessageDTO> findFlatDTOsWithNegativeBalanceByHouse(Long id) {
         log.info("Finding flats with negative balance by house: {}", id);
         return flatMapper.toDtoForMsgList(flatRepository.findByScoreBalanceLessThanAndHouseId(0d, id));
     }
 
+    @Override
     public List<FlatForMessageDTO> findFlatDTOsWithNegativeBalanceByHouseAndSection(Long houseId, Long sectionId) {
         log.info("Finding flats with negative balance by house: {} and section: {}", houseId, sectionId);
         return flatMapper.toDtoForMsgList(flatRepository.findByScoreBalanceLessThanAndHouseIdAndSectionId(0d, houseId, sectionId));
     }
 
+    @Override
     public List<FlatForMessageDTO> findFlatDTOsByHouseAndSectionAndFloor(Long houseId, Long sectionId, long floorId) {
         log.info("Finding flats by house: {}, section: {}, and floor: {}", houseId, sectionId, floorId);
         log.info(flatRepository.findByHouseIdAndSectionIdAndFloorId(houseId, sectionId, floorId).toString());
@@ -120,16 +123,19 @@ public class MessagesServiceImpl implements MessagesService {
         return list;
     }
 
+    @Override
     public List<FlatForMessageDTO> findFlatDTOsByHouse(Long id) {
         log.info("Finding flats by house: {}", id);
         return flatMapper.toDtoForMsgList(flatRepository.findByHouseId(id));
     }
 
+    @Override
     public List<FlatForMessageDTO> findFlatDTOseByHouseAndSection(Long houseId, Long sectionId) {
         log.info("Finding flats by house: {} and section: {}", houseId, sectionId);
         return flatMapper.toDtoForMsgList(flatRepository.findByHouseIdAndSectionId(houseId, sectionId));
     }
 
+    @Override
     public List<FlatForMessageDTO> findFlatDTOsWithNegativeBalanceByHouseAndSectionAndFloor(Long houseId, Long sectionId, Long floorId) {
         log.info("Finding flats with negative balance by house: {}, section: {}, and floor: {}", houseId, sectionId, floorId);
         return flatMapper.toDtoForMsgList(flatRepository.findByScoreBalanceLessThanAndHouseIdAndSectionIdAndFloorId(0d, houseId, sectionId, floorId));

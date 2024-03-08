@@ -1,8 +1,9 @@
 package com.avada.myHouse24.controller;
 
 import com.avada.myHouse24.entity.pages.*;
-import com.avada.myHouse24.services.impl.WebsiteService;
+import com.avada.myHouse24.services.impl.WebsiteServiceImpl;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,18 +23,20 @@ import java.util.stream.Collectors;
 @RequestMapping("/admin/website")
 @Log
 public class WebsiteController {
-
     @Autowired
-    private WebsiteService websiteService;
+    private WebsiteServiceImpl websiteService;
 //    @Autowired private PageValidator validator;
 
+    public WebsiteController(WebsiteServiceImpl websiteService) {
+        this.websiteService = websiteService;
+    }
+
     @GetMapping("/index")
-    public String showEditindexPage(Model model) {
+    public String showEditIndexPage(Model model) {
         model.addAttribute("mainPage", websiteService.getMainPage());
         log.info(Objects.requireNonNull(model.getAttribute("mainPage")).toString());
         return "admin/website/index";
     }
-
     @GetMapping("/about")
     public String showEditAboutPage(Model model) {
         AboutPage page = websiteService.getAboutPage();
@@ -88,7 +91,7 @@ public class WebsiteController {
     }
 
     @PostMapping("/index")
-    public String editindexPage(@Valid @ModelAttribute MainPage page,
+    public String editIndexPage(@Valid @ModelAttribute MainPage page,
                                BindingResult bindingResult,
                                @RequestPart(required = false) MultipartFile page_slide1,
                                @RequestPart(required = false) MultipartFile page_slide2,
@@ -137,7 +140,6 @@ public class WebsiteController {
 
         return "redirect:/admin/website/about";
     }
-
     @PostMapping("/services")
     public String editServicesPage(@Valid @ModelAttribute ServicesPage page,
                                    BindingResult bindingResult,

@@ -1,21 +1,27 @@
 spring:
   messages:
     basename: i18n/messages
-  thymeleaf:
-    cache: false
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 15MB
+      max-request-size: 20MB
   datasource:
     url: jdbc:mysql://localhost:3306/house24
     username: root
-    password: ${DATABASE_PASSWORD}
+    password: Uragan2012SomePassword
   jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
-    show-sql: true
   mail:
     host: smtp.gmail.com
     port: 587
-    username: freeideamonthly1@gmail.com
-    password: ${SMTP_PASSWORD}
+    username: kripword@gmail.com
+    password: kriptwordgmail1com
     properties:
       mail:
         smtp:
@@ -25,5 +31,20 @@ spring:
             required: true
           ssl:
             trust: smtp.gmail.com
-upload:
-  path: C:\Users\NikkiLA\Desktop\SpringProject\images
+  mvc:
+    static-path-pattern: /resources/**
+  web:
+    resources:
+      static-locations: classpath:/static/
+  rabbitmq:
+    host: rabbitmqda
+    port: 15672
+    username: guest
+    password: guest
+  devtools:
+    restart:
+      enabled: true
+server:
+  servlet:
+    context-path: /myHouse24DA
+  port: 8080

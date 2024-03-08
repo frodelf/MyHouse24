@@ -1,48 +1,63 @@
-version: '3'
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2MB
+      max-file-size: 15MB
+      max-request-size: 20MB
+  datasource:
+    url: jdbc:mysql://db:3306/myhouse24
+    username: root
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 971647332c46fff334ce
+            clientSecret: b50eb4e1c6c2c273c796ef55fc39325f0da824a9
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: kripword@gmail.com
+    password: kriptwordgmail1com
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: smtp.gmail.com
+  mvc:
+    static-path-pattern: /resources/**
+  web:
+    resources:
+      static-locations: classpath:/static/
+  rabbitmq:
+    host: rabbitmqda
+    port: 15672
+    username: guest
+    password: guest
+  devtools:
+    restart:
+      enabled: true
+server:
+  servlet:
+    context-path: /myHouse24DA
+  port: 443
 services:
-  db:
-    image: mysql:latest
-    container_name: db
-    environment:
-      MYSQL_ROOT_PASSWORD: 1234
-      MYSQL_DATABASE: myhouse24
-    ports:
-      - "3307:3306"
+  mediaImage:
+    image: photos_myHouse24DA
     volumes:
-      - ./photos:/var/photos
-  admin:
-    container_name: admin
-    build:
-      context: .
-    ports:
-      - "8083:8080"
-    depends_on:
-      - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
-    volumes:
-      - ./photos:/var/photos
-    restart: always
-  user:
-    container_name: user
-    build:
-      context: C:\Users\Xiaomi\IdeaProjects\MyHouse24User\
-    ports:
-      - "8082:8081"
-    depends_on:
-      - db
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/myhouse24?allowPublicKeyRetrieval=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: 1234
-    volumes:
-      - ./photos:/var/photos
-    restart: always
-
-  localRabbitMQ:
-    image: rabbitmq:3-management-alpine
-    ports:
-      - 5672:5672
-      - 15672:15672
+      - photos_volume:/var/photos
+volumes:
+  photos_volume:

@@ -3,6 +3,7 @@ package com.avada.myHouse24.util;
 import com.avada.myHouse24.entity.User;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import java.util.Random;
 
 @Log4j2
 @RequiredArgsConstructor
+@Component
 public class ImageUtil {
     private static final String pathToFolder = "/var/photos";
     private static String contextPath = "/myHouse24DA";
@@ -99,5 +101,9 @@ public class ImageUtil {
     public static void deleteFile(String name) {
         log.info(name.replace("/uploads", pathToFolder));
         new File(name.replace("/uploads", pathToFolder)).delete();
+    }
+
+    public void saveFile(String imageSaveDir, String originalFilename, MultipartFile pageSlide1) {
+
     }
 }
