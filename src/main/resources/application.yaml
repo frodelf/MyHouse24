@@ -47,4 +47,4 @@ spring:
 server:
   servlet:
     context-path: /myHouse24DA
-  port: 8080
+  port: 414
