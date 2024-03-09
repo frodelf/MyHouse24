@@ -1,10 +1,16 @@
 version: '3'
 
+networks:
+  myhouse24da:
+    driver: bridge
+
 services:
   myhouse24da:
-    image: your/spring_image
+    image: OkeNNV/myhouse24
     ports:
-      - "443:443"
+      - "8287:8286"
+    networks:
+      - myhouse24da
     depends_on:
       - mysql-container24DA
       - rabbitmq
@@ -34,6 +40,8 @@ services:
       MYSQL_ROOT_PASSWORD: 1234
     ports:
       - "3306:3306"
+    networks:
+      - myhouse24da
       
   rabbitmq:
     image: rabbitmq:management
@@ -43,11 +51,16 @@ services:
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - myhouse24da
       
   mediaImage:
     image: photos_myHouse24DA
     volumes:
       - photos_volume:/var/photos
+    networks:
+      - myhouse24da
 
 volumes:
   photos_volume:
+
