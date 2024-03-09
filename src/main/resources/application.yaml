@@ -38,7 +38,7 @@ spring:
       static-locations: classpath:/static/
   rabbitmq:
     host: rabbitmqda
-    port: 15672
+    port: 5672
     username: guest
     password: guest
   devtools:
