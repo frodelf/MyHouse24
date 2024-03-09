@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitConfig {
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("localhost");
+        return new CachingConnectionFactory("rabbitmqda");
     }
 
     @Bean
