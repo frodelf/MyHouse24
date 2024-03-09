@@ -8,7 +8,7 @@ spring:
       max-file-size: 15MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://db:3306/myhouse24
+    url: jdbc:mysql://mysql-container24DA:3306/myhouse24
     username: root
     password: 1234
   jpa:
@@ -26,8 +26,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: kripword@gmail.com
-    password: kriptwordgmail1com
+    username: freeideamonthly1@gmail.com
+    password: kxmtyqlqbqcjaoyc
     properties:
       mail:
         smtp:
