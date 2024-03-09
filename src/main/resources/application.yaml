@@ -1,6 +1,4 @@
 spring:
-  messages:
-    basename: i18n/messages
   main:
     allow-bean-definition-overriding: true
   servlet:
@@ -10,18 +8,26 @@ spring:
       max-file-size: 15MB
       max-request-size: 20MB
   datasource:
-    url: jdbc:mysql://mysql-container24DA:3306/house24
+    url: jdbc:mysql://db:3306/myhouse24
     username: root
     password: 1234
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: update
+    show-sql: true
+  security:
+    oauth2:
+      client:
+        registration:
+          github:
+            clientId: 971647332c46fff334ce
+            clientSecret: b50eb4e1c6c2c273c796ef55fc39325f0da824a9
   mail:
     host: smtp.gmail.com
     port: 587
-    username: freeideamonthly1@gmail.com
-    password: ${SMTP_PASSWORD}
+    username: kripword@gmail.com
+    password: kriptwordgmail1com
     properties:
       mail:
         smtp:
@@ -47,4 +53,4 @@ spring:
 server:
   servlet:
     context-path: /myHouse24DA
-  port: 8187
+  port: 443
