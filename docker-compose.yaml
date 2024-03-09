@@ -1,63 +1,53 @@
-spring:
-  main:
-    allow-bean-definition-overriding: true
-  servlet:
-    multipart:
-      enabled: true
-      file-size-threshold: 2MB
-      max-file-size: 15MB
-      max-request-size: 20MB
-  datasource:
-    url: jdbc:mysql://db:3306/myhouse24
-    username: root
-    password: 1234
-  jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
-    hibernate:
-      ddl-auto: update
-    show-sql: true
-  security:
-    oauth2:
-      client:
-        registration:
-          github:
-            clientId: 971647332c46fff334ce
-            clientSecret: b50eb4e1c6c2c273c796ef55fc39325f0da824a9
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: kripword@gmail.com
-    password: kriptwordgmail1com
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
-            required: true
-          ssl:
-            trust: smtp.gmail.com
-  mvc:
-    static-path-pattern: /resources/**
-  web:
-    resources:
-      static-locations: classpath:/static/
-  rabbitmq:
-    host: rabbitmqda
-    port: 15672
-    username: guest
-    password: guest
-  devtools:
-    restart:
-      enabled: true
-server:
-  servlet:
-    context-path: /myHouse24DA
-  port: 443
+version: '3'
+
 services:
+  myhouse24da:
+    image: your/spring_image
+    ports:
+      - "443:443"
+    depends_on:
+      - mysql-container24DA
+      - rabbitmq
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-container24DA:3306/myhouse24
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+      SPRING_JPA_DATABASE-PLATFORM: org.hibernate.dialect.MySQLDialect
+      SPRING_JPA_HIBERNATE_DDL-AUTO: update
+      SPRING_JPA_SHOW-SQL: "true"
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTID: 971647332c46fff334ce
+      SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_GITHUB_CLIENTSECRET: b50eb4e1c6c2c273c796ef55fc39325f0da824a9
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: freeideamonthly1@gmail.com
+      SPRING_MAIL_PASSWORD: kxmtyqlqbqcjaoyc
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_REQUIRED: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_SSL_TRUST: smtp.gmail.com
+      SPRING_MVC_STATIC-PATH-PATTERN: /resources/**
+      SPRING_WEB_RESOURCES_STATIC-LOCATIONS: classpath:/static/
+      
+  mysql-container24DA:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+    ports:
+      - "3306:3306"
+      
+  rabbitmq:
+    image: rabbitmq:management
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+      
   mediaImage:
     image: photos_myHouse24DA
     volumes:
       - photos_volume:/var/photos
+
 volumes:
   photos_volume:
