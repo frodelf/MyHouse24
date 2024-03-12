@@ -1,3 +1,6 @@
+logging:
+  level:
+    org.thymeleaf: DEBUG
 spring:
   messages:
     basename: i18n/messages
