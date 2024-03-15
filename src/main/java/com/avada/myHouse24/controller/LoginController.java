@@ -17,7 +17,7 @@ public class LoginController {
     public String loginAdmin() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || authentication instanceof AnonymousAuthenticationToken) {
-            return "/main/loginAdmin";
+            return "main/loginAdmin";
         }
         log.info("User is already authenticated.");
         log.info(String.valueOf(authentication.isAuthenticated()));
