@@ -57,7 +57,7 @@ public class SecurityConfig {
 //                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
                     auth.requestMatchers( "/admin/login/**", "/oauth/**", "/logout").permitAll();
-                    auth.requestMatchers("/favicon.ico", "/dist/**").permitAll();
+                    auth.requestMatchers("/favicon.ico", "/dist/**","/images/logo.png").permitAll();
                     auth.requestMatchers("/secured").authenticated();
                     auth.anyRequest().authenticated();
                 })
