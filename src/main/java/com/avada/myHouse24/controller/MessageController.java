@@ -66,7 +66,7 @@ public class MessageController {
         int pageSize = 10;
         Page<MessageDTO> messagesList = messageService.getPage(page - 1, pageSize, searchQuery, sortField, sortOrder);
 
-        ModelAndView modelAndView = new ModelAndView("/admin/message/index");
+        ModelAndView modelAndView = new ModelAndView("admin/message/index");
         modelAndView.addObject("messages", messagesList.getContent());
         modelAndView.addObject("totalPagesCount", messagesList.getTotalPages());
         modelAndView.addObject("searchQuery", searchQuery);
@@ -80,14 +80,14 @@ public class MessageController {
 
     @GetMapping("{id}")
     public ModelAndView getMessage(@PathVariable("id") Long id) {
-        ModelAndView modelAndView = new ModelAndView("/admin/message/card");
+        ModelAndView modelAndView = new ModelAndView("admin/message/card");
         modelAndView.addObject("messageId", id);
         return modelAndView;
     }
 
     @GetMapping("new")
     public ModelAndView createMessagePage() {
-        ModelAndView modelAndView = new ModelAndView("/admin/message/add");
+        ModelAndView modelAndView = new ModelAndView("admin/message/add");
         Message message = new Message();
         modelAndView.addObject("message", message);
         modelAndView.addObject("houses", houseMapper.toDtoForViewList(houseService.getAll()));
