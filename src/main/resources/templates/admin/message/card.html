@@ -29,7 +29,7 @@
         <div class="content-header" style="display: flex; align-items: center;">
             <h4 style="margin-left: 10px; margin-right: auto;">Сообщение</h4>
             <ol class="breadcrumb text-for-breadcrumb" style="margin-right: 1%;">
-                <li class="breadcrumb-item"><a href="/admin" class="text-for-breadcrumb">Главная</a>
+                <li class="breadcrumb-item"><a th:href="/admin" class="text-for-breadcrumb">Главная</a>
                 </li>
                 <li class="breadcrumb-item active" aria-current="page">Сообщения</li>
             </ol>
@@ -79,10 +79,10 @@
     $(document).ready(function () {
         var id = [[${messageId}]];
         var deleteLink = $("#deleteLink");
-        deleteLink.attr("href", "/admin/messages/delete/" + id);
+        deleteLink.attr("th:href", "[[${context_path}]]/admin/messages/delete/" + id);
         $.ajax({
             type: "GET",
-            url: "/admin/messages/" + id + "/getMessage",
+            url: "[[${context_path}]]/admin/messages/" + id + "/getMessage",
             dataType: "json",
             success: function (data) {
                 $("#topic").text("Тема" + data.topic);

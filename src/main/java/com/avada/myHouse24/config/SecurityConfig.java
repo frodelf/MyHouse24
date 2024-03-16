@@ -56,8 +56,8 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()))
 //                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers("/plugins/**","/favicon.ico", "/dist/**","/images/logo.png").permitAll();
                     auth.requestMatchers( "/admin/login/**", "/oauth/**", "/logout").permitAll();
-                    auth.requestMatchers("/favicon.ico", "/dist/**","/images/logo.png").permitAll();
                     auth.requestMatchers("/secured").authenticated();
                     auth.anyRequest().authenticated();
                 })

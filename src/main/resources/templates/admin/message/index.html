@@ -183,7 +183,7 @@
         });
         $("tbody").on("click", "tr", function () {
             var messageId = $(this).data("id");
-            window.location.href = "/admin/messages/" + messageId;
+            window.location.href = "[[${context_path}]]/admin/messages/" + messageId;
         });
         $("td .message-text").each(function () {
             var maxTextLength = 27;

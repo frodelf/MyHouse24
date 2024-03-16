@@ -120,6 +120,7 @@ public class MessageController {
                                    @RequestParam(name = "section", defaultValue = "0") Long sectionId,
                                    @RequestParam(name = "floor", defaultValue = "0") Long floorId,
                                    @RequestParam(name = "flatNumber", defaultValue = "0") Long flatId) throws IOException {
+        log.info("Starting create method IN Message controller");
         List<User> recipients = new ArrayList<>();
         if (flatId == 0L) {
             if (floorId == 0L && sectionId == 0L && houseId == 0L && !balance) {
